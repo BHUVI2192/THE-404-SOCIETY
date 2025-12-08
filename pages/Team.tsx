@@ -31,15 +31,15 @@ const Team: React.FC = () => {
         </div>
 
         <div className="mb-20">
-          <h2 className="text-2xl font-mono font-bold mb-8 text-center text-white">:: CORE_MAINTAINERS</h2>
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          <h2 className="text-2xl font-mono font-bold mb-8 text-center text-white">:: FOUNDERS</h2>
+          <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
             {coreTeam.map(member => <MemberCard key={member.id} member={member} />)}
           </div>
         </div>
 
         <div>
-          <h2 className="text-2xl font-mono font-bold mb-8 text-center text-white">:: CONTRIBUTORS</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <h2 className="text-2xl font-mono font-bold mb-8 text-center text-white">:: CO-FOUNDERS & LEADS</h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {techTeam.map(member => <MemberCard key={member.id} member={member} />)}
           </div>
         </div>

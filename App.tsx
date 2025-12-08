@@ -16,7 +16,9 @@ import NotFound from './pages/NotFound';
 const ScrollToTop = () => {
   const { pathname } = useLocation();
   React.useEffect(() => {
-    window.scrollTo(0, 0);
+    // We use 'instant' here because global CSS has 'scroll-behavior: smooth'
+    // which is great for anchor links but jarring for full page navigation.
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   }, [pathname]);
   return null;
 };

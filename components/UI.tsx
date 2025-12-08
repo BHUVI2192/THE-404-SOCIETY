@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { NavLink as RouterNavLink, useLocation } from 'react-router-dom';
 import { Menu, X, Github, Linkedin, Twitter, ArrowRight, ChevronRight, Terminal } from 'lucide-react';
 import { NAV_LINKS } from '../constants';
+import Chatbot from './Chatbot';
 
 // --- ATOMS ---
 
@@ -12,7 +13,8 @@ export const Button: React.FC<{
   onClick?: () => void;
   to?: string;
   type?: "button" | "submit" | "reset";
-}> = ({ children, variant = 'primary', className = '', onClick, type = 'button' }) => {
+  disabled?: boolean;
+}> = ({ children, variant = 'primary', className = '', onClick, type = 'button', disabled }) => {
   const baseStyle = "inline-flex items-center justify-center px-6 py-3 font-mono text-sm font-bold tracking-wider uppercase transition-all duration-300 transform active:scale-95";
   
   const variants = {
@@ -22,7 +24,12 @@ export const Button: React.FC<{
   };
 
   return (
-    <button type={type} onClick={onClick} className={`${baseStyle} ${variants[variant]} ${className}`}>
+    <button 
+      type={type} 
+      onClick={onClick} 
+      disabled={disabled}
+      className={`${baseStyle} ${variants[variant]} ${className} ${disabled ? 'opacity-50 cursor-not-allowed active:scale-100' : ''}`}
+    >
       {children}
     </button>
   );
@@ -54,6 +61,19 @@ export const Section: React.FC<{
 
 // --- LAYOUT ---
 
+export const LayoutWrapper: React.FC = () => {
+  return (
+    <Layout>
+      <div className="relative">
+         {/* AnimatePresence is handled within App.tsx via Routes/Outlet if needed, 
+             or we can just render Outlet here for simple structure */}
+      </div>
+      {/* We need to use Outlet from react-router-dom to render child routes */}
+    </Layout>
+  );
+};
+
+// Re-export Layout but we will use the one below for internal structure
 export const Header: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
@@ -65,7 +85,7 @@ export const Header: React.FC = () => {
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         {/* Logo */}
         <RouterNavLink to="/" className="flex items-center gap-2 group">
-          <Terminal size={24} className="text-white group-hover:text-neutral-400 transition-colors" />
+          <img src="logo.png" alt="404 Logo" className="w-auto h-8 object-contain opacity-90 group-hover:opacity-100 transition-opacity" />
           <span className="font-bold text-xl tracking-tighter text-white">
             THE <span className="text-neutral-400">404</span> SOCIETY
           </span>
@@ -110,12 +130,29 @@ export const Header: React.FC = () => {
 };
 
 export const Footer: React.FC = () => {
+  const [email, setEmail] = useState('');
+  const [subscribed, setSubscribed] = useState(false);
+
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (email) {
+      // Simulate API call
+      setSubscribed(true);
+      setEmail('');
+    }
+  };
+
   return (
     <footer className="bg-black text-neutral-400 border-t border-neutral-900 py-12 px-6">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
-        <div className="col-span-1 md:col-span-2">
-          <h2 className="text-white font-bold text-lg mb-4">THE 404 SOCIETY</h2>
-          <p className="max-w-sm text-sm mb-6">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
+        
+        {/* Brand */}
+        <div className="flex flex-col gap-6">
+          <div className="flex items-center gap-2">
+            <img src="logo.png" alt="404 Logo" className="w-auto h-6 object-contain" />
+            <span className="text-white font-bold text-lg">THE 404 SOCIETY</span>
+          </div>
+          <p className="text-sm">
             We are a student-driven community exploring the glitchy, messy, and beautiful world of technology.
           </p>
           <div className="flex gap-4">
@@ -125,6 +162,7 @@ export const Footer: React.FC = () => {
           </div>
         </div>
         
+        {/* Navigation */}
         <div>
           <h3 className="text-white font-bold mb-4 font-mono uppercase">Navigate</h3>
           <ul className="space-y-2 text-sm">
@@ -134,6 +172,7 @@ export const Footer: React.FC = () => {
           </ul>
         </div>
 
+        {/* Contact */}
         <div>
           <h3 className="text-white font-bold mb-4 font-mono uppercase">Contact</h3>
           <ul className="space-y-2 text-sm">
@@ -142,6 +181,32 @@ export const Footer: React.FC = () => {
             <li><a href="mailto:hello@404society.edu" className="hover:text-white">hello@404society.edu</a></li>
           </ul>
         </div>
+
+        {/* Newsletter */}
+        <div>
+          <h3 className="text-white font-bold mb-4 font-mono uppercase">Stay Updated</h3>
+          <p className="text-sm mb-4">Get the latest updates on events and workshops.</p>
+          {!subscribed ? (
+            <form onSubmit={handleSubscribe} className="flex flex-col gap-2">
+              <input 
+                type="email" 
+                placeholder="Enter your email" 
+                className="bg-neutral-900 border border-neutral-800 text-white p-3 text-sm focus:border-white outline-none transition-colors w-full placeholder:text-neutral-600"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+              <button type="submit" className="bg-white text-black font-bold uppercase text-xs py-3 hover:bg-neutral-200 transition-colors w-full">
+                Subscribe
+              </button>
+            </form>
+          ) : (
+            <div className="text-white font-mono text-sm border border-neutral-800 bg-neutral-900 p-4 text-center animate-in fade-in duration-300">
+              <span className="text-green-500 mr-2">✓</span> Subscribed successfully.
+            </div>
+          )}
+        </div>
+
       </div>
       <div className="max-w-7xl mx-auto mt-12 pt-8 border-t border-neutral-900 text-xs text-center font-mono">
         © {new Date().getFullYear()} THE 404 SOCIETY. ALL RIGHTS RESERVED. SYSTEM NORMAL.
@@ -150,14 +215,34 @@ export const Footer: React.FC = () => {
   );
 };
 
-export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+import { Outlet } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
+
+export const Layout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
+  const location = useLocation();
+
   return (
     <div className="min-h-screen flex flex-col bg-black text-white">
       <Header />
-      <main className="flex-grow mt-16">
-        {children}
+      <main className="flex-grow mt-16 relative">
+        {/* If children is provided, use it (legacy), otherwise use Outlet with Animation */}
+        {children || (
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={location.pathname}
+              initial={{ opacity: 0, filter: "blur(10px)" }}
+              animate={{ opacity: 1, filter: "blur(0px)" }}
+              exit={{ opacity: 0, filter: "blur(5px)" }}
+              transition={{ duration: 0.3 }}
+              className="w-full"
+            >
+              <Outlet />
+            </motion.div>
+          </AnimatePresence>
+        )}
       </main>
       <Footer />
+      <Chatbot />
     </div>
   );
 };

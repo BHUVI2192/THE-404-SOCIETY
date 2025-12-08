@@ -1,3 +1,4 @@
+
 import { NavLink, TeamMember, EventItem, BlogPost, GalleryItem } from './types';
 
 export const NAV_LINKS: NavLink[] = [
@@ -11,11 +12,97 @@ export const NAV_LINKS: NavLink[] = [
 ];
 
 export const TEAM_MEMBERS: TeamMember[] = [
-  { id: '1', name: 'Alex Chen', role: 'President', group: 'Core', bio: 'Full-stack visionary.', image: 'https://picsum.photos/200' },
-  { id: '2', name: 'Sam Rivera', role: 'Tech Lead', group: 'Tech', bio: 'Lives in the terminal.', image: 'https://picsum.photos/201' },
-  { id: '3', name: 'Jordan Lee', role: 'Event Head', group: 'Events', bio: 'Making things happen.', image: 'https://picsum.photos/202' },
-  { id: '4', name: 'Casey Smith', role: 'Design Lead', group: 'Design', bio: 'Pixel perfectionist.', image: 'https://picsum.photos/203' },
-  { id: '5', name: 'Morgan Doe', role: 'Secretary', group: 'Core', bio: 'Organization wizard.', image: 'https://picsum.photos/204' },
+  // Founders (Core Group)
+  { 
+    id: '1', 
+    name: 'Alex Chen', 
+    role: 'Founder & President', 
+    group: 'Core', 
+    bio: 'Orchestrating the society\'s vision from the kernel level up. Dedicated to building a legacy of open-source innovation and student leadership.', 
+    image: 'https://picsum.photos/200' 
+  },
+  { 
+    id: '2', 
+    name: 'Sarah Jenkins', 
+    role: 'Founder & Vice President', 
+    group: 'Core', 
+    bio: 'Compiling scattered ideas into executable strategies. She ensures the community\'s runtime is error-free, efficient, and inclusive.', 
+    image: 'https://picsum.photos/201' 
+  },
+  
+  // Co-founders & Leads (Other Groups)
+  { 
+    id: '3', 
+    name: 'Sam Rivera', 
+    role: 'Co-founder & Tech Lead', 
+    group: 'Tech', 
+    bio: 'A polyglot developer who speaks everything from Rust to TypeScript. Building the digital infrastructure that powers our entire node.', 
+    image: 'https://picsum.photos/202' 
+  },
+  { 
+    id: '4', 
+    name: 'Casey Smith', 
+    role: 'Co-founder & Design Lead', 
+    group: 'Design', 
+    bio: 'Designing the interface between human and machine. Believes that good UI is invisible and great UX is inevitable.', 
+    image: 'https://picsum.photos/203' 
+  },
+  { 
+    id: '5', 
+    name: 'Jordan Lee', 
+    role: 'Co-founder & Event Director', 
+    group: 'Events', 
+    bio: 'Deploying events with zero downtime. From hackathons to workshops, he manages the community\'s social stack with precision.', 
+    image: 'https://picsum.photos/204' 
+  },
+  { 
+    id: '6', 
+    name: 'Priyansh Gupta', 
+    role: 'Co-founder & AI Research', 
+    group: 'Tech', 
+    bio: 'Decoding the black box of Deep Learning. Exploring the latent space between data science theory and real-world application.', 
+    image: 'https://picsum.photos/205' 
+  },
+  { 
+    id: '7', 
+    name: 'Ayesha Khan', 
+    role: 'Co-founder & Web Dev Lead', 
+    group: 'Tech', 
+    bio: 'Crafting pixel-perfect web experiences. She optimizes the DOM and ensures our digital footprint is lightweight, accessible, and fast.', 
+    image: 'https://picsum.photos/206' 
+  },
+  { 
+    id: '8', 
+    name: 'David Kim', 
+    role: 'Co-founder & CyberSec Lead', 
+    group: 'Tech', 
+    bio: 'Our first line of digital defense. Specializes in penetration testing and securing the society\'s encrypted communication channels.', 
+    image: 'https://picsum.photos/207' 
+  },
+  { 
+    id: '9', 
+    name: 'Elena Rodriguez', 
+    role: 'Co-founder & Outreach', 
+    group: 'Events', 
+    bio: 'Handshaking with industry protocols. She establishes the vital connections that link students directly to the wider tech ecosystem.', 
+    image: 'https://picsum.photos/208' 
+  },
+  { 
+    id: '10', 
+    name: 'Michael Chang', 
+    role: 'Co-founder & Operations', 
+    group: 'Events', 
+    bio: 'Managing resource allocation and system logistics. He keeps the hardware running, the venue booked, and the caffeine flowing.', 
+    image: 'https://picsum.photos/209' 
+  },
+  { 
+    id: '11', 
+    name: 'Olivia Wilson', 
+    role: 'Co-founder & Content', 
+    group: 'Design', 
+    bio: 'Documenting the source code of our community. She translates raw technical achievements into human-readable stories for the world.', 
+    image: 'https://picsum.photos/210' 
+  },
 ];
 
 export const EVENTS: EventItem[] = [
