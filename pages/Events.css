@@ -1,0 +1,382 @@
+/* Fonts Setup */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+
+/* Global Reset & Base */
+.events-page-container {
+    font-family: 'Manrope', sans-serif;
+    background-color: #fff;
+    min-height: 100vh;
+    overflow-x: hidden;
+    margin: 0;
+}
+
+.events-page-container ::selection {
+    background: #000;
+    color: #fff;
+}
+
+/* Header */
+.events-header {
+    padding: 10vh 5vw;
+    border-bottom: 1px solid #eee;
+}
+
+.events-header-top {
+    margin-bottom: 20px;
+}
+
+.brand-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border: 1px solid #eee;
+    padding: 8px 16px;
+    border-radius: 4px;
+    background-color: #fafafa;
+    display: inline-block;
+}
+
+.brand-badge-divider {
+    opacity: 0.4;
+}
+
+.huge-title {
+    font-size: clamp(3rem, 13.5vw, 13rem);
+    font-weight: 900;
+    line-height: 0.88;
+    margin: 0;
+    letter-spacing: -0.06em;
+    color: #000;
+    text-transform: uppercase;
+}
+
+.header-subtitle {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.9rem;
+    max-width: 500px;
+    margin-top: 30px;
+    opacity: 0.6;
+    line-height: 1.5;
+}
+
+/* List Container */
+.events-list-container {
+    padding: 0 5vw 10vh 5vw;
+}
+
+.events-list-header {
+    display: flex;
+    padding: 20px 0;
+    border-bottom: 1px solid #000;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    opacity: 0.5;
+    margin-top: 50px;
+}
+
+.header-col-date {
+    flex: 1;
+}
+
+.header-col-details {
+    flex: 3;
+}
+
+.header-col-action {
+    flex: 1;
+    text-align: right;
+    margin-right: 15vw;
+}
+
+.events-rows-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Row Component */
+.event-row {
+    position: relative;
+    height: 200px;
+    cursor: pointer;
+    background-color: #fff;
+    overflow: hidden;
+    border-bottom: 1px solid #eee;
+    /* Added divider here implicitly */
+}
+
+/* Wave Background */
+.wave-bg {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    z-index: 0;
+    background-color: #000;
+}
+
+/* Content Layer */
+.row-content-layer {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    padding-right: 20px;
+    mix-blend-mode: difference;
+    color: #fff;
+}
+
+/* Left Col: Date */
+.row-col-left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    padding-left: 20px;
+}
+
+.date-main {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.date-year {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.9rem;
+    margin-top: 5px;
+}
+
+/* Center Col: Title */
+.row-col-center {
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 40px;
+    padding-right: 220px;
+    height: 100%;
+    overflow: hidden;
+}
+
+.event-title {
+    margin: 0;
+    font-size: clamp(1.5rem, 4vw, 4rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+}
+
+.location-text {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.9rem;
+    margin-top: 15px;
+}
+
+/* Right Col: Action */
+.row-col-right {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+    padding-right: 100px;
+}
+
+.register-btn {
+    font-family: 'Space Mono', monospace;
+    border: 1px solid currentColor;
+    padding: 12px 30px;
+    border-radius: 50px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    background-color: transparent;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+/* Half Pill Image */
+.half-pill-container {
+    position: absolute;
+    right: -250px;
+    top: 10%;
+    bottom: 10%;
+    width: 500px;
+    border-radius: 200px;
+    overflow: hidden;
+    z-index: 10;
+    box-shadow: -20px 0 60px rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+    /* Let clicks pass through if needed, though button is separate */
+}
+
+.half-pill-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.img-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-left: 40px;
+    color: #fff;
+    font-weight: bold;
+}
+
+.row-divider {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: #eee;
+    z-index: 0;
+}
+
+/* Footer */
+.events-footer {
+    padding: 50px 5vw;
+    border-top: 1px solid #000;
+    background-color: #fff;
+}
+
+.footer-content {
+    text-align: center;
+}
+
+.footer-email {
+    opacity: 0.5;
+    margin-top: 10px;
+}
+
+
+/* --- MOBILE RESPONSIVE STYLES --- */
+@media (max-width: 768px) {
+    .events-header {
+        padding: 6vh 5vw;
+    }
+
+    .huge-title {
+        font-size: 3.5rem;
+        /* Specific override for better mobile fit */
+    }
+
+    .header-subtitle {
+        margin-top: 15px;
+    }
+
+    /* List Header - Hide some columns on mobile */
+    .events-list-header {
+        display: none;
+    }
+
+    .event-row {
+        height: auto;
+        /* Allow auto height */
+        padding: 20px 0;
+        overflow: visible;
+        /* Show content */
+    }
+
+    .row-content-layer {
+        flex-direction: column;
+        align-items: flex-start;
+        padding-right: 0;
+        mix-blend-mode: normal;
+        /* Disable blend mode on mobile for cleaner look if wave is removed or changed */
+        color: #000;
+    }
+
+    /* Disable the wave animation on mobile or make it a simple background */
+    .wave-bg {
+        display: none;
+        /* Simplify: removed wave effect on mobile */
+    }
+
+    .events-page-container {
+        background-color: #fff;
+        color: #000;
+    }
+
+    /* Reset mix-blend-mode effects since background is white */
+    .row-col-left,
+    .row-col-center,
+    .row-col-right {
+        padding-left: 10px;
+        padding-right: 10px;
+        width: 100%;
+        align-items: flex-start;
+        flex: auto;
+    }
+
+    /* Order adjustment */
+    .row-col-left {
+        margin-bottom: 5px;
+        flex-direction: row;
+        align-items: baseline;
+        gap: 10px;
+    }
+
+    .date-main {
+        font-size: 1rem;
+        color: #666;
+    }
+
+    .date-year {
+        font-size: 1rem;
+        margin-top: 0;
+        color: #666;
+    }
+
+    .row-col-center {
+        padding-left: 10px;
+        margin-bottom: 20px;
+    }
+
+    .event-title {
+        font-size: 2rem;
+        line-height: 1.1;
+    }
+
+    .location-text {
+        margin-top: 8px;
+        font-size: 0.85rem;
+        color: #666;
+    }
+
+    .row-col-right {
+        justify-content: flex-start;
+        padding-right: 10px;
+    }
+
+    .register-btn {
+        width: 100%;
+        text-align: center;
+        background-color: #000;
+        color: #fff;
+        padding: 14px 0;
+    }
+
+    /* Hide the desktop hover interaction image for mobile */
+    .half-pill-container {
+        display: none;
+    }
+
+    /* Divider */
+    .row-divider {
+        background-color: #eee;
+    }
+}

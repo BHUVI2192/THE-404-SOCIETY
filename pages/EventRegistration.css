@@ -1,0 +1,39 @@
+/* ==========================================================
+   BRUTALIST TICKET — RESPONSIVE (mobile-first)
+   These classes override the inline styles at desktop widths.
+   ========================================================== */
+
+/* MOBILE DEFAULT: full width, stacked border split */
+.ticket-left-half {
+    width: 100% !important;
+    border: 4px solid black !important;
+    border-bottom: none !important;
+}
+
+.ticket-right-half {
+    width: 100% !important;
+    border: 4px solid black !important;
+    border-top: none !important;
+}
+
+/* DESKTOP (768px+): side by side, 50% each, side border split */
+@media (min-width: 768px) {
+    .ticket-left-half {
+        width: 50% !important;
+        border: 4px solid black !important;
+        border-right: none !important;
+        border-bottom: 4px solid black !important;
+    }
+
+    .ticket-right-half {
+        width: 50% !important;
+        border: 4px solid black !important;
+        border-left: none !important;
+        border-top: 4px solid black !important;
+    }
+}
+
+/* Outer ticket wrapper — must NOT clip GSAP fall animation */
+.ticket-wrapper {
+    overflow: visible !important;
+}

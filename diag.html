@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Firebase Auth Diagnostic v2</title>
+    <style>
+        body {
+            font-family: monospace;
+            max-width: 550px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        input {
+            display: block;
+            width: 100%;
+            padding: 8px;
+            margin: 8px 0;
+            border: 2px solid black;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background: black;
+            color: white;
+            padding: 10px 20px;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            margin: 4px;
+        }
+
+        #status {
+            padding: 10px;
+            margin-top: 12px;
+            border: 2px solid gray;
+            min-height: 40px;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .ok {
+            border-color: green;
+            color: green;
+        }
+
+        .err {
+            border-color: red;
+            color: red;
+        }
+
+        h3 {
+            margin-top: 20px;
+            border-bottom: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Firebase Auth Diagnostic v2</h2>
+
+    <input id="emailInput" type="email" value="login@the404society.in" />
+    <input id="passInput" type="password" placeholder="Your Firebase password" />
+
+    <h3>Test with App 1 (Original Key)</h3>
+    <button id="testBtn1">Test: AIzaSyBWUAg...</button>
+
+    <h3>Test with App 2 (Newer Key)</h3>
+    <button id="testBtn2">Test: AIzaSyBIXz...</button>
+
+    <h3>Direct REST API Test (No SDK)</h3>
+    <button id="testBtn3">REST Test: App 1 Key</button>
+
+    <div id="status">Enter password and click a test button.</div>
+
+    <script>
+        const status = document.getElementById('status');
+        function getInputs() {
+            return {
+                email: document.getElementById('emailInput').value,
+                password: document.getElementById('passInput').value
+            };
+        }
+
+        // Test 1: Firebase SDK with original key
+        document.getElementById('testBtn1').onclick = async () => {
+            const { initializeApp, deleteApp } = await import("https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js");
+            const { getAuth, signInWithEmailAndPassword } = await import("https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js");
+            const { email, password } = getInputs();
+            status.textContent = "Testing SDK with original key...";
+            status.className = "";
+            try {
+                const app = initializeApp({ apiKey: "AIzaSyBWUAgMfQxicK09MJyOXLHYdkLb-IOU3tI", authDomain: "the-404-society-backend.firebaseapp.com", projectId: "the-404-society-backend", appId: "1:129406327256:web:0d4bbd523ee50dea433aad" }, "app1");
+                const { user } = await signInWithEmailAndPassword(getAuth(app), email, password);
+                status.textContent = "✅ APP 1 SUCCESS!\nEmail: " + user.email;
+                status.className = "ok";
+                await deleteApp(app);
+            } catch (e) {
+                status.textContent = "❌ APP 1 FAILED\nCode: " + e.code + "\nMsg: " + e.message;
+                status.className = "err";
+            }
+        };
+
+        // Test 2: Firebase SDK with newer key
+        document.getElementById('testBtn2').onclick = async () => {
+            const { initializeApp, deleteApp } = await import("https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js");
+            const { getAuth, signInWithEmailAndPassword } = await import("https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js");
+            const { email, password } = getInputs();
+            status.textContent = "Testing SDK with newer key...";
+            status.className = "";
+            try {
+                const app = initializeApp({ apiKey: "AIzaSyBIXzToaSsHCeky_fZfqjDvZkv2hpqSiOM", authDomain: "the-404-society-backend.firebaseapp.com", projectId: "the-404-society-backend", appId: "1:129406327256:web:f23375426c758060433aad" }, "app2");
+                const { user } = await signInWithEmailAndPassword(getAuth(app), email, password);
+                status.textContent = "✅ APP 2 SUCCESS!\nEmail: " + user.email;
+                status.className = "ok";
+                await deleteApp(app);
+            } catch (e) {
+                status.textContent = "❌ APP 2 FAILED\nCode: " + e.code + "\nMsg: " + e.message;
+                status.className = "err";
+            }
+        };
+
+        // Test 3: Raw REST API (no SDK)
+        document.getElementById('testBtn3').onclick = async () => {
+            const { email, password } = getInputs();
+            status.textContent = "Testing raw REST API...";
+            status.className = "";
+            try {
+                const res = await fetch("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBWUAgMfQxicK09MJyOXLHYdkLb-IOU3tI", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email, password, returnSecureToken: true })
+                });
+                const data = await res.json();
+                if (data.idToken) {
+                    status.textContent = "✅ REST SUCCESS!\nEmail: " + data.email;
+                    status.className = "ok";
+                } else {
+                    status.textContent = "❌ REST FAILED\nCode: " + (data.error?.message || "Unknown") + "\nFull: " + JSON.stringify(data, null, 2);
+                    status.className = "err";
+                }
+            } catch (e) {
+                status.textContent = "❌ Network Error: " + e.message;
+                status.className = "err";
+            }
+        };
+    </script>
+</body>
+
+</html>
