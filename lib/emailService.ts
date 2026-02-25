@@ -1,4 +1,5 @@
 import emailjs from "@emailjs/browser";
+import { logEmail } from "./emailLog";
 
 const SVC = import.meta.env.VITE_EMAILJS_SERVICE_ID || "";
 const PUB = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || "";
@@ -16,6 +17,7 @@ async function send(templateId: string, params: Record<string, string>): Promise
     if (!templateId) throw new Error("EMAIL_TEMPLATE_NOT_CONFIGURED");
     await emailjs.send(SVC, templateId, { ...params, from_name: "The 404 Society" }, PUB);
 }
+
 
 // ── Individual emails ─────────────────────────────────────────────────────────
 
@@ -78,6 +80,130 @@ export async function sendBulkEventUpdate(
         event_title: eventTitle,
         message,
     });
+}
+
+// ── New trigger-based emails (using EmailJS) ──────────────────────────────────
+
+// Template IDs for trigger-based emails (set in .env.local)
+const TRIGGER_TEMPLATES = {
+    applicationReceived: import.meta.env.VITE_EMAILJS_APPLICATION_RECEIVED_ID || "",
+    applicationApproved: import.meta.env.VITE_EMAILJS_APPLICATION_APPROVED_ID || "",
+    applicationRejected: import.meta.env.VITE_EMAILJS_APPLICATION_REJECTED_ID || "",
+    applicationWaitlisted: import.meta.env.VITE_EMAILJS_APPLICATION_WAITLISTED_ID || "",
+};
+
+/** Application Received - sent automatically when user submits community application */
+export async function sendApplicationReceivedEmail(to: { name: string; email: string }) {
+    try {
+        const templateId = TRIGGER_TEMPLATES.applicationReceived;
+        
+        if (!templateId || !SVC || !PUB) {
+            console.warn('EmailJS not configured for Application Received emails');
+            return;
+        }
+
+        await emailjs.send(SVC, templateId, {
+            to_email: to.email,
+            to_name: to.name,
+            from_name: "The 404 Society",
+        }, PUB);
+
+        await logEmail(to.email, to.name, 'applicationReceived', 'Your 404 Society application is received', 'sent');
+        console.log(`✅ Application Received email sent to ${to.email}`);
+    } catch (error) {
+        console.error('Error sending application received email:', error);
+        await logEmail(to.email, to.name, 'applicationReceived', 'Your 404 Society application is received', 'failed', String(error));
+    }
+}
+
+/** Application Approved - sent when admin approves the application */
+export async function sendApplicationApprovedEmail(to: { 
+    name: string; 
+    email: string;
+    memberId: string;
+    whatsappLink: string;
+    portalLink?: string;
+}) {
+    try {
+        const templateId = TRIGGER_TEMPLATES.applicationApproved;
+        
+        if (!templateId || !SVC || !PUB) {
+            console.warn('EmailJS not configured for Application Approved emails');
+            return;
+        }
+
+        await emailjs.send(SVC, templateId, {
+            to_email: to.email,
+            to_name: to.name,
+            from_name: "The 404 Society",
+            member_id: to.memberId,
+            whatsapp_link: to.whatsappLink,
+        }, PUB);
+
+        await logEmail(to.email, to.name, 'applicationApproved', 'Welcome to 404 Society — Your Member ID is inside', 'sent');
+        console.log(`✅ Application Approved email sent to ${to.email} (Member ID: ${to.memberId})`);
+    } catch (error) {
+        console.error('Error sending application approved email:', error);
+        await logEmail(to.email, to.name, 'applicationApproved', 'Welcome to 404 Society', 'failed', String(error));
+    }
+}
+
+/** Application Rejected - sent when admin rejects the application */
+export async function sendApplicationRejectedEmail(to: {
+    name: string;
+    email: string;
+    feedback?: string;
+}) {
+    try {
+        const templateId = TRIGGER_TEMPLATES.applicationRejected;
+        
+        if (!templateId || !SVC || !PUB) {
+            console.warn('EmailJS not configured for Application Rejected emails');
+            return;
+        }
+
+        const feedbackText = to.feedback ? `Admin Feedback: ${to.feedback}` : '';
+
+        await emailjs.send(SVC, templateId, {
+            to_email: to.email,
+            to_name: to.name,
+            from_name: "The 404 Society",
+            feedback: feedbackText,
+        }, PUB);
+
+        await logEmail(to.email, to.name, 'applicationRejected', 'Your 404 Society application update', 'sent');
+        console.log(`✅ Application Rejected email sent to ${to.email}`);
+    } catch (error) {
+        console.error('Error sending application rejected email:', error);
+        await logEmail(to.email, to.name, 'applicationRejected', 'Your 404 Society application update', 'failed', String(error));
+    }
+}
+
+/** Application Waitlisted - sent when applicant is on waitlist */
+export async function sendApplicationWaitlistedEmail(to: {
+    name: string;
+    email: string;
+}) {
+    try {
+        const templateId = TRIGGER_TEMPLATES.applicationWaitlisted;
+        
+        if (!templateId || !SVC || !PUB) {
+            console.warn('EmailJS not configured for Application Waitlisted emails');
+            return;
+        }
+
+        await emailjs.send(SVC, templateId, {
+            to_email: to.email,
+            to_name: to.name,
+            from_name: "The 404 Society",
+        }, PUB);
+
+        await logEmail(to.email, to.name, 'applicationWaitlisted', "You're on the 404 Society waitlist", 'sent');
+        console.log(`✅ Application Waitlisted email sent to ${to.email}`);
+    } catch (error) {
+        console.error('Error sending application waitlisted email:', error);
+        await logEmail(to.email, to.name, 'applicationWaitlisted', "You're on the 404 Society waitlist", 'failed', String(error));
+    }
 }
 
 // ── Bulk helper ───────────────────────────────────────────────────────────────

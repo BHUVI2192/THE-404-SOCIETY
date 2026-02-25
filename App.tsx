@@ -22,6 +22,7 @@ import { EventManagement } from './pages/admin/EventManagement';
 import { BlogManagement } from './pages/admin/BlogManagement';
 import { RegistrationManagement } from './pages/admin/RegistrationManagement';
 import { CommunityManagement } from './pages/admin/CommunityManagement';
+import { AdminSettings } from './pages/admin/Settings';
 
 
 // Scroll to top helper
@@ -76,6 +77,7 @@ const App: React.FC = () => {
             <Route path="blogs" element={<BlogManagement />} />
             <Route path="registrations" element={<RegistrationManagement />} />
             <Route path="community" element={<CommunityManagement />} />
+            <Route path="settings" element={<AdminSettings />} />
           </Route>
 
           {/* Pages with standard Layout */}

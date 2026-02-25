@@ -238,7 +238,7 @@ export const Footer: React.FC = () => {
         <div>
           <h3 className="font-bold mb-6 text-sm uppercase tracking-widest text-[#4F46E5]">Explore</h3>
           <ul className="space-y-3 text-sm text-neutral-600">
-            {NAV_LINKS.slice(0, 4).map(link => (
+            {NAV_LINKS.slice(0, 5).map(link => (
               <li key={link.path}><RouterNavLink to={link.path} className="hover:text-black hover:pl-2 transition-all">{link.label}</RouterNavLink></li>
             ))}
           </ul>
@@ -249,7 +249,7 @@ export const Footer: React.FC = () => {
           <ul className="space-y-3 text-sm text-neutral-600">
             <li>B-Wing, 3rd Floor, PESITM</li>
             <li>Shivamogga, KA</li>
-            <li><a href="mailto:hello@the404society.in" className="hover:text-[#4F46E5]">hello@the404society.in</a></li>
+            <li><a href="mailto:connect@the404society.in" className="hover:text-[#4F46E5]">connect@the404society.in</a></li>
           </ul>
         </div>
 

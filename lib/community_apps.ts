@@ -9,8 +9,17 @@ export interface CommunityApp {
     year: string;
     interest?: string;
     social?: string;
-    status: "pending" | "approved" | "rejected";
+    status: "pending" | "approved" | "rejected" | "waitlisted";
+    memberId?: string;
+    feedbackReason?: string;
+    emailsSent?: {
+        applicationReceived?: boolean;
+        applicationApproved?: boolean;
+        applicationRejected?: boolean;
+        applicationWaitlisted?: boolean;
+    };
     createdAt?: number;
+    updatedAt?: number;
 }
 
 const COMMUNITY_COLLECTION = "nexus_community_applications";

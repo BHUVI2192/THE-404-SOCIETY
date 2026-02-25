@@ -59,7 +59,14 @@ const EventsTimeline = ({ highlights, loading }: { highlights: EventData[], load
                             <div className="flex items-center gap-3 text-neutral-400 font-bold uppercase tracking-widest text-xs">
                                 <Loader2 className="animate-spin" size={16} /> Syncing Events...
                             </div>
-                        ) : highlights.length > 0 ? (
+                        ) : highlights.length === 0 ? (
+                            <div className="py-12 text-center">
+                                <div className="text-neutral-300 mb-4"><Calendar size={32} className="mx-auto opacity-40" /></div>
+                                <p className="text-neutral-400 font-bold uppercase tracking-widest text-sm mb-4">No Upcoming Events</p>
+                                <p className="text-neutral-500 text-sm mb-6">Check back soon for exciting workshops, hackathons, and community events.</p>
+                                <NavLink to="/events" className="text-[#4F46E5] font-bold text-sm hover:underline">View Event Archive →</NavLink>
+                            </div>
+                        ) : (
                             highlights.map((event, i) => (
                                 <ScrollReveal key={event.id} delay={i * 0.1}>
                                     <NavLink to={`/register-event/${event.id}`} className="block group">
@@ -89,8 +96,6 @@ const EventsTimeline = ({ highlights, loading }: { highlights: EventData[], load
                                     </NavLink>
                                 </ScrollReveal>
                             ))
-                        ) : (
-                            <div className="text-neutral-300 font-black uppercase tracking-widest">No Recent Highlights</div>
                         )}
                     </div>
                 </div>
@@ -119,8 +124,8 @@ const Home: React.FC = () => {
     useEffect(() => {
         const fetchHighlights = async () => {
             const data = await getEvents();
-            // Take the 3 most recent entries
-            setHighlights(data.slice(0, 3));
+            // Show all events sorted by most recent
+            setHighlights(data);
             setLoading(false);
         };
         fetchHighlights();
@@ -211,15 +216,13 @@ const Home: React.FC = () => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.4 }}
-                        className="flex flex-col md:flex-row items-center gap-6 pointer-events-auto"
+                        className="flex flex-col md:flex-row items-center gap-4 pointer-events-auto"
                     >
                         <NavLink to="/community">
                             <Button variant="primary" className="h-14 px-10 text-lg">Join Our Coding Community</Button>
                         </NavLink>
                         <NavLink to="/about">
-                            <span className="font-manrope font-bold text-sm uppercase tracking-widest text-neutral-400 hover:text-black transition-colors cursor-pointer border-b border-transparent hover:border-black pb-1">
-                                Explore our tech mission
-                            </span>
+                            <Button variant="secondary" className="h-14 px-8">Explore Our Mission</Button>
                         </NavLink>
                     </motion.div>
                 </div>
@@ -317,6 +320,36 @@ const Home: React.FC = () => {
                     </div>
                 </div>
             </Section >
+
+            {/* --- STATS BAR --- */}
+            <Section className="bg-black text-white border-t border-neutral-900 !py-16">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
+                    <ScrollReveal delay={0}>
+                        <div className="text-center">
+                            <div className="text-5xl md:text-6xl font-black mb-2 bg-gradient-to-r from-[#4F46E5] to-[#10B981] bg-clip-text text-transparent">100+</div>
+                            <div className="text-neutral-400 text-sm md:text-base font-medium uppercase tracking-widest">Student Devs</div>
+                        </div>
+                    </ScrollReveal>
+                    <ScrollReveal delay={0.1}>
+                        <div className="text-center">
+                            <div className="text-5xl md:text-6xl font-black mb-2 bg-gradient-to-r from-[#4F46E5] to-[#10B981] bg-clip-text text-transparent">20+</div>
+                            <div className="text-neutral-400 text-sm md:text-base font-medium uppercase tracking-widest">Events Hosted</div>
+                        </div>
+                    </ScrollReveal>
+                    <ScrollReveal delay={0.2}>
+                        <div className="text-center">
+                            <div className="text-5xl md:text-6xl font-black mb-2 bg-gradient-to-r from-[#4F46E5] to-[#10B981] bg-clip-text text-transparent">15+</div>
+                            <div className="text-neutral-400 text-sm md:text-base font-medium uppercase tracking-widest">Projects Shipped</div>
+                        </div>
+                    </ScrollReveal>
+                    <ScrollReveal delay={0.3}>
+                        <div className="text-center">
+                            <div className="text-5xl md:text-6xl font-black mb-2 bg-gradient-to-r from-[#4F46E5] to-[#10B981] bg-clip-text text-transparent">3</div>
+                            <div className="text-neutral-400 text-sm md:text-base font-medium uppercase tracking-widest">Batches</div>
+                        </div>
+                    </ScrollReveal>
+                </div>
+            </Section>
 
             {/* --- VISION & MISSION (Stacked Kinetic) --- */}
             < Section className="bg-neutral-50 border-t border-neutral-100 !py-40 relative" >

@@ -1,14 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { getCommunityApps, updateCommunityApp, deleteCommunityApp, CommunityApp } from '../../lib/community_apps';
+import { generateMemberId, setMemberId, validateMemberId } from '../../lib/memberIdService';
+import { 
+  sendApplicationApprovedEmail
+} from '../../lib/emailService';
 import toast from 'react-hot-toast';
+
+type ActionType = 'approve' | null;
 
 export const CommunityManagement: React.FC = () => {
   const [apps, setApps] = useState<CommunityApp[]>([]);
   const [filteredApps, setFilteredApps] = useState<CommunityApp[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState<'all' | 'pending' | 'approved' | 'rejected'>('all');
+  const [statusFilter, setStatusFilter] = useState<'all' | 'pending' | 'approved'>('all');
+  
+  // Modal state
   const [selectedApp, setSelectedApp] = useState<CommunityApp | null>(null);
+  const [actionType, setActionType] = useState<ActionType>(null);
+  const [feedback, setFeedback] = useState('');
+  const [customMemberId, setCustomMemberId] = useState('');
+  const [whatsappLink, setWhatsappLink] = useState('https://chat.whatsapp.com/');
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
@@ -40,7 +52,8 @@ export const CommunityManagement: React.FC = () => {
         (app) =>
           app.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
           app.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          app.college.toLowerCase().includes(searchTerm.toLowerCase())
+          app.college.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          (app.memberId && app.memberId.toLowerCase().includes(searchTerm.toLowerCase()))
       );
     }
 
@@ -51,16 +64,67 @@ export const CommunityManagement: React.FC = () => {
     setFilteredApps(filtered);
   };
 
-  const handleStatusUpdate = async (id: string, newStatus: 'approved' | 'rejected') => {
+  const openActionModal = (app: CommunityApp, action: ActionType) => {
+    setSelectedApp(app);
+    setActionType(action);
+    setFeedback('');
+    setCustomMemberId(app.memberId || '');
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setSelectedApp(null);
+    setActionType(null);
+    setFeedback('');
+    setCustomMemberId('');
+  };
+
+  const handleApprove = async () => {
+    if (!selectedApp) return;
+
     try {
       setLoading(true);
-      await updateCommunityApp(id, { status: newStatus });
-      toast.success(`Application ${newStatus}`);
+      
+      // Generate or use custom member ID
+      let memberId = customMemberId;
+      if (!memberId) {
+        memberId = await generateMemberId();
+      } else {
+        // Validate custom ID
+        if (!validateMemberId(memberId)) {
+          toast.error('Invalid Member ID format. Use: 404-YYYY-NNN');
+          setLoading(false);
+          return;
+        }
+        await setMemberId(memberId);
+      }
+
+      // Update application
+      await updateCommunityApp(selectedApp.id!, {
+        status: 'approved',
+        memberId,
+        emailsSent: {
+          ...(selectedApp.emailsSent || {}),
+          applicationApproved: true,
+        },
+        updatedAt: Date.now(),
+      });
+
+      // Send approval email
+      await sendApplicationApprovedEmail({
+        name: selectedApp.name,
+        email: selectedApp.email,
+        memberId,
+        whatsappLink,
+      });
+
+      toast.success(`Application approved! Member ID: ${memberId}`);
       await loadApps();
-      setShowModal(false);
-      setSelectedApp(null);
+      closeModal();
     } catch (error) {
-      toast.error('Failed to update application');
+      console.error('Error approving application:', error);
+      toast.error('Failed to approve application');
     } finally {
       setLoading(false);
     }
@@ -81,23 +145,10 @@ export const CommunityManagement: React.FC = () => {
     }
   };
 
-  const getStatusBadgeColor = (status: string) => {
-    switch (status) {
-      case 'approved':
-        return 'bg-green-100 text-green-700 border-green-300';
-      case 'rejected':
-        return 'bg-red-100 text-red-700 border-red-300';
-      case 'pending':
-      default:
-        return 'bg-yellow-100 text-yellow-700 border-yellow-300';
-    }
-  };
-
   const stats = {
     total: apps.length,
     pending: apps.filter((a) => a.status === 'pending').length,
     approved: apps.filter((a) => a.status === 'approved').length,
-    rejected: apps.filter((a) => a.status === 'rejected').length,
   };
 
   return (
@@ -144,17 +195,6 @@ export const CommunityManagement: React.FC = () => {
           <div className="adm-stat-card__label">Approved</div>
           <div className="adm-stat-card__value">{stats.approved}</div>
         </div>
-
-        <div className="adm-stat-card adm-stat-card--red">
-          <div className="adm-stat-card__icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <line x1="18" y1="6" x2="6" y2="18" />
-              <line x1="6" y1="6" x2="18" y2="18" />
-            </svg>
-          </div>
-          <div className="adm-stat-card__label">Rejected</div>
-          <div className="adm-stat-card__value">{stats.rejected}</div>
-        </div>
       </div>
 
       {/* Filters */}
@@ -168,7 +208,7 @@ export const CommunityManagement: React.FC = () => {
           </div>
           <input
             type="text"
-            placeholder="Search by name, email, or college..."
+            placeholder="Search by name, email, college, or Member ID..."
             className="adm-search__input"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -176,17 +216,13 @@ export const CommunityManagement: React.FC = () => {
         </div>
 
         <div className="adm-filter-group">
-          {(['all', 'pending', 'approved', 'rejected'] as const).map((status) => (
+          {(['all', 'pending', 'approved'] as const).map((status) => (
             <button
               key={status}
               onClick={() => setStatusFilter(status)}
               className={`adm-filter-btn ${
                 statusFilter === status
-                  ? status === 'pending'
-                    ? 'adm-filter-btn--active-red'
-                    : status === 'rejected'
-                    ? 'adm-filter-btn--active-red'
-                    : 'adm-filter-btn--active'
+                  ? 'adm-filter-btn--active'
                   : ''
               }`}
             >
@@ -215,7 +251,7 @@ export const CommunityManagement: React.FC = () => {
                 </div>
                 <span
                   className={`adm-badge adm-badge--${
-                    app.status === 'approved' ? 'success' : app.status === 'rejected' ? 'danger' : 'warning'
+                    app.status === 'approved' ? 'success' : 'danger'
                   }`}
                 >
                   {app.status.charAt(0).toUpperCase() + app.status.slice(1)}
@@ -224,6 +260,16 @@ export const CommunityManagement: React.FC = () => {
 
               {/* Details */}
               <div style={{ borderBottom: '1px solid var(--adm-border)', paddingBottom: '16px', marginBottom: '16px' }}>
+                {app.memberId && (
+                  <div style={{ marginBottom: '12px' }}>
+                    <p style={{ fontSize: '11px', color: 'var(--adm-text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '4px' }}>
+                      Member ID
+                    </p>
+                    <p style={{ fontSize: '13px', fontWeight: '600', color: 'var(--adm-accent)', fontFamily: 'monospace' }}>
+                      {app.memberId}
+                    </p>
+                  </div>
+                )}
                 <div style={{ marginBottom: '12px' }}>
                   <p style={{ fontSize: '11px', color: 'var(--adm-text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '4px' }}>
                     Email
@@ -252,6 +298,7 @@ export const CommunityManagement: React.FC = () => {
                     </p>
                   </div>
                 </div>
+
                 {app.interest && (
                   <div style={{ marginBottom: '12px' }}>
                     <p style={{ fontSize: '11px', color: 'var(--adm-text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '4px' }}>
@@ -280,31 +327,19 @@ export const CommunityManagement: React.FC = () => {
               </div>
 
               {/* Actions */}
-              <div style={{ display: 'flex', gap: '8px' }}>
+              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                 {app.status === 'pending' && (
                   <>
                     <button
-                      onClick={() => handleStatusUpdate(app.id!, 'approved')}
+                      onClick={() => openActionModal(app, 'approve')}
                       disabled={loading}
                       className="adm-btn adm-btn--primary"
-                      style={{ flex: 1 }}
+                      style={{ flex: '1 1 100%' }}
                     >
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: '16px', height: '16px' }}>
                         <polyline points="20 6 9 17 4 12" />
                       </svg>
                       Approve
-                    </button>
-                    <button
-                      onClick={() => handleStatusUpdate(app.id!, 'rejected')}
-                      disabled={loading}
-                      className="adm-btn adm-btn--danger"
-                      style={{ flex: 1 }}
-                    >
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: '16px', height: '16px' }}>
-                        <line x1="18" y1="6" x2="6" y2="18" />
-                        <line x1="6" y1="6" x2="18" y2="18" />
-                      </svg>
-                      Reject
                     </button>
                   </>
                 )}
@@ -336,6 +371,109 @@ export const CommunityManagement: React.FC = () => {
       {filteredApps.length > 0 && (
         <div style={{ fontSize: '12px', color: 'var(--adm-text-muted)', marginTop: '16px', textAlign: 'right' }}>
           Showing {filteredApps.length} of {apps.length} applications
+        </div>
+      )}
+
+      {/* Modal */}
+      {showModal && selectedApp && (
+        <div style={{
+          position: 'fixed',
+          inset: 0,
+          background: 'rgba(0, 0, 0, 0.5)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 1000,
+          padding: '20px',
+        }}>
+          <div style={{
+            background: 'var(--adm-bg-primary)',
+            borderRadius: '12px',
+            padding: '24px',
+            maxWidth: '500px',
+            width: '100%',
+            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
+          }}>
+            <h2 style={{ fontSize: '18px', fontWeight: '700', color: 'var(--adm-text)', marginBottom: '4px' }}>
+              ✅ Approve Application
+            </h2>
+            <p style={{ fontSize: '13px', color: 'var(--adm-text-muted)', marginBottom: '20px' }}>
+              {selectedApp.name} ({selectedApp.email})
+            </p>
+
+            {/* Approve Form */}
+            {actionType === 'approve' && (
+              <>
+                <div style={{ marginBottom: '16px' }}>
+                  <label style={{ fontSize: '12px', fontWeight: '600', color: 'var(--adm-text-muted)', display: 'block', marginBottom: '8px' }}>
+                    Member ID
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="404-2026-001 (auto-generated if empty)"
+                    value={customMemberId}
+                    onChange={(e) => setCustomMemberId(e.target.value)}
+                    style={{
+                      width: '100%',
+                      padding: '10px 12px',
+                      border: '1px solid var(--adm-border)',
+                      borderRadius: '6px',
+                      fontSize: '13px',
+                      fontFamily: 'monospace',
+                      color: 'var(--adm-text)',
+                      background: 'var(--adm-bg-secondary)',
+                      boxSizing: 'border-box',
+                    }}
+                  />
+                  <p style={{ fontSize: '11px', color: 'var(--adm-text-muted)', marginTop: '4px' }}>
+                    Format: 404-YYYY-NNN. Leave empty to auto-generate.
+                  </p>
+                </div>
+
+                <div style={{ marginBottom: '16px' }}>
+                  <label style={{ fontSize: '12px', fontWeight: '600', color: 'var(--adm-text-muted)', display: 'block', marginBottom: '8px' }}>
+                    WhatsApp Group Link
+                  </label>
+                  <input
+                    type="url"
+                    placeholder="https://chat.whatsapp.com/..."
+                    value={whatsappLink}
+                    onChange={(e) => setWhatsappLink(e.target.value)}
+                    style={{
+                      width: '100%',
+                      padding: '10px 12px',
+                      border: '1px solid var(--adm-border)',
+                      borderRadius: '6px',
+                      fontSize: '13px',
+                      color: 'var(--adm-text)',
+                      background: 'var(--adm-bg-secondary)',
+                      boxSizing: 'border-box',
+                    }}
+                  />
+                </div>
+              </>
+            )}
+
+            {/* Buttons */}
+            <div style={{ display: 'flex', gap: '8px' }}>
+              <button
+                onClick={handleApprove}
+                disabled={loading}
+                className="adm-btn adm-btn--primary"
+                style={{ flex: 1 }}
+              >
+                {loading ? 'Processing...' : 'Approve & Send Email'}
+              </button>
+              <button
+                onClick={closeModal}
+                disabled={loading}
+                className="adm-btn adm-btn--secondary"
+                style={{ flex: 1 }}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

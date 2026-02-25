@@ -31,7 +31,8 @@ const WINGS = [
         role: "CREATIVE AGENCY",
         desc: "We craft digital experiences that matter. From branding to UI/UX design, our creative studio defines the visual language of student-driven innovation.",
         color: "#fff",
-        text: "#000"
+        text: "#000",
+        link: "https://404-studios.vercel.app/"
     },
     {
         id: "02",
@@ -39,15 +40,18 @@ const WINGS = [
         role: "TALENT & HIRING",
         desc: "Connecting PESITM's top student developers with industry internships, placements & world-class career opportunities.",
         color: "#111",
-        text: "#fff"
+        text: "#fff",
+        link: "https://404studios.vercel.app/#/"
     },
     {
         id: "03",
         title: "SnapShutter",
         role: "MEDIA & PRODUCTION",
-        desc: "Capturing tech event moments & framing narratives. Led by Rudresh J, we turn Shivamogga's coding culture into cinematic history.",
+        desc: "Capturing tech event moments & framing narratives. Visual storytelling that transforms Shivamogga's coding culture into cinematic history.",
         color: "#f0f0f0",
-        text: "#000"
+        text: "#000",
+        link: "https://www.instagram.com/snapshutteer/reels/?__pwa=1",
+        lead: "Led by Rudresh J – Chief Creative Officer"
     }
 ];
 
@@ -61,21 +65,28 @@ const AboutRevealSection: React.FC = () => {
     const smoothProgress = useSpring(scrollYProgress, { damping: 20, stiffness: 100, mass: 0.5 });
 
     // --- ANIMATION TIMELINE ---
-    // OPTIMIZED: Keep aggressive mask for image reveal effect while maintaining performance
-    const maskSize = useTransform(smoothProgress, [0, 0.05], ["0%", "150%"]);
+    // Mask effect: Starts as small circle (20%) and expands to reveal WHO WE ARE (150%)
+    // This creates a circular reveal effect as user scrolls
+    const maskSize = useTransform(smoothProgress, [0, 0.15], ["20%", "150%"]);
     const maskGradient = useTransform(maskSize, (val: string) =>
         `radial-gradient(circle at center, black ${val}, transparent ${val})`
     );
 
-    const xMove = useTransform(smoothProgress, [0.05, 0.28], ["0vw", "-300vw"]);
-    const trackOpacity = useTransform(smoothProgress, [0.28, 0.32], [1, 0]);
+    // Hero opacity: Starts visible, fades out as circle expands (0 to 15% scroll)
+    const heroOpacity = useTransform(smoothProgress, [0, 0.15], [1, 0]);
 
-    // Parallax for images (Faster close to eye)
-    const imgParallax = useTransform(smoothProgress, [0.05, 0.28], ["0vw", "-50vw"]);
+    // Horizontal track: Invisible at start, becomes visible as circle expands (0 to 15% scroll)
+    const trackOpacity = useTransform(smoothProgress, [0, 0.15], [0, 1]);
+
+    // Horizontal track scroll: Stays in place during reveal (0-15%), then scrolls (15%-35%), then exits
+    const xMove = useTransform(smoothProgress, [0.15, 0.40], ["0vw", "-300vw"]);
+
+    // Parallax for images (Faster close to eye) - parallax during horizontal scroll phase
+    const imgParallax = useTransform(smoothProgress, [0.1, 0.35], ["0vw", "-50vw"]);
 
     return (
-        // Height: 1500vh
-        <div ref={containerRef} className="about-scroll-container" style={{ height: "1500vh", position: "relative", backgroundColor: "#fff" }}>
+        // Height: 1600vh to accommodate extended animation timeline
+        <div ref={containerRef} className="about-scroll-container" style={{ height: "1600vh", position: "relative", backgroundColor: "#fff" }}>
             <style>
                 {`@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;800&display=swap');`}
                 {`::-webkit-scrollbar { display: none; } body { margin: 0; }`}
@@ -207,8 +218,21 @@ const AboutRevealSection: React.FC = () => {
             </style>
 
             {/* --- LAYER 1: HERO (Fixed + Fades Out) --- */}
-            <motion.div style={{ ...styles.fixedLayer, opacity: trackOpacity }}>
-                <HeroContent />
+            <motion.div style={{ ...styles.fixedLayer, opacity: heroOpacity }}>
+                <motion.div
+                    style={{
+                        width: "100%",
+                        height: "100%",
+                        WebkitMaskImage: maskGradient,
+                        maskImage: maskGradient,
+                        WebkitMaskPosition: "center",
+                        maskPosition: "center",
+                        WebkitMaskRepeat: "no-repeat",
+                        maskRepeat: "no-repeat"
+                    }}
+                >
+                    <HeroContent />
+                </motion.div>
             </motion.div>
 
             {/* --- LAYER 2: MASKED HORIZONTAL TRACK (Fixed + Fades Out) --- */}
@@ -216,12 +240,10 @@ const AboutRevealSection: React.FC = () => {
                 style={{
                     ...styles.fixedLayer,
                     zIndex: 10,
-                    // Restored clip-path / mask-image for effect requested by user
-                    WebkitMaskImage: maskGradient,
-                    maskImage: maskGradient,
+                    // Simplified background without mask for performance
                     backgroundColor: "#000",
                     opacity: trackOpacity,
-                    willChange: "mask-image, opacity",
+                    willChange: "opacity",
                     // Force GPU compositing
                     transform: "translate3d(0,0,0)",
                     backfaceVisibility: "hidden",
@@ -307,45 +329,21 @@ const HeroContent = () => (
                 hidden: { opacity: 0 },
                 visible: {
                     opacity: 1,
-                    transition: { staggerChildren: 0.2 } // Reduced from 0.3
+                    transition: { duration: 0.8, ease: "easeOut" }
                 }
             }}
         >
-            {/* Animated Title */}
+            {/* Animated Title - Centered, Large */}
             <motion.h1
                 className="hero-big-title"
                 style={styles.bigHeroTitle}
                 variants={{
-                    hidden: { opacity: 0, y: 50 },
-                    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+                    hidden: { opacity: 0, scale: 0.8 },
+                    visible: { opacity: 1, scale: 1, transition: { duration: 0.8, ease: "easeOut" } }
                 }}
             >
                 ABOUT US
             </motion.h1>
-
-            {/* Animated Subtitle */}
-            <motion.p
-                className="hero-subtitle"
-                style={styles.heroSubtitle}
-                variants={{
-                    hidden: { opacity: 0, y: 30 },
-                    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
-                }}
-            >
-                PESITM's Student-Run Developer Community in Shivamogga
-            </motion.p>
-
-            {/* Animated Scroll Hint */}
-            <motion.div
-                className="hero-scroll-hint"
-                style={styles.scrollHint}
-                variants={{
-                    hidden: { opacity: 0 },
-                    visible: { opacity: 1, transition: { duration: 0.8, ease: "easeInOut" } }
-                }}
-            >
-                Scroll to Explore &darr;
-            </motion.div>
         </motion.div>
     </div>
 );
@@ -415,7 +413,9 @@ const WingsSection = () => {
                             <p className="wing-desc" style={styles.wingDesc}>{wing.desc}</p>
                         </div>
                         <div style={styles.wingBottom}>
-                            <button className="wing-btn" style={{ ...styles.wingButton, borderColor: wing.text }}>EXPLORE</button>
+                            <a href={wing.link} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+                                <button className="wing-btn" style={{ ...styles.wingButton, borderColor: wing.text }}>EXPLORE</button>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -429,9 +429,9 @@ const ThoughtSection = () => {
         <div className="thought-container" style={styles.thoughtContainer}>
             <div style={styles.thoughtContent}>
                 <h2 style={styles.thoughtText}>
-                    "Thinking is the hardest work there is, which is probably the reason why so <span style={styles.highlight}>few engage in it</span>."
+                    "The best way to predict the future is to <span style={styles.highlight}>build it</span>."
                 </h2>
-                <p style={{ ...styles.thoughtAuthor, fontStyle: 'italic', marginTop: '20px', opacity: 0.6 }}>— Henry Ford</p>
+                <p style={{ ...styles.thoughtAuthor, fontStyle: 'italic', marginTop: '20px', opacity: 0.6 }}>— Open Source Philosophy</p>
             </div>
         </div>
     );

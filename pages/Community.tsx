@@ -161,11 +161,10 @@ export default function Community() {
       // Auto-send confirmation email to the applicant
       await emailjs.send(
         import.meta.env.VITE_EMAILJS_SERVICE_ID,
-        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        import.meta.env.VITE_EMAILJS_APPLICATION_RECEIVED_ID,
         {
-          firstName: firstName,
-          lastName: lastName,
-          email: formData.email,
+          to_name: formData.name,
+          to_email: formData.email,
           contact: formData.contact,
           interest: formData.interest,
           college: formData.college,
