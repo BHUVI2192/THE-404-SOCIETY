@@ -15,6 +15,14 @@ import BlogDetail from './pages/BlogDetail';
 import NotFound from './pages/NotFound';
 import EventRegistration from './pages/EventRegistration';
 
+// Admin Pages
+import { AdminLayout } from './components/admin/AdminLayout';
+import { AdminDashboard } from './pages/admin/Dashboard';
+import { EventManagement } from './pages/admin/EventManagement';
+import { BlogManagement } from './pages/admin/BlogManagement';
+import { RegistrationManagement } from './pages/admin/RegistrationManagement';
+import { CommunityManagement } from './pages/admin/CommunityManagement';
+
 
 // Scroll to top helper
 const ScrollToTop = () => {
@@ -61,6 +69,15 @@ const App: React.FC = () => {
       <SmoothScrolling>
         <ScrollToTop />
         <Routes>
+          {/* Admin Routes (No standard Layout) */}
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<AdminDashboard />} />
+            <Route path="events" element={<EventManagement />} />
+            <Route path="blogs" element={<BlogManagement />} />
+            <Route path="registrations" element={<RegistrationManagement />} />
+            <Route path="community" element={<CommunityManagement />} />
+          </Route>
+
           {/* Pages with standard Layout */}
           <Route path="/" element={<Layout><Home /></Layout>} />
           <Route path="/about" element={<Layout><About /></Layout>} />

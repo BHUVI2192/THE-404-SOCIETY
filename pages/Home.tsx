@@ -41,8 +41,8 @@ const EventsTimeline = ({ highlights, loading }: { highlights: EventData[], load
                     </div>
                 </div>
 
-                {/* Right Timeline */}
-                <div className="relative pl-8 md:pl-12 border-l border-neutral-100">
+                {/* Right Timeline - Container with explicit relative positioning for Framer Motion scroll animations */}
+                <div className="relative pl-8 md:pl-12 border-l border-neutral-100" style={{ position: 'relative' }}>
                     {/* Timeline Track */}
                     <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-neutral-100" />
                     <motion.div

@@ -1,0 +1,381 @@
+import React, { useState, useEffect } from 'react';
+import { getEvents, addEvent, updateEvent, deleteEvent, EventData } from '../../lib/events';
+import toast from 'react-hot-toast';
+import { processImageFile } from '../../lib/imageUpload';
+
+type FormMode = 'create' | 'edit' | null;
+
+const TrashIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <polyline points="3 6 5 6 21 6" />
+    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+    <line x1="10" y1="11" x2="10" y2="17" />
+    <line x1="14" y1="11" x2="14" y2="17" />
+  </svg>
+);
+
+const EditIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" />
+  </svg>
+);
+
+export const EventManagement: React.FC = () => {
+  const [events, setEvents] = useState<EventData[]>([]);
+  const [formMode, setFormMode] = useState<FormMode>(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [imagePreview, setImagePreview] = useState<string>('');
+  const [formData, setFormData] = useState<Omit<EventData, 'id' | 'createdAt'>>({
+    title: '',
+    date: '',
+    year: '',
+    location: '',
+    img: '',
+    status: 'open',
+    category: '',
+    description: '',
+  });
+
+  useEffect(() => {
+    loadEvents();
+  }, []);
+
+  const loadEvents = async () => {
+    try {
+      setLoading(true);
+      const data = await getEvents();
+      setEvents(data);
+    } catch (error) {
+      console.error('[EventManagement] Error loading events:', error);
+      toast.error('Failed to load events');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const resetForm = () => {
+    setFormData({
+      title: '',
+      date: '',
+      year: '',
+      location: '',
+      img: '',
+      status: 'open',
+      category: '',
+      description: '',
+    });
+    setImagePreview('');
+    setEditingId(null);
+    setFormMode(null);
+  };
+
+  const handleEdit = (event: EventData) => {
+    setFormData(event);
+    setImagePreview(event.img);
+    setEditingId(event.id || null);
+    setFormMode('edit');
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!formData.title || !formData.date || !formData.location) {
+      toast.error('Please fill in all required fields');
+      return;
+    }
+
+    try {
+      setLoading(true);
+      if (formMode === 'create') {
+        await addEvent(formData);
+        toast.success('Event created successfully');
+      } else if (formMode === 'edit' && editingId) {
+        await updateEvent(editingId, formData);
+        toast.success('Event updated successfully');
+      }
+      await loadEvents();
+      resetForm();
+    } catch (error) {
+      toast.error('Failed to save event');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    if (window.confirm('Are you sure you want to delete this event?')) {
+      try {
+        setLoading(true);
+        await deleteEvent(id);
+        toast.success('Event deleted successfully');
+        await loadEvents();
+      } catch (error) {
+        toast.error('Failed to delete event');
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
+  const handleStatusToggle = async (id: string, currentStatus: string) => {
+    const newStatus = currentStatus === 'open' ? 'locked' : 'open';
+    try {
+      await updateEvent(id, { status: newStatus as 'open' | 'locked' });
+      toast.success(`Event status changed to ${newStatus}`);
+      await loadEvents();
+    } catch (error) {
+      toast.error('Failed to update status');
+    }
+  };
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    try {
+      const result = await processImageFile(file);
+      if (result) {
+        setFormData({ ...formData, img: result.base64 });
+        setImagePreview(result.base64);
+        toast.success('Image uploaded successfully');
+      }
+    } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : 'Failed to upload image';
+      toast.error(errorMsg);
+    }
+  };
+
+  return (
+    <div className="adm-page">
+      {/* Header with CTA */}
+      <div className="adm-page__header">
+        <div>
+          <h1 className="adm-page__title">Events Management</h1>
+          <p className="adm-page__subtitle">Create, edit, and manage events</p>
+        </div>
+        <button
+          onClick={() => {
+            resetForm();
+            setFormMode('create');
+          }}
+          className="adm-btn adm-btn--primary"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: '16px', height: '16px' }}>
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <line x1="5" y1="12" x2="19" y2="12" />
+          </svg>
+          Add Event
+        </button>
+      </div>
+
+      {/* Form Modal */}
+      {formMode && (
+        <div className="adm-modal">
+          <div className="adm-modal__content">
+            <div className="adm-modal__header">
+              <h3 className="adm-modal__title">
+                {formMode === 'create' ? 'Create New Event' : 'Edit Event'}
+              </h3>
+              <button className="adm-modal__close" onClick={resetForm}>✕</button>
+            </div>
+
+            <div className="adm-modal__body">
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                  <div className="adm-form-group">
+                    <label className="adm-form-label adm-form-label--required">Title</label>
+                    <input
+                      type="text"
+                      className="adm-input"
+                      placeholder="Event title"
+                      value={formData.title}
+                      onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                    />
+                  </div>
+                  <div className="adm-form-group">
+                    <label className="adm-form-label">Date</label>
+                    <input
+                      type="text"
+                      className="adm-input"
+                      placeholder="e.g., MAR 15"
+                      value={formData.date}
+                      onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                    />
+                  </div>
+                  <div className="adm-form-group">
+                    <label className="adm-form-label">Year</label>
+                    <input
+                      type="text"
+                      className="adm-input"
+                      placeholder="e.g., 2026"
+                      value={formData.year}
+                      onChange={(e) => setFormData({ ...formData, year: e.target.value })}
+                    />
+                  </div>
+                  <div className="adm-form-group">
+                    <label className="adm-form-label adm-form-label--required">Location</label>
+                    <input
+                      type="text"
+                      className="adm-input"
+                      placeholder="Event location"
+                      value={formData.location}
+                      onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                    />
+                  </div>
+                  <div className="adm-form-group">
+                    <label className="adm-form-label">Category</label>
+                    <input
+                      type="text"
+                      className="adm-input"
+                      placeholder="Event category"
+                      value={formData.category}
+                      onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                    />
+                  </div>
+                  <div className="adm-form-group">
+                    <label className="adm-form-label">Status</label>
+                    <select
+                      className="adm-select"
+                      value={formData.status}
+                      onChange={(e) => setFormData({ ...formData, status: e.target.value as 'open' | 'locked' })}
+                    >
+                      <option value="open">Open</option>
+                      <option value="locked">Locked</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="adm-form-group">
+                  <label className="adm-form-label">Event Image</label>
+                  <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
+                    <div style={{ flex: 1 }}>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="adm-input"
+                        onChange={handleImageUpload}
+                        style={{ cursor: 'pointer' }}
+                      />
+                      <small style={{ color: '#888', marginTop: '4px', display: 'block' }}>
+                        Accepted: JPG, PNG, WebP, GIF (Max 5MB)
+                      </small>
+                    </div>
+                    {imagePreview && (
+                      <div style={{
+                        width: '80px',
+                        height: '80px',
+                        borderRadius: '8px',
+                        overflow: 'hidden',
+                        border: '1px solid #e0e0e0',
+                        flexShrink: 0
+                      }}>
+                        <img 
+                          src={imagePreview} 
+                          alt="Preview" 
+                          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                        />
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="adm-form-group">
+                  <label className="adm-form-label">Description</label>
+                  <textarea
+                    className="adm-input adm-textarea"
+                    placeholder="Event description"
+                    value={formData.description}
+                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  />
+                </div>
+              </form>
+            </div>
+
+            <div className="adm-modal__footer">
+              <button className="adm-btn adm-btn--ghost" onClick={resetForm}>Cancel</button>
+              <button className="adm-btn adm-btn--primary" onClick={handleSubmit} disabled={loading}>
+                {loading ? 'Saving...' : 'Save Event'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Events Table */}
+      <div className="adm-table-wrapper">
+        {events.length > 0 ? (
+          <table className="adm-table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Date</th>
+                <th>Location</th>
+                <th>Category</th>
+                <th>Status</th>
+                <th style={{ textAlign: 'right' }}>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {events.map((event) => (
+                <tr key={event.id}>
+                  <td className="adm-table__primary">{event.title}</td>
+                  <td>{event.date} {event.year}</td>
+                  <td>{event.location}</td>
+                  <td>
+                    <span className="adm-badge adm-badge--info">
+                      {event.category || 'Uncategorized'}
+                    </span>
+                  </td>
+                  <td>
+                    <button
+                      onClick={() => handleStatusToggle(event.id!, event.status)}
+                      style={{ border: 'none', background: 'none', cursor: 'pointer', padding: 0 }}
+                    >
+                      <span className={`adm-badge adm-badge--${event.status === 'open' ? 'success' : 'danger'}`}>
+                        {event.status === 'open' ? 'Open' : 'Locked'}
+                      </span>
+                    </button>
+                  </td>
+                  <td style={{ textAlign: 'right' }}>
+                    <div style={{ display: 'flex', gap: '6px', justifyContent: 'flex-end' }}>
+                      <button
+                        onClick={() => handleEdit(event)}
+                        className="adm-btn adm-btn--ghost adm-btn--icon"
+                        title="Edit"
+                      >
+                        <EditIcon />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(event.id!)}
+                        className="adm-btn adm-btn--danger adm-btn--icon"
+                        title="Delete"
+                      >
+                        <TrashIcon />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <div className="adm-empty">
+            <div className="adm-empty__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <rect x="3" y="4" width="18" height="18" rx="2" />
+                <line x1="16" y1="2" x2="16" y2="6" />
+                <line x1="8" y1="2" x2="8" y2="6" />
+                <line x1="3" y1="10" x2="21" y2="10" />
+              </svg>
+            </div>
+            <div className="adm-empty__title">No Events</div>
+            <div className="adm-empty__description">
+              Create your first event to get started managing your events.
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};

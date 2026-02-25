@@ -91,7 +91,7 @@ export default function BlogPage() {
         )}
       </section>
 
-      <Footer />
+
     </div>
   );
 }
@@ -172,14 +172,13 @@ const BentoCard: React.FC<{ article: BlogPostData; onClick: () => void }> = ({ a
   );
 };
 
-const Footer = () => (
-  <footer style={styles.footer}>
-    <div style={styles.footerContent}>
-      <h3>THE 404 SOCIETY</h3>
-      <p style={{ opacity: 0.5, marginTop: '10px' }}>hello@404society.com</p>
-    </div>
-  </footer>
-);
+// Footer removed as per user request
+// <footer style={styles.footer}>
+//   <div style={styles.footerContent}>
+//     <h3></h3>
+//     <p></p>
+//   </div>
+// </footer>
 
 // --- STYLES ---
 const styles: { [key: string]: React.CSSProperties } = {

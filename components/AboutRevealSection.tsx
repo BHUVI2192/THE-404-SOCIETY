@@ -58,12 +58,14 @@ const AboutRevealSection: React.FC = () => {
         offset: ["start start", "end end"]
     });
 
-    const smoothProgress = useSpring(scrollYProgress, { damping: 15, stiffness: 120, mass: 0.2 });
+    const smoothProgress = useSpring(scrollYProgress, { damping: 20, stiffness: 100, mass: 0.5 });
 
     // --- ANIMATION TIMELINE ---
+    // OPTIMIZED: Keep aggressive mask for image reveal effect while maintaining performance
     const maskSize = useTransform(smoothProgress, [0, 0.05], ["0%", "150%"]);
-    // OPTIMIZATION: Use maskImage radial-gradient instead of clip-path
-    const maskGradient = useTransform(maskSize, (val) => `radial-gradient(circle at center, black ${val}, transparent ${val})`);
+    const maskGradient = useTransform(maskSize, (val: string) =>
+        `radial-gradient(circle at center, black ${val}, transparent ${val})`
+    );
 
     const xMove = useTransform(smoothProgress, [0.05, 0.28], ["0vw", "-300vw"]);
     const trackOpacity = useTransform(smoothProgress, [0.28, 0.32], [1, 0]);
@@ -78,7 +80,7 @@ const AboutRevealSection: React.FC = () => {
                 {`@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;800&display=swap');`}
                 {`::-webkit-scrollbar { display: none; } body { margin: 0; }`}
                 {`
-                    .who-text { font-size: 90vh; }
+                    .who-text { font-size: 75vh; line-height: 0.85; }
                     .society-title { font-size: 5rem; }
                     .gallery-img-wrapper { 
                         width: 26vw; 
@@ -214,14 +216,17 @@ const AboutRevealSection: React.FC = () => {
                 style={{
                     ...styles.fixedLayer,
                     zIndex: 10,
-                    // REPLACED CLIP-PATH WITH MASK-IMAGE
+                    // Restored clip-path / mask-image for effect requested by user
                     WebkitMaskImage: maskGradient,
                     maskImage: maskGradient,
                     backgroundColor: "#000",
                     opacity: trackOpacity,
-                    // PERFORMANCE OPTIMIZATION
-                    willChange: "mask-image",
-                    transform: "translate3d(0,0,0)" // Force GPU
+                    willChange: "mask-image, opacity",
+                    // Force GPU compositing
+                    transform: "translate3d(0,0,0)",
+                    backfaceVisibility: "hidden",
+                    perspective: 1000,
+                    transformZ: 0
                 }}
             >
                 <motion.div style={{ ...styles.horizontalTrack, x: xMove }}>
@@ -245,6 +250,7 @@ const AboutRevealSection: React.FC = () => {
                                     }}
                                 >
                                     <div style={styles.imageCard}>
+                                        <div style={styles.noiseOverlay} />
                                         <img loading="lazy" src={img.src} alt="404 Society" style={styles.image} />
                                     </div>
                                 </motion.div>
@@ -379,7 +385,7 @@ const StickyCard = ({ i, title, desc, color, text, progress, targetScale }: any)
         // Use CSS variables for responsive top offset
         <div className="stack-container" style={{ ...styles.cardStickyContainer, top: `calc(var(--stack-start, 10vh) + ${i} * var(--stack-step, 40px))` }}>
             <motion.div className="stack-card-inner" style={{ ...styles.cardInner, backgroundColor: color, color: text, scale }}>
-                <div style={styles.cardHeader}><span style={styles.cardNum}>(0{i + 1})</span></div>
+                {/* Removed heavy maskImage usage for performance */}<div style={styles.cardHeader}><span style={styles.cardNum}>(0{i + 1})</span></div>
                 <div style={styles.cardLeft}><h2 className="stack-card-text" style={styles.cardBigText}>{title}</h2></div>
                 <div style={styles.cardBottom}>
                     <div style={{ ...styles.cardLine, backgroundColor: text }} />
@@ -475,8 +481,8 @@ const styles: Record<string, React.CSSProperties> = {
 
     // HORIZONTAL TRACK
     horizontalTrack: { display: "flex", height: "100%", width: "max-content", alignItems: 'center' },
-    sectionWho: { position: 'relative', minWidth: "250vw", height: "100%", display: "flex", alignItems: "center", paddingLeft: "5vw" },
-    hugeText: { fontWeight: "300", color: "#ffffff", margin: 0, lineHeight: 0.8, whiteSpace: "nowrap", letterSpacing: "-0.04em", userSelect: "none", zIndex: 1 },
+    sectionWho: { position: 'relative', minWidth: "250vw", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", paddingLeft: "5vw", willChange: "transform" },
+    hugeText: { fontWeight: "300", color: "#ffffff", margin: 0, lineHeight: 0.85, whiteSpace: "nowrap", letterSpacing: "-0.04em", userSelect: "none", zIndex: 1, willChange: "none", transform: "translate3d(0,0,0)" },
     imageCard: { width: "100%", aspectRatio: "16/9", backgroundColor: "#fff", padding: "8px", boxShadow: "0 20px 40px rgba(0,0,0,0.5)" },
     image: { width: "100%", height: "100%", objectFit: "cover", display: "block" },
 
