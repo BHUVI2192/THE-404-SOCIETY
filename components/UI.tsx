@@ -133,19 +133,19 @@ export const Header: React.FC = () => {
             <RouterNavLink
               key={link.path}
               to={link.path}
-              className={`text-sm font-medium transition-all duration-300 transform hover:-translate-y-1 ${isActive(link.path) ? 'text-[#4F46E5] font-bold' : 'text-neutral-600 hover:text-[#4F46E5]'}`}
+              className={({ isActive }) => `text-sm font-medium transition-all duration-300 transform hover:-translate-y-1 ${isActive ? 'text-[#4F46E5] font-bold border-b-2 border-[#4F46E5] pb-1' : 'text-neutral-600 hover:text-[#4F46E5]'}`}
             >
               {link.label}
             </RouterNavLink>
           ))}
-          <RouterNavLink to="/community">
+          <RouterNavLink to="/join">
             <Button variant="primary" className="!px-6 !py-2 !text-xs !bg-[#4F46E5] hover:!bg-[#4338CA]">Join</Button>
           </RouterNavLink>
         </nav>
 
         {/* Mobile Toggle */}
-        <button className="md:hidden text-black z-50" onClick={() => setIsOpen(!isOpen)}>
-          {isOpen ? <X /> : <Menu />}
+        <button className="md:hidden text-black z-[60] relative" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle Menu">
+          {isOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
       </div>
 
@@ -153,24 +153,29 @@ export const Header: React.FC = () => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="md:hidden bg-white border-b border-neutral-100 absolute w-full left-0 top-0 pt-24 pb-8 flex flex-col px-6 gap-6 shadow-xl"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: '100vh' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+            className="md:hidden bg-white fixed inset-0 z-40 flex flex-col pt-24 px-8 pb-8"
           >
-            {NAV_LINKS.map((link) => (
-              <RouterNavLink
-                key={link.path}
-                to={link.path}
-                onClick={() => setIsOpen(false)}
-                className={`text-xl font-medium ${isActive(link.path) ? 'text-[#4F46E5]' : 'text-neutral-600'}`}
-              >
-                {link.label}
-              </RouterNavLink>
-            ))}
-            <RouterNavLink to="/community">
-              <Button variant="primary" className="w-full">Join Community</Button>
-            </RouterNavLink>
+            <div className="flex flex-col gap-8 text-center mt-10">
+              {NAV_LINKS.map((link) => (
+                <RouterNavLink
+                  key={link.path}
+                  to={link.path}
+                  onClick={() => setIsOpen(false)}
+                  className={({ isActive }) => `text-3xl font-bold tracking-tight transition-colors ${isActive ? 'text-[#4F46E5]' : 'text-black'}`}
+                >
+                  {link.label}
+                </RouterNavLink>
+              ))}
+              <div className="mt-8">
+                <RouterNavLink to="/join" onClick={() => setIsOpen(false)}>
+                  <Button variant="primary" className="w-full text-lg py-4">Join Community</Button>
+                </RouterNavLink>
+              </div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

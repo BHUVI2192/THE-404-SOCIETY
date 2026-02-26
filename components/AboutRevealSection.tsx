@@ -58,10 +58,9 @@ const AboutRevealSection: React.FC = () => {
         offset: ["start start", "end end"]
     });
 
-    const smoothProgress = useSpring(scrollYProgress, { damping: 20, stiffness: 100, mass: 0.5 });
+    const smoothProgress = useSpring(scrollYProgress, { damping: 15, stiffness: 120, mass: 0.2 });
 
     // --- ANIMATION TIMELINE ---
-    // OPTIMIZED: Keep aggressive mask for image reveal effect while maintaining performance
     const maskSize = useTransform(smoothProgress, [0, 0.05], ["0%", "150%"]);
     const maskGradient = useTransform(maskSize, (val: string) =>
         `radial-gradient(circle at center, black ${val}, transparent ${val})`
@@ -216,15 +215,12 @@ const AboutRevealSection: React.FC = () => {
                 style={{
                     ...styles.fixedLayer,
                     zIndex: 10,
-                    // Simplified background without mask for performance
+                    WebkitMaskImage: maskGradient,
+                    maskImage: maskGradient,
                     backgroundColor: "#000",
                     opacity: trackOpacity,
-                    willChange: "opacity",
-                    // Force GPU compositing
-                    transform: "translate3d(0,0,0)",
-                    backfaceVisibility: "hidden",
-                    perspective: 1000,
-                    transformZ: 0
+                    willChange: "mask-image",
+                    transform: "translate3d(0,0,0)" // Force GPU
                 }}
             >
                 <motion.div style={{ ...styles.horizontalTrack, x: xMove }}>
@@ -336,10 +332,16 @@ const HeroContent = () => (
             {/* Animated Scroll Hint */}
             <motion.div
                 className="hero-scroll-hint"
-                style={styles.scrollHint}
+                style={{ ...styles.scrollHint, cursor: 'pointer' }}
                 variants={{
                     hidden: { opacity: 0 },
                     visible: { opacity: 1, transition: { duration: 0.8, ease: "easeInOut" } }
+                }}
+                onClick={() => {
+                    window.scrollTo({
+                        top: window.innerHeight,
+                        behavior: 'smooth'
+                    });
                 }}
             >
                 Scroll to Explore &darr;
@@ -427,9 +429,9 @@ const ThoughtSection = () => {
         <div className="thought-container" style={styles.thoughtContainer}>
             <div style={styles.thoughtContent}>
                 <h2 style={styles.thoughtText}>
-                    "Thinking is the hardest work there is, which is probably the reason why so <span style={styles.highlight}>few engage in it</span>."
+                    "Any fool can write code that a computer can understand. Good programmers write code that <span style={styles.highlight}>humans can understand</span>."
                 </h2>
-                <p style={{ ...styles.thoughtAuthor, fontStyle: 'italic', marginTop: '20px', opacity: 0.6 }}>— Henry Ford</p>
+                <p style={{ ...styles.thoughtAuthor, fontStyle: 'italic', marginTop: '20px', opacity: 0.6 }}>— Martin Fowler</p>
             </div>
         </div>
     );

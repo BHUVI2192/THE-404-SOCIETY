@@ -8,6 +8,7 @@ import { motion, useScroll, useTransform, useSpring, useMotionValue, useMotionTe
 import { useScrollOpacity } from '../src/hooks/useScrollOpacity';
 import PortalCTA from '../components/PortalCTA';
 import HeroParticles from '../src/components/HeroParticles';
+import { Helmet } from 'react-helmet-async';
 
 
 
@@ -150,6 +151,14 @@ const Home: React.FC = () => {
 
     return (
         <>
+            <Helmet>
+                <title>The 404 Society – PESITM Student Developer Community</title>
+                <meta name="description" content="The 404 Society is a student-run coding club at PESITM Shivamogga. Join our AI workshops, hackathons, full-stack development sessions, and peer-to-peer learning community." />
+                <meta property="og:title" content="The 404 Society – PESITM Student Developer Community" />
+                <meta property="og:description" content="Join our AI workshops, hackathons, and full-stack development sessions." />
+                <meta property="og:type" content="website" />
+            </Helmet>
+
             {/* --- HERO SECTION --- */}
             <section
                 className="h-screen w-full relative flex flex-col items-center justify-center overflow-hidden bg-white"
@@ -321,30 +330,29 @@ const Home: React.FC = () => {
                 </div>
             </Section >
 
-            {/* --- STATS BAR --- */}
             <Section className="bg-black text-white border-t border-neutral-900 !py-16">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
                     <ScrollReveal delay={0}>
                         <div className="text-center">
-                            <div className="text-5xl md:text-6xl font-black mb-2 bg-gradient-to-r from-[#4F46E5] to-[#10B981] bg-clip-text text-transparent">100+</div>
+                            <div className="text-5xl md:text-6xl font-black mb-2 text-black">100+</div>
                             <div className="text-neutral-400 text-sm md:text-base font-medium uppercase tracking-widest">Student Devs</div>
                         </div>
                     </ScrollReveal>
                     <ScrollReveal delay={0.1}>
                         <div className="text-center">
-                            <div className="text-5xl md:text-6xl font-black mb-2 bg-gradient-to-r from-[#4F46E5] to-[#10B981] bg-clip-text text-transparent">20+</div>
+                            <div className="text-5xl md:text-6xl font-black mb-2 text-black">20+</div>
                             <div className="text-neutral-400 text-sm md:text-base font-medium uppercase tracking-widest">Events Hosted</div>
                         </div>
                     </ScrollReveal>
                     <ScrollReveal delay={0.2}>
                         <div className="text-center">
-                            <div className="text-5xl md:text-6xl font-black mb-2 bg-gradient-to-r from-[#4F46E5] to-[#10B981] bg-clip-text text-transparent">15+</div>
+                            <div className="text-5xl md:text-6xl font-black mb-2 text-black">15+</div>
                             <div className="text-neutral-400 text-sm md:text-base font-medium uppercase tracking-widest">Projects Shipped</div>
                         </div>
                     </ScrollReveal>
                     <ScrollReveal delay={0.3}>
                         <div className="text-center">
-                            <div className="text-5xl md:text-6xl font-black mb-2 bg-gradient-to-r from-[#4F46E5] to-[#10B981] bg-clip-text text-transparent">3</div>
+                            <div className="text-5xl md:text-6xl font-black mb-2 text-black">3</div>
                             <div className="text-neutral-400 text-sm md:text-base font-medium uppercase tracking-widest">Batches</div>
                         </div>
                     </ScrollReveal>

@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import { Layout } from './components/UI';
 
 // Pages
@@ -8,6 +9,7 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Events from './pages/Events';
 import Community from './pages/Community';
+import Join from './pages/Join';
 
 
 import Blog from './pages/Blog';
@@ -66,36 +68,39 @@ const SmoothScrolling = ({ children }: { children: React.ReactNode }) => {
 
 const App: React.FC = () => {
   return (
-    <Router>
-      <SmoothScrolling>
-        <ScrollToTop />
-        <Routes>
-          {/* Admin Routes (No standard Layout) */}
-          <Route path="/admin" element={<AdminLayout />}>
-            <Route index element={<AdminDashboard />} />
-            <Route path="events" element={<EventManagement />} />
-            <Route path="blogs" element={<BlogManagement />} />
-            <Route path="registrations" element={<RegistrationManagement />} />
-            <Route path="community" element={<CommunityManagement />} />
-            <Route path="settings" element={<AdminSettings />} />
-          </Route>
+    <HelmetProvider>
+      <Router>
+        <SmoothScrolling>
+          <ScrollToTop />
+          <Routes>
+            {/* Admin Routes (No standard Layout) */}
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<AdminDashboard />} />
+              <Route path="events" element={<EventManagement />} />
+              <Route path="blogs" element={<BlogManagement />} />
+              <Route path="registrations" element={<RegistrationManagement />} />
+              <Route path="community" element={<CommunityManagement />} />
+              <Route path="settings" element={<AdminSettings />} />
+            </Route>
 
-          {/* Pages with standard Layout */}
-          <Route path="/" element={<Layout><Home /></Layout>} />
-          <Route path="/about" element={<Layout><About /></Layout>} />
-          <Route path="/events" element={<Layout><Events /></Layout>} />
-          <Route path="/community" element={<Layout><Community /></Layout>} />
+            {/* Pages with standard Layout */}
+            <Route path="/" element={<Layout><Home /></Layout>} />
+            <Route path="/about" element={<Layout><About /></Layout>} />
+            <Route path="/events" element={<Layout><Events /></Layout>} />
+            <Route path="/community" element={<Layout><Community /></Layout>} />
+            <Route path="/join" element={<Layout><Join /></Layout>} />
 
-          <Route path="/blog" element={<Layout><Blog /></Layout>} />
-          <Route path="/blog/:blogId" element={<Layout><BlogDetail /></Layout>} />
-          <Route path="/register-event/:eventId" element={<Layout><EventRegistration /></Layout>} />
+            <Route path="/blog" element={<Layout><Blog /></Layout>} />
+            <Route path="/blog/:blogId" element={<Layout><BlogDetail /></Layout>} />
+            <Route path="/register-event/:eventId" element={<Layout><EventRegistration /></Layout>} />
 
 
-          {/* 404 Page (No Layout) */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </SmoothScrolling>
-    </Router>
+            {/* 404 Page (No Layout) */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </SmoothScrolling>
+      </Router>
+    </HelmetProvider>
   );
 };
 

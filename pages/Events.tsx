@@ -5,12 +5,14 @@ import { NavLink } from "react-router-dom";
 import gsap from "gsap";
 import { getEvents, EventData } from "../lib/events";
 import { Loader2 } from "lucide-react";
+import { Helmet } from 'react-helmet-async';
 import "./Events.css";
 
 export default function EventsPage() {
   const pageRef = useRef<HTMLDivElement>(null);
   const [events, setEvents] = useState<EventData[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState<string>("All");
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -42,43 +44,74 @@ export default function EventsPage() {
     );
   }
 
+  const categories = ["All", ...Array.from(new Set(events.map(e => e.category).filter(Boolean)))];
+
+  const filteredEvents = selectedCategory === "All"
+    ? events
+    : events.filter(e => e.category === selectedCategory);
+
   return (
-    <div ref={pageRef} className="events-page-container">
-      {/* --- HEADER --- */}
-      <header className="events-header">
-        <div className="events-header-top">
-          <span className="brand-badge">THE 404 SOCIETY <span className="brand-badge-divider">//</span> CALENDAR</span>
-        </div>
-        <h1 className="huge-title">THE_SESSIONS</h1>
-        <p className="header-subtitle">
-          Tech workshops, hackathons &amp; coding events at PESITM Shivamogga.
-        </p>
-      </header>
+    <>
+      <Helmet>
+        <title>Events & Sessions | The 404 Society</title>
+        <meta name="description" content="Discover upcoming hackathons, AI workshops, and tech events hosted by The 404 Society at PESITM." />
+      </Helmet>
+      <div ref={pageRef} className="events-page-container">
+        {/* --- HEADER --- */}
+        <header className="events-header">
+          <div className="events-header-top">
+            <span className="brand-badge">THE 404 SOCIETY <span className="brand-badge-divider">//</span> CALENDAR</span>
+          </div>
+          <h1 className="huge-title">THE_SESSIONS</h1>
+          <p className="header-subtitle">
+            Tech workshops, hackathons &amp; coding events at PESITM Shivamogga.
+          </p>
 
-      {/* --- THE SIDE-WAVE LIST --- */}
-      <section className="events-list-container">
-        {/* Header Row */}
-        <div className="events-list-header">
-          <span className="header-col-date">DATE</span>
-          <span className="header-col-details">EVENT DETAILS</span>
-          <span className="header-col-action">ACTION</span>
-        </div>
-
-        <div className="events-rows-wrapper">
-          {events.length > 0 ? (
-            events.map((event) => (
-              <SideWaveRow key={event.id} event={event} />
-            ))
-          ) : (
-            <div className="py-20 text-center font-black uppercase text-gray-200 tracking-widest text-xl">
-              No Upcoming Sessions Scheduled.
+          {/* Category Filter Pills */}
+          {categories.length > 1 && (
+            <div className="flex flex-wrap justify-center gap-3 mt-8">
+              {categories.map(category => (
+                <button
+                  key={category}
+                  onClick={() => setSelectedCategory(category as string)}
+                  className={`px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest transition-all duration-300 border
+                    ${selectedCategory === category
+                      ? 'bg-black text-white border-black'
+                      : 'bg-transparent text-gray-500 border-gray-200 hover:border-black hover:text-black'
+                    }`}
+                >
+                  {category}
+                </button>
+              ))}
             </div>
           )}
-        </div>
-      </section>
+        </header>
 
-      <Footer />
-    </div>
+        {/* --- THE SIDE-WAVE LIST --- */}
+        <section className="events-list-container">
+          {/* Header Row */}
+          <div className="events-list-header">
+            <span className="header-col-date">DATE</span>
+            <span className="header-col-details">EVENT DETAILS</span>
+            <span className="header-col-action">ACTION</span>
+          </div>
+
+          <div className="events-rows-wrapper">
+            {filteredEvents.length > 0 ? (
+              filteredEvents.map((event) => (
+                <SideWaveRow key={event.id} event={event} />
+              ))
+            ) : (
+              <div className="py-20 text-center font-black uppercase text-gray-200 tracking-widest text-xl">
+                No Upcoming Sessions Scheduled.
+              </div>
+            )}
+          </div>
+        </section>
+
+        <Footer />
+      </div>
+    </>
   );
 }
 
@@ -163,7 +196,7 @@ const SideWaveRow: React.FC<SideWaveRowProps> = ({ event }) => {
         <img src={event.img} alt={event.title} loading="lazy" className="half-pill-img" />
         {/* Overlay to ensure text readability if needed */}
         <div className="img-overlay">
-          <span>{isLocked ? "CLOSED" : "VIEW"}</span>
+          <span>{isLocked ? "CLOSED" : ""}</span>
         </div>
       </motion.div>
 
@@ -178,7 +211,7 @@ const Footer = () => (
   <footer className="events-footer">
     <div className="footer-content">
       <h3>THE 404 SOCIETY</h3>
-      <p className="footer-email">hello@404society.com</p>
+      <p className="footer-email">connect@the404society.in</p>
     </div>
   </footer>
 );

@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { getBlogPosts, BlogPostData } from "../lib/blog";
 import { useNavigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
+import { Helmet } from 'react-helmet-async';
 
 // --- CONFIGURATION ---
 const CONFIG = {
@@ -14,15 +15,27 @@ export default function BlogPage() {
   const navigate = useNavigate();
   const [posts, setPosts] = useState<BlogPostData[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState<string>("All");
 
   useEffect(() => {
     getBlogPosts().then(data => { setPosts(data); setLoading(false); });
   }, []);
 
+  const categories = ["All", ...Array.from(new Set(posts.map(p => p.category).filter(Boolean)))];
+
+  const filteredPosts = selectedCategory === "All"
+    ? posts
+    : posts.filter(p => p.category === selectedCategory);
+
   return (
-    <div style={{ fontFamily: CONFIG.fontPrimary, backgroundColor: "#fff", minHeight: "100vh" }}>
-      <style>
-        {`
+    <>
+      <Helmet>
+        <title>Blog & Transmissions | The 404 Society</title>
+        <meta name="description" content="Tech insights, coding tutorials, and developer stories from The 404 Society at PESITM Shivamogga." />
+      </Helmet>
+      <div style={{ fontFamily: CONFIG.fontPrimary, backgroundColor: "#fff", minHeight: "100vh" }}>
+        <style>
+          {`
           @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;800&display=swap');
           @import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
           ::selection { background: #000; color: #fff; }
@@ -64,35 +77,54 @@ export default function BlogPage() {
              }
           }
         `}
-      </style>
+        </style>
 
-      {/* --- HEADER --- */}
-      <div className="blog-header" style={{ paddingTop: "120px", paddingBottom: "40px", paddingLeft: "5vw", paddingRight: "5vw" }}>
-        <h1 className="huge-title" style={styles.hugeTitle}>TRANSMISSIONS</h1>
-        <p style={styles.subtitle}>
-          Tech insights, coding tutorials &amp; developer stories from PESITM Shivamogga.
-        </p>
+        {/* --- HEADER --- */}
+        <div className="blog-header" style={{ paddingTop: "120px", paddingBottom: "40px", paddingLeft: "5vw", paddingRight: "5vw" }}>
+          <h1 className="huge-title" style={styles.hugeTitle}>TRANSMISSIONS</h1>
+          <p style={styles.subtitle}>
+            Tech insights, coding tutorials &amp; developer stories from PESITM Shivamogga.
+          </p>
+
+          {!loading && categories.length > 1 && (
+            <div className="flex flex-wrap gap-2 mt-8">
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setSelectedCategory(cat as string)}
+                  className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest transition-all duration-300 border
+                    ${selectedCategory === cat
+                      ? 'bg-black text-white border-black'
+                      : 'bg-transparent text-gray-500 border-gray-200 hover:border-black hover:text-black'
+                    }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* --- THE BENTO GRID --- */}
+        <section className="blog-grid">
+          {loading ? (
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#999', fontSize: '0.85rem' }}>
+              <Loader2 size={16} style={{ animation: 'spin 1s linear infinite' }} /> Loading posts...
+            </div>
+          ) : filteredPosts.length === 0 ? (
+            <div style={{ gridColumn: '1/-1', padding: '60px', textAlign: 'center', color: '#ccc', fontFamily: CONFIG.fontMono, fontSize: '0.8rem' }}>
+              NO TRANSMISSIONS FOUND IN THIS CATEGORY.
+            </div>
+          ) : (
+            filteredPosts.map((article) => (
+              <BentoCard key={article.id} article={article} onClick={() => navigate(`/blog/${article.id}`)} />
+            ))
+          )}
+        </section>
+
+
       </div>
-
-      {/* --- THE BENTO GRID --- */}
-      <section className="blog-grid">
-        {loading ? (
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#999', fontSize: '0.85rem' }}>
-            <Loader2 size={16} style={{ animation: 'spin 1s linear infinite' }} /> Loading posts...
-          </div>
-        ) : posts.length === 0 ? (
-          <div style={{ gridColumn: '1/-1', padding: '60px', textAlign: 'center', color: '#ccc', fontFamily: CONFIG.fontMono, fontSize: '0.8rem' }}>
-            NO TRANSMISSIONS FOUND. PUBLISH FROM THE COMMAND CENTER.
-          </div>
-        ) : (
-          posts.map((article) => (
-            <BentoCard key={article.id} article={article} onClick={() => navigate(`/blog/${article.id}`)} />
-          ))
-        )}
-      </section>
-
-
-    </div>
+    </>
   );
 }
 
@@ -116,7 +148,7 @@ const BentoCard: React.FC<{ article: BlogPostData; onClick: () => void }> = ({ a
       {/* 1. BACKGROUND IMAGE (Zooms on hover) */}
       <div style={styles.imageWrapper}>
         <motion.img
-          src={article.image}
+          src={article.image || "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800&auto=format&fit=crop"}
           loading="lazy"
           alt={article.title}
           style={styles.cardImage}
@@ -144,8 +176,14 @@ const BentoCard: React.FC<{ article: BlogPostData; onClick: () => void }> = ({ a
       >
         {/* Top Meta */}
         <div style={styles.metaRow}>
-          <span style={styles.categoryBadge}>{article.category}</span>
+          <span style={styles.categoryBadge}>{article.category || 'TRANSMISSION'}</span>
           <span style={styles.dateText}>{article.date}</span>
+          {article.readTime && (
+            <>
+              <span style={{ opacity: 0.5 }}>•</span>
+              <span style={styles.dateText}>{article.readTime}</span>
+            </>
+          )}
         </div>
 
         {/* Title */}
@@ -155,6 +193,13 @@ const BentoCard: React.FC<{ article: BlogPostData; onClick: () => void }> = ({ a
         }}>
           {article.title}
         </h3>
+
+        {/* Author Line */}
+        {article.authorName && (
+          <div style={{ marginTop: '10px', fontSize: '0.85rem', opacity: 0.8, fontFamily: CONFIG.fontMono }}>
+            BY {article.authorName.toUpperCase()}
+          </div>
+        )}
 
         {/* Read More Arrow (Only visible on hover) */}
         <motion.div

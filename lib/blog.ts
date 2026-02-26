@@ -6,11 +6,13 @@ export interface BlogPostData {
     excerpt: string;
     content: string;
     category: string;
-    image: string;
+    image?: string;
     date: string;
     colSpan?: number;
     rowSpan?: number;
     createdAt?: number;
+    authorName?: string;
+    readTime?: string;
 }
 
 const BLOG_COLLECTION = "nexus_blog_posts";
@@ -26,7 +28,9 @@ export const SAMPLE_POSTS: BlogPostData[] = [
         date: "FEB 10, 2026",
         colSpan: 1,
         rowSpan: 1,
-        createdAt: Date.now()
+        createdAt: Date.now(),
+        authorName: "SYSTEM CONFIG",
+        readTime: "3 MIN"
     }
 ];
 

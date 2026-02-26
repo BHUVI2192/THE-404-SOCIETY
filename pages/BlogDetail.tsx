@@ -4,17 +4,51 @@ import { useParams, NavLink } from 'react-router-dom';
 import { Section, ScrollReveal, GlitchText, Button } from '../components/UI';
 import { getBlogPosts, BlogPostData } from '../lib/blog';
 import { ArrowLeft, Clock, Tag, Share2, Terminal, Loader2 } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 const BlogDetail: React.FC = () => {
   const { blogId } = useParams<{ blogId: string }>();
-  const [post, setPost] = useState<BlogPostData | null | undefined>(undefined); // undefined=loading, null=not found
+  const [post, setPost] = useState<BlogPostData | null | undefined>(undefined);
+  const [nextPost, setNextPost] = useState<BlogPostData | null>(null);
+  const [relatedPosts, setRelatedPosts] = useState<BlogPostData[]>([]);
 
   useEffect(() => {
     getBlogPosts().then(posts => {
-      const found = posts.find(p => p.id === blogId);
-      setPost(found || null);
+      const currentIndex = posts.findIndex(p => p.id === blogId);
+      const found = currentIndex !== -1 ? posts[currentIndex] : null;
+      setPost(found);
+
+      if (found) {
+        // Next post logic (wrapping around if necessary)
+        const next = currentIndex < posts.length - 1 ? posts[currentIndex + 1] : posts[0];
+        setNextPost(next !== found ? next : null); // Don't show next if it's the only post
+
+        // Related posts logic (same category, excluding current)
+        const related = posts.filter(p => p.category === found.category && p.id !== found.id).slice(0, 3);
+        setRelatedPosts(related);
+      }
     });
+
+    window.scrollTo(0, 0);
   }, [blogId]);
+
+  const handleShare = async () => {
+    if (navigator.share && post) {
+      try {
+        await navigator.share({
+          title: post.title,
+          text: post.excerpt,
+          url: window.location.href,
+        });
+      } catch (err) {
+        console.log('Error sharing:', err);
+      }
+    } else {
+      // Fallback: Copy to clipboard
+      navigator.clipboard.writeText(window.location.href);
+      alert("Link copied to clipboard!");
+    }
+  };
 
   if (post === undefined) {
     return (
@@ -42,9 +76,21 @@ const BlogDetail: React.FC = () => {
 
   return (
     <>
+      <Helmet>
+        <title>{post.title} | The 404 Society Blog</title>
+        <meta name="description" content={post.content ? post.content.substring(0, 150) + '...' : 'Read this transmission from The 404 Society.'} />
+        <meta property="og:title" content={post.title} />
+        <meta property="og:image" content={post.image} />
+        <meta property="og:type" content="article" />
+      </Helmet>
       {/* Full-width Rectangular Banner */}
       <div className="relative w-full h-48 md:h-[400px] 2xl:h-[500px] overflow-hidden bg-black flex items-center justify-center group">
-        <img src={post.image} alt={post.title} className="w-full h-full object-cover opacity-90 transition-transform duration-1000 group-hover:scale-105" loading="lazy" />
+        <img
+          src={post.image || "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800&auto=format&fit=crop"}
+          alt={post.title}
+          className="w-full h-full object-cover opacity-90 transition-transform duration-1000 group-hover:scale-105"
+          loading="lazy"
+        />
 
         {/* Subtle Gradient Overlay for Text Legibility */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60 pointer-events-none" />
@@ -67,7 +113,7 @@ const BlogDetail: React.FC = () => {
             <span className="text-xs font-mono text-white uppercase border border-white/30 px-2.5 py-1 rounded-sm font-bold bg-white/10">{post.category}</span>
           </div>
           <div className="w-px h-4 bg-white/20"></div>
-          <button className="text-white hover:text-neutral-300 transition-colors" title="Share Transmission">
+          <button onClick={handleShare} className="text-white hover:text-neutral-300 transition-colors" title="Share Transmission">
             <Share2 size={16} />
           </button>
         </div>
@@ -90,16 +136,62 @@ const BlogDetail: React.FC = () => {
             />
           </ScrollReveal>
 
-          {/* Footer Navigation */}
-          <ScrollReveal delay={0.4} className="mt-20 pt-12 border-t border-black/10 flex flex-col md:flex-row justify-between items-center gap-8 mb-24">
+          {/* Author Block */}
+          {post.authorName && (
+            <ScrollReveal delay={0.3} className="mt-16 pt-8 border-t border-black/10 flex items-center gap-6">
+              <div className="w-16 h-16 rounded-full bg-neutral-200 flex items-center justify-center font-black text-2xl text-neutral-500 uppercase">
+                {post.authorName.charAt(0)}
+              </div>
+              <div>
+                <h4 className="text-sm font-mono tracking-widest text-neutral-500 uppercase mb-1">Written By</h4>
+                <p className="font-bold text-xl uppercase tracking-tight">{post.authorName}</p>
+                <p className="text-sm text-neutral-600 font-medium">Core Member, The 404 Society</p>
+              </div>
+            </ScrollReveal>
+          )}
+
+          {/* Footer Navigation (Next Post) */}
+          <ScrollReveal delay={0.4} className="mt-12 pt-12 border-t border-black/10 flex flex-col md:flex-row justify-between items-center gap-8 mb-24">
             <div className="text-[10px] font-mono text-neutral-400 uppercase tracking-[0.2em] flex items-center gap-2">
               <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
               End of Transmission // Seq_Ref: {post.id}
             </div>
-            <NavLink to="/blog">
-              <Button variant="outline" className="text-xs">Next Transmission</Button>
-            </NavLink>
+
+            {nextPost ? (
+              <NavLink to={`/blog/${nextPost.id}`}>
+                <Button variant="outline" className="text-xs group flex items-center gap-2">
+                  Next: {nextPost.title.substring(0, 20)}... <ArrowLeft size={14} className="rotate-180 transition-transform group-hover:translate-x-1" />
+                </Button>
+              </NavLink>
+            ) : (
+              <NavLink to="/blog">
+                <Button variant="outline" className="text-xs">Return to Feed</Button>
+              </NavLink>
+            )}
           </ScrollReveal>
+
+          {/* Related Posts Section */}
+          {relatedPosts.length > 0 && (
+            <ScrollReveal delay={0.5} className="mb-32">
+              <h3 className="text-2xl font-black uppercase tracking-tighter mb-8 border-l-4 border-black pl-4">Related Transmissions</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {relatedPosts.map(related => (
+                  <NavLink key={related.id} to={`/blog/${related.id}`} className="group block">
+                    <div className="aspect-video w-full bg-neutral-100 overflow-hidden relative mb-4">
+                      <img
+                        src={related.image || "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800&auto=format&fit=crop"}
+                        alt={related.title}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                    </div>
+                    <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-neutral-500 block mb-2">{related.category}</span>
+                    <h4 className="font-bold text-lg leading-tight group-hover:underline decoration-2 underline-offset-4">{related.title}</h4>
+                  </NavLink>
+                ))}
+              </div>
+            </ScrollReveal>
+          )}
+
         </div>
       </Section>
     </>
