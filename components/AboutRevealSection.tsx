@@ -6,13 +6,13 @@ import { useCircleTransition } from "../src/hooks/useCircleTransition";
 const CONFIG = {
     text: "WHO WE ARE",
     images: [
-        { id: 1, src: "the core.jpg", left: "2%", top: "15vh", rot: "-5deg" },
-        { id: 2, src: "hrishi.jpg", left: "18%", top: "55vh", rot: "3deg" },
-        { id: 3, src: "workspac.jpg", left: "35%", top: "10vh", rot: "-2deg" },
-        { id: 4, src: "github.jpg", left: "48%", top: "60vh", rot: "4deg" },
-        { id: 5, src: "bhu.jpg", left: "65%", top: "10vh", rot: "-2deg" },
-        { id: 6, src: "group.jpg", left: "78%", top: "15vh", rot: "-4deg" }, // Adjusted from 82%
-        { id: 7, src: "WhatsApp Image 2025-10-29 at 17.38.31_4dcd0610.jpg", left: "92%", top: "60vh", rot: "4deg" }, // Adjusted from 86%
+        { id: 1, src: "/the core.jpg", left: "2%", top: "15vh", rot: "-5deg" },
+        { id: 2, src: "/hrishi.jpg", left: "18%", top: "55vh", rot: "3deg" },
+        { id: 3, src: "/workspac.jpg", left: "35%", top: "10vh", rot: "-2deg" },
+        { id: 4, src: "/github.jpg", left: "48%", top: "60vh", rot: "4deg" },
+        { id: 5, src: "/bhu.jpg", left: "65%", top: "10vh", rot: "-2deg" },
+        { id: 6, src: "/group.jpg", left: "78%", top: "15vh", rot: "-4deg" }, // Adjusted from 82%
+        { id: 7, src: "/WhatsApp Image 2025-10-29 at 17.38.31_4dcd0610.jpg", left: "92%", top: "60vh", rot: "4deg" }, // Adjusted from 86%
     ],
     fontFamily: "'Manrope', sans-serif",
 };
