@@ -1,3 +1,4 @@
+import { collection, getDocs, doc, deleteDoc, addDoc, query, orderBy, where } from "firebase/firestore";
 import { db } from "./firebase";
 
 export interface NewsletterSubscriber {
@@ -10,29 +11,47 @@ export interface NewsletterSubscriber {
 const NEWSLETTER_COLLECTION = "nexus_newsletter_subscribers";
 
 export async function getSubscribers(): Promise<NewsletterSubscriber[]> {
-    return db.get(NEWSLETTER_COLLECTION).sort((a: any, b: any) => b.subscribedAt - a.subscribedAt);
+    try {
+        const subsRef = collection(db, NEWSLETTER_COLLECTION);
+        const q = query(subsRef, orderBy("subscribedAt", "desc"));
+        const snapshot = await getDocs(q);
+        return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as NewsletterSubscriber));
+    } catch (error) {
+        console.error("Error getting subscribers:", error);
+        return [];
+    }
 }
 
 export async function subscribeToNewsletter(email: string, name?: string): Promise<void> {
-    const trimmedEmail = email.toLowerCase().trim();
-    const subs = await getSubscribers();
+    try {
+        const trimmedEmail = email.toLowerCase().trim();
+        const subsRef = collection(db, NEWSLETTER_COLLECTION);
 
-    if (subs.some(s => s.email === trimmedEmail)) {
-        throw new Error("This email is already subscribed!");
+        // Check for existing subscription
+        const qCheck = query(subsRef, where("email", "==", trimmedEmail));
+        const checkSnapshot = await getDocs(qCheck);
+        if (!checkSnapshot.empty) {
+            throw new Error("This email is already subscribed!");
+        }
+
+        const newSub = {
+            email: trimmedEmail,
+            name: name?.trim() || "",
+            subscribedAt: Date.now(),
+        };
+
+        await addDoc(subsRef, newSub);
+    } catch (error) {
+        console.error("Error subscribing to newsletter:", error);
+        throw error; // re-throw so the UI can show the error
     }
-
-    const newSub = {
-        id: db.generateId(),
-        email: trimmedEmail,
-        name: name?.trim() || "",
-        subscribedAt: Date.now(),
-    };
-
-    db.set(NEWSLETTER_COLLECTION, [newSub, ...subs]);
 }
 
 export async function unsubscribeById(id: string): Promise<void> {
-    const subs = await getSubscribers();
-    const filtered = subs.filter(s => s.id !== id);
-    db.set(NEWSLETTER_COLLECTION, filtered);
+    try {
+        const docRef = doc(db, NEWSLETTER_COLLECTION, id);
+        await deleteDoc(docRef);
+    } catch (error) {
+        console.error("Error unsubscribing by id:", error);
+    }
 }

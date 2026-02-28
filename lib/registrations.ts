@@ -1,3 +1,4 @@
+import { collection, getDocs, doc, deleteDoc, addDoc, query, orderBy } from "firebase/firestore";
 import { db } from "./firebase";
 
 export interface Registration {
@@ -13,22 +14,33 @@ export interface Registration {
 const REG_COLLECTION = "nexus_registrations";
 
 export const getRegistrations = async (): Promise<Registration[]> => {
-    return db.get(REG_COLLECTION).sort((a: any, b: any) => b.createdAt - a.createdAt);
+    try {
+        const regsRef = collection(db, REG_COLLECTION);
+        const q = query(regsRef, orderBy("createdAt", "desc"));
+        const snapshot = await getDocs(q);
+        return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Registration));
+    } catch (error) {
+        console.error("Error getting registrations:", error);
+        return [];
+    }
 };
 
 export const saveRegistration = async (reg: Omit<Registration, 'id'>) => {
     try {
-        const regs = await getRegistrations();
-        const newReg = { ...reg, id: db.generateId(), createdAt: Date.now() };
-        db.set(REG_COLLECTION, [newReg, ...regs]);
-        return { id: newReg.id };
+        const regsRef = collection(db, REG_COLLECTION);
+        const newReg = { ...reg, createdAt: Date.now() };
+        const docRef = await addDoc(regsRef, newReg);
+        return { id: docRef.id };
     } catch (error) {
         console.error("Error saving registration:", error);
     }
 };
 
 export const deleteRegistration = async (id: string) => {
-    const regs = await getRegistrations();
-    const filtered = regs.filter(r => r.id !== id);
-    db.set(REG_COLLECTION, filtered);
+    try {
+        const docRef = doc(db, REG_COLLECTION, id);
+        await deleteDoc(docRef);
+    } catch (error) {
+        console.error("Error deleting registration:", error);
+    }
 };

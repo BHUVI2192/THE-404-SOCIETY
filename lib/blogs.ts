@@ -1,3 +1,4 @@
+import { collection, getDocs, doc, getDoc, addDoc, updateDoc, deleteDoc, query, orderBy } from "firebase/firestore";
 import { db } from "./firebase";
 
 export interface BlogData {
@@ -15,61 +16,66 @@ export interface BlogData {
 
 const BLOGS_COLLECTION = "nexus_blogs";
 
-// Initial Mock Data
-const MOCK_BLOGS: BlogData[] = [
-    {
-        id: "1",
-        title: "Getting Started with Web Development",
-        author: "404 Society",
-        category: "Tutorial",
-        content: "Learn the basics of web development and build your first website.",
-        img: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=800&auto=format&fit=crop",
-        excerpt: "A comprehensive guide to starting your web development journey.",
-        status: "published",
-        createdAt: Date.now(),
-        updatedAt: Date.now()
-    }
-];
-
 export const getBlogs = async (): Promise<BlogData[]> => {
-    let data = db.get(BLOGS_COLLECTION);
-    if (data.length === 0) {
-        db.set(BLOGS_COLLECTION, MOCK_BLOGS);
-        data = MOCK_BLOGS;
+    try {
+        const blogsRef = collection(db, BLOGS_COLLECTION);
+        const q = query(blogsRef, orderBy("createdAt", "desc"));
+        const snapshot = await getDocs(q);
+        const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as BlogData));
+        return data.sort((a: any, b: any) => (b.updatedAt || b.createdAt) - (a.updatedAt || a.createdAt));
+    } catch (e) {
+        console.error("Error getting blogs:", e);
+        return [];
     }
-    return data.sort((a: any, b: any) => (b.updatedAt || b.createdAt) - (a.updatedAt || a.createdAt));
 };
 
 export const getBlogById = async (id: string): Promise<BlogData | null> => {
-    const blogs = await getBlogs();
-    return blogs.find(b => b.id === id) || null;
+    try {
+        const docRef = doc(db, BLOGS_COLLECTION, id);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+            return { id: docSnap.id, ...docSnap.data() } as BlogData;
+        }
+        return null;
+    } catch (e) {
+        console.error("Error getting blog by id:", e);
+        return null;
+    }
 };
 
 export const addBlog = async (blog: Omit<BlogData, "id">) => {
-    const blogs = await getBlogs();
-    const newBlog = { 
-        ...blog, 
-        id: db.generateId(), 
-        createdAt: Date.now(),
-        updatedAt: Date.now()
-    };
-    db.set(BLOGS_COLLECTION, [...blogs, newBlog]);
-    return newBlog;
+    try {
+        const blogsRef = collection(db, BLOGS_COLLECTION);
+        const newBlog = {
+            ...blog,
+            createdAt: Date.now(),
+            updatedAt: Date.now()
+        };
+        const docRef = await addDoc(blogsRef, newBlog);
+        return { id: docRef.id, ...newBlog };
+    } catch (e) {
+        console.error("Error adding blog:", e);
+        return null;
+    }
 };
 
 export const updateBlog = async (id: string, updates: Partial<BlogData>) => {
-    const blogs = await getBlogs();
-    const updatedBlogs = blogs.map(blog =>
-        blog.id === id 
-            ? { ...blog, ...updates, updatedAt: Date.now() } 
-            : blog
-    );
-    db.set(BLOGS_COLLECTION, updatedBlogs);
-    return updatedBlogs.find(b => b.id === id);
+    try {
+        const docRef = doc(db, BLOGS_COLLECTION, id);
+        const updateData = { ...updates, updatedAt: Date.now() };
+        await updateDoc(docRef, updateData);
+        return { id, ...updateData };
+    } catch (e) {
+        console.error("Error updating blog:", e);
+        return null;
+    }
 };
 
 export const deleteBlog = async (id: string) => {
-    const blogs = await getBlogs();
-    const filtered = blogs.filter(blog => blog.id !== id);
-    db.set(BLOGS_COLLECTION, filtered);
+    try {
+        const docRef = doc(db, BLOGS_COLLECTION, id);
+        await deleteDoc(docRef);
+    } catch (e) {
+        console.error("Error deleting blog:", e);
+    }
 };

@@ -1,3 +1,4 @@
+import { collection, getDocs, doc, getDoc, addDoc, updateDoc, deleteDoc, query, orderBy } from "firebase/firestore";
 import { db } from "./firebase";
 
 export interface BlogPostData {
@@ -17,47 +18,44 @@ export interface BlogPostData {
 
 const BLOG_COLLECTION = "nexus_blog_posts";
 
-export const SAMPLE_POSTS: BlogPostData[] = [
-    {
-        id: "1",
-        title: "The Future of Open Source",
-        excerpt: "Why contributing to open source is more important than ever.",
-        content: "Open source is the backbone of modern technology...",
-        category: "TECH",
-        image: "https://images.unsplash.com/photo-1618401471353-b98aadebc25a?q=80&w=800&auto=format&fit=crop",
-        date: "FEB 10, 2026",
-        colSpan: 1,
-        rowSpan: 1,
-        createdAt: Date.now(),
-        authorName: "SYSTEM CONFIG",
-        readTime: "3 MIN"
-    }
-];
-
 export const getBlogPosts = async (): Promise<BlogPostData[]> => {
-    let data = db.get(BLOG_COLLECTION);
-    if (data.length === 0) {
-        db.set(BLOG_COLLECTION, SAMPLE_POSTS);
-        data = SAMPLE_POSTS;
+    try {
+        const blogsRef = collection(db, BLOG_COLLECTION);
+        const q = query(blogsRef, orderBy("createdAt", "desc"));
+        const snapshot = await getDocs(q);
+        return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as BlogPostData));
+    } catch (e) {
+        console.error("Error getting blog posts:", e);
+        return [];
     }
-    return data.sort((a: any, b: any) => b.createdAt - a.createdAt);
 };
 
 export const addBlogPost = async (post: Omit<BlogPostData, 'id'>) => {
-    const posts = await getBlogPosts();
-    const newPost = { ...post, id: db.generateId(), createdAt: Date.now() };
-    db.set(BLOG_COLLECTION, [newPost, ...posts]);
-    return { id: newPost.id };
+    try {
+        const blogsRef = collection(db, BLOG_COLLECTION);
+        const newPost = { ...post, createdAt: Date.now() };
+        const docRef = await addDoc(blogsRef, newPost);
+        return { id: docRef.id };
+    } catch (e) {
+        console.error("Error adding blog post:", e);
+        return { id: "" };
+    }
 };
 
 export const updateBlogPost = async (id: string, data: Partial<BlogPostData>) => {
-    const posts = await getBlogPosts();
-    const updated = posts.map(p => p.id === id ? { ...p, ...data } : p);
-    db.set(BLOG_COLLECTION, updated);
+    try {
+        const docRef = doc(db, BLOG_COLLECTION, id);
+        await updateDoc(docRef, data);
+    } catch (e) {
+        console.error("Error updating blog post:", e);
+    }
 };
 
 export const deleteBlogPost = async (id: string) => {
-    const posts = await getBlogPosts();
-    const filtered = posts.filter(p => p.id !== id);
-    db.set(BLOG_COLLECTION, filtered);
+    try {
+        const docRef = doc(db, BLOG_COLLECTION, id);
+        await deleteDoc(docRef);
+    } catch (e) {
+        console.error("Error deleting blog post:", e);
+    }
 };

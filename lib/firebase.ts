@@ -1,21 +1,18 @@
-// Local Storage Utility to replace Firebase
-export const db = {
-  // Mimic the collection structure
-  get: (key: string) => {
-    const data = localStorage.getItem(key);
-    return data ? JSON.parse(data) : [];
-  },
-  set: (key: string, data: any[]) => {
-    localStorage.setItem(key, JSON.stringify(data));
-  },
-  generateId: () => Math.random().toString(36).substring(2, 11)
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import { getStorage } from "firebase/storage";
+
+const firebaseConfig = {
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
-// Mock Auth and Storage for minimal disruption
-export const auth = {
-  currentUser: { uid: "local-admin", email: "admin@the404society.in" }
-};
-
-export const storage = {
-  // Empty mock for storage
-};
+export const app = initializeApp(firebaseConfig);
+export const db = getFirestore(app);
+export const auth = getAuth(app);
+export const storage = getStorage(app);

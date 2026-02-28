@@ -1,3 +1,4 @@
+import { collection, getDocs, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "./firebase";
 import { EmailTemplate } from "../types";
 
@@ -95,47 +96,67 @@ The 404 Society Team`,
 
 // Initialize templates if they don't exist
 export const initializeTemplates = async () => {
-  const templates = await getEmailTemplates();
-  if (templates.length === 0) {
-    for (const template of DEFAULT_TEMPLATES) {
-      await db.set(EMAIL_TEMPLATES_COLLECTION, [
-        ...await getEmailTemplates(),
-        {
-          ...template,
-          id: db.generateId(),
-        },
-      ]);
+  try {
+    const templates = await getEmailTemplates();
+    if (templates.length === 0) {
+      const templatesRef = collection(db, EMAIL_TEMPLATES_COLLECTION);
+      for (const template of DEFAULT_TEMPLATES) {
+        // Use the trigger string as the document ID
+        const docRef = doc(templatesRef, template.trigger);
+        await setDoc(docRef, { ...template, id: template.trigger });
+      }
     }
+  } catch (error) {
+    console.error("Error initializing templates:", error);
   }
 };
 
 export const getEmailTemplates = async (): Promise<EmailTemplate[]> => {
-  return db.get(EMAIL_TEMPLATES_COLLECTION);
+  try {
+    const templatesRef = collection(db, EMAIL_TEMPLATES_COLLECTION);
+    const snapshot = await getDocs(templatesRef);
+    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as EmailTemplate));
+  } catch (error) {
+    console.error("Error getting templates:", error);
+    return [];
+  }
 };
 
 export const getEmailTemplate = async (trigger: string): Promise<EmailTemplate | undefined> => {
-  const templates = await getEmailTemplates();
-  return templates.find((t) => t.trigger === trigger);
+  try {
+    // Attempt to load from doc ID (trigger setup)
+    const docRef = doc(db, EMAIL_TEMPLATES_COLLECTION, trigger);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return { id: docSnap.id, ...docSnap.data() } as EmailTemplate;
+    }
+    // Fallback search
+    const templates = await getEmailTemplates();
+    return templates.find((t) => t.trigger === trigger);
+  } catch (error) {
+    console.error("Error getting template by trigger:", error);
+    return undefined;
+  }
 };
 
 export const updateEmailTemplate = async (id: string, data: Partial<EmailTemplate>) => {
-  const templates = await getEmailTemplates();
-  const updated = templates.map((t) =>
-    t.id === id
-      ? {
-          ...t,
-          ...data,
-          updatedAt: Date.now(),
-        }
-      : t
-  );
-  db.set(EMAIL_TEMPLATES_COLLECTION, updated);
+  try {
+    const docRef = doc(db, EMAIL_TEMPLATES_COLLECTION, id);
+    await updateDoc(docRef, { ...data, updatedAt: Date.now() });
+  } catch (error) {
+    console.error("Error updating template:", error);
+  }
 };
 
 export const toggleEmailTemplate = async (id: string) => {
-  const templates = await getEmailTemplates();
-  const template = templates.find((t) => t.id === id);
-  if (template) {
-    await updateEmailTemplate(id, { enabled: !template.enabled });
+  try {
+    const docRef = doc(db, EMAIL_TEMPLATES_COLLECTION, id);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      const current = docSnap.data().enabled;
+      await updateDoc(docRef, { enabled: !current, updatedAt: Date.now() });
+    }
+  } catch (error) {
+    console.error("Error toggling template:", error);
   }
 };

@@ -1,3 +1,4 @@
+import { collection, getDocs, doc, getDoc, addDoc, updateDoc, deleteDoc, query, orderBy } from "firebase/firestore";
 import { db } from "./firebase";
 
 export interface EventData {
@@ -16,30 +17,57 @@ export interface EventData {
 const EVENTS_COLLECTION = "nexus_events";
 
 export const getEvents = async (): Promise<EventData[]> => {
-    let data = db.get(EVENTS_COLLECTION);
-    return data.sort((a: any, b: any) => b.createdAt - a.createdAt);
+    try {
+        const eventsRef = collection(db, EVENTS_COLLECTION);
+        const q = query(eventsRef, orderBy("createdAt", "desc"));
+        const snapshot = await getDocs(q);
+        return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as EventData));
+    } catch (e) {
+        console.error("Error getting events:", e);
+        return [];
+    }
 };
 
 export const getEventById = async (id: string): Promise<EventData | null> => {
-    const events = await getEvents();
-    return events.find(e => e.id === id) || null;
+    try {
+        const docRef = doc(db, EVENTS_COLLECTION, id);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+            return { id: docSnap.id, ...docSnap.data() } as EventData;
+        }
+        return null;
+    } catch (e) {
+        console.error("Error getting event by id:", e);
+        return null;
+    }
 };
 
 export const addEvent = async (event: Omit<EventData, "id">) => {
-    const events = await getEvents();
-    const newEvent = { ...event, id: db.generateId(), createdAt: Date.now() };
-    db.set(EVENTS_COLLECTION, [newEvent, ...events]);
-    return newEvent.id;
+    try {
+        const eventsRef = collection(db, EVENTS_COLLECTION);
+        const newEvent = { ...event, createdAt: Date.now() };
+        const docRef = await addDoc(eventsRef, newEvent);
+        return docRef.id;
+    } catch (e) {
+        console.error("Error adding event:", e);
+        return null;
+    }
 };
 
 export const updateEvent = async (id: string, data: Partial<EventData>) => {
-    const events = await getEvents();
-    const updated = events.map(e => e.id === id ? { ...e, ...data } : e);
-    db.set(EVENTS_COLLECTION, updated);
+    try {
+        const docRef = doc(db, EVENTS_COLLECTION, id);
+        await updateDoc(docRef, data);
+    } catch (e) {
+        console.error("Error updating event:", e);
+    }
 };
 
 export const deleteEvent = async (id: string) => {
-    const events = await getEvents();
-    const filtered = events.filter(e => e.id !== id);
-    db.set(EVENTS_COLLECTION, filtered);
+    try {
+        const docRef = doc(db, EVENTS_COLLECTION, id);
+        await deleteDoc(docRef);
+    } catch (e) {
+        console.error("Error deleting event:", e);
+    }
 };

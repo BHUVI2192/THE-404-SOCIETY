@@ -1,3 +1,4 @@
+import { collection, getDocs, doc, deleteDoc, addDoc, updateDoc, query, orderBy } from "firebase/firestore";
 import { db } from "./firebase";
 
 export interface CommunityApp {
@@ -25,33 +26,46 @@ export interface CommunityApp {
 const COMMUNITY_COLLECTION = "nexus_community_applications";
 
 export const getCommunityApps = async (): Promise<CommunityApp[]> => {
-    return db.get(COMMUNITY_COLLECTION).sort((a: any, b: any) => b.createdAt - a.createdAt);
+    try {
+        const appsRef = collection(db, COMMUNITY_COLLECTION);
+        const q = query(appsRef, orderBy("createdAt", "desc"));
+        const snapshot = await getDocs(q);
+        return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as CommunityApp));
+    } catch (error) {
+        console.error("Error getting community apps:", error);
+        return [];
+    }
 };
 
 export const saveCommunityApp = async (app: Omit<CommunityApp, 'id' | 'status'>) => {
     try {
-        const apps = await getCommunityApps();
+        const appsRef = collection(db, COMMUNITY_COLLECTION);
         const newApp = {
             ...app,
-            id: db.generateId(),
             status: "pending" as const,
             createdAt: Date.now()
         };
-        db.set(COMMUNITY_COLLECTION, [newApp, ...apps]);
-        return { id: newApp.id };
+        const docRef = await addDoc(appsRef, newApp);
+        return { id: docRef.id };
     } catch (error) {
         console.error("Error saving community app:", error);
     }
 };
 
 export const updateCommunityApp = async (id: string, data: Partial<CommunityApp>) => {
-    const apps = await getCommunityApps();
-    const updated = apps.map(a => a.id === id ? { ...a, ...data } : a);
-    db.set(COMMUNITY_COLLECTION, updated);
+    try {
+        const docRef = doc(db, COMMUNITY_COLLECTION, id);
+        await updateDoc(docRef, { ...data, updatedAt: Date.now() });
+    } catch (error) {
+        console.error("Error updating community app:", error);
+    }
 };
 
 export const deleteCommunityApp = async (id: string) => {
-    const apps = await getCommunityApps();
-    const filtered = apps.filter(a => a.id !== id);
-    db.set(COMMUNITY_COLLECTION, filtered);
+    try {
+        const docRef = doc(db, COMMUNITY_COLLECTION, id);
+        await deleteDoc(docRef);
+    } catch (error) {
+        console.error("Error deleting community app:", error);
+    }
 };
