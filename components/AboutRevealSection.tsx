@@ -31,7 +31,8 @@ const WINGS = [
         role: "CREATIVE AGENCY",
         desc: "We craft digital experiences that matter. From branding to UI/UX design, our creative studio defines the visual language of student-driven innovation.",
         color: "#fff",
-        text: "#000"
+        text: "#000",
+        link: "https://instagram.com/the404society"
     },
     {
         id: "02",
@@ -39,7 +40,8 @@ const WINGS = [
         role: "TALENT & HIRING",
         desc: "Connecting PESITM's top student developers with industry internships, placements & world-class career opportunities.",
         color: "#111",
-        text: "#fff"
+        text: "#fff",
+        link: "https://linkedin.com/company/the404society"
     },
     {
         id: "03",
@@ -47,7 +49,8 @@ const WINGS = [
         role: "MEDIA & PRODUCTION",
         desc: "Capturing tech event moments & framing narratives. Led by Rudresh J, we turn Shivamogga's coding culture into cinematic history.",
         color: "#f0f0f0",
-        text: "#000"
+        text: "#000",
+        link: "https://instagram.com/the404society"
     }
 ];
 
@@ -415,7 +418,13 @@ const WingsSection = () => {
                             <p className="wing-desc" style={styles.wingDesc}>{wing.desc}</p>
                         </div>
                         <div style={styles.wingBottom}>
-                            <button className="wing-btn" style={{ ...styles.wingButton, borderColor: wing.text }}>EXPLORE</button>
+                            <button
+                                className="wing-btn"
+                                style={{ ...styles.wingButton, borderColor: wing.text }}
+                                onClick={() => window.open(wing.link, "_blank")}
+                            >
+                                EXPLORE
+                            </button>
                         </div>
                     </div>
                 </div>

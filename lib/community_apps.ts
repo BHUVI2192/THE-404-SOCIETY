@@ -9,6 +9,8 @@ export interface CommunityApp {
     college: string;
     year: string;
     interest?: string;
+    skills?: string;
+    reason?: string;
     social?: string;
     status: "pending" | "approved" | "rejected" | "waitlisted";
     memberId?: string;

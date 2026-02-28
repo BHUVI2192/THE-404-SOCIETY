@@ -328,16 +328,19 @@ const QuestionBlock = ({ index, activeIndex, data, value, onChange, onSelection,
             ))}
           </div>
         ) : data.type === "textarea" ? (
-          <div style={{ position: 'relative', width: '100%' }}>
+          <div style={{ width: '100%' }}>
             <textarea
               placeholder={data.placeholder}
               value={value}
               onChange={(e) => onChange(data.id, e.target.value)}
               style={{ ...styles.input, height: '150px', resize: 'vertical' }}
             />
+            <div style={styles.actionRow}>
+              <button onClick={onNext} style={styles.nextBtn}>NEXT &rarr;</button>
+            </div>
           </div>
         ) : (
-          <div style={{ position: 'relative', width: '100%' }}>
+          <div style={{ width: '100%' }}>
             <input
               type={data.type === "url" ? "text" : data.type}
               placeholder={data.placeholder}
@@ -347,7 +350,10 @@ const QuestionBlock = ({ index, activeIndex, data, value, onChange, onSelection,
               onKeyDown={onKeyDown}
               style={styles.input}
             />
-            <div style={styles.enterHint}>Press <strong>Enter &#8629;</strong></div>
+            <div style={styles.actionRow}>
+              <span style={styles.enterHintText}>Press <strong>Enter &#8629;</strong> or </span>
+              <button onClick={onNext} style={styles.nextBtn}>NEXT &rarr;</button>
+            </div>
           </div>
         )}
       </div>
@@ -374,7 +380,9 @@ const styles: Record<string, React.CSSProperties> = {
 
   inputWrapper: { width: "100%" },
   input: { width: "100%", fontSize: "clamp(1.5rem, 3vw, 2.5rem)", fontFamily: "'Manrope', sans-serif", border: "none", borderBottom: "2px solid #ddd", padding: "10px 0", backgroundColor: "transparent", color: "#000", fontWeight: "500", borderRadius: "0", transition: "border-color 0.3s ease" },
-  enterHint: { position: "absolute", right: 0, bottom: "20px", fontFamily: "'Space Mono', monospace", fontSize: "0.8rem", color: "#999", pointerEvents: "none" },
+  actionRow: { display: "flex", alignItems: "center", justifyContent: "flex-end", gap: "10px", marginTop: "15px" },
+  enterHintText: { fontFamily: "'Space Mono', monospace", fontSize: "0.8rem", color: "#999" },
+  nextBtn: { padding: "8px 20px", backgroundColor: "#000", color: "#fff", border: "none", borderRadius: "20px", fontFamily: "'Space Mono', monospace", fontSize: "0.8rem", fontWeight: "700", cursor: "pointer", transition: "transform 0.2s" },
 
   optionsGrid: { display: "flex", flexWrap: "wrap", gap: "15px" },
   optionBtn: { padding: "15px 30px", fontSize: "1.2rem", fontFamily: "'Manrope', sans-serif", fontWeight: "600", border: "1px solid #ddd", backgroundColor: "#fff", cursor: "pointer", borderRadius: "50px", transition: "all 0.2s ease" },
