@@ -6,7 +6,7 @@ import { useCircleTransition } from "../src/hooks/useCircleTransition";
 const CONFIG = {
     text: "WHO WE ARE",
     images: [
-        { id: 1, src: "/the core.jpg", left: "2%", top: "15vh", rot: "-5deg" },
+        { id: 1, src: "/the core.JPG", left: "2%", top: "15vh", rot: "-5deg" },
         { id: 2, src: "/hrishi.jpg", left: "18%", top: "55vh", rot: "3deg" },
         { id: 3, src: "/workspac.jpg", left: "35%", top: "10vh", rot: "-2deg" },
         { id: 4, src: "/github.jpg", left: "48%", top: "60vh", rot: "4deg" },
