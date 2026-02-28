@@ -16,14 +16,30 @@ export interface BlogPostData {
     readTime?: string;
 }
 
-const BLOG_COLLECTION = "nexus_blog_posts";
+const BLOG_COLLECTION = "nexus_blogs";
 
 export const getBlogPosts = async (): Promise<BlogPostData[]> => {
     try {
         const blogsRef = collection(db, BLOG_COLLECTION);
         const q = query(blogsRef, orderBy("createdAt", "desc"));
         const snapshot = await getDocs(q);
-        return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as BlogPostData));
+        return snapshot.docs.map(doc => {
+            const data = doc.data();
+            return {
+                id: doc.id,
+                title: data.title,
+                excerpt: data.excerpt || "",
+                content: data.content || "",
+                category: data.category || "Community",
+                image: data.image || data.coverImage || data.img,
+                date: data.date || new Date(data.createdAt || Date.now()).toLocaleDateString(),
+                colSpan: data.colSpan || 1,
+                rowSpan: data.rowSpan || 1,
+                createdAt: data.createdAt,
+                authorName: data.authorName || data.author,
+                readTime: data.readTime,
+            } as BlogPostData;
+        });
     } catch (e) {
         console.error("Error getting blog posts:", e);
         return [];
