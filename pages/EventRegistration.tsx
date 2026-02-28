@@ -326,7 +326,7 @@ const TicketForm: React.FC<TicketFormProps> = ({ event }) => {
               ref={ticketLeftRef}
               className="ticket-left-half relative flex flex-col justify-between bg-black text-white overflow-hidden z-10"
               style={{
-                padding: 'clamp(20px, 5vw, 32px) clamp(20px, 5vw, 36px)',
+                padding: 'clamp(16px, 4vw, 32px) clamp(16px, 4vw, 36px)',
               }}
             >
               {/* Poster image overlay */}
@@ -359,7 +359,7 @@ const TicketForm: React.FC<TicketFormProps> = ({ event }) => {
                 />
               </div>
 
-              <div className="relative z-10 grid grid-cols-2 gap-x-4 gap-y-2 border-t border-white/20 pt-3 mt-3">
+              <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2 border-t border-white/20 pt-3 mt-3">
                 {[
                   { label: 'Date', value: event.date },
                   { label: 'Time', value: '10:00 AM' },
@@ -434,14 +434,14 @@ const TicketForm: React.FC<TicketFormProps> = ({ event }) => {
               </div>
 
               <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-3">
                   <div>
                     <label className="block text-xs font-bold uppercase tracking-[0.2em] text-gray-500 mb-1">Full Name</label>
                     <input
                       type="text" name="name"
                       value={formData.name} onChange={handleChange}
                       required
-                      className="w-full border-4 border-black p-2.5 text-sm font-bold outline-none focus:bg-gray-50 transition-colors"
+                      className="w-full border-2 md:border-4 border-black p-2 md:p-2.5 text-xs md:text-sm font-bold outline-none focus:bg-gray-50 transition-colors"
                     />
                   </div>
                   <div>
@@ -450,19 +450,19 @@ const TicketForm: React.FC<TicketFormProps> = ({ event }) => {
                       type="email" name="email"
                       value={formData.email} onChange={handleChange}
                       required
-                      className="w-full border-4 border-black p-2.5 text-sm font-bold outline-none focus:bg-gray-50 transition-colors"
+                      className="w-full border-2 md:border-4 border-black p-2 md:p-2.5 text-xs md:text-sm font-bold outline-none focus:bg-gray-50 transition-colors"
                     />
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-3">
                   <div>
                     <label className="block text-xs font-bold uppercase tracking-[0.2em] text-gray-500 mb-1">Student ID/USN</label>
                     <input
                       type="text" name="studentId"
                       value={formData.studentId} onChange={handleChange}
                       required
-                      className="w-full border-4 border-black p-2.5 text-sm font-bold outline-none focus:bg-gray-50 transition-colors"
+                      className="w-full border-2 md:border-4 border-black p-2 md:p-2.5 text-xs md:text-sm font-bold outline-none focus:bg-gray-50 transition-colors"
                     />
                   </div>
                   <div>
@@ -471,12 +471,12 @@ const TicketForm: React.FC<TicketFormProps> = ({ event }) => {
                       type="tel" name="phone"
                       value={formData.phone} onChange={handleChange}
                       required
-                      className="w-full border-4 border-black p-2.5 text-sm font-bold outline-none focus:bg-gray-50 transition-colors"
+                      className="w-full border-2 md:border-4 border-black p-2 md:p-2.5 text-xs md:text-sm font-bold outline-none focus:bg-gray-50 transition-colors"
                     />
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-3">
                   <div>
                     <label className="block text-xs font-bold uppercase tracking-[0.2em] text-gray-500 mb-1">Branch</label>
                     <input
@@ -484,7 +484,7 @@ const TicketForm: React.FC<TicketFormProps> = ({ event }) => {
                       value={formData.branch} onChange={handleChange}
                       required
                       placeholder="e.g. CSE, ISE, ECE"
-                      className="w-full border-4 border-black p-2.5 text-sm font-bold outline-none focus:bg-gray-50 transition-colors"
+                      className="w-full border-2 md:border-4 border-black p-2 md:p-2.5 text-xs md:text-sm font-bold outline-none focus:bg-gray-50 transition-colors"
                     />
                   </div>
                   <div>
@@ -493,7 +493,7 @@ const TicketForm: React.FC<TicketFormProps> = ({ event }) => {
                       name="year"
                       value={formData.year} onChange={handleChange as any}
                       required
-                      className="w-full border-4 border-black p-2.5 text-sm font-bold outline-none focus:bg-gray-50 transition-colors bg-white"
+                      className="w-full border-2 md:border-4 border-black p-2 md:p-2.5 text-xs md:text-sm font-bold outline-none focus:bg-gray-50 transition-colors bg-white"
                     >
                       <option value="" disabled>Select Year</option>
                       <option value="1st Year">1st Year</option>
@@ -510,7 +510,7 @@ const TicketForm: React.FC<TicketFormProps> = ({ event }) => {
                     type="text" name="teamName"
                     value={formData.teamName} onChange={handleChange}
                     placeholder="Leave blank if registering solo"
-                    className="w-full border-4 border-black p-2.5 text-sm font-bold outline-none focus:bg-gray-50 transition-colors"
+                    className="w-full border-2 md:border-4 border-black p-2 md:p-2.5 text-xs md:text-sm font-bold outline-none focus:bg-gray-50 transition-colors"
                   />
                 </div>
 
