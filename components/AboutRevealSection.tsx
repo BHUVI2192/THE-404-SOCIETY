@@ -133,7 +133,7 @@ const AboutRevealSection: React.FC = () => {
 
                         /* Remove ALL gap in Join CTA on mobile */
                         .cta-container {
-                            padding: 20px 0 !important;
+                            padding: 20px 0 0 0 !important;
                             margin: 0 !important;
                         }
                         .connector-line {
@@ -580,7 +580,7 @@ const styles: Record<string, React.CSSProperties> = {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        paddingBottom: '20vh'
+        paddingBottom: '5vh'
     },
     connectorLine: {
         width: '2px',
