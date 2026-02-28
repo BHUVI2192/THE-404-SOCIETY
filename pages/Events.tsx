@@ -58,7 +58,7 @@ export default function EventsPage() {
       </Helmet>
       <div ref={pageRef} className="events-page-container">
         {/* --- HEADER --- */}
-        <header className="events-header !border-b-0 min-h-[100vh] hidden md:flex flex-col items-center justify-center relative">
+        <header className="events-header !border-b-0 min-h-[100vh] flex flex-col items-center justify-center relative">
           <div className="events-header-top">
             <span className="brand-badge">THE 404 SOCIETY <span className="brand-badge-divider">//</span> CALENDAR</span>
           </div>

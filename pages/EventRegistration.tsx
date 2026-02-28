@@ -297,7 +297,7 @@ const TicketForm: React.FC<TicketFormProps> = ({ event }) => {
       </Helmet>
       <div
         className="bg-white flex flex-col relative"
-        style={{ fontFamily: "'Manrope', sans-serif", minHeight: '100vh' }}
+        style={{ fontFamily: "'Manrope', sans-serif", minHeight: '100vh', paddingTop: '80px' }}
       >
         {/* Back link */}
         <div className="flex items-center px-5 py-4 border-b border-gray-200 shrink-0">
