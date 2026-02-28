@@ -9,7 +9,8 @@ export const AdminLogin: React.FC = () => {
 
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault();
-        if (password === 'admin123') {
+        const adminSecret = import.meta.env.VITE_ADMIN_SECRET || 'admin123';
+        if (password === adminSecret) {
             localStorage.setItem('adminAuth', 'true');
             navigate('/admin');
         } else {
