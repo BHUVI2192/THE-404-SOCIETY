@@ -81,6 +81,13 @@ export const AdminLayout: React.FC = () => {
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  React.useEffect(() => {
+    const isAuthenticated = localStorage.getItem('adminAuth') === 'true';
+    if (!isAuthenticated) {
+      navigate('/admin/login');
+    }
+  }, [navigate]);
+
   return (
     <div className="adm-root">
       {/* ── Sidebar (desktop) ── */}
@@ -109,7 +116,10 @@ export const AdminLayout: React.FC = () => {
 
         <button
           className="adm-sidebar__exit"
-          onClick={() => navigate("/")}
+          onClick={() => {
+            localStorage.removeItem('adminAuth');
+            navigate('/');
+          }}
         >
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />

@@ -5,7 +5,6 @@ export const NAV_LINKS: NavLink[] = [
   { label: 'Home', path: '/' },
   { label: 'About', path: '/about' },
   { label: 'Events', path: '/events' },
-  { label: 'Community', path: '/community' },
 
 
   { label: 'Blog', path: '/blog' },

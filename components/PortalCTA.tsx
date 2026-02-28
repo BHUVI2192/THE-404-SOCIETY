@@ -5,9 +5,8 @@ import { ArrowRight } from 'lucide-react';
 import { useCircleTransition } from '../src/hooks/useCircleTransition';
 
 const PortalCTA = () => {
-    // Use the circle transition hook
     const { buttonRef, triggerTransition, maskStyle, isTransitioning } = useCircleTransition({
-        path: '/community',
+        path: '/join',
         duration: 0.8,
         delay: 0.1
     });

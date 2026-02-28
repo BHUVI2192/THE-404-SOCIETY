@@ -8,7 +8,6 @@ import { Layout } from './components/UI';
 import Home from './pages/Home';
 import About from './pages/About';
 import Events from './pages/Events';
-import Community from './pages/Community';
 import Join from './pages/Join';
 
 
@@ -25,6 +24,7 @@ import { BlogManagement } from './pages/admin/BlogManagement';
 import { RegistrationManagement } from './pages/admin/RegistrationManagement';
 import { CommunityManagement } from './pages/admin/CommunityManagement';
 import { AdminSettings } from './pages/admin/Settings';
+import { AdminLogin } from './pages/admin/AdminLogin';
 
 
 // Scroll to top helper
@@ -40,7 +40,13 @@ import Lenis from 'lenis';
 
 // Smooth Scroll Wrapper
 const SmoothScrolling = ({ children }: { children: React.ReactNode }) => {
+  const { pathname } = useLocation();
+
   React.useEffect(() => {
+    if (pathname.startsWith('/admin')) {
+      return;
+    }
+
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -61,7 +67,7 @@ const SmoothScrolling = ({ children }: { children: React.ReactNode }) => {
     return () => {
       lenis.destroy();
     };
-  }, []);
+  }, [pathname]);
 
   return <>{children}</>;
 };
@@ -74,6 +80,7 @@ const App: React.FC = () => {
           <ScrollToTop />
           <Routes>
             {/* Admin Routes (No standard Layout) */}
+            <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<AdminDashboard />} />
               <Route path="events" element={<EventManagement />} />
@@ -87,7 +94,6 @@ const App: React.FC = () => {
             <Route path="/" element={<Layout><Home /></Layout>} />
             <Route path="/about" element={<Layout><About /></Layout>} />
             <Route path="/events" element={<Layout><Events /></Layout>} />
-            <Route path="/community" element={<Layout><Community /></Layout>} />
             <Route path="/join" element={<Layout><Join /></Layout>} />
 
             <Route path="/blog" element={<Layout><Blog /></Layout>} />

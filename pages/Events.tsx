@@ -58,16 +58,14 @@ export default function EventsPage() {
       </Helmet>
       <div ref={pageRef} className="events-page-container">
         {/* --- HEADER --- */}
-        <header className="events-header">
+        <header className="events-header !border-b-0 min-h-[100vh] hidden md:flex flex-col items-center justify-center relative">
           <div className="events-header-top">
             <span className="brand-badge">THE 404 SOCIETY <span className="brand-badge-divider">//</span> CALENDAR</span>
           </div>
           <h1 className="huge-title">THE_SESSIONS</h1>
-          <p className="header-subtitle">
+          <p className="max-w-2xl text-center mx-auto text-xl md:text-2xl text-neutral-600 font-medium leading-relaxed mt-6">
             Tech workshops, hackathons &amp; coding events at PESITM Shivamogga.
           </p>
-
-          {/* Category Filter Pills */}
           {categories.length > 1 && (
             <div className="flex flex-wrap justify-center gap-3 mt-8">
               {categories.map(category => (
@@ -90,26 +88,41 @@ export default function EventsPage() {
         {/* --- THE SIDE-WAVE LIST --- */}
         <section className="events-list-container">
           {/* Header Row */}
-          <div className="events-list-header">
-            <span className="header-col-date">DATE</span>
-            <span className="header-col-details">EVENT DETAILS</span>
-            <span className="header-col-action">ACTION</span>
-          </div>
+          {filteredEvents.length > 0 && (
+            <div className="events-list-header">
+              <span className="header-col-date">DATE</span>
+              <span className="header-col-details">EVENT DETAILS</span>
+              <span className="header-col-action">ACTION</span>
+            </div>
+          )}
 
-          <div className="events-rows-wrapper">
+          <div className="events-rows-wrapper pb-32">
             {filteredEvents.length > 0 ? (
               filteredEvents.map((event) => (
                 <SideWaveRow key={event.id} event={event} />
               ))
             ) : (
-              <div className="py-20 text-center font-black uppercase text-gray-200 tracking-widest text-xl">
-                No Upcoming Sessions Scheduled.
+              <div className="min-h-screen flex flex-col items-center justify-center text-center px-4 w-full">
+                <motion.div
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.8, ease: "easeOut" }}
+                  className="flex flex-col items-center max-w-4xl mx-auto"
+                >
+                  <h2
+                    style={{ fontFamily: "'Manrope', sans-serif" }}
+                    className="text-6xl md:text-8xl lg:text-[10rem] font-black tracking-tight uppercase leading-[0.9] text-center"
+                  >
+                    <span className="text-black">SOMETHING</span> <br />
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4F46E5] to-[#10B981] inline-block">EXCITING</span> <br />
+                    <span className="text-black">IS COMING</span>
+                  </h2>
+                </motion.div>
               </div>
             )}
           </div>
         </section>
-
-        <Footer />
       </div>
     </>
   );
@@ -206,12 +219,3 @@ const SideWaveRow: React.FC<SideWaveRowProps> = ({ event }) => {
     </motion.div>
   );
 };
-
-const Footer = () => (
-  <footer className="events-footer">
-    <div className="footer-content">
-      <h3>THE 404 SOCIETY</h3>
-      <p className="footer-email">connect@the404society.in</p>
-    </div>
-  </footer>
-);

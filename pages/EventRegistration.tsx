@@ -535,7 +535,7 @@ const TicketForm: React.FC<TicketFormProps> = ({ event }) => {
             ref={confirmationSectionRef}
             className="w-full flex items-center justify-center px-4 md:px-8 py-24 md:py-32 bg-gradient-to-b from-white to-neutral-50"
           >
-            <div 
+            <div
               className="max-w-3xl w-full text-center p-12 md:p-16 border-4 border-black bg-white shadow-lg"
               style={{ fontFamily: "'Manrope', sans-serif" }}
             >
@@ -546,23 +546,23 @@ const TicketForm: React.FC<TicketFormProps> = ({ event }) => {
                 Event Registration is{' '}
                 <span style={{ color: '#22c55e' }}>Confirmed</span>
               </h2>
-              
+
               <div className="w-16 h-1 bg-black mx-auto mb-8" />
-              
+
               <p
                 className="text-base md:text-lg font-medium text-neutral-700 mb-6 leading-relaxed"
                 style={{ fontFamily: "'Manrope', sans-serif" }}
               >
                 Your seat has been successfully reserved for
               </p>
-              
+
               <h3
                 className="text-2xl md:text-3xl font-black text-black mb-8 tracking-tight"
                 style={{ fontFamily: "'Manrope', sans-serif" }}
               >
                 {event.title}
               </h3>
-              
+
               <div className="bg-neutral-100 border-2 border-neutral-200 rounded-lg p-6 mb-8 text-left">
                 <p className="text-sm font-semibold text-neutral-500 uppercase tracking-widest mb-3">Confirmation Details</p>
                 <p className="text-neutral-700 font-medium mb-2">
@@ -572,14 +572,14 @@ const TicketForm: React.FC<TicketFormProps> = ({ event }) => {
                   <span className="text-neutral-500">Name:</span> {formData.name}
                 </p>
               </div>
-              
+
               <p
                 className="text-base md:text-lg font-medium text-neutral-600 mb-10 leading-relaxed"
                 style={{ fontFamily: "'Manrope', sans-serif" }}
               >
                 A confirmation email with event details and important updates has been sent to your inbox. Please check your email (and spam folder) for further information.
               </p>
-              
+
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <button
                   onClick={() => navigate('/events')}
@@ -589,7 +589,7 @@ const TicketForm: React.FC<TicketFormProps> = ({ event }) => {
                   Back to Events
                 </button>
                 <button
-                  onClick={() => navigate('/community')}
+                  onClick={() => navigate('/join')}
                   className="w-full sm:w-auto px-10 py-4 border-4 border-black text-black font-black uppercase tracking-widest text-sm hover:bg-neutral-50 transition-colors"
                   style={{ fontFamily: "'Manrope', sans-serif" }}
                 >

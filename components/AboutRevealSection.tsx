@@ -439,7 +439,7 @@ const ThoughtSection = () => {
 
 const JoinCTA = () => {
     const { buttonRef, triggerTransition, maskStyle } = useCircleTransition({
-        path: '/community',
+        path: '/join',
         duration: 0.8,
         delay: 0.1
     });

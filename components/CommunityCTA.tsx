@@ -130,7 +130,7 @@ const CommunityCTA = () => {
                         </p>
 
                         <div className="flex flex-col items-center gap-4">
-                            <NavLink to="/community">
+                            <NavLink to="/join">
                                 <motion.button
                                     whileHover={{ scale: 1.05 }}
                                     whileTap={{ scale: 0.95 }}

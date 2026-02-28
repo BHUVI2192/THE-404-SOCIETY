@@ -227,7 +227,7 @@ const Home: React.FC = () => {
                         transition={{ duration: 0.8, delay: 0.4 }}
                         className="flex flex-col md:flex-row items-center gap-4 pointer-events-auto"
                     >
-                        <NavLink to="/community">
+                        <NavLink to="/join">
                             <Button variant="primary" className="h-14 px-10 text-lg">Join Our Coding Community</Button>
                         </NavLink>
                         <NavLink to="/about">
