@@ -100,7 +100,7 @@ const AboutRevealSection: React.FC = () => {
 
                         /* Shrink the overall scroll container height on mobile */
                         .about-scroll-container {
-                            height: 1300vh !important;
+                            height: auto !important;
                         }
                         
                         .mobile-hidden {
