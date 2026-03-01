@@ -1,4 +1,4 @@
-import { collection, getDocs, doc, getDoc, addDoc, updateDoc, deleteDoc, query, orderBy } from "firebase/firestore";
+import { collection, getDocs, doc, getDoc, addDoc, updateDoc, deleteDoc, query, orderBy, onSnapshot } from "firebase/firestore";
 import { db } from "./firebase";
 
 export interface BlogPostData {
@@ -44,6 +44,34 @@ export const getBlogPosts = async (): Promise<BlogPostData[]> => {
         console.error("Error getting blog posts:", e);
         return [];
     }
+};
+
+export const subscribeToBlogPosts = (callback: (blogs: BlogPostData[]) => void) => {
+    const blogsRef = collection(db, BLOG_COLLECTION);
+    const q = query(blogsRef, orderBy("createdAt", "desc"));
+    return onSnapshot(q, (snapshot) => {
+        const result = snapshot.docs.map(doc => {
+            const data = doc.data();
+            return {
+                id: doc.id,
+                title: data.title,
+                excerpt: data.excerpt || "",
+                content: data.content || "",
+                category: data.category || "Community",
+                image: data.image || data.coverImage || data.img,
+                date: data.date || new Date(data.createdAt || Date.now()).toLocaleDateString(),
+                colSpan: data.colSpan || 1,
+                rowSpan: data.rowSpan || 1,
+                createdAt: data.createdAt,
+                authorName: data.authorName || data.author,
+                readTime: data.readTime,
+            } as BlogPostData;
+        });
+        callback(result);
+    }, (error) => {
+        console.error("Error subscribing to blog posts:", error);
+        callback([]);
+    });
 };
 
 export const addBlogPost = async (post: Omit<BlogPostData, 'id'>) => {

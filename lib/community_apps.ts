@@ -1,4 +1,4 @@
-import { collection, getDocs, doc, deleteDoc, addDoc, updateDoc, query, orderBy } from "firebase/firestore";
+import { collection, getDocs, doc, deleteDoc, addDoc, updateDoc, query, orderBy, onSnapshot } from "firebase/firestore";
 import { db } from "./firebase";
 
 export interface CommunityApp {
@@ -37,6 +37,18 @@ export const getCommunityApps = async (): Promise<CommunityApp[]> => {
         console.error("Error getting community apps:", error);
         return [];
     }
+};
+
+export const subscribeToCommunityApps = (callback: (apps: CommunityApp[]) => void) => {
+    const appsRef = collection(db, COMMUNITY_COLLECTION);
+    const q = query(appsRef, orderBy("createdAt", "desc"));
+    return onSnapshot(q, (snapshot) => {
+        const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as CommunityApp));
+        callback(data);
+    }, (error) => {
+        console.error("Error subscribing to community apps:", error);
+        callback([]);
+    });
 };
 
 export const saveCommunityApp = async (app: Omit<CommunityApp, 'id' | 'status'>) => {

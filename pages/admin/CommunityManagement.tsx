@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { getCommunityApps, updateCommunityApp, deleteCommunityApp, CommunityApp } from '../../lib/community_apps';
+import { subscribeToCommunityApps, updateCommunityApp, deleteCommunityApp, CommunityApp } from '../../lib/community_apps';
 import { generateMemberId, setMemberId, validateMemberId } from '../../lib/memberIdService';
-import { 
+import {
   sendApplicationApprovedEmail
 } from '../../lib/emailService';
 import toast from 'react-hot-toast';
@@ -14,7 +14,7 @@ export const CommunityManagement: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<'all' | 'pending' | 'approved'>('all');
-  
+
   // Modal state
   const [selectedApp, setSelectedApp] = useState<CommunityApp | null>(null);
   const [actionType, setActionType] = useState<ActionType>(null);
@@ -24,25 +24,17 @@ export const CommunityManagement: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    loadApps();
+    setLoading(true);
+    const unsubscribe = subscribeToCommunityApps((data) => {
+      setApps(data);
+      setLoading(false);
+    });
+    return () => unsubscribe();
   }, []);
 
   useEffect(() => {
     filterApps();
   }, [apps, searchTerm, statusFilter]);
-
-  const loadApps = async () => {
-    try {
-      setLoading(true);
-      const data = await getCommunityApps();
-      setApps(data);
-    } catch (error) {
-      console.error('[CommunityManagement] Error loading applications:', error);
-      toast.error('Failed to load applications');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const filterApps = () => {
     let filtered = apps;
@@ -85,7 +77,7 @@ export const CommunityManagement: React.FC = () => {
 
     try {
       setLoading(true);
-      
+
       // Generate or use custom member ID
       let memberId = customMemberId;
       if (!memberId) {
@@ -120,7 +112,6 @@ export const CommunityManagement: React.FC = () => {
       });
 
       toast.success(`Application approved! Member ID: ${memberId}`);
-      await loadApps();
       closeModal();
     } catch (error) {
       console.error('Error approving application:', error);
@@ -136,7 +127,6 @@ export const CommunityManagement: React.FC = () => {
         setLoading(true);
         await deleteCommunityApp(id);
         toast.success('Application deleted');
-        await loadApps();
       } catch (error) {
         toast.error('Failed to delete application');
       } finally {
@@ -151,6 +141,45 @@ export const CommunityManagement: React.FC = () => {
     approved: apps.filter((a) => a.status === 'approved').length,
   };
 
+  const exportToCSV = () => {
+    const headers = [
+      'Name',
+      'Email',
+      'Contact',
+      'College',
+      'Year',
+      'Member ID',
+      'Status',
+      'Interest',
+      'Social/Portfolio',
+      'Applied Date',
+    ];
+
+    const rows = filteredApps.map((app) => [
+      app.name,
+      app.email,
+      app.contact,
+      app.college,
+      app.year,
+      app.memberId || '-',
+      app.status,
+      app.interest || '-',
+      app.social || '-',
+      new Date(app.createdAt || 0).toLocaleDateString(),
+    ]);
+
+    const csv = [headers, ...rows].map((row) => row.map((cell) => `"${cell}"`).join(',')).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `community-apps-${new Date().toISOString().split('T')[0]}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    toast.success('Exported to CSV');
+  };
+
   return (
     <div className="adm-page">
       {/* Header */}
@@ -159,6 +188,19 @@ export const CommunityManagement: React.FC = () => {
           <h1 className="adm-page__title">Community Applications</h1>
           <p className="adm-page__subtitle">Review and manage membership applications</p>
         </div>
+        <button
+          onClick={exportToCSV}
+          disabled={filteredApps.length === 0}
+          className="adm-btn adm-btn--secondary"
+          style={{ opacity: filteredApps.length === 0 ? 0.5 : 1, cursor: filteredApps.length === 0 ? 'not-allowed' : 'pointer' }}
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: '16px', height: '16px' }}>
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+          Export CSV
+        </button>
       </div>
 
       {/* Stats Grid */}
@@ -220,11 +262,10 @@ export const CommunityManagement: React.FC = () => {
             <button
               key={status}
               onClick={() => setStatusFilter(status)}
-              className={`adm-filter-btn ${
-                statusFilter === status
-                  ? 'adm-filter-btn--active'
-                  : ''
-              }`}
+              className={`adm-filter-btn ${statusFilter === status
+                ? 'adm-filter-btn--active'
+                : ''
+                }`}
             >
               {status.charAt(0).toUpperCase() + status.slice(1)}
             </button>
@@ -250,9 +291,8 @@ export const CommunityManagement: React.FC = () => {
                   <p style={{ fontSize: '13px', color: 'var(--adm-text-muted)' }}>{app.college}</p>
                 </div>
                 <span
-                  className={`adm-badge adm-badge--${
-                    app.status === 'approved' ? 'success' : 'danger'
-                  }`}
+                  className={`adm-badge adm-badge--${app.status === 'approved' ? 'success' : 'danger'
+                    }`}
                 >
                   {app.status.charAt(0).toUpperCase() + app.status.slice(1)}
                 </span>
@@ -379,11 +419,12 @@ export const CommunityManagement: React.FC = () => {
         <div style={{
           position: 'fixed',
           inset: 0,
-          background: 'rgba(0, 0, 0, 0.5)',
+          background: 'rgba(0, 0, 0, 0.75)',
+          backdropFilter: 'blur(4px)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          zIndex: 1000,
+          zIndex: 9999,
           padding: '20px',
         }}>
           <div style={{

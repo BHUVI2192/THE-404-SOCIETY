@@ -82,10 +82,55 @@ export const AdminLayout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   React.useEffect(() => {
-    const isAuthenticated = localStorage.getItem('adminAuth') === 'true';
-    if (!isAuthenticated) {
-      navigate('/admin/login');
-    }
+    const checkAuth = () => {
+      const isAuthenticated = localStorage.getItem('adminAuth') === 'true';
+      const authTimeStr = localStorage.getItem('adminAuthTime');
+
+      if (!isAuthenticated || !authTimeStr) {
+        navigate('/admin/login');
+        return;
+      }
+
+      const authTime = parseInt(authTimeStr, 10);
+      const now = Date.now();
+      const FIFTEEN_MINUTES = 15 * 60 * 1000;
+
+      if (now - authTime > FIFTEEN_MINUTES) {
+        // Session expired
+        localStorage.removeItem('adminAuth');
+        localStorage.removeItem('adminAuthTime');
+        navigate('/admin/login');
+      }
+    };
+
+    // Check immediately on mount
+    checkAuth();
+
+    // Set up interval to check every minute
+    const intervalId = setInterval(checkAuth, 60 * 1000);
+
+    // Throttle activity updates to at most once every 30 seconds
+    let lastUpdate = Date.now();
+    const updateActivity = () => {
+      const now = Date.now();
+      if (now - lastUpdate > 30000) {
+        localStorage.setItem('adminAuthTime', now.toString());
+        lastUpdate = now;
+      }
+    };
+
+    // Listen for user activity
+    const activityEvents = ['mousedown', 'keydown', 'scroll', 'touchstart'];
+    activityEvents.forEach(event => {
+      document.addEventListener(event, updateActivity, { passive: true });
+    });
+
+    return () => {
+      clearInterval(intervalId);
+      activityEvents.forEach(event => {
+        document.removeEventListener(event, updateActivity);
+      });
+    };
   }, [navigate]);
 
   return (
@@ -118,6 +163,7 @@ export const AdminLayout: React.FC = () => {
           className="adm-sidebar__exit"
           onClick={() => {
             localStorage.removeItem('adminAuth');
+            localStorage.removeItem('adminAuthTime');
             navigate('/');
           }}
         >

@@ -302,7 +302,7 @@ const TicketForm: React.FC<TicketFormProps> = ({ event }) => {
         {/* Back link */}
         <div className="flex items-center px-5 py-4 border-b border-gray-200 shrink-0">
           <button
-            onClick={() => navigate('/events')}
+            onClick={() => { window.scrollTo(0, 0); navigate('/events', { replace: true }); }}
             className="flex items-center gap-2 text-sm font-semibold text-gray-600 hover:text-black transition-colors"
           >
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -450,6 +450,8 @@ const TicketForm: React.FC<TicketFormProps> = ({ event }) => {
                       type="email" name="email"
                       value={formData.email} onChange={handleChange}
                       required
+                      pattern="^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$"
+                      title="Please enter a valid email address containing @"
                       className="w-full border-2 md:border-4 border-black p-2 md:p-2.5 text-xs md:text-sm font-bold outline-none focus:bg-gray-50 transition-colors"
                     />
                   </div>
@@ -471,6 +473,9 @@ const TicketForm: React.FC<TicketFormProps> = ({ event }) => {
                       type="tel" name="phone"
                       value={formData.phone} onChange={handleChange}
                       required
+                      pattern="^[0-9]{10}$"
+                      maxLength={10}
+                      title="Phone number must be exactly 10 digits"
                       className="w-full border-2 md:border-4 border-black p-2 md:p-2.5 text-xs md:text-sm font-bold outline-none focus:bg-gray-50 transition-colors"
                     />
                   </div>
@@ -582,7 +587,7 @@ const TicketForm: React.FC<TicketFormProps> = ({ event }) => {
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <button
-                  onClick={() => navigate('/events')}
+                  onClick={() => { window.scrollTo(0, 0); navigate('/events', { replace: true }); }}
                   className="w-full sm:w-auto px-10 py-4 bg-black text-white font-black uppercase tracking-widest text-sm hover:bg-neutral-900 transition-colors"
                   style={{ fontFamily: "'Manrope', sans-serif" }}
                 >

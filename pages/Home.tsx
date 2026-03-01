@@ -178,7 +178,7 @@ const Home: React.FC = () => {
                         className="mb-8 flex items-center gap-4"
                     >
                         <div className="h-px w-12 bg-black/20"></div>
-                        <span className="font-mono text-xs font-bold tracking-[0.3em] text-neutral-400 uppercase">Est. 2025 // PESITM Shivamogga, Karnataka</span>
+                        <span className="font-mono text-[9px] sm:text-xs font-bold tracking-[0.1em] sm:tracking-[0.3em] text-neutral-400 uppercase whitespace-nowrap">Est. 2025 // PESITM Shivamogga, Karnataka</span>
                         <div className="h-px w-12 bg-black/20"></div>
                     </motion.div>
 

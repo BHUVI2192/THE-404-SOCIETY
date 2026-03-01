@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getRegistrations, deleteRegistration, Registration } from '../../lib/registrations';
+import { subscribeToRegistrations, deleteRegistration, Registration } from '../../lib/registrations';
 import toast from 'react-hot-toast';
 
 export const RegistrationManagement: React.FC = () => {
@@ -11,29 +11,19 @@ export const RegistrationManagement: React.FC = () => {
   const [events, setEvents] = useState<string[]>([]);
 
   useEffect(() => {
-    loadRegistrations();
+    setLoading(true);
+    const unsubscribe = subscribeToRegistrations((data) => {
+      setRegistrations(data);
+      const uniqueEvents = [...new Set(data.map((r) => r.eventTitle))];
+      setEvents(uniqueEvents);
+      setLoading(false);
+    });
+    return () => unsubscribe();
   }, []);
 
   useEffect(() => {
     filterRegistrations();
   }, [registrations, searchTerm, filterEvent]);
-
-  const loadRegistrations = async () => {
-    try {
-      setLoading(true);
-      const data = await getRegistrations();
-      setRegistrations(data);
-
-      // Extract unique event titles
-      const uniqueEvents = [...new Set(data.map((r) => r.eventTitle))];
-      setEvents(uniqueEvents);
-    } catch (error) {
-      console.error('[RegistrationManagement] Error loading registrations:', error);
-      toast.error('Failed to load registrations');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const filterRegistrations = () => {
     let filtered = registrations;
@@ -60,7 +50,6 @@ export const RegistrationManagement: React.FC = () => {
         setLoading(true);
         await deleteRegistration(id);
         toast.success('Registration deleted successfully');
-        await loadRegistrations();
       } catch (error) {
         toast.error('Failed to delete registration');
       } finally {
@@ -75,11 +64,15 @@ export const RegistrationManagement: React.FC = () => {
       return;
     }
 
-    const headers = ['Name', 'Email', 'Student ID', 'Event', 'Date'];
+    const headers = ['Name', 'Email', 'Student ID', 'Phone', 'Branch', 'Year', 'Team Name', 'Event', 'Date'];
     const rows = filteredRegs.map((reg) => [
       reg.name,
       reg.email,
       reg.studentId || '-',
+      reg.phone || '-',
+      reg.branch || '-',
+      reg.year || '-',
+      reg.teamName || '-',
       reg.eventTitle,
       new Date(reg.createdAt || 0).toLocaleDateString(),
     ]);
@@ -199,6 +192,7 @@ export const RegistrationManagement: React.FC = () => {
                 <th>Name</th>
                 <th>Email</th>
                 <th>Student ID</th>
+                <th>Phone & Branch</th>
                 <th>Event</th>
                 <th>Registered On</th>
                 <th style={{ textAlign: 'right' }}>Actions</th>
@@ -215,6 +209,10 @@ export const RegistrationManagement: React.FC = () => {
                     ) : (
                       <span style={{ color: 'var(--adm-text-muted)', fontStyle: 'italic' }}>-</span>
                     )}
+                  </td>
+                  <td>
+                    <div style={{ fontSize: '12px' }}>{registration.phone || '-'}</div>
+                    <div style={{ fontSize: '11px', color: 'var(--adm-text-muted)' }}>{registration.branch || '-'} {registration.year || ''}</div>
                   </td>
                   <td>{registration.eventTitle}</td>
                   <td>{new Date(registration.createdAt || 0).toLocaleDateString()}</td>

@@ -1,4 +1,4 @@
-import { collection, getDocs, doc, getDoc, addDoc, updateDoc, deleteDoc, query, orderBy } from "firebase/firestore";
+import { collection, getDocs, doc, getDoc, addDoc, updateDoc, deleteDoc, query, orderBy, onSnapshot } from "firebase/firestore";
 import { db } from "./firebase";
 
 export interface EventData {
@@ -26,6 +26,18 @@ export const getEvents = async (): Promise<EventData[]> => {
         console.error("Error getting events:", e);
         return [];
     }
+};
+
+export const subscribeToEvents = (callback: (events: EventData[]) => void) => {
+    const eventsRef = collection(db, EVENTS_COLLECTION);
+    const q = query(eventsRef, orderBy("createdAt", "desc"));
+    return onSnapshot(q, (snapshot) => {
+        const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as EventData));
+        callback(data);
+    }, (error) => {
+        console.error("Error subscribing to events:", error);
+        callback([]);
+    });
 };
 
 export const getEventById = async (id: string): Promise<EventData | null> => {

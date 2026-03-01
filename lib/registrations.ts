@@ -1,4 +1,4 @@
-import { collection, getDocs, doc, deleteDoc, addDoc, query, orderBy } from "firebase/firestore";
+import { collection, getDocs, doc, deleteDoc, addDoc, query, orderBy, onSnapshot } from "firebase/firestore";
 import { db } from "./firebase";
 
 export interface Registration {
@@ -8,6 +8,10 @@ export interface Registration {
     name: string;
     email: string;
     studentId?: string;
+    phone?: string;
+    branch?: string;
+    year?: string;
+    teamName?: string;
     createdAt?: number;
 }
 
@@ -23,6 +27,18 @@ export const getRegistrations = async (): Promise<Registration[]> => {
         console.error("Error getting registrations:", error);
         return [];
     }
+};
+
+export const subscribeToRegistrations = (callback: (regs: Registration[]) => void) => {
+    const regsRef = collection(db, REG_COLLECTION);
+    const q = query(regsRef, orderBy("createdAt", "desc"));
+    return onSnapshot(q, (snapshot) => {
+        const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Registration));
+        callback(data);
+    }, (error) => {
+        console.error("Error subscribing to registrations:", error);
+        callback([]);
+    });
 };
 
 export const saveRegistration = async (reg: Omit<Registration, 'id'>) => {

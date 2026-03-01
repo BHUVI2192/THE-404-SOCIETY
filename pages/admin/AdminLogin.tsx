@@ -12,6 +12,7 @@ export const AdminLogin: React.FC = () => {
         const adminSecret = import.meta.env.VITE_ADMIN_SECRET || 'admin123';
         if (password === adminSecret) {
             localStorage.setItem('adminAuth', 'true');
+            localStorage.setItem('adminAuthTime', Date.now().toString());
             navigate('/admin');
         } else {
             setError('Incorrect password');

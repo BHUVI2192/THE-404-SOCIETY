@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getEvents, addEvent, updateEvent, deleteEvent, EventData } from '../../lib/events';
+import { subscribeToEvents, addEvent, updateEvent, deleteEvent, EventData } from '../../lib/events';
 import toast from 'react-hot-toast';
 import { processImageFile } from '../../lib/imageUpload';
 
@@ -38,21 +38,13 @@ export const EventManagement: React.FC = () => {
   });
 
   useEffect(() => {
-    loadEvents();
-  }, []);
-
-  const loadEvents = async () => {
-    try {
-      setLoading(true);
-      const data = await getEvents();
+    setLoading(true);
+    const unsubscribe = subscribeToEvents((data) => {
       setEvents(data);
-    } catch (error) {
-      console.error('[EventManagement] Error loading events:', error);
-      toast.error('Failed to load events');
-    } finally {
       setLoading(false);
-    }
-  };
+    });
+    return () => unsubscribe();
+  }, []);
 
   const resetForm = () => {
     setFormData({
@@ -94,7 +86,6 @@ export const EventManagement: React.FC = () => {
         await updateEvent(editingId, formData);
         toast.success('Event updated successfully');
       }
-      await loadEvents();
       resetForm();
     } catch (error) {
       toast.error('Failed to save event');
@@ -109,7 +100,6 @@ export const EventManagement: React.FC = () => {
         setLoading(true);
         await deleteEvent(id);
         toast.success('Event deleted successfully');
-        await loadEvents();
       } catch (error) {
         toast.error('Failed to delete event');
       } finally {
@@ -123,7 +113,6 @@ export const EventManagement: React.FC = () => {
     try {
       await updateEvent(id, { status: newStatus as 'open' | 'locked' });
       toast.success(`Event status changed to ${newStatus}`);
-      await loadEvents();
     } catch (error) {
       toast.error('Failed to update status');
     }
@@ -270,9 +259,9 @@ export const EventManagement: React.FC = () => {
                         border: '1px solid #e0e0e0',
                         flexShrink: 0
                       }}>
-                        <img 
-                          src={imagePreview} 
-                          alt="Preview" 
+                        <img
+                          src={imagePreview}
+                          alt="Preview"
                           style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                         />
                       </div>

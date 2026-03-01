@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
-import { getBlogPosts, addBlogPost, updateBlogPost, deleteBlogPost, BlogPostData } from '../../lib/blog';
+import { subscribeToBlogPosts, addBlogPost, updateBlogPost, deleteBlogPost, BlogPostData } from '../../lib/blog';
 import { processImageFile } from '../../lib/imageUpload';
 
 export const BlogManagement: React.FC = () => {
@@ -22,21 +22,13 @@ export const BlogManagement: React.FC = () => {
   });
 
   useEffect(() => {
-    loadBlogs();
-  }, []);
-
-  const loadBlogs = async () => {
-    try {
-      setLoading(true);
-      const data = await getBlogPosts();
+    setLoading(true);
+    const unsubscribe = subscribeToBlogPosts((data) => {
       setBlogs(data);
-    } catch (error) {
-      console.error('[BlogManagement] Error loading blogs:', error);
-      toast.error('Failed to load blogs');
-    } finally {
       setLoading(false);
-    }
-  };
+    });
+    return () => unsubscribe();
+  }, []);
 
   const handleAddBlog = async () => {
     if (!formData.title.trim() || !formData.category.trim() || !formData.content.trim()) {
@@ -54,7 +46,6 @@ export const BlogManagement: React.FC = () => {
       }
       resetForm();
       setShowModal(false);
-      loadBlogs();
     } catch (error) {
       console.error('[BlogManagement] Error saving blog:', error);
       toast.error('Failed to save blog');
@@ -83,7 +74,6 @@ export const BlogManagement: React.FC = () => {
     try {
       await deleteBlogPost(id);
       toast.success('Blog deleted successfully');
-      loadBlogs();
     } catch (error) {
       console.error('[BlogManagement] Error deleting blog:', error);
       toast.error('Failed to delete blog');
@@ -176,8 +166,8 @@ export const BlogManagement: React.FC = () => {
           <div className="adm-modal__content">
             <div className="adm-modal__header">
               <h3 className="adm-modal__title">{editingId ? 'Edit Blog' : 'New Blog Post'}</h3>
-              <button 
-                className="adm-modal__close" 
+              <button
+                className="adm-modal__close"
                 onClick={() => {
                   setShowModal(false);
                   resetForm();
@@ -248,9 +238,9 @@ export const BlogManagement: React.FC = () => {
                         border: '1px solid #e0e0e0',
                         flexShrink: 0
                       }}>
-                        <img 
-                          src={imagePreview} 
-                          alt="Preview" 
+                        <img
+                          src={imagePreview}
+                          alt="Preview"
                           style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                         />
                       </div>
