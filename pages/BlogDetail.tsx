@@ -95,35 +95,44 @@ const BlogDetail: React.FC = () => {
         {/* Subtle Gradient Overlay for Text Legibility */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60 pointer-events-none" />
 
-        {/* Back Button Overlay */}
-        <NavLink to="/blog" className="absolute top-6 left-4 md:top-8 md:left-8 flex items-center gap-2 !text-white hover:text-white transition-all font-mono text-xs uppercase tracking-widest bg-black hover:bg-neutral-900 border border-white/10 px-6 py-3 rounded-lg shadow-2xl z-10 group/btn">
-          <ArrowLeft size={14} className="group-hover/btn:-translate-x-1 transition-transform !text-white" />
-          <span className="!text-white">Back to Signal Feed</span>
-        </NavLink>
-
-        {/* Metadata Overlay (Date, Category, Share) */}
-        <div className="absolute bottom-6 right-4 md:bottom-8 md:right-8 flex flex-wrap items-center gap-4 bg-black border border-white/10 px-6 py-3 rounded-lg shadow-2xl z-10">
-          <div className="flex items-center gap-2">
-            <Clock size={14} className="text-white" />
-            <span className="text-xs font-mono text-white uppercase font-bold tracking-wider">{post.date}</span>
-          </div>
-          <div className="hidden sm:block w-px h-4 bg-white/20"></div>
-          <div className="flex items-center gap-2">
-            <Tag size={14} className="text-white" />
-            <span className="text-xs font-mono text-white uppercase border border-white/30 px-2.5 py-1 rounded-sm font-bold bg-white/10">{post.category}</span>
-          </div>
-          <div className="w-px h-4 bg-white/20"></div>
-          <button onClick={handleShare} className="text-white hover:text-neutral-300 transition-colors" title="Share Transmission">
-            <Share2 size={16} />
-          </button>
-        </div>
       </div>
 
-      <Section theme="light" className="!pt-12 md:!pt-20 !pb-32 min-h-screen relative">
+      <Section theme="light" className="!pt-8 md:!pt-12 !pb-32 min-h-screen relative">
         <div className="max-w-4xl mx-auto px-6">
+
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-6 md:mb-8">
+            <ScrollReveal delay={0.05}>
+              <NavLink to="/blog" className="inline-flex items-center gap-2 text-black hover:text-neutral-500 transition-all font-mono text-xs uppercase tracking-widest group/btn w-fit">
+                <ArrowLeft size={14} className="group-hover/btn:-translate-x-1 transition-transform" />
+                <span>Back to Signal Feed</span>
+              </NavLink>
+            </ScrollReveal>
+
+            {/* Metadata Pill (Date, Category, Share) */}
+            <ScrollReveal delay={0.1}>
+              <div className="inline-flex items-center bg-black/5 backdrop-blur-xl border border-black/10 rounded-full text-black font-mono text-[10px] sm:text-xs uppercase tracking-widest font-bold overflow-hidden transition-all hover:bg-black/10 hover:border-black/20">
+
+                <div className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2 sm:py-2.5 border-r border-black/10">
+                  <Clock size={14} className="text-neutral-500 shrink-0" />
+                  <span className="whitespace-nowrap">{post.date}</span>
+                </div>
+
+                <div className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2 sm:py-2.5 border-r border-black/10">
+                  <Tag size={14} className="text-neutral-500 shrink-0" />
+                  <span className="whitespace-nowrap">{post.category}</span>
+                </div>
+
+                <button onClick={handleShare} className="flex items-center justify-center px-4 sm:px-5 py-2 sm:py-2.5 hover:bg-black/5 transition-colors shrink-0 text-black" title="Share Transmission">
+                  <Share2 size={14} className="sm:w-4 sm:h-4 text-black" />
+                </button>
+
+              </div>
+            </ScrollReveal>
+          </div>
+
           {/* Title */}
           <ScrollReveal delay={0.1}>
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter mb-10 uppercase leading-[0.95] text-black text-left">
+            <h1 className="text-4xl md:text-5xl lg:text-7xl font-black tracking-tighter mb-10 uppercase leading-[0.95] text-black text-left">
               {post.title}
             </h1>
           </ScrollReveal>
@@ -192,8 +201,8 @@ const BlogDetail: React.FC = () => {
             </ScrollReveal>
           )}
 
-        </div>
-      </Section>
+        </div >
+      </Section >
     </>
   );
 };

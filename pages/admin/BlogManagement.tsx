@@ -114,7 +114,7 @@ export const BlogManagement: React.FC = () => {
 
   const filteredBlogs = blogs.filter(blog =>
     blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    blog.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (blog.authorName && blog.authorName.toLowerCase().includes(searchTerm.toLowerCase())) ||
     blog.category.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
