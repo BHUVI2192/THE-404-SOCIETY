@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { NavLink as RouterNavLink, useLocation, Outlet } from 'react-router-dom';
-import { Menu, X, Instagram, Linkedin, Github, ArrowRight, Lock, Loader2 } from 'lucide-react';
+import { Menu, X, Instagram, Linkedin, Github, ArrowRight, Lock, Loader2, Youtube } from 'lucide-react';
 import { NAV_LINKS } from '../constants';
 import { subscribeToNewsletter } from '../lib/newsletter';
 
@@ -225,17 +225,20 @@ export const Footer: React.FC = () => {
             Innovation through chaos.
           </p>
           <div className="flex gap-2 text-neutral-400">
-            <a href="https://discord.gg/the404society" target="_blank" rel="noopener noreferrer" aria-label="Discord" className="hover:text-[#5865F2] hover:-translate-y-1 transition-all p-2 rounded-full hover:bg-neutral-50">
+            <a href="https://discord.gg/CbvtZJhtbR" target="_blank" rel="noopener noreferrer" aria-label="Discord" className="hover:text-[#5865F2] hover:-translate-y-1 transition-all p-2 rounded-full hover:bg-neutral-50">
               <DiscordIcon size={20} />
             </a>
-            <a href="https://instagram.com/the404society" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="hover:text-[#E1306C] hover:-translate-y-1 transition-all p-2 rounded-full hover:bg-neutral-50">
+            <a href="https://www.instagram.com/404__society/?__pwa=1" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="hover:text-[#E1306C] hover:-translate-y-1 transition-all p-2 rounded-full hover:bg-neutral-50">
               <Instagram size={20} />
             </a>
             <a href="https://github.com/the404society" target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="hover:text-black hover:-translate-y-1 transition-all p-2 rounded-full hover:bg-neutral-50">
               <Github size={20} />
             </a>
-            <a href="https://linkedin.com/company/the404society" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="hover:text-[#0077B5] hover:-translate-y-1 transition-all p-2 rounded-full hover:bg-neutral-50">
+            <a href="https://www.linkedin.com/company/the-404-society/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="hover:text-[#0077B5] hover:-translate-y-1 transition-all p-2 rounded-full hover:bg-neutral-50">
               <Linkedin size={20} />
+            </a>
+            <a href="https://www.youtube.com/@The404Society" target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="hover:text-[#FF0000] hover:-translate-y-1 transition-all p-2 rounded-full hover:bg-neutral-50">
+              <Youtube size={20} />
             </a>
           </div>
         </div>
