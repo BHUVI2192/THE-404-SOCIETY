@@ -133,7 +133,7 @@ const AboutRevealSection: React.FC = () => {
 
                         /* Remove ALL gap in Join CTA on mobile */
                         .cta-container {
-                            padding: 20px 0 0 0 !important;
+                            padding: 20px 0 40px 0 !important; /* Added 40px padding bottom */
                             margin: 0 !important;
                         }
                         .connector-line {
