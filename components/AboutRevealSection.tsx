@@ -76,8 +76,8 @@ const AboutRevealSection: React.FC = () => {
     const imgParallax = useTransform(smoothProgress, [0.05, 0.28], ["0vw", "-50vw"]);
 
     return (
-        // Height: 1500vh
-        <div ref={containerRef} className="about-scroll-container" style={{ height: "1500vh", position: "relative", backgroundColor: "#fff" }}>
+        // Height dynamically fits normal flowing content
+        <div ref={containerRef} className="about-scroll-container" style={{ height: "auto", position: "relative", backgroundColor: "#fff" }}>
             <style>
                 {`@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;800&display=swap');`}
                 {`::-webkit-scrollbar { display: none; } body { margin: 0; }`}
