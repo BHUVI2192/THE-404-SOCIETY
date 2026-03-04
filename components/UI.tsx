@@ -210,10 +210,10 @@ export const Footer: React.FC = () => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.8 }}
-      className="bg-white text-black border-t border-neutral-100 py-10 md:py-20 px-6 relative overflow-hidden"
+      className="bg-neutral-50 text-black border-t border-neutral-200 py-16 md:py-24 px-6 relative overflow-hidden shadow-[0_-8px_30px_rgb(0,0,0,0.02)]"
     >
-      {/* Subtle Gradient Line */}
-      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#4F46E5]/20 to-transparent"></div>
+      {/* Structural Accent Line */}
+      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#4F46E5]/10 to-transparent"></div>
 
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 lg:gap-8">
         <div className="flex flex-col gap-6">
@@ -265,30 +265,42 @@ export const Footer: React.FC = () => {
           <h3 className="font-bold mb-6 text-sm uppercase tracking-widest text-black">Updates</h3>
           {!subscribed ? (
             <form onSubmit={handleSubscribe} className="flex flex-col gap-3">
-              <input
-                type="email"
-                placeholder="email@example.com"
-                className="bg-neutral-50 border-none rounded-full px-5 py-3 text-sm focus:ring-2 focus:ring-[#4F46E5]/20 outline-none transition-all placeholder:text-neutral-400 focus:bg-white shadow-inner"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-              <button type="submit" disabled={loading} className="bg-black text-white rounded-full px-5 py-3 text-xs font-bold uppercase tracking-wider hover:bg-[#4F46E5] hover:shadow-lg transition-all transform hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center">
-                {loading ? <Loader2 size={16} className="animate-spin" /> : "Get Updates"}
+              <div className="relative group">
+                <input
+                  type="email"
+                  placeholder="email@example.com"
+                  className="w-full bg-white border border-neutral-200 rounded-full px-5 py-3 text-sm focus:ring-2 focus:ring-[#4F46E5]/10 focus:border-[#4F46E5]/30 outline-none transition-all placeholder:text-neutral-400 shadow-sm group-hover:border-neutral-300"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+              <button
+                type="submit"
+                disabled={loading}
+                className="bg-black text-white rounded-full px-5 py-3 text-xs font-bold uppercase tracking-wider hover:bg-[#4F46E5] hover:shadow-lg transition-all transform hover:-translate-y-1 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center"
+              >
+                {loading ? <Loader2 size={16} className="animate-spin" /> : "Subscribe"}
               </button>
             </form>
           ) : (
-            <div className="text-[#10B981] font-medium text-sm p-4 bg-[#10B981]/10 rounded-2xl animate-in fade-in flex items-center gap-2">
+            <div className="text-[#10B981] font-semibold text-sm p-4 bg-white border border-[#10B981]/10 rounded-2xl animate-in zoom-in-95 flex items-center gap-2 shadow-sm">
               <span className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse"></span>
-              You're on the list.
+              Welcome to the society.
             </div>
           )}
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto mt-8 md:mt-16 flex flex-col md:flex-row justify-between items-center text-xs text-neutral-400 gap-4 border-t border-neutral-100 pt-8">
-        <span>© {new Date().getFullYear()} The 404 Society.</span>
-        <span className="font-mono opacity-50">EST. 2025 // SHIVAMOGGA</span>
+      <div className="max-w-7xl mx-auto mt-12 md:mt-24 flex flex-col md:flex-row justify-between items-center text-[10px] md:text-xs text-neutral-400 gap-4 border-t border-neutral-200 pt-10">
+        <div className="flex items-center gap-6">
+          <span>© {new Date().getFullYear()} The 404 Society. All rights reserved.</span>
+        </div>
+        <div className="flex items-center gap-4 font-mono opacity-60">
+          <span>SECURED BY DESIGN</span>
+          <span className="w-1 h-1 bg-neutral-300 rounded-full"></span>
+          <span>EST. 2025 // SHIVAMOGGA</span>
+        </div>
       </div>
     </motion.footer>
 

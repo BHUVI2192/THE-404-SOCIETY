@@ -300,19 +300,6 @@ const Home: React.FC = () => {
                             </div>
                         </motion.div>
 
-                        <GlassCard className="absolute bottom-10 right-10 w-80 h-72 !p-8 z-20 flex flex-col justify-between !bg-white/80 !border-white/60 !shadow-2xl">
-                            <div className="flex justify-between items-start">
-                                <div className="p-3 bg-[#10B981]/10 rounded-xl text-[#10B981]"><Code size={24} /></div>
-                                <div className="text-xs font-bold bg-black text-white px-2 py-1 rounded">Devs</div>
-                            </div>
-                            <div>
-                                <div className="flex items-end gap-2 mb-1">
-                                    <span className="text-5xl font-black text-black tracking-tighter">100+</span>
-                                    <span className="text-2xl mb-1">🚀</span>
-                                </div>
-                                <p className="text-neutral-500 font-medium text-sm">Active student developers building & shipping code.</p>
-                            </div>
-                        </GlassCard>
 
                         {/* Orbiting Decor */}
                         <motion.div
@@ -326,34 +313,6 @@ const Home: React.FC = () => {
                 </div>
             </Section >
 
-            <Section className="bg-black text-white border-t border-neutral-900 !py-16">
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
-                    <ScrollReveal delay={0}>
-                        <div className="text-center">
-                            <div className="text-5xl md:text-6xl font-black mb-2 text-black">100+</div>
-                            <div className="text-neutral-400 text-sm md:text-base font-medium uppercase tracking-widest">Student Devs</div>
-                        </div>
-                    </ScrollReveal>
-                    <ScrollReveal delay={0.1}>
-                        <div className="text-center">
-                            <div className="text-5xl md:text-6xl font-black mb-2 text-black">20+</div>
-                            <div className="text-neutral-400 text-sm md:text-base font-medium uppercase tracking-widest">Events Hosted</div>
-                        </div>
-                    </ScrollReveal>
-                    <ScrollReveal delay={0.2}>
-                        <div className="text-center">
-                            <div className="text-5xl md:text-6xl font-black mb-2 text-black">15+</div>
-                            <div className="text-neutral-400 text-sm md:text-base font-medium uppercase tracking-widest">Projects Shipped</div>
-                        </div>
-                    </ScrollReveal>
-                    <ScrollReveal delay={0.3}>
-                        <div className="text-center">
-                            <div className="text-5xl md:text-6xl font-black mb-2 text-black">3</div>
-                            <div className="text-neutral-400 text-sm md:text-base font-medium uppercase tracking-widest">Batches</div>
-                        </div>
-                    </ScrollReveal>
-                </div>
-            </Section>
 
             {/* --- VISION & MISSION (Stacked Kinetic) --- */}
             < Section className="bg-neutral-50 border-t border-neutral-100 !py-40 relative" >
