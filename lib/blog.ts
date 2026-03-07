@@ -1,7 +1,17 @@
-import { collection, getDocs, doc, getDoc, addDoc, updateDoc, deleteDoc, query, orderBy, onSnapshot } from "firebase/firestore";
-import { db } from "./firebase";
+// Simple localStorage database wrapper
+const localDb = {
+    get: (key: string) => {
+        const data = localStorage.getItem(key);
+        return data ? JSON.parse(data) : [];
+    },
+    set: (key: string, value: any) => {
+        localStorage.setItem(key, JSON.stringify(value));
+    },
+    generateId: () => `blog_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+};
 
 export interface BlogPostData {
+    author?: any;
     id?: string;
     title: string;
     excerpt: string;
@@ -16,90 +26,54 @@ export interface BlogPostData {
     readTime?: string;
 }
 
-const BLOG_COLLECTION = "nexus_blogs";
+const BLOG_COLLECTION = "nexus_blog_posts";
+
+export const SAMPLE_POSTS: BlogPostData[] = [
+    {
+        id: "1",
+        title: "The Future of Open Source",
+        excerpt: "Why contributing to open source is more important than ever.",
+        content: "Open source is the backbone of modern technology...",
+        category: "TECH",
+        image: "https://images.unsplash.com/photo-1618401471353-b98aadebc25a?q=80&w=800&auto=format&fit=crop",
+        date: "FEB 10, 2026",
+        colSpan: 1,
+        rowSpan: 1,
+        createdAt: Date.now(),
+        authorName: "SYSTEM CONFIG",
+        readTime: "3 MIN"
+    }
+];
 
 export const getBlogPosts = async (): Promise<BlogPostData[]> => {
-    try {
-        const blogsRef = collection(db, BLOG_COLLECTION);
-        const q = query(blogsRef, orderBy("createdAt", "desc"));
-        const snapshot = await getDocs(q);
-        return snapshot.docs.map(doc => {
-            const data = doc.data();
-            return {
-                id: doc.id,
-                title: data.title,
-                excerpt: data.excerpt || "",
-                content: data.content || "",
-                category: data.category || "Community",
-                image: data.image || data.coverImage || data.img,
-                date: data.date || new Date(data.createdAt || Date.now()).toLocaleDateString(),
-                colSpan: data.colSpan || 1,
-                rowSpan: data.rowSpan || 1,
-                createdAt: data.createdAt,
-                authorName: data.authorName || data.author,
-                readTime: data.readTime,
-            } as BlogPostData;
-        });
-    } catch (e) {
-        console.error("Error getting blog posts:", e);
-        return [];
+    let data = localDb.get(BLOG_COLLECTION);
+    if (data.length === 0) {
+        localDb.set(BLOG_COLLECTION, SAMPLE_POSTS);
+        data = SAMPLE_POSTS;
     }
+    return data.sort((a: any, b: any) => b.createdAt - a.createdAt);
 };
 
-export const subscribeToBlogPosts = (callback: (blogs: BlogPostData[]) => void) => {
-    const blogsRef = collection(db, BLOG_COLLECTION);
-    const q = query(blogsRef, orderBy("createdAt", "desc"));
-    return onSnapshot(q, (snapshot) => {
-        const result = snapshot.docs.map(doc => {
-            const data = doc.data();
-            return {
-                id: doc.id,
-                title: data.title,
-                excerpt: data.excerpt || "",
-                content: data.content || "",
-                category: data.category || "Community",
-                image: data.image || data.coverImage || data.img,
-                date: data.date || new Date(data.createdAt || Date.now()).toLocaleDateString(),
-                colSpan: data.colSpan || 1,
-                rowSpan: data.rowSpan || 1,
-                createdAt: data.createdAt,
-                authorName: data.authorName || data.author,
-                readTime: data.readTime,
-            } as BlogPostData;
-        });
-        callback(result);
-    }, (error) => {
-        console.error("Error subscribing to blog posts:", error);
-        callback([]);
-    });
+export const subscribeToBlogPosts = (callback: (posts: BlogPostData[]) => void) => {
+    getBlogPosts().then(callback);
+    return () => {}; // Return unsubscribe function
 };
 
 export const addBlogPost = async (post: Omit<BlogPostData, 'id'>) => {
-    try {
-        const blogsRef = collection(db, BLOG_COLLECTION);
-        const newPost = { ...post, createdAt: Date.now() };
-        const docRef = await addDoc(blogsRef, newPost);
-        return { id: docRef.id };
-    } catch (e) {
-        console.error("Error adding blog post:", e);
-        return { id: "" };
-    }
+    const posts = await getBlogPosts();
+    const newPost = { ...post, id: localDb.generateId(), createdAt: Date.now() };
+    localDb.set(BLOG_COLLECTION, [newPost, ...posts]);
+    return { id: newPost.id };
 };
 
 export const updateBlogPost = async (id: string, data: Partial<BlogPostData>) => {
-    try {
-        const docRef = doc(db, BLOG_COLLECTION, id);
-        await updateDoc(docRef, data);
-    } catch (e) {
-        console.error("Error updating blog post:", e);
-    }
+    const posts = await getBlogPosts();
+    const updated = posts.map(p => p.id === id ? { ...p, ...data } : p);
+    localDb.set(BLOG_COLLECTION, updated);
 };
 
 export const deleteBlogPost = async (id: string) => {
-    try {
-        const docRef = doc(db, BLOG_COLLECTION, id);
-        await deleteDoc(docRef);
-    } catch (e) {
-        console.error("Error deleting blog post:", e);
-    }
+    const posts = await getBlogPosts();
+    const filtered = posts.filter(p => p.id !== id);
+    localDb.set(BLOG_COLLECTION, filtered);
 };

@@ -9,6 +9,7 @@ import { useScrollOpacity } from '../src/hooks/useScrollOpacity';
 import PortalCTA from '../components/PortalCTA';
 import HeroParticles from '../src/components/HeroParticles';
 import { Helmet } from 'react-helmet-async';
+import WhatIsSection from '../components/WhatIsSection';
 
 
 
@@ -249,69 +250,8 @@ const Home: React.FC = () => {
             </section>
 
 
-            {/* --- WHAT IS 404 (Visual Cluster) --- */}
-            {/* Added relative positioning to fix Framer Motion warning */}
-            <Section className="relative bg-white border-t border-neutral-100 !py-32 z-20">
-                <div className="grid lg:grid-cols-2 gap-20 items-center">
-                    <div ref={whatIsRef} style={{ opacity: whatIsOpacity, transition: 'opacity 0.2s linear' }}>
-                        <ScrollReveal>
-                            <span className="text-[#4F46E5] font-mono uppercase tracking-widest text-sm mb-4 block">About Our Coding Club</span>
-                            <h2 className="text-4xl md:text-6xl font-black mb-8 leading-tight tracking-tight" style={{ maxWidth: '16ch' }}>
-                                What is The 404 Society?
-                            </h2>
-                            <p className="text-xl text-neutral-600 mb-6 leading-relaxed">
-                                We are the student-run developer community at PESITM Campus, Shivamogga — Karnataka's fastest-growing coding club. Founded on the belief that building real projects beats theory alone.
-                            </p>
-                            <p className="text-lg text-neutral-500 mb-10 leading-relaxed font-medium">
-                                Our focus spans full-stack web development, AI & machine learning, and open-source contributions. Through hackathons, hands-on workshops, and peer-to-peer mentoring, we bridge the gap between classroom learning and shipping production-ready software.
-                            </p>
-                            <NavLink to="/about">
-                                <Button variant="secondary" className="hover:px-8">Explore Our Community</Button>
-                            </NavLink>
-                        </ScrollReveal>
-                    </div>
-
-                    {/* Interactive Visual Cluster */}
-                    <div className="relative h-[500px] w-full hidden lg:block perspective-1000">
-                        {/* SVG Decoration */}
-                        <svg className="absolute top-0 left-0 w-full h-full pointer-events-none z-0" viewBox="0 0 400 400">
-                            <motion.path
-                                d="M 50 150 C 100 100, 300 100, 350 150 S 300 350, 150 350"
-                                fill="none"
-                                stroke="#E5E7EB"
-                                strokeWidth="2"
-                                strokeDasharray="10 10"
-                                initial={{ pathLength: 0 }}
-                                whileInView={{ pathLength: 1 }}
-                                viewport={{ once: true }}
-                                transition={{ duration: 2, ease: "easeInOut" }}
-                            />
-                        </svg>
-
-                        <motion.div
-                            whileHover={{ scale: 1.02, rotate: -2, zIndex: 20 }}
-                            transition={{ type: "spring", stiffness: 300 }}
-                            className="absolute top-10 left-10 w-72 h-80 bg-neutral-100 rounded-[2rem] overflow-hidden shadow-lg border border-neutral-200 z-10"
-                        >
-                            <div className="w-full h-full flex flex-col items-center justify-center bg-neutral-50 relative overflow-hidden">
-                                <div className="absolute inset-0 bg-grid-neutral-200/50 [mask-image:linear-gradient(to_bottom,white,transparent)]" />
-                                <Users size={48} className="text-neutral-400 mb-4 relative z-10" />
-                                <span className="text-sm font-bold text-neutral-500 relative z-10">Student Developer Community</span>
-                            </div>
-                        </motion.div>
-
-
-                        {/* Orbiting Decor */}
-                        <motion.div
-                            animate={{ rotate: 360 }}
-                            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 border border-neutral-100 rounded-full z-0 pointer-events-none"
-                        >
-                            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-4 h-4 bg-[#4F46E5] rounded-full blur-[2px]" />
-                        </motion.div>
-                    </div>
-                </div>
-            </Section >
+            {/* --- WHAT IS 404 (Glassmorphism Cards) --- */}
+            <WhatIsSection />
 
 
             {/* --- VISION & MISSION (Stacked Kinetic) --- */}
