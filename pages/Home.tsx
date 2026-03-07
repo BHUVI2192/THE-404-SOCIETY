@@ -179,13 +179,13 @@ const Home: React.FC = () => {
                     </motion.div>
 
                     {/* Main Title - Massive Single Line */}
-                    <div className="relative mb-8 text-center">
+                    <div className="relative mb-6 sm:mb-8 text-center">
                         <motion.h1
                             initial={{ opacity: 0, scale: 0.95 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                            className="leading-none font-black tracking-tighter text-black mix-blend-multiply whitespace-nowrap relative z-20"
-                            style={{ fontSize: '11vw' }}
+                            className="leading-none font-black tracking-tighter text-black mix-blend-multiply relative z-20"
+                            style={{ fontSize: 'clamp(8vw, 11vw, 11vw)' }}
                         >
                             THE <span className="italic font-serif font-thin text-neutral-800">404</span> SOCIETY
                         </motion.h1>
@@ -210,7 +210,7 @@ const Home: React.FC = () => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.3 }}
-                        className="max-w-2xl text-center text-xl md:text-2xl text-neutral-600 font-medium leading-relaxed mb-10"
+                        className="max-w-2xl text-center text-lg sm:text-xl md:text-2xl text-neutral-600 font-medium leading-relaxed mb-8 sm:mb-10 px-4"
                     >
                         Where students <span className="text-black font-bold border-b border-black">build, code & innovate</span>.
                         The premier coding club at PESITM, Shivamogga.
@@ -221,13 +221,13 @@ const Home: React.FC = () => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.4 }}
-                        className="flex flex-col md:flex-row items-center gap-4 pointer-events-auto"
+                        className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 pointer-events-auto px-4"
                     >
                         <NavLink to="/join">
-                            <Button variant="primary" className="h-14 px-10 text-lg">Join Our Coding Community</Button>
+                            <Button variant="primary" className="h-12 sm:h-14 px-8 sm:px-10 text-base sm:text-lg w-full sm:w-auto">Join Our Community</Button>
                         </NavLink>
                         <NavLink to="/about">
-                            <Button variant="secondary" className="h-14 px-8">Explore Our Mission</Button>
+                            <Button variant="secondary" className="h-12 sm:h-14 px-6 sm:px-8 text-base sm:text-lg w-full sm:w-auto">Explore Our Mission</Button>
                         </NavLink>
                     </motion.div>
                 </div>
@@ -237,7 +237,7 @@ const Home: React.FC = () => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 1, duration: 1 }}
-                    className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+                    className="absolute bottom-6 sm:bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
                 >
                     <div className="w-[1px] h-12 bg-gradient-to-b from-black to-transparent"></div>
                     <div className="flex gap-1">

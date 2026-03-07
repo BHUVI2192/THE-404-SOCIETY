@@ -31,15 +31,15 @@ export const Button: React.FC<{
   type?: "button" | "submit" | "reset";
   disabled?: boolean;
 }> = ({ children, variant = 'primary', className = '', onClick, type = 'button', disabled }) => {
-  // Professional Pill Style
-  const baseStyle = "inline-flex items-center justify-center px-8 py-3 rounded-full font-manrope font-bold tracking-tight transition-all duration-300 transform disabled:opacity-50 disabled:cursor-not-allowed";
+  // Professional Pill Style with enhanced mobile touch targets
+  const baseStyle = "inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-3 min-h-[44px] rounded-full font-manrope font-bold tracking-tight transition-all duration-300 transform disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation";
 
   const variants = {
-    primary: "bg-black text-white hover:bg-neutral-800 hover:scale-[1.02]",
-    secondary: "bg-white text-black border border-neutral-200 hover:border-black hover:bg-neutral-50",
-    outline: "bg-transparent text-black border border-neutral-300 hover:border-black hover:text-black",
+    primary: "bg-black text-white hover:bg-neutral-800 active:scale-[0.98] hover:scale-[1.02]",
+    secondary: "bg-white text-black border border-neutral-200 hover:border-black hover:bg-neutral-50 active:scale-[0.98]",
+    outline: "bg-transparent text-black border border-neutral-300 hover:border-black hover:text-black active:scale-[0.98]",
     // RGB Professional style: Black button with subtle RGB gradient border feeling
-    living: "relative overflow-hidden bg-black text-white shadow-lg hover:shadow-xl hover:scale-[1.02] border border-transparent hover:border-white/20 before:absolute before:inset-0 before:bg-gradient-to-r before:from-[#FF0000] before:via-[#00FF00] before:to-[#0000FF] before:opacity-0 before:hover:opacity-20 before:transition-opacity"
+    living: "relative overflow-hidden bg-black text-white shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] border border-transparent hover:border-white/20 before:absolute before:inset-0 before:bg-gradient-to-r before:from-[#FF0000] before:via-[#00FF00] before:to-[#0000FF] before:opacity-0 before:hover:opacity-20 before:transition-opacity"
   };
 
   return (
@@ -102,7 +102,7 @@ export const Section: React.FC<{
   // Defaulting to light/white theme for Antigravity
   const themeClass = theme === 'dark' ? 'bg-black text-white' : 'bg-white text-black';
   return (
-    <section id={id} className={`py-32 md:py-40 px-6 md:px-12 lg:px-24 relative overflow-hidden ${themeClass} ${className}`}>
+    <section id={id} className={`py-16 sm:py-24 md:py-32 lg:py-40 px-4 sm:px-6 md:px-12 lg:px-24 relative overflow-hidden ${themeClass} ${className}`}>
       <div className="max-w-[1400px] mx-auto relative z-10">
         {children}
       </div>
@@ -120,32 +120,32 @@ export const Header: React.FC = () => {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-neutral-100 transition-all duration-300">
-      <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 h-16 sm:h-20 flex items-center justify-between">
         <RouterNavLink to="/" className="flex items-center gap-2 group z-50">
-          <span className="font-bold text-xl tracking-tight text-black group-hover:scale-105 transition-transform">
-            The 404 Society
+          <span className="font-bold text-sm sm:text-lg md:text-xl tracking-tight text-black group-hover:scale-105 transition-transform whitespace-nowrap">
+            404 Society
           </span>
         </RouterNavLink>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex gap-10 items-center">
+        <nav className="hidden md:flex gap-6 lg:gap-10 items-center">
           {NAV_LINKS.map((link) => (
             <RouterNavLink
               key={link.path}
               to={link.path}
-              className={({ isActive }) => `text-sm font-medium transition-all duration-300 transform hover:-translate-y-1 ${isActive ? 'text-[#4F46E5] font-bold border-b-2 border-[#4F46E5] pb-1' : 'text-neutral-600 hover:text-[#4F46E5]'}`}
+              className={({ isActive }) => `text-xs sm:text-sm font-medium transition-all duration-300 transform hover:-translate-y-1 ${isActive ? 'text-[#4F46E5] font-bold border-b-2 border-[#4F46E5] pb-1' : 'text-neutral-600 hover:text-[#4F46E5]'}`}
             >
               {link.label}
             </RouterNavLink>
           ))}
           <RouterNavLink to="/join">
-            <Button variant="primary" className="!px-6 !py-2 !text-xs !bg-[#4F46E5] hover:!bg-[#4338CA]">Join</Button>
+            <Button variant="primary" className="!px-4 md:!px-6 !py-2 !text-xs !bg-[#4F46E5] hover:!bg-[#4338CA]">Join</Button>
           </RouterNavLink>
         </nav>
 
         {/* Mobile Toggle */}
-        <button className="md:hidden text-black z-[60] relative" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle Menu">
-          {isOpen ? <X size={28} /> : <Menu size={28} />}
+        <button className="md:hidden text-black z-[60] relative p-2" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle Menu">
+          {isOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
 
@@ -154,25 +154,25 @@ export const Header: React.FC = () => {
         {isOpen && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: '100vh' }}
+            animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="md:hidden bg-white fixed inset-0 z-40 flex flex-col pt-24 px-8 pb-8"
+            className="md:hidden bg-white border-t border-neutral-100 shadow-lg"
           >
-            <div className="flex flex-col gap-8 text-center mt-10">
+            <div className="flex flex-col gap-2 sm:gap-4 px-4 sm:px-6 py-4 sm:py-6 max-h-[calc(100vh-80px)] overflow-y-auto">
               {NAV_LINKS.map((link) => (
                 <RouterNavLink
                   key={link.path}
                   to={link.path}
                   onClick={() => setIsOpen(false)}
-                  className={({ isActive }) => `text-3xl font-bold tracking-tight transition-colors ${isActive ? 'text-[#4F46E5]' : 'text-black'}`}
+                  className={({ isActive }) => `text-lg sm:text-xl font-bold tracking-tight transition-colors py-3 px-2 rounded-lg touch-manipulation ${isActive ? 'text-[#4F46E5] bg-[#4F46E5]/5' : 'text-black hover:text-[#4F46E5] hover:bg-neutral-50 active:bg-neutral-100'}`}
                 >
                   {link.label}
                 </RouterNavLink>
               ))}
-              <div className="mt-8">
+              <div className="mt-2 sm:mt-4 pt-2 sm:pt-4 border-t border-neutral-100">
                 <RouterNavLink to="/join" onClick={() => setIsOpen(false)}>
-                  <Button variant="primary" className="w-full text-lg py-4">Join Community</Button>
+                  <Button variant="primary" className="w-full text-sm sm:text-base py-3 min-h-[48px]">Join Community</Button>
                 </RouterNavLink>
               </div>
             </div>

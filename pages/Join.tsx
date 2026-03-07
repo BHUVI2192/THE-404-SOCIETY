@@ -363,31 +363,31 @@ const QuestionBlock = ({ index, activeIndex, data, value, onChange, onSelection,
 
 // --- STYLES ---
 const styles: Record<string, React.CSSProperties> = {
-  progressBarContainer: { position: "fixed", left: 0, top: 0, bottom: 0, width: "4px", backgroundColor: "#f0f0f0", zIndex: 50 },
+  progressBarContainer: { position: "fixed", left: 0, top: 0, bottom: 0, width: "3px", backgroundColor: "#f0f0f0", zIndex: 50 },
   progressBarFill: { width: "100%", backgroundColor: "#000", transition: "height 0.5s ease" },
 
-  header: { position: "fixed", top: 0, left: 0, right: 0, padding: "30px 5vw", display: "flex", justifyContent: "space-between", zIndex: 40, pointerEvents: "none" },
-  brand: { fontFamily: "'Space Mono', monospace", fontSize: "0.8rem", fontWeight: "700", letterSpacing: "0.1em" },
-  stepCounter: { fontFamily: "'Space Mono', monospace", fontSize: "0.8rem", fontWeight: "700" },
+  header: { position: "fixed", top: 0, left: 0, right: 0, padding: "16px 4vw", display: "flex", justifyContent: "space-between", alignItems: "center", zIndex: 40, pointerEvents: "none", fontSize: "0.7rem", minHeight: "56px", flexWrap: "wrap", gap: "8px" },
+  brand: { fontFamily: "'Space Mono', monospace", fontSize: "0.65rem", fontWeight: "700", letterSpacing: "0.1em" },
+  stepCounter: { fontFamily: "'Space Mono', monospace", fontSize: "0.65rem", fontWeight: "700" },
 
   scrollContainer: { display: "flex", flexDirection: "column", alignItems: "center", width: "100%" },
-  spacer: { height: "40vh", width: "100%" },
+  spacer: { height: "40vh", width: "100%", minHeight: "30vh" },
 
-  questionBlock: { width: "100%", maxWidth: "900px", padding: "0 5vw", minHeight: "60vh", display: "flex", flexDirection: "column", justifyContent: "center", transition: "opacity 0.5s ease" },
+  questionBlock: { width: "100%", maxWidth: "900px", padding: "0 4vw", minHeight: "60vh", display: "flex", flexDirection: "column", justifyContent: "center", transition: "opacity 0.5s ease" },
 
-  qLabel: { fontFamily: "'Space Mono', monospace", fontSize: "0.9rem", fontWeight: "700", letterSpacing: "0.1em", marginBottom: "20px", display: "flex", alignItems: "center", gap: "10px" },
-  qText: { fontSize: "clamp(2.5rem, 5vw, 4.5rem)", fontWeight: "800", lineHeight: 1.1, margin: "0 0 40px 0", letterSpacing: "-0.02em", color: "#000" },
+  qLabel: { fontFamily: "'Space Mono', monospace", fontSize: "clamp(0.65rem, 2vw, 0.9rem)", fontWeight: "700", letterSpacing: "0.1em", marginBottom: "12px", display: "flex", alignItems: "center", gap: "10px" },
+  qText: { fontSize: "clamp(2rem, 6vw, 4.5rem)", fontWeight: "800", lineHeight: 1.1, margin: "0 0 30px 0", letterSpacing: "-0.02em", color: "#000" },
 
   inputWrapper: { width: "100%" },
-  input: { width: "100%", fontSize: "clamp(1.5rem, 3vw, 2.5rem)", fontFamily: "'Manrope', sans-serif", border: "none", borderBottom: "2px solid #ddd", padding: "10px 0", backgroundColor: "transparent", color: "#000", fontWeight: "500", borderRadius: "0", transition: "border-color 0.3s ease" },
-  actionRow: { display: "flex", alignItems: "center", justifyContent: "flex-end", gap: "10px", marginTop: "15px" },
-  enterHintText: { fontFamily: "'Space Mono', monospace", fontSize: "0.8rem", color: "#999" },
-  nextBtn: { padding: "8px 20px", backgroundColor: "#000", color: "#fff", border: "none", borderRadius: "20px", fontFamily: "'Space Mono', monospace", fontSize: "0.8rem", fontWeight: "700", cursor: "pointer", transition: "transform 0.2s" },
+  input: { width: "100%", fontSize: "clamp(1.2rem, 4vw, 2.5rem)", fontFamily: "'Manrope', sans-serif", border: "none", borderBottom: "2px solid #ddd", padding: "8px 0", backgroundColor: "transparent", color: "#000", fontWeight: "500", borderRadius: "0", transition: "border-color 0.3s ease" },
+  actionRow: { display: "flex", alignItems: "center", justifyContent: "flex-end", gap: "8px", marginTop: "12px", flexWrap: "wrap" },
+  enterHintText: { fontFamily: "'Space Mono', monospace", fontSize: "0.65rem", color: "#999" },
+  nextBtn: { padding: "10px 20px", minHeight: "44px", backgroundColor: "#000", color: "#fff", border: "none", borderRadius: "20px", fontFamily: "'Space Mono', monospace", fontSize: "0.75rem", fontWeight: "700", cursor: "pointer", transition: "transform 0.2s", whiteSpace: "nowrap", touchAction: "manipulation" },
 
-  optionsGrid: { display: "flex", flexWrap: "wrap", gap: "15px" },
-  optionBtn: { padding: "15px 30px", fontSize: "1.2rem", fontFamily: "'Manrope', sans-serif", fontWeight: "600", border: "1px solid #ddd", backgroundColor: "#fff", cursor: "pointer", borderRadius: "50px", transition: "all 0.2s ease" },
+  optionsGrid: { display: "flex", flexWrap: "wrap", gap: "10px" },
+  optionBtn: { padding: "10px 16px", fontSize: "clamp(0.9rem, 2.5vw, 1.2rem)", fontFamily: "'Manrope', sans-serif", fontWeight: "600", border: "1px solid #ddd", backgroundColor: "#fff", cursor: "pointer", borderRadius: "50px", transition: "all 0.2s ease" },
 
-  finalHeading: { fontSize: "clamp(3rem, 6vw, 5rem)", fontWeight: "800", margin: "0 0 20px 0" },
-  finalSub: { fontFamily: "'Space Mono', monospace", fontSize: "1rem", opacity: 0.6, marginBottom: "40px" },
-  submitBtn: { fontSize: "1.5rem", padding: "20px 50px", backgroundColor: "#000", color: "#fff", border: "none", borderRadius: "0", fontFamily: "'Space Mono', monospace", fontWeight: "700", cursor: "pointer", alignSelf: "flex-start", transition: "all 0.2s ease" }
+  finalHeading: { fontSize: "clamp(2.5rem, 6vw, 5rem)", fontWeight: "800", margin: "0 0 20px 0" },
+  finalSub: { fontFamily: "'Space Mono', monospace", fontSize: "clamp(0.85rem, 2vw, 1rem)", opacity: 0.6, marginBottom: "30px" },
+  submitBtn: { fontSize: "clamp(1.2rem, 2.5vw, 1.5rem)", padding: "16px 32px", backgroundColor: "#000", color: "#fff", border: "none", borderRadius: "0", fontFamily: "'Space Mono', monospace", fontWeight: "700", cursor: "pointer", alignSelf: "flex-start", transition: "all 0.2s ease" }
 };
