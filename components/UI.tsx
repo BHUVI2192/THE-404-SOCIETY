@@ -211,6 +211,7 @@ export const Footer: React.FC = () => {
       viewport={{ once: true }}
       transition={{ duration: 0.8 }}
       className="bg-neutral-50 text-black border-t border-neutral-200 py-16 md:py-24 px-6 relative overflow-hidden shadow-[0_-8px_30px_rgb(0,0,0,0.02)]"
+      style={{ zIndex: 50, position: 'relative' }}
     >
       {/* Structural Accent Line */}
       <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#4F46E5]/10 to-transparent"></div>
@@ -225,19 +226,19 @@ export const Footer: React.FC = () => {
             Innovation through chaos.
           </p>
           <div className="flex gap-2 text-neutral-400">
-            <a href="https://discord.gg/CbvtZJhtbR" target="_blank" rel="noopener noreferrer" aria-label="Discord" className="hover:text-[#5865F2] hover:-translate-y-1 transition-all p-2 rounded-full hover:bg-neutral-50">
+            <a href="https://discord.gg/CbvtZJhtbR" target="_blank" rel="noopener noreferrer" aria-label="Discord" className="hover:text-[#5865F2] hover:-translate-y-1 transition-all p-2 rounded-full hover:bg-neutral-50 touch-manipulation" style={{ pointerEvents: 'auto', zIndex: 51 }}>
               <DiscordIcon size={20} />
             </a>
-            <a href="https://www.instagram.com/404__society/?__pwa=1" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="hover:text-[#E1306C] hover:-translate-y-1 transition-all p-2 rounded-full hover:bg-neutral-50">
+            <a href="https://www.instagram.com/404__society/?__pwa=1" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="hover:text-[#E1306C] hover:-translate-y-1 transition-all p-2 rounded-full hover:bg-neutral-50 touch-manipulation" style={{ pointerEvents: 'auto', zIndex: 51 }}>
               <Instagram size={20} />
             </a>
-            <a href="https://github.com/the404society" target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="hover:text-black hover:-translate-y-1 transition-all p-2 rounded-full hover:bg-neutral-50">
+            <a href="https://github.com/the404society" target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="hover:text-black hover:-translate-y-1 transition-all p-2 rounded-full hover:bg-neutral-50 touch-manipulation" style={{ pointerEvents: 'auto', zIndex: 51 }}>
               <Github size={20} />
             </a>
-            <a href="https://www.linkedin.com/company/the-404-society/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="hover:text-[#0077B5] hover:-translate-y-1 transition-all p-2 rounded-full hover:bg-neutral-50">
+            <a href="https://www.linkedin.com/company/the-404-society/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="hover:text-[#0077B5] hover:-translate-y-1 transition-all p-2 rounded-full hover:bg-neutral-50 touch-manipulation" style={{ pointerEvents: 'auto', zIndex: 51 }}>
               <Linkedin size={20} />
             </a>
-            <a href="https://www.youtube.com/@The404Society" target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="hover:text-[#FF0000] hover:-translate-y-1 transition-all p-2 rounded-full hover:bg-neutral-50">
+            <a href="https://www.youtube.com/@The404Society" target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="hover:text-[#FF0000] hover:-translate-y-1 transition-all p-2 rounded-full hover:bg-neutral-50 touch-manipulation" style={{ pointerEvents: 'auto', zIndex: 51 }}>
               <Youtube size={20} />
             </a>
           </div>
@@ -247,7 +248,7 @@ export const Footer: React.FC = () => {
           <h3 className="font-bold mb-6 text-sm uppercase tracking-widest text-[#4F46E5]">Explore</h3>
           <ul className="space-y-3 text-sm text-neutral-600">
             {NAV_LINKS.slice(0, 5).map(link => (
-              <li key={link.path}><RouterNavLink to={link.path} className="hover:text-black hover:pl-2 transition-all">{link.label}</RouterNavLink></li>
+              <li key={link.path}><RouterNavLink to={link.path} className="hover:text-black hover:pl-2 transition-all touch-manipulation" style={{ pointerEvents: 'auto', zIndex: 51 }}>{link.label}</RouterNavLink></li>
             ))}
           </ul>
         </div>
@@ -257,7 +258,7 @@ export const Footer: React.FC = () => {
           <ul className="space-y-3 text-sm text-neutral-600">
             <li>B-Wing, 3rd Floor, PESITM</li>
             <li>Shivamogga, KA</li>
-            <li><a href="mailto:connect@the404society.in" className="hover:text-[#4F46E5]">connect@the404society.in</a></li>
+            <li><a href="mailto:connect@the404society.in" className="hover:text-[#4F46E5] touch-manipulation" style={{ pointerEvents: 'auto', zIndex: 51 }}>connect@the404society.in</a></li>
           </ul>
         </div>
 
@@ -269,16 +270,18 @@ export const Footer: React.FC = () => {
                 <input
                   type="email"
                   placeholder="email@example.com"
-                  className="w-full bg-white border border-neutral-200 rounded-full px-5 py-3 text-sm focus:ring-2 focus:ring-[#4F46E5]/10 focus:border-[#4F46E5]/30 outline-none transition-all placeholder:text-neutral-400 shadow-sm group-hover:border-neutral-300"
+                  className="w-full bg-white border border-neutral-200 rounded-full px-5 py-3 text-sm focus:ring-2 focus:ring-[#4F46E5]/10 focus:border-[#4F46E5]/30 outline-none transition-all placeholder:text-neutral-400 shadow-sm group-hover:border-neutral-300 touch-manipulation"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
+                  style={{ pointerEvents: 'auto', zIndex: 51 }}
                 />
               </div>
               <button
                 type="submit"
                 disabled={loading}
-                className="bg-black text-white rounded-full px-5 py-3 text-xs font-bold uppercase tracking-wider hover:bg-[#4F46E5] hover:shadow-lg transition-all transform hover:-translate-y-1 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center"
+                className="bg-black text-white rounded-full px-5 py-3 text-xs font-bold uppercase tracking-wider hover:bg-[#4F46E5] hover:shadow-lg transition-all transform hover:-translate-y-1 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center touch-manipulation"
+                style={{ pointerEvents: 'auto', zIndex: 51 }}
               >
                 {loading ? <Loader2 size={16} className="animate-spin" /> : "Subscribe"}
               </button>
