@@ -1,4 +1,4 @@
-import { collection, getDocs, doc, deleteDoc, addDoc, updateDoc, query, orderBy, onSnapshot } from "firebase/firestore";
+import { collection, getDocs, doc, deleteDoc, addDoc, updateDoc, query, orderBy, onSnapshot, where, limit } from "firebase/firestore";
 import { db } from "./firebase";
 
 export interface CommunityApp {
@@ -26,6 +26,18 @@ export interface CommunityApp {
 }
 
 const COMMUNITY_COLLECTION = "nexus_community_applications";
+
+/** Returns true if an application with this email already exists */
+export const checkDuplicateCommunityApp = async (email: string): Promise<boolean> => {
+    try {
+        const appsRef = collection(db, COMMUNITY_COLLECTION);
+        const q = query(appsRef, where("email", "==", email.trim().toLowerCase()), limit(1));
+        const snapshot = await getDocs(q);
+        return !snapshot.empty;
+    } catch {
+        return false; // fail open
+    }
+};
 
 export const getCommunityApps = async (): Promise<CommunityApp[]> => {
     try {
@@ -56,6 +68,7 @@ export const saveCommunityApp = async (app: Omit<CommunityApp, 'id' | 'status'>)
         const appsRef = collection(db, COMMUNITY_COLLECTION);
         const newApp = {
             ...app,
+            email: app.email?.trim().toLowerCase(),
             status: "pending" as const,
             createdAt: Date.now()
         };

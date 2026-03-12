@@ -215,6 +215,7 @@ export default function Community() {
           {`input:focus { outline: none; }`}
           {`body { margin: 0; overflow-x: hidden; }`}
           {`::-webkit-scrollbar { width: 0px; background: transparent; }`}
+          {`@keyframes spin { to { transform: rotate(360deg); } }`}
         </style>
 
         {/* PROGRESS BAR */}
@@ -249,33 +250,78 @@ export default function Community() {
           </AnimatePresence>
 
           {/* SUBMIT SECTION */}
-          <div id={`q-${questions.length}`} style={{ ...styles.questionBlock, opacity: activeIndex === questions.length ? 1 : 0.2 }}>
+          <div
+            id={`q-${questions.length}`}
+            style={{
+              ...styles.questionBlock,
+              opacity: activeIndex === questions.length ? 1 : 0.2,
+              pointerEvents: activeIndex === questions.length ? 'auto' : 'none',
+            }}
+          >
             {formStatus === 'success' ? (
-              <div style={{ textAlign: "left" }}>
-                <div style={{ fontSize: "4rem", marginBottom: "20px" }}>✓</div>
-                <h2 style={styles.finalHeading}>WELCOME TO THE SOCIETY.</h2>
-                <p style={styles.finalSub}>Your application sequence is complete. Check your comms link shortly.</p>
+              /* ── SUCCESS STATE ── */
+              <div style={{ maxWidth: '680px' }}>
+                <div style={styles.successBadge}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                  <span>Application Transmitted</span>
+                </div>
+
+                <h2 style={styles.finalHeading}>APPLICATION<br />RECEIVED.</h2>
+
+                <p style={styles.finalSub}>
+                  Your application is now in our queue. We'll review it and reach out to you via email with the next steps. No further action needed from your side.
+                </p>
+
+                <div style={styles.infoBox}>
+                  <div style={styles.infoRow}>
+                    <span style={styles.infoKey}>WHAT'S NEXT</span>
+                    <span style={styles.infoVal}>Our team reviews applications on a rolling basis. Expect an email from us within a few days.</span>
+                  </div>
+                  <div style={{ width: '100%', height: '1px', background: '#e8e8e8', margin: '14px 0' }} />
+                  <div style={styles.infoRow}>
+                    <span style={styles.infoKey}>CONTACT</span>
+                    <span style={styles.infoVal}>connect@the404society.in</span>
+                  </div>
+                </div>
               </div>
             ) : (
-              <>
-                <h2 style={styles.finalHeading}>READY TO INITIALIZE?</h2>
+              /* ── SUBMIT STATE ── */
+              <div style={{ maxWidth: '680px' }}>
+                <div style={styles.submitLabel}>FINAL STEP // SUBMIT</div>
+
+                <h2 style={styles.finalHeading}>READY TO<br />INITIALIZE?</h2>
+
                 <p style={styles.finalSub}>
-                  By clicking below, you agree to our <a href="/code-of-conduct" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'underline', color: '#000' }}>Code of Conduct</a>.
+                  Once submitted, you'll receive a confirmation email. We review applications and contact shortlisted applicants — this is not an instant approval.
                 </p>
+
+                <p style={{ ...styles.finalSub, fontSize: '0.7rem', marginBottom: '28px', opacity: 0.45 }}>
+                  By clicking below, you agree to our{' '}
+                  <a href="/code-of-conduct" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'underline', color: '#000' }}>Code of Conduct</a>.
+                </p>
+
                 <motion.button
-                  whileHover={{ scale: 1.05, backgroundColor: "#000", color: "#fff" }}
-                  whileTap={{ scale: 0.95 }}
+                  whileTap={{ scale: 0.97 }}
                   style={{
                     ...styles.submitBtn,
-                    opacity: formStatus === 'submitting' ? 0.5 : 1,
-                    cursor: formStatus === 'submitting' ? 'not-allowed' : 'pointer'
+                    opacity: formStatus === 'submitting' ? 0.6 : 1,
+                    cursor: formStatus === 'submitting' ? 'not-allowed' : 'pointer',
                   }}
                   onClick={handleSubmit}
                   disabled={formStatus === 'submitting'}
                 >
-                  {formStatus === 'submitting' ? "TRANSMITTING..." : "SUBMIT APPLICATION \u2192"}
+                  {formStatus === 'submitting' ? (
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      <span style={styles.spinner} />
+                      TRANSMITTING...
+                    </span>
+                  ) : (
+                    'SUBMIT APPLICATION →'
+                  )}
                 </motion.button>
-              </>
+              </div>
             )}
           </div>
 
@@ -387,7 +433,78 @@ const styles: Record<string, React.CSSProperties> = {
   optionsGrid: { display: "flex", flexWrap: "wrap", gap: "10px" },
   optionBtn: { padding: "10px 16px", fontSize: "clamp(0.9rem, 2.5vw, 1.2rem)", fontFamily: "'Manrope', sans-serif", fontWeight: "600", border: "1px solid #ddd", backgroundColor: "#fff", cursor: "pointer", borderRadius: "50px", transition: "all 0.2s ease" },
 
-  finalHeading: { fontSize: "clamp(2.5rem, 6vw, 5rem)", fontWeight: "800", margin: "0 0 20px 0" },
-  finalSub: { fontFamily: "'Space Mono', monospace", fontSize: "clamp(0.85rem, 2vw, 1rem)", opacity: 0.6, marginBottom: "30px" },
-  submitBtn: { fontSize: "clamp(1.2rem, 2.5vw, 1.5rem)", padding: "16px 32px", backgroundColor: "#000", color: "#fff", border: "none", borderRadius: "0", fontFamily: "'Space Mono', monospace", fontWeight: "700", cursor: "pointer", alignSelf: "flex-start", transition: "all 0.2s ease" }
+  finalHeading: { fontSize: "clamp(2.8rem, 7vw, 5.5rem)", fontWeight: "800", margin: "0 0 20px 0", letterSpacing: "-0.03em", lineHeight: 1.05 },
+  finalSub: { fontFamily: "'Space Mono', monospace", fontSize: "clamp(0.75rem, 1.8vw, 0.9rem)", opacity: 0.6, marginBottom: "16px", lineHeight: 1.7, maxWidth: '560px' },
+  submitBtn: {
+    fontSize: "clamp(0.9rem, 2vw, 1.1rem)",
+    padding: "18px 40px",
+    backgroundColor: "#000",
+    color: "#fff",
+    border: "3px solid #000",
+    borderRadius: "0",
+    fontFamily: "'Space Mono', monospace",
+    fontWeight: "700",
+    cursor: "pointer",
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "10px",
+    letterSpacing: "0.05em",
+    transition: "all 0.2s ease",
+    boxShadow: "5px 5px 0 0 rgba(0,0,0,0.12)",
+  },
+  submitLabel: {
+    fontFamily: "'Space Mono', monospace",
+    fontSize: "0.65rem",
+    fontWeight: "700",
+    letterSpacing: "0.15em",
+    color: "#999",
+    marginBottom: "16px",
+  },
+  successBadge: {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "8px",
+    background: "#000",
+    color: "#fff",
+    padding: "8px 16px",
+    fontFamily: "'Space Mono', monospace",
+    fontSize: "0.7rem",
+    fontWeight: "700",
+    letterSpacing: "0.1em",
+    marginBottom: "24px",
+  },
+  infoBox: {
+    marginTop: "28px",
+    border: "2px solid #000",
+    padding: "20px 24px",
+    maxWidth: "520px",
+  },
+  infoRow: {
+    display: "flex",
+    flexDirection: "column" as const,
+    gap: "6px",
+  },
+  infoKey: {
+    fontFamily: "'Space Mono', monospace",
+    fontSize: "0.65rem",
+    fontWeight: "700",
+    letterSpacing: "0.15em",
+    color: "#999",
+  },
+  infoVal: {
+    fontFamily: "'Manrope', sans-serif",
+    fontSize: "0.9rem",
+    fontWeight: "600",
+    color: "#000",
+    lineHeight: 1.6,
+  },
+  spinner: {
+    display: "inline-block",
+    width: "14px",
+    height: "14px",
+    border: "2px solid rgba(255,255,255,0.3)",
+    borderTopColor: "#fff",
+    borderRadius: "50%",
+    animation: "spin 0.7s linear infinite",
+  },
 };

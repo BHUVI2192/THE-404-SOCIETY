@@ -1,30 +1,257 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef, useCallback } from 'react';
+import { motion, useAnimationFrame } from 'framer-motion';
+
+// ── 3D Circular Carousel ─────────────────────────────────────────────────────
+interface CarouselItem {
+    id: number;
+    label: string;
+    title: string;
+    subtitle: string;
+    gradient: string;
+    icon: string;
+}
+
+const CAROUSEL_ITEMS: CarouselItem[] = [
+    {
+        id: 1,
+        label: '01 // AI',
+        title: "Agent‑Powered Problem Makers",
+        subtitle: "Building with AI agents, not just code.",
+        gradient: "linear-gradient(145deg, #667eea 0%, #764ba2 60%, #f093fb 100%)",
+        icon: '⚡',
+    },
+    {
+        id: 2,
+        label: '02 // WEB',
+        title: "Cloud‑Ready Full‑Stack Doers",
+        subtitle: "From UI to deploy, end‑to‑end.",
+        gradient: "linear-gradient(145deg, #f5576c 0%, #c471ed 60%, #f093fb 100%)",
+        icon: '🚀',
+    },
+    {
+        id: 3,
+        label: '03 // BUILD',
+        title: "Hackathons, Startups & Serendipity",
+        subtitle: "Ideas, teams and launch‑ready builds.",
+        gradient: "linear-gradient(145deg, #0f9b8e 0%, #4facfe 60%, #43e97b 100%)",
+        icon: '🛠',
+    },
+    {
+        id: 4,
+        label: '04 // COMMUNITY',
+        title: "Peer Learning & Open Source",
+        subtitle: "Collaborate, contribute and grow together.",
+        gradient: "linear-gradient(145deg, #f7971e 0%, #ffd200 60%, #f9f047 100%)",
+        icon: '🌐',
+    },
+    {
+        id: 5,
+        label: '05 // EVENTS',
+        title: "Workshops, Talks & Meetups",
+        subtitle: "Real‑world experiences that spark connections.",
+        gradient: "linear-gradient(145deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)",
+        icon: '🎯',
+    },
+];
+
+const RADIUS = 260;   // px — distance from center to each card face
+const CARD_W = 220;   // px
+const CARD_H = 280;   // px
+const BASE_RPM   = 0.018; // base auto-spin speed (deg/ms)
+const TILT_X     = -14;   // outward tilt in degrees (negative = top leans back = towards viewer at bottom)
+const FRICTION   = 0.94;  // drag momentum decay per frame
+
+const Carousel3D: React.FC = () => {
+    const trackRef     = useRef<HTMLDivElement>(null);
+    const angleRef     = useRef(0);
+    const velRef       = useRef(0);          // extra angular velocity from drag
+    const draggingRef  = useRef(false);
+    const lastXRef     = useRef(0);
+    const n            = CAROUSEL_ITEMS.length;
+    const step         = 360 / n;
+
+    // ── auto-spin + drag momentum ──
+    useAnimationFrame((_, delta) => {
+        // Always add base rotation
+        velRef.current = velRef.current * FRICTION; // decay drag momentum
+        angleRef.current += delta * BASE_RPM + velRef.current;
+
+        if (trackRef.current) {
+            trackRef.current.style.transform =
+                `rotateX(${TILT_X}deg) rotateY(${angleRef.current}deg)`;
+        }
+    });
+
+    // ── pointer drag handlers ──
+    const onPointerDown = useCallback((e: React.PointerEvent) => {
+        draggingRef.current = true;
+        lastXRef.current = e.clientX;
+        (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+    }, []);
+
+    const onPointerMove = useCallback((e: React.PointerEvent) => {
+        if (!draggingRef.current) return;
+        const dx = e.clientX - lastXRef.current;
+        lastXRef.current = e.clientX;
+        // dx / RADIUS gives a natural arc feel; scale to keep it snappy
+        const delta = (dx / RADIUS) * 25;
+        angleRef.current += delta;
+        velRef.current = delta * 0.35; // seed momentum
+    }, []);
+
+    const onPointerUp = useCallback(() => {
+        draggingRef.current = false;
+    }, []);
+
+    return (
+        <div
+            style={carouselStyles.scene}
+            onPointerDown={onPointerDown}
+            onPointerMove={onPointerMove}
+            onPointerUp={onPointerUp}
+            onPointerCancel={onPointerUp}
+        >
+            {/* Soft ground shadow */}
+            <div style={carouselStyles.groundShadow} />
+
+            {/* Rotating track — tilt applied here via inline style in animation frame */}
+            <div ref={trackRef} style={carouselStyles.track}>
+                {CAROUSEL_ITEMS.map((item, i) => (
+                    <div
+                        key={item.id}
+                        style={{
+                            ...carouselStyles.card,
+                            transform: `rotateY(${step * i}deg) translateZ(${RADIUS}px)`,
+                            background: item.gradient,
+                        }}
+                    >
+                        {/* Noise / grain overlay */}
+                        <div style={carouselStyles.grain} />
+
+                        {/* Top meta */}
+                        <div style={carouselStyles.cardMeta}>
+                            <span style={carouselStyles.cardLabel}>{item.label}</span>
+                            <span style={carouselStyles.cardIcon}>{item.icon}</span>
+                        </div>
+
+                        {/* Bottom copy */}
+                        <div>
+                            <h3 style={carouselStyles.cardTitle}>{item.title}</h3>
+                            <p  style={carouselStyles.cardSub}>{item.subtitle}</p>
+                        </div>
+
+                        {/* Shine strip */}
+                        <div style={carouselStyles.shine} />
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+};
+
+const carouselStyles: Record<string, React.CSSProperties> = {
+    scene: {
+        width: '100%',
+        height: '480px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        perspective: '1000px',
+        perspectiveOrigin: '50% 55%',
+        position: 'relative',
+        cursor: 'grab',
+        userSelect: 'none',
+        touchAction: 'none',
+    },
+    groundShadow: {
+        position: 'absolute',
+        bottom: '20px',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        width: `${RADIUS * 2 + CARD_W}px`,
+        height: '60px',
+        background: 'radial-gradient(ellipse, rgba(0,0,0,0.18) 0%, transparent 70%)',
+        borderRadius: '50%',
+        pointerEvents: 'none',
+    },
+    track: {
+        transformStyle: 'preserve-3d',
+        width: `${CARD_W}px`,
+        height: `${CARD_H}px`,
+        position: 'relative',
+        transform: `rotateX(${TILT_X}deg) rotateY(0deg)`,
+    },
+    card: {
+        position: 'absolute',
+        width: `${CARD_W}px`,
+        height: `${CARD_H}px`,
+        borderRadius: '20px',
+        padding: '22px',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        overflow: 'hidden',
+        border: '1px solid rgba(255,255,255,0.25)',
+        boxShadow: '0 24px 64px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.35)',
+        backfaceVisibility: 'visible',
+        transition: 'box-shadow 0.3s ease',
+    },
+    grain: {
+        position: 'absolute',
+        inset: 0,
+        borderRadius: '20px',
+        backgroundImage:
+            'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'n\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.85\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23n)\' opacity=\'0.06\'/%3E%3C/svg%3E")',
+        opacity: 0.5,
+        pointerEvents: 'none',
+    },
+    shine: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        height: '50%',
+        borderRadius: '20px 20px 0 0',
+        background: 'linear-gradient(180deg, rgba(255,255,255,0.18) 0%, transparent 100%)',
+        pointerEvents: 'none',
+    },
+    cardMeta: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+    cardLabel: {
+        fontFamily: "'Space Mono', monospace",
+        fontSize: '0.6rem',
+        fontWeight: '700',
+        letterSpacing: '0.15em',
+        color: 'rgba(255,255,255,0.6)',
+        textTransform: 'uppercase' as const,
+    },
+    cardIcon: {
+        fontSize: '1.3rem',
+        lineHeight: 1,
+    },
+    cardTitle: {
+        fontSize: '1.1rem',
+        fontWeight: '800',
+        color: '#fff',
+        lineHeight: 1.25,
+        marginBottom: '8px',
+        textShadow: '0 2px 12px rgba(0,0,0,0.2)',
+        fontFamily: "'Manrope', sans-serif",
+    },
+    cardSub: {
+        fontSize: '0.8rem',
+        color: 'rgba(255,255,255,0.82)',
+        lineHeight: 1.5,
+        fontFamily: "'Manrope', sans-serif",
+        margin: 0,
+    },
+};
+// ─────────────────────────────────────────────────────────────────────────────
 
 const WhatIsSection: React.FC = () => {
-    const cards = [
-        {
-            id: 1,
-            title: "Agent‑Powered Problem Makers",
-            subtitle: "Building with AI agents, not just code.",
-            gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)",
-            glowColor: "rgba(102, 126, 234, 0.4)"
-        },
-        {
-            id: 2,
-            title: "Cloud‑Ready Full‑Stack Doers",
-            subtitle: "From UI to deploy, end‑to‑end.",
-            gradient: "linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #ffd876 100%)",
-            glowColor: "rgba(245, 87, 108, 0.4)"
-        },
-        {
-            id: 3,
-            title: "Hackathons, Startups & Serendipity",
-            subtitle: "Ideas, teams and launch‑ready builds.",
-            gradient: "linear-gradient(135deg, #4facfe 0%, #00f2fe 50%, #43e97b 100%)",
-            glowColor: "rgba(79, 172, 254, 0.4)"
-        }
-    ];
 
     return (
         <div className="what-is-container" style={styles.container}>
@@ -37,7 +264,7 @@ const WhatIsSection: React.FC = () => {
                     transition={{ duration: 0.8, ease: "easeOut" }}
                 >
                     <h2 style={styles.heading}>
-                        What is The <span style={styles.highlight}>404 Society</span>?
+                        What is <span style={styles.highlight}>The 404 Society</span>?
                     </h2>
                     <p style={styles.description}>
                         We're a student developer community at PESITM Shivamogga that thrives on innovation, collaboration, and building the future. From AI-powered solutions to full-stack deployments, we're reshaping what it means to be a student developer in Karnataka.
@@ -48,62 +275,9 @@ const WhatIsSection: React.FC = () => {
                 </motion.div>
             </div>
 
-            {/* Right Side - Glassmorphism Cards Stack */}
+            {/* Right Side ─ 3D Rotating Carousel */}
             <div style={styles.rightSection}>
-                <div className="what-is-cards-container" style={styles.cardsContainer}>
-                    {cards.map((card, index) => (
-                        <motion.div
-                            key={card.id}
-                            style={{
-                                ...styles.cardWrapper,
-                                marginBottom: index < cards.length - 1 ? '30px' : '0'
-                            }}
-                            initial={{ opacity: 0, y: 50, scale: 0.95 }}
-                            whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                            viewport={{ once: true, margin: "-50px" }}
-                            transition={{
-                                duration: 0.6,
-                                delay: index * 0.15,
-                                ease: "easeOut"
-                            }}
-                            whileHover={{
-                                y: -12,
-                                scale: 1.02,
-                                transition: { duration: 0.3, ease: "easeOut" }
-                            }}
-                        >
-                            <motion.div
-                                style={{
-                                    ...styles.card,
-                                    background: card.gradient
-                                }}
-                                className="what-is-card"
-                                whileHover={{
-                                    boxShadow: `0 25px 60px -12px ${card.glowColor}, 0 0 40px ${card.glowColor}`,
-                                }}
-                            >
-                                {/* Glassmorphism overlay */}
-                                <div style={styles.glassOverlay} />
-                                
-                                {/* Content */}
-                                <div style={styles.cardContent}>
-                                    <h3 className="what-is-card-title" style={styles.cardTitle}>{card.title}</h3>
-                                    <p className="what-is-card-subtitle" style={styles.cardSubtitle}>{card.subtitle}</p>
-                                </div>
-
-                                {/* Decorative elements */}
-                                <div style={styles.decorativeDot} />
-                                <motion.div
-                                    style={styles.decorativeLine}
-                                    initial={{ scaleX: 0 }}
-                                    whileInView={{ scaleX: 1 }}
-                                    viewport={{ once: true }}
-                                    transition={{ duration: 0.8, delay: index * 0.15 + 0.3 }}
-                                />
-                            </motion.div>
-                        </motion.div>
-                    ))}
-                </div>
+                <Carousel3D />
             </div>
         </div>
     );
@@ -117,14 +291,14 @@ const styles: { [key: string]: React.CSSProperties } = {
         minHeight: '100vh',
         backgroundColor: '#ffffff',
         padding: '80px 60px',
-        gap: '80px',
+        gap: '60px',
         position: 'relative',
-        overflow: 'hidden'
+        overflow: 'hidden',
     },
     leftSection: {
         flex: '1',
-        maxWidth: '500px',
-        paddingRight: '40px'
+        maxWidth: '480px',
+        paddingRight: '20px',
     },
     heading: {
         fontSize: 'clamp(2.5rem, 5vw, 4rem)',
@@ -132,27 +306,27 @@ const styles: { [key: string]: React.CSSProperties } = {
         lineHeight: '1.1',
         marginBottom: '30px',
         color: '#000',
-        fontFamily: "'Manrope', -apple-system, BlinkMacSystemFont, sans-serif"
+        fontFamily: "'Manrope', -apple-system, BlinkMacSystemFont, sans-serif",
     },
     highlight: {
         background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
         WebkitBackgroundClip: 'text',
         WebkitTextFillColor: 'transparent',
         backgroundClip: 'text',
-        fontStyle: 'italic'
+        fontStyle: 'italic',
     },
     description: {
         fontSize: '1.125rem',
         lineHeight: '1.8',
         color: '#333',
         marginBottom: '20px',
-        fontFamily: "'Manrope', -apple-system, BlinkMacSystemFont, sans-serif"
+        fontFamily: "'Manrope', -apple-system, BlinkMacSystemFont, sans-serif",
     },
     descriptionSecondary: {
         fontSize: '1rem',
         lineHeight: '1.7',
         color: '#666',
-        fontFamily: "'Manrope', -apple-system, BlinkMacSystemFont, sans-serif"
+        fontFamily: "'Manrope', -apple-system, BlinkMacSystemFont, sans-serif",
     },
     rightSection: {
         flex: '1',
@@ -160,85 +334,8 @@ const styles: { [key: string]: React.CSSProperties } = {
         alignItems: 'center',
         justifyContent: 'center',
         position: 'relative',
-        minHeight: '650px'
+        minHeight: '520px',
     },
-    cardsContainer: {
-        display: 'flex',
-        flexDirection: 'column',
-        width: '100%',
-        maxWidth: '480px'
-    },
-    cardWrapper: {
-        position: 'relative',
-        width: '100%'
-    },
-    card: {
-        position: 'relative',
-        width: '100%',
-        height: '200px',
-        borderRadius: '24px',
-        padding: '32px',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        overflow: 'hidden',
-        boxShadow: '0 10px 40px -10px rgba(0,0,0,0.2)',
-        border: '1px solid rgba(255, 255, 255, 0.3)',
-        cursor: 'pointer',
-        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
-    },
-    glassOverlay: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        background: 'rgba(255, 255, 255, 0.1)',
-        backdropFilter: 'blur(10px)',
-        WebkitBackdropFilter: 'blur(10px)',
-        borderRadius: '24px',
-        zIndex: 1
-    },
-    cardContent: {
-        position: 'relative',
-        zIndex: 2
-    },
-    cardTitle: {
-        fontSize: '1.5rem',
-        fontWeight: '700',
-        lineHeight: '1.3',
-        marginBottom: '12px',
-        color: '#ffffff',
-        textShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
-        fontFamily: "'Manrope', -apple-system, BlinkMacSystemFont, sans-serif"
-    },
-    cardSubtitle: {
-        fontSize: '1rem',
-        lineHeight: '1.5',
-        color: 'rgba(255, 255, 255, 0.95)',
-        textShadow: '0 1px 4px rgba(0, 0, 0, 0.1)',
-        fontFamily: "'Manrope', -apple-system, BlinkMacSystemFont, sans-serif"
-    },
-    decorativeDot: {
-        position: 'absolute',
-        top: '24px',
-        right: '24px',
-        width: '8px',
-        height: '8px',
-        borderRadius: '50%',
-        backgroundColor: 'rgba(255, 255, 255, 0.6)',
-        zIndex: 2
-    },
-    decorativeLine: {
-        position: 'absolute',
-        bottom: '0',
-        left: '0',
-        right: '0',
-        height: '3px',
-        backgroundColor: 'rgba(255, 255, 255, 0.4)',
-        transformOrigin: 'left',
-        zIndex: 2
-    }
 };
 
 // Responsive styles
@@ -247,51 +344,29 @@ const responsiveStyles = `
         .what-is-container {
             flex-direction: column !important;
             padding: 60px 40px !important;
-            gap: 60px !important;
+            gap: 40px !important;
         }
-        
         .what-is-left {
             max-width: 100% !important;
             padding-right: 0 !important;
             text-align: center !important;
         }
-        
-        .what-is-cards-container {
-            max-width: 400px !important;
-        }
     }
-    
     @media (max-width: 768px) {
         .what-is-container {
-            padding: 40px 24px !important;
+            padding: 60px 24px !important;
             min-height: auto !important;
-        }
-        
-        .what-is-cards-container {
-            max-width: 100% !important;
-        }
-        
-        .what-is-card {
-            height: 180px !important;
-            padding: 24px !important;
-            border-radius: 20px !important;
-        }
-        
-        .what-is-card-title {
-            font-size: 1.25rem !important;
-        }
-        
-        .what-is-card-subtitle {
-            font-size: 0.9rem !important;
         }
     }
 `;
 
-// Inject responsive styles
 if (typeof document !== 'undefined') {
-    const styleSheet = document.createElement("style");
-    styleSheet.textContent = responsiveStyles;
-    document.head.appendChild(styleSheet);
+    if (!document.querySelector('[data-what-is-styles]')) {
+        const styleSheet = document.createElement("style");
+        styleSheet.setAttribute('data-what-is-styles', '');
+        styleSheet.textContent = responsiveStyles;
+        document.head.appendChild(styleSheet);
+    }
 }
 
 export default WhatIsSection;

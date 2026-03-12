@@ -15,6 +15,8 @@ import Blog from './pages/Blog';
 import BlogDetail from './pages/BlogDetail';
 import NotFound from './pages/NotFound';
 import EventRegistration from './pages/EventRegistration';
+import Payment from './pages/Payment';
+import PaymentStatus from './pages/PaymentStatus';
 
 // Admin Pages
 import { AdminLayout } from './components/admin/AdminLayout';
@@ -23,6 +25,7 @@ import { EventManagement } from './pages/admin/EventManagement';
 import { BlogManagement } from './pages/admin/BlogManagement';
 import { RegistrationManagement } from './pages/admin/RegistrationManagement';
 import { CommunityManagement } from './pages/admin/CommunityManagement';
+import { PaymentManagement } from './pages/admin/PaymentManagement';
 import { AdminSettings } from './pages/admin/Settings';
 import { AdminLogin } from './pages/admin/AdminLogin';
 
@@ -86,6 +89,7 @@ const App: React.FC = () => {
               <Route path="events" element={<EventManagement />} />
               <Route path="blogs" element={<BlogManagement />} />
               <Route path="registrations" element={<RegistrationManagement />} />
+              <Route path="payments" element={<PaymentManagement />} />
               <Route path="community" element={<CommunityManagement />} />
               <Route path="settings" element={<AdminSettings />} />
             </Route>
@@ -99,6 +103,9 @@ const App: React.FC = () => {
             <Route path="/blog" element={<Layout><Blog /></Layout>} />
             <Route path="/blog/:blogId" element={<Layout><BlogDetail /></Layout>} />
             <Route path="/register-event/:eventId" element={<Layout><EventRegistration /></Layout>} />
+            <Route path="/events/:eventId/register" element={<Layout><EventRegistration /></Layout>} />
+            <Route path="/events/:eventId/payment" element={<Layout><Payment /></Layout>} />
+            <Route path="/events/:eventId/payment-status" element={<Layout><PaymentStatus /></Layout>} />
 
 
             {/* 404 Page (No Layout) */}

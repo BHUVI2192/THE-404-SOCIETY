@@ -3,7 +3,7 @@ import React, { useState, useRef, useLayoutEffect, useEffect } from 'react';
 import { useParams, NavLink, useNavigate } from 'react-router-dom';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
-import { getEventById, EventData } from '../lib/events';
+import { getEventById, EventData, isEventFree, getEffectivePrice } from '../lib/events';
 import { saveRegistration } from '../lib/registrations';
 import { Loader2, CheckCircle2 } from 'lucide-react';
 import emailjs from '@emailjs/browser';
@@ -169,13 +169,40 @@ const TicketForm: React.FC<TicketFormProps> = ({ event }) => {
     setIsSubmitting(true);
 
     try {
-      // 1. Save to Firebase
-      await saveRegistration({
+      const isPaidEvent = !isEventFree(event);
+
+      // 1. Save to Firebase with appropriate payment status
+      const registrationResult = await saveRegistration({
         eventId: event.id || '',
         eventTitle: event.title,
-        ...formData
+        ...formData,
+        paymentStatus: isPaidEvent ? 'pending' : 'not_required',
+        amountPaid: isPaidEvent ? getEffectivePrice(event) : undefined,
       });
 
+      // If it's a paid event, redirect to payment page
+      if (isPaidEvent) {
+        if (!registrationResult?.id) {
+          throw new Error('Failed to create registration');
+        }
+
+        // Redirect to payment page with registration details
+        navigate(`/events/${event.id}/payment`, {
+          state: {
+            registrationId: registrationResult.id,
+            registrationData: {
+              name: formData.name,
+              email: formData.email,
+              phone: formData.phone || '',
+              college: formData.college,
+              year: formData.year,
+            },
+          },
+        });
+        return;
+      }
+
+      // For free events, continue with the current flow
       // 2. Send Email via EmailJS
       const templateParams = {
         to_name: formData.name,
@@ -433,6 +460,43 @@ const TicketForm: React.FC<TicketFormProps> = ({ event }) => {
                 </h2>
               </div>
 
+              {/* Pricing Banner for paid events */}
+              {!isEventFree(event) && (
+                <div
+                  className="mb-4 flex items-center justify-between gap-3"
+                  style={{
+                    background: '#000',
+                    color: '#fff',
+                    padding: '10px 16px',
+                    border: '4px solid #000',
+                  }}
+                >
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-300 mb-0.5">
+                      Registration Fee
+                    </p>
+                    <p className="text-xl font-black leading-none">
+                      ₹{getEffectivePrice(event).toFixed(2)}
+                    </p>
+                    {event.pricing?.earlyBirdDiscount?.enabled &&
+                      getEffectivePrice(event) < (event.pricing?.amount || 0) && (
+                        <p className="text-xs mt-1" style={{ color: '#4ade80' }}>
+                          🎯 Early Bird — Save ₹{((event.pricing?.amount || 0) - getEffectivePrice(event)).toFixed(2)}
+                        </p>
+                    )}
+                  </div>
+                  <div className="text-right">
+                    <span
+                      className="text-xs font-black uppercase tracking-widest px-2 py-1"
+                      style={{ border: '2px solid rgba(255,255,255,0.4)', color: 'rgba(255,255,255,0.7)' }}
+                    >
+                      Paid Event
+                    </span>
+                    <p className="text-xs text-gray-400 mt-1">Razorpay · Secure</p>
+                  </div>
+                </div>
+              )}
+
               <form onSubmit={handleSubmit} className="flex flex-col gap-3">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-3">
                   <div>
@@ -524,11 +588,21 @@ const TicketForm: React.FC<TicketFormProps> = ({ event }) => {
                   disabled={isSubmitting}
                   className="mt-2 w-full flex items-center justify-center gap-2 py-3 bg-black text-white font-black uppercase tracking-widest text-sm hover:bg-gray-900 transition-colors disabled:opacity-50"
                 >
-                  {isSubmitting ? <Loader2 size={16} className="animate-spin" /> : "Complete Registration"}
+                  {isSubmitting ? (
+                    <Loader2 size={16} className="animate-spin" />
+                  ) : !isEventFree(event) ? (
+                    `Proceed to Pay ₹${getEffectivePrice(event).toFixed(2)}`
+                  ) : (
+                    "Complete Registration"
+                  )}
                 </button>
               </form>
 
-              <p className="mt-2 text-xs text-gray-400">Confirmation will be sent to your email.</p>
+              <p className="mt-2 text-xs text-gray-400">
+                {!isEventFree(event)
+                  ? 'You will be redirected to the secure payment page.'
+                  : 'Confirmation will be sent to your email.'}
+              </p>
             </div>
 
           </div>

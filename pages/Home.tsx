@@ -10,6 +10,7 @@ import PortalCTA from '../components/PortalCTA';
 import HeroParticles from '../src/components/HeroParticles';
 import { Helmet } from 'react-helmet-async';
 import WhatIsSection from '../components/WhatIsSection';
+import TeamAvatars from '../components/TeamAvatars';
 
 
 
@@ -307,6 +308,8 @@ const Home: React.FC = () => {
             {/* --- UPCOMING EVENTS (Timeline) --- */}
             <EventsTimeline highlights={highlights} loading={loading} />
 
+            {/* --- TEAM AVATARS --- */}
+            <TeamAvatars />
 
             {/* --- PORTAL FINAL CTA --- */}
             <PortalCTA />

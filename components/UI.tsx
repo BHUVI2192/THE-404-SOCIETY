@@ -111,7 +111,7 @@ export const Header: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 h-16 sm:h-20 flex items-center justify-between">
         <RouterNavLink to="/" className="flex items-center gap-2 group z-50">
           <span className="font-bold text-sm sm:text-lg md:text-xl tracking-tight text-black group-hover:scale-105 transition-transform whitespace-nowrap">
-            404 Society
+            The 404 Society
           </span>
         </RouterNavLink>
 

@@ -35,6 +35,12 @@ export const EventManagement: React.FC = () => {
     status: 'open',
     category: '',
     description: '',
+    pricing: {
+      isFree: true,
+      amount: 0,
+      currency: 'INR',
+    },
+    maxRegistrations: undefined,
   });
 
   useEffect(() => {
@@ -56,6 +62,12 @@ export const EventManagement: React.FC = () => {
       status: 'open',
       category: '',
       description: '',
+      pricing: {
+        isFree: true,
+        amount: 0,
+        currency: 'INR',
+      },
+      maxRegistrations: undefined,
     });
     setImagePreview('');
     setEditingId(null);
@@ -277,6 +289,171 @@ export const EventManagement: React.FC = () => {
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   />
+                </div>
+
+                {/* Pricing Configuration Section */}
+                <div style={{ 
+                  marginTop: '20px', 
+                  padding: '16px', 
+                  backgroundColor: '#f8f9fa', 
+                  borderRadius: '8px',
+                  border: '1px solid #e0e0e0'
+                }}>
+                  <h4 style={{ 
+                    fontSize: '14px', 
+                    fontWeight: '600', 
+                    marginBottom: '16px',
+                    color: '#333'
+                  }}>💳 Pricing Configuration</h4>
+                  
+                  <div className="adm-form-group">
+                    <label className="adm-form-label" style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                      <input
+                        type="checkbox"
+                        checked={formData.pricing?.isFree !== false}
+                        onChange={(e) => setFormData({ 
+                          ...formData, 
+                          pricing: {
+                            ...formData.pricing!,
+                            isFree: e.target.checked,
+                            amount: e.target.checked ? 0 : (formData.pricing?.amount || 0)
+                          }
+                        })}
+                        style={{ width: '18px', height: '18px' }}
+                      />
+                      <span>This is a FREE event</span>
+                    </label>
+                  </div>
+
+                  {formData.pricing?.isFree === false && (
+                    <>
+                      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '12px' }}>
+                        <div className="adm-form-group">
+                          <label className="adm-form-label adm-form-label--required">Registration Fee (₹)</label>
+                          <input
+                            type="text"
+                            inputMode="numeric"
+                            pattern="[0-9]*"
+                            className="adm-input"
+                            placeholder="e.g., 500"
+                            value={formData.pricing?.amount ? formData.pricing.amount / 100 : ''}
+                            onChange={(e) => {
+                              const raw = e.target.value.replace(/[^0-9]/g, '');
+                              const rupees = raw === '' ? 0 : parseInt(raw, 10);
+                              setFormData({ 
+                                ...formData, 
+                                pricing: {
+                                  ...formData.pricing!,
+                                  amount: rupees * 100 // Convert to paise
+                                }
+                              });
+                            }}
+                          />
+                          <small style={{ color: '#888', marginTop: '4px', display: 'block' }}>
+                            Amount will be charged via Razorpay gateway
+                          </small>
+                        </div>
+
+                        <div className="adm-form-group">
+                          <label className="adm-form-label">Max Registrations</label>
+                          <input
+                            type="text"
+                            inputMode="numeric"
+                            pattern="[0-9]*"
+                            className="adm-input"
+                            placeholder="No limit"
+                            value={formData.maxRegistrations || ''}
+                            onChange={(e) => {
+                              const raw = e.target.value.replace(/[^0-9]/g, '');
+                              setFormData({ 
+                                ...formData, 
+                                maxRegistrations: raw ? parseInt(raw, 10) : undefined
+                              });
+                            }}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Early Bird Discount Section */}
+                      <div style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px solid #e0e0e0' }}>
+                        <div className="adm-form-group">
+                          <label className="adm-form-label" style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                            <input
+                              type="checkbox"
+                              checked={formData.pricing?.earlyBirdDiscount?.enabled || false}
+                              onChange={(e) => setFormData({ 
+                                ...formData, 
+                                pricing: {
+                                  ...formData.pricing!,
+                                  earlyBirdDiscount: e.target.checked ? {
+                                    enabled: true,
+                                    discountPercent: 10,
+                                    validUntil: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+                                  } : undefined
+                                }
+                              })}
+                              style={{ width: '18px', height: '18px' }}
+                            />
+                            <span>🎯 Enable Early Bird Discount</span>
+                          </label>
+                        </div>
+
+                        {formData.pricing?.earlyBirdDiscount?.enabled && (
+                          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginTop: '12px' }}>
+                            <div className="adm-form-group">
+                              <label className="adm-form-label">Discount Percentage (%)</label>
+                              <input
+                                type="text"
+                                inputMode="numeric"
+                                pattern="[0-9]*"
+                                className="adm-input"
+                                placeholder="e.g., 20"
+                                value={formData.pricing?.earlyBirdDiscount?.discountPercent || ''}
+                                onChange={(e) => {
+                                  const raw = e.target.value.replace(/[^0-9]/g, '');
+                                  const val = raw === '' ? 0 : Math.min(100, parseInt(raw, 10));
+                                  setFormData({ 
+                                    ...formData, 
+                                    pricing: {
+                                      ...formData.pricing!,
+                                      earlyBirdDiscount: {
+                                        ...formData.pricing!.earlyBirdDiscount!,
+                                        discountPercent: val
+                                      }
+                                    }
+                                  });
+                                }}
+                              />
+                              {formData.pricing?.earlyBirdDiscount?.discountPercent && formData.pricing.amount && (
+                                <small style={{ color: '#10b981', marginTop: '4px', display: 'block' }}>
+                                  Discounted price: ₹{((formData.pricing.amount / 100) * (1 - formData.pricing.earlyBirdDiscount.discountPercent / 100)).toFixed(2)}
+                                </small>
+                              )}
+                            </div>
+
+                            <div className="adm-form-group">
+                              <label className="adm-form-label">Valid Until</label>
+                              <input
+                                type="date"
+                                className="adm-input"
+                                value={formData.pricing?.earlyBirdDiscount?.validUntil?.split('T')[0] || ''}
+                                onChange={(e) => setFormData({ 
+                                  ...formData, 
+                                  pricing: {
+                                    ...formData.pricing!,
+                                    earlyBirdDiscount: {
+                                      ...formData.pricing!.earlyBirdDiscount!,
+                                      validUntil: e.target.value
+                                    }
+                                  }
+                                })}
+                              />
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </>
+                  )}
                 </div>
               </form>
             </div>
