@@ -1,13 +1,20 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 
+import bhuvanPhoto from '../bhuvan n.png';
+import hrishikeshPhoto from '../K hrishikesh.jpeg';
+import yashPhoto from '../Yash.jpeg';
+import rudreshPhoto from '../rudresh j.jpeg';
+import pramathPhoto from '../Pramath.jpeg';
+import deepakPhoto from '../K Deepak.jpeg';
+
 const TEAM = [
-    { id: 1, name: 'Bhuvan N',           role: 'Founder & President',         image: '/bhuvan n.png',    fallback: 'BN' },
-    { id: 2, name: 'K Hrishikesh',       role: 'Co-Founder & Vice President', image: '/K hrishikesh.jpeg', fallback: 'KH' },
-    { id: 3, name: 'Yashwardhan Kumarr', role: 'COO',                 image: '/Yash.jpeg',            fallback: 'YK' },
-    { id: 4, name: 'Rudresh J',          role: 'CCO',                 image: '/rudresh j.jpeg',            fallback: 'RJ' },
-    { id: 5, name: 'Pramath',            role: 'CINO',                 image: '/Pramath.jpeg',            fallback: 'PR' },
-    { id: 6, name: 'Deepak',             role: 'CTO',              image: '/K Deepak.jpeg',            fallback: 'DK' },
+    { id: 1, name: 'Bhuvan N',           role: 'Founder & President',         image: bhuvanPhoto,     fallback: 'BN' },
+    { id: 2, name: 'K Hrishikesh',       role: 'Co-Founder & Vice President', image: hrishikeshPhoto, fallback: 'KH' },
+    { id: 3, name: 'Yashwardhan Kumarr', role: 'COO',                        image: yashPhoto,       fallback: 'YK' },
+    { id: 4, name: 'Rudresh J',          role: 'CCO',                        image: rudreshPhoto,    fallback: 'RJ' },
+    { id: 5, name: 'Pramath',            role: 'CINO',                       image: pramathPhoto,    fallback: 'PR' },
+    { id: 6, name: 'Deepak',             role: 'CTO',                        image: deepakPhoto,     fallback: 'DK' },
 ];
 
 const SIZE    = 96;
