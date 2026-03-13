@@ -3,6 +3,8 @@
  * Documentation: https://razorpay.com/docs/payments/payment-gateway/web-integration/standard/
  */
 
+import { createPayment } from './payments';
+
 // Razorpay Configuration — only the public key lives in the browser bundle.
 // The secret key is kept server-side in api/create-order.js.
 const RAZORPAY_CONFIG = {
@@ -147,7 +149,6 @@ export const initiatePayment = async (
     const razorpayOrderId = await createRazorpayOrder(amount, referenceId);
 
     // Create payment record in Firestore first
-    const { createPayment } = await import('./payments');
     const paymentRecordId = await createPayment({
       userId: userDetails.email, // Using email as user identifier
       eventId: eventId,

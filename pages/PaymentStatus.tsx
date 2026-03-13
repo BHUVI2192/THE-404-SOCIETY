@@ -3,7 +3,7 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { CheckCircle2, XCircle, Loader2, Download, Mail, Calendar, MapPin, CreditCard, Home } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import confetti from 'canvas-confetti';
-import { updatePaymentStatus } from '../lib/payments';
+import { getPaymentByOrderId, updatePaymentStatus } from '../lib/payments';
 import { updateRegistrationPayment } from '../lib/registrations';
 import { getEventById, EventData } from '../lib/events';
 import { sendEventConfirm } from '../lib/emailService';
@@ -54,7 +54,6 @@ const PaymentStatus: React.FC = () => {
           
           try {
             // First, get the payment record by order ID
-            const { getPaymentByOrderId } = await import('../lib/payments');
             const paymentRecord = await getPaymentByOrderId(state.orderId);
             
             if (paymentRecord && paymentRecord.id) {

@@ -72,6 +72,33 @@ export default defineConfig(({ mode }) => {
         alias: {
           '@': path.resolve(__dirname, '.'),
         }
+      },
+      build: {
+        rollupOptions: {
+          output: {
+            manualChunks(id) {
+              if (!id.includes('node_modules')) return;
+
+              if (id.includes('three') || id.includes('@react-three')) {
+                return 'three-vendor';
+              }
+
+              if (id.includes('firebase')) {
+                return 'firebase-vendor';
+              }
+
+              if (id.includes('gsap') || id.includes('framer-motion')) {
+                return 'animation-vendor';
+              }
+
+              if (id.includes('react-router')) {
+                return 'router-vendor';
+              }
+
+              return 'vendor';
+            },
+          },
+        },
       }
     };
 });
