@@ -1,14 +1,15 @@
-// Simple localStorage database wrapper
-const localDb = {
-    get: (key: string) => {
-        const data = localStorage.getItem(key);
-        return data ? JSON.parse(data) : [];
-    },
-    set: (key: string, value: any) => {
-        localStorage.setItem(key, JSON.stringify(value));
-    },
-    generateId: () => `blog_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
-};
+import {
+    addDoc,
+    collection,
+    deleteDoc,
+    doc,
+    getDocs,
+    onSnapshot,
+    orderBy,
+    query,
+    updateDoc
+} from "firebase/firestore";
+import { db } from "./firebase";
 
 export interface BlogPostData {
     author?: any;
@@ -27,6 +28,65 @@ export interface BlogPostData {
 }
 
 const BLOG_COLLECTION = "nexus_blog_posts";
+const LEGACY_MIGRATION_FLAG = "nexus_blog_posts_migrated_to_firestore";
+
+const getLegacyLocalPosts = (): BlogPostData[] => {
+    if (typeof window === "undefined") {
+        return [];
+    }
+
+    try {
+        const data = localStorage.getItem(BLOG_COLLECTION);
+        if (!data) {
+            return [];
+        }
+
+        const parsed = JSON.parse(data);
+        return Array.isArray(parsed) ? parsed : [];
+    } catch (error) {
+        console.error("[blog] Failed to parse legacy local posts:", error);
+        return [];
+    }
+};
+
+const migrateLegacyPostsIfNeeded = async () => {
+    if (typeof window === "undefined") {
+        return;
+    }
+
+    if (localStorage.getItem(LEGACY_MIGRATION_FLAG) === "true") {
+        return;
+    }
+
+    try {
+        const postsRef = collection(db, BLOG_COLLECTION);
+        const existingSnapshot = await getDocs(postsRef);
+
+        // Migrate local posts only when Firestore does not already have blog data.
+        if (!existingSnapshot.empty) {
+            localStorage.setItem(LEGACY_MIGRATION_FLAG, "true");
+            return;
+        }
+
+        const legacyPosts = getLegacyLocalPosts();
+        if (!legacyPosts.length) {
+            localStorage.setItem(LEGACY_MIGRATION_FLAG, "true");
+            return;
+        }
+
+        for (const post of legacyPosts) {
+            const { id, ...data } = post;
+            await addDoc(postsRef, {
+                ...data,
+                createdAt: data.createdAt || Date.now(),
+            });
+        }
+
+        localStorage.setItem(LEGACY_MIGRATION_FLAG, "true");
+    } catch (error) {
+        console.error("[blog] Legacy migration failed:", error);
+    }
+};
 
 export const SAMPLE_POSTS: BlogPostData[] = [
     {
@@ -46,34 +106,57 @@ export const SAMPLE_POSTS: BlogPostData[] = [
 ];
 
 export const getBlogPosts = async (): Promise<BlogPostData[]> => {
-    let data = localDb.get(BLOG_COLLECTION);
-    if (data.length === 0) {
-        localDb.set(BLOG_COLLECTION, SAMPLE_POSTS);
-        data = SAMPLE_POSTS;
+    try {
+        await migrateLegacyPostsIfNeeded();
+        const postsRef = collection(db, BLOG_COLLECTION);
+        const q = query(postsRef, orderBy("createdAt", "desc"));
+        const snapshot = await getDocs(q);
+        return snapshot.docs
+            .map((docSnap) => ({ id: docSnap.id, ...docSnap.data() } as BlogPostData))
+            .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+    } catch (error) {
+        console.error("[blog] Failed to fetch posts:", error);
+        return [];
     }
-    return data.sort((a: any, b: any) => b.createdAt - a.createdAt);
 };
 
 export const subscribeToBlogPosts = (callback: (posts: BlogPostData[]) => void) => {
-    getBlogPosts().then(callback);
-    return () => {}; // Return unsubscribe function
+    void migrateLegacyPostsIfNeeded();
+
+    const postsRef = collection(db, BLOG_COLLECTION);
+    const q = query(postsRef, orderBy("createdAt", "desc"));
+
+    return onSnapshot(
+        q,
+        (snapshot) => {
+            const posts = snapshot.docs
+                .map((docSnap) => ({ id: docSnap.id, ...docSnap.data() } as BlogPostData))
+                .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+            callback(posts);
+        },
+        (error) => {
+            console.error("[blog] Realtime subscription failed:", error);
+            callback([]);
+        }
+    );
 };
 
 export const addBlogPost = async (post: Omit<BlogPostData, 'id'>) => {
-    const posts = await getBlogPosts();
-    const newPost = { ...post, id: localDb.generateId(), createdAt: Date.now() };
-    localDb.set(BLOG_COLLECTION, [newPost, ...posts]);
-    return { id: newPost.id };
+    const postsRef = collection(db, BLOG_COLLECTION);
+    const newPost = {
+        ...post,
+        createdAt: Date.now(),
+    };
+    const docRef = await addDoc(postsRef, newPost);
+    return { id: docRef.id };
 };
 
 export const updateBlogPost = async (id: string, data: Partial<BlogPostData>) => {
-    const posts = await getBlogPosts();
-    const updated = posts.map(p => p.id === id ? { ...p, ...data } : p);
-    localDb.set(BLOG_COLLECTION, updated);
+    const docRef = doc(db, BLOG_COLLECTION, id);
+    await updateDoc(docRef, data);
 };
 
 export const deleteBlogPost = async (id: string) => {
-    const posts = await getBlogPosts();
-    const filtered = posts.filter(p => p.id !== id);
-    localDb.set(BLOG_COLLECTION, filtered);
+    const docRef = doc(db, BLOG_COLLECTION, id);
+    await deleteDoc(docRef);
 };
