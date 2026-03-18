@@ -54,14 +54,28 @@ const CAROUSEL_ITEMS: CarouselItem[] = [
     },
 ];
 
-const RADIUS = 260;   // px — distance from center to each card face
-const CARD_W = 220;   // px
-const CARD_H = 280;   // px
 const BASE_RPM   = 0.018; // base auto-spin speed (deg/ms)
 const TILT_X     = -14;   // outward tilt in degrees (negative = top leans back = towards viewer at bottom)
 const FRICTION   = 0.94;  // drag momentum decay per frame
 
 const Carousel3D: React.FC = () => {
+    const [windowWidth, setWindowWidth] = React.useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
+
+    React.useEffect(() => {
+        const handleResize = () => setWindowWidth(window.innerWidth);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    const isMobile = windowWidth < 768;
+    const isTablet = windowWidth < 1024;
+
+    // Dynamic Sizing
+    const RADIUS = isMobile ? 160 : isTablet ? 200 : 260;
+    const CARD_W = isMobile ? 140 : isTablet ? 180 : 220;
+    const CARD_H = isMobile ? 200 : isTablet ? 240 : 280;
+    const SCENE_H = isMobile ? 320 : isTablet ? 400 : 480;
+
     const trackRef     = useRef<HTMLDivElement>(null);
     const angleRef     = useRef(0);
     const velRef       = useRef(0);          // extra angular velocity from drag
@@ -69,6 +83,108 @@ const Carousel3D: React.FC = () => {
     const lastXRef     = useRef(0);
     const n            = CAROUSEL_ITEMS.length;
     const step         = 360 / n;
+
+    // ── Styles (moved inside to be dynamic) ──
+    const carouselStyles: Record<string, React.CSSProperties> = {
+        scene: {
+            width: '100%',
+            height: `${SCENE_H}px`,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            perspective: '1000px',
+            perspectiveOrigin: '50% 55%',
+            position: 'relative',
+            cursor: 'grab',
+            userSelect: 'none',
+            touchAction: 'none',
+        },
+        groundShadow: {
+            position: 'absolute',
+            bottom: isMobile ? '10px' : '20px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: `${RADIUS * 2 + CARD_W}px`,
+            height: isMobile ? '40px' : '60px',
+            background: 'radial-gradient(ellipse, rgba(0,0,0,0.18) 0%, transparent 70%)',
+            borderRadius: '50%',
+            pointerEvents: 'none',
+        },
+        track: {
+            transformStyle: 'preserve-3d',
+            width: `${CARD_W}px`,
+            height: `${CARD_H}px`,
+            position: 'relative',
+            transform: `rotateX(${TILT_X}deg) rotateY(0deg)`,
+        },
+        card: {
+            position: 'absolute',
+            width: `${CARD_W}px`,
+            height: `${CARD_H}px`,
+            borderRadius: isMobile ? '15px' : '20px',
+            padding: isMobile ? '16px' : '22px',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            overflow: 'hidden',
+            border: '1px solid rgba(255,255,255,0.25)',
+            boxShadow: '0 24px 64px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.35)',
+            backfaceVisibility: 'visible',
+            transition: 'box-shadow 0.3s ease',
+        },
+        grain: {
+            position: 'absolute',
+            inset: 0,
+            borderRadius: isMobile ? '15px' : '20px',
+            backgroundImage:
+                'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'n\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.85\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23n)\' opacity=\'0.06\'/%3E%3C/svg%3E")',
+            opacity: 0.5,
+            pointerEvents: 'none',
+        },
+        shine: {
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: '50%',
+            borderRadius: isMobile ? '15px 15px 0 0' : '20px 20px 0 0',
+            background: 'linear-gradient(180deg, rgba(255,255,255,0.18) 0%, transparent 100%)',
+            pointerEvents: 'none',
+        },
+        cardMeta: {
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+        },
+        cardLabel: {
+            fontFamily: "'Space Mono', monospace",
+            fontSize: isMobile ? '0.5rem' : '0.6rem',
+            fontWeight: '700',
+            letterSpacing: '0.15em',
+            color: 'rgba(255,255,255,0.6)',
+            textTransform: 'uppercase' as const,
+        },
+        cardIcon: {
+            fontSize: isMobile ? '1rem' : '1.3rem',
+            lineHeight: 1,
+        },
+        cardTitle: {
+            fontSize: isMobile ? '0.9rem' : '1.1rem',
+            fontWeight: '800',
+            color: '#fff',
+            lineHeight: 1.25,
+            marginBottom: '8px',
+            textShadow: '0 2px 12px rgba(0,0,0,0.2)',
+            fontFamily: "'Manrope', sans-serif",
+        },
+        cardSub: {
+            fontSize: isMobile ? '0.65rem' : '0.8rem',
+            color: 'rgba(255,255,255,0.82)',
+            lineHeight: 1.5,
+            fontFamily: "'Manrope', sans-serif",
+            margin: 0,
+        },
+    };
 
     // ── auto-spin + drag momentum ──
     useAnimationFrame((_, delta) => {
@@ -149,114 +265,45 @@ const Carousel3D: React.FC = () => {
     );
 };
 
-const carouselStyles: Record<string, React.CSSProperties> = {
-    scene: {
-        width: '100%',
-        height: '480px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        perspective: '1000px',
-        perspectiveOrigin: '50% 55%',
-        position: 'relative',
-        cursor: 'grab',
-        userSelect: 'none',
-        touchAction: 'none',
-    },
-    groundShadow: {
-        position: 'absolute',
-        bottom: '20px',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        width: `${RADIUS * 2 + CARD_W}px`,
-        height: '60px',
-        background: 'radial-gradient(ellipse, rgba(0,0,0,0.18) 0%, transparent 70%)',
-        borderRadius: '50%',
-        pointerEvents: 'none',
-    },
-    track: {
-        transformStyle: 'preserve-3d',
-        width: `${CARD_W}px`,
-        height: `${CARD_H}px`,
-        position: 'relative',
-        transform: `rotateX(${TILT_X}deg) rotateY(0deg)`,
-    },
-    card: {
-        position: 'absolute',
-        width: `${CARD_W}px`,
-        height: `${CARD_H}px`,
-        borderRadius: '20px',
-        padding: '22px',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        overflow: 'hidden',
-        border: '1px solid rgba(255,255,255,0.25)',
-        boxShadow: '0 24px 64px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.35)',
-        backfaceVisibility: 'visible',
-        transition: 'box-shadow 0.3s ease',
-    },
-    grain: {
-        position: 'absolute',
-        inset: 0,
-        borderRadius: '20px',
-        backgroundImage:
-            'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'n\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.85\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23n)\' opacity=\'0.06\'/%3E%3C/svg%3E")',
-        opacity: 0.5,
-        pointerEvents: 'none',
-    },
-    shine: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        height: '50%',
-        borderRadius: '20px 20px 0 0',
-        background: 'linear-gradient(180deg, rgba(255,255,255,0.18) 0%, transparent 100%)',
-        pointerEvents: 'none',
-    },
-    cardMeta: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-    },
-    cardLabel: {
-        fontFamily: "'Space Mono', monospace",
-        fontSize: '0.6rem',
-        fontWeight: '700',
-        letterSpacing: '0.15em',
-        color: 'rgba(255,255,255,0.6)',
-        textTransform: 'uppercase' as const,
-    },
-    cardIcon: {
-        fontSize: '1.3rem',
-        lineHeight: 1,
-    },
-    cardTitle: {
-        fontSize: '1.1rem',
-        fontWeight: '800',
-        color: '#fff',
-        lineHeight: 1.25,
-        marginBottom: '8px',
-        textShadow: '0 2px 12px rgba(0,0,0,0.2)',
-        fontFamily: "'Manrope', sans-serif",
-    },
-    cardSub: {
-        fontSize: '0.8rem',
-        color: 'rgba(255,255,255,0.82)',
-        lineHeight: 1.5,
-        fontFamily: "'Manrope', sans-serif",
-        margin: 0,
-    },
-};
 // ─────────────────────────────────────────────────────────────────────────────
 
 const WhatIsSection: React.FC = () => {
+    const [windowWidth, setWindowWidth] = React.useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
+
+    React.useEffect(() => {
+        const handleResize = () => setWindowWidth(window.innerWidth);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    const isMobile = windowWidth < 768;
+    const isTablet = windowWidth < 1024;
+
+    const dynamicStyles: { [key: string]: React.CSSProperties } = {
+        ...styles,
+        container: {
+            ...styles.container,
+            padding: isMobile ? '60px 24px' : isTablet ? '60px 40px' : '80px 60px',
+            flexDirection: isTablet ? 'column' : 'row',
+            gap: isMobile ? '20px' : isTablet ? '40px' : '60px',
+            minHeight: isMobile ? 'auto' : '100vh',
+        },
+        leftSection: {
+            ...styles.leftSection,
+            maxWidth: isTablet ? '100%' : '480px',
+            paddingRight: isTablet ? '0' : '20px',
+            textAlign: isTablet ? 'center' : 'left',
+        },
+        rightSection: {
+            ...styles.rightSection,
+            minHeight: isMobile ? '320px' : isTablet ? '400px' : '520px',
+        }
+    };
 
     return (
-        <div className="what-is-container" style={styles.container}>
+        <div className="what-is-container" style={dynamicStyles.container}>
             {/* Left Side - Text Block */}
-            <div className="what-is-left" style={styles.leftSection}>
+            <div className="what-is-left" style={dynamicStyles.leftSection}>
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -276,7 +323,7 @@ const WhatIsSection: React.FC = () => {
             </div>
 
             {/* Right Side ─ 3D Rotating Carousel */}
-            <div style={styles.rightSection}>
+            <div style={dynamicStyles.rightSection}>
                 <Carousel3D />
             </div>
         </div>
