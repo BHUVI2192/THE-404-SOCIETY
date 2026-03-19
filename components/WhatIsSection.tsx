@@ -348,7 +348,7 @@ const styles: { [key: string]: React.CSSProperties } = {
         paddingRight: '20px',
     },
     heading: {
-        fontSize: 'clamp(2.5rem, 5vw, 4rem)',
+        fontSize: 'clamp(2rem, 5vw, 4rem)',
         fontWeight: '800',
         lineHeight: '1.1',
         marginBottom: '30px',

@@ -2,7 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { getEvents } from '../../lib/events';
 import { getRegistrations } from '../../lib/registrations';
 import { getCommunityApps } from '../../lib/community_apps';
-import { getBlogs } from '../../lib/blogs';
+import { getBlogPosts, BlogPostData } from '../../lib/blog';
+
+type DashboardBlog = BlogPostData & {
+  status?: 'draft' | 'published';
+  updatedAt?: number;
+};
 
 export const AdminDashboard: React.FC = () => {
   const [stats, setStats] = useState({
@@ -24,15 +29,18 @@ export const AdminDashboard: React.FC = () => {
           getEvents(),
           getRegistrations(),
           getCommunityApps(),
-          getBlogs(),
+          getBlogPosts(),
         ]);
+
+        const dashboardBlogs = blogs as DashboardBlog[];
+        const publishedBlogs = dashboardBlogs.filter((b) => (b.status ? b.status === 'published' : true)).length;
 
         setStats({
           totalEvents: events.length,
           activeEvents: events.filter((e) => e.status === 'open').length,
           totalRegistrations: registrations.length,
-          totalBlogs: blogs.length,
-          publishedBlogs: blogs.filter((b) => b.status === 'published').length,
+          totalBlogs: dashboardBlogs.length,
+          publishedBlogs,
           communityApps: communityApps.length,
           pendingApps: communityApps.filter((a) => a.status === 'pending').length,
           approvedApps: communityApps.filter((a) => a.status === 'approved').length,
@@ -41,7 +49,7 @@ export const AdminDashboard: React.FC = () => {
         // Combine recent activity
         const activity = [
           ...events.slice(0, 2).map((e) => ({ type: 'event', data: e, createdAt: e.createdAt })),
-          ...blogs.slice(0, 2).map((b) => ({ type: 'blog', data: b, createdAt: b.updatedAt || b.createdAt })),
+          ...dashboardBlogs.slice(0, 2).map((b) => ({ type: 'blog', data: b, createdAt: b.updatedAt || b.createdAt })),
           ...registrations.slice(0, 2).map((r) => ({ type: 'registration', data: r, createdAt: r.createdAt })),
           ...communityApps.slice(0, 2).map((c) => ({ type: 'community', data: c, createdAt: c.createdAt })),
         ].sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));

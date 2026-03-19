@@ -98,6 +98,16 @@ const AboutRevealSection: React.FC = () => {
                             rotate: 0deg !important;
                         }
 
+                        .who-text { 
+                            font-size: 12vh !important; /* Slightly reduced */
+                            word-break: break-word !important; 
+                        }
+                        
+                        .society-title { 
+                            font-size: clamp(2rem, 8vw, 3rem) !important; 
+                            word-break: break-word !important;
+                        }
+
                         /* Shrink the overall scroll container height on mobile */
                         .about-scroll-container {
                             height: auto !important;
@@ -193,8 +203,11 @@ const AboutRevealSection: React.FC = () => {
                             gap: 20px !important;
                         }
                         .wing-heading {
-                            font-size: 3.5rem !important;
-                            line-height: 1 !important;
+                            font-size: clamp(2rem, 12vw, 3rem) !important; /* Responsive scaling */
+                            line-height: 1.1 !important;
+                            word-break: break-word !important;
+                            overflow-wrap: break-word !important;
+                            hyphens: auto !important;
                         }
                         .wing-desc {
                             font-size: 1.1rem !important;

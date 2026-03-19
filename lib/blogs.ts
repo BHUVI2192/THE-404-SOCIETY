@@ -14,7 +14,7 @@ export interface BlogData {
     updatedAt?: number;
 }
 
-const BLOGS_COLLECTION = "nexus_blogs";
+const BLOGS_COLLECTION = "nexus_blog_posts";
 
 export const getBlogs = async (): Promise<BlogData[]> => {
     try {
