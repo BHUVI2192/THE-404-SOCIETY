@@ -1,6 +1,8 @@
+import { supabase } from './supabase';
+
 /**
  * Image Upload Utility
- * Handles file selection and Base64 conversion for localStorage storage
+ * Handles file selection and Supabase Storage uploads
  */
 
 export interface ImageUploadResult {
@@ -77,4 +79,45 @@ export const triggerFileInput = (callback: (file: File) => void): HTMLInputEleme
   };
   input.click();
   return input;
+};
+
+/**
+ * Upload an image File to Supabase Storage and return the public URL
+ * @param file The image file to upload
+ * @param path The storage directory (e.g., 'events/' or 'blogs/')
+ */
+export const uploadImageToStorage = async (file: File, path: string): Promise<string> => {
+  // Validate file type
+  if (!ALLOWED_TYPES.includes(file.type)) {
+    throw new Error(`Invalid file type. Allowed types: ${ALLOWED_TYPES.join(', ')}`);
+  }
+
+  // Validate file size
+  if (file.size > MAX_FILE_SIZE) {
+    throw new Error(`File size exceeds ${MAX_FILE_SIZE / (1024 * 1024)}MB limit`);
+  }
+
+  try {
+    const filename = `${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.]/g, '_')}`;
+    const filePath = `${path}${filename}`;
+    
+    const { data, error } = await supabase.storage
+      .from('uploads')
+      .upload(filePath, file, {
+        cacheControl: '3600',
+        upsert: false
+      });
+    
+    if (error) throw error;
+
+    // Get public URL
+    const { data: { publicUrl } } = supabase.storage
+      .from('uploads')
+      .getPublicUrl(data.path);
+    
+    return publicUrl;
+  } catch (error: any) {
+    console.error('Error uploading to Supabase Storage:', error);
+    throw new Error(`Failed to upload image to Supabase: ${error.message}`);
+  }
 };

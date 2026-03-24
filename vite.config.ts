@@ -63,6 +63,62 @@ export default defineConfig(({ mode }) => {
             });
           },
         },
+        // Dev-only middleware: handles /api/send-email during local development.
+        {
+          name: 'email-sender-api',
+          configureServer(server) {
+            server.middlewares.use('/api/send-email', (req: IncomingMessage, res: ServerResponse) => {
+              if (req.method !== 'POST') {
+                res.writeHead(405, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ error: 'Method not allowed' }));
+                return;
+              }
+
+              const emailUser = env.EMAIL_USER;
+              const emailPass = env.EMAIL_PASS;
+
+              if (!emailUser || !emailPass) {
+                res.writeHead(500, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ error: 'Email service not configured. Check .env.local for EMAIL_USER and EMAIL_PASS.' }));
+                return;
+              }
+
+              let body = '';
+              req.on('data', (chunk: Buffer) => { body += chunk.toString(); });
+              req.on('end', async () => {
+                try {
+                  const { to, subject, text, html } = JSON.parse(body);
+                  
+                  // Dynamically import nodemailer to avoid issues if not installed
+                  const nodemailer = await import('nodemailer');
+                  const transporter = nodemailer.createTransport({
+                    service: 'gmail',
+                    auth: {
+                      user: emailUser,
+                      pass: emailPass,
+                    },
+                  });
+
+                  await transporter.sendMail({
+                    from: `"The 404 Society" <${emailUser}>`,
+                    to,
+                    subject,
+                    text,
+                    html,
+                  });
+
+                  res.writeHead(200, { 'Content-Type': 'application/json' });
+                  res.end(JSON.stringify({ success: true }));
+                } catch (error: any) {
+                  console.error('Local Email Error:', error);
+                  res.writeHead(500, { 'Content-Type': 'application/json' });
+                  res.end(JSON.stringify({ error: error.message || 'Failed to send email locally' }));
+                }
+              });
+            });
+          },
+        },
+
       ],
       define: {
         'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY),

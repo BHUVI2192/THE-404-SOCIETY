@@ -1,8 +1,9 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import emailjs from '@emailjs/browser';
+import { sendApplicationReceivedEmail } from '../lib/emailService';
 import { saveCommunityApp } from '../lib/community_apps';
+
 import { Helmet } from 'react-helmet-async';
 
 
@@ -175,24 +176,12 @@ export default function Community() {
         social: formData.social || '',
       });
 
-      // Auto-send confirmation email to the applicant
-      await emailjs.send(
-        import.meta.env.VITE_EMAILJS_SERVICE_ID,
-        import.meta.env.VITE_EMAILJS_APPLICATION_RECEIVED_ID,
-        {
-          to_name: formData.name,
-          to_email: formData.email,
-          contact: formData.contact,
-          interest: formData.interest,
-          college: formData.college,
-          external_college: formData.external_college_name || "N/A",
-          year: formData.year,
-          skills: formData.skills || "N/A",
-          reason: formData.reason || "N/A",
-          social: formData.social || "N/A"
-        },
-        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
-      );
+      // Auto-send confirmation email to the applicant using SMTP backend
+      await sendApplicationReceivedEmail({
+          name: formData.name,
+          email: formData.email,
+      });
+
       setFormStatus('success');
     } catch (error) {
       console.error("Submission Error:", error);
@@ -281,8 +270,8 @@ export default function Community() {
                   </div>
                   <div style={{ width: '100%', height: '1px', background: '#e8e8e8', margin: '14px 0' }} />
                   <div style={styles.infoRow}>
-                    <span style={styles.infoKey}>CONTACT</span>
-                    <span style={styles.infoVal}>connect@the404society.in</span>
+                    <span style={styles.infoKey}>CONTACTS</span>
+                    <span style={styles.infoVal}>connect@the404society.in<br />Onboarding: Thrisha K (+91 89512 90096)</span>
                   </div>
                 </div>
               </div>

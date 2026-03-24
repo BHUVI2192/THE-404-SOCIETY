@@ -6,8 +6,9 @@ import ScrollTrigger from 'gsap/ScrollTrigger';
 import { getEventById, EventData, isEventFree, getEffectivePrice } from '../lib/events';
 import { saveRegistration } from '../lib/registrations';
 import { Loader2, CheckCircle2 } from 'lucide-react';
-import emailjs from '@emailjs/browser';
+import { sendEventConfirm } from '../lib/emailService';
 import { Helmet } from 'react-helmet-async';
+
 
 import './EventRegistration.css';
 
@@ -194,7 +195,7 @@ const TicketForm: React.FC<TicketFormProps> = ({ event }) => {
               name: formData.name,
               email: formData.email,
               phone: formData.phone || '',
-              college: formData.college,
+              branch: formData.branch,
               year: formData.year,
             },
           },
@@ -203,27 +204,16 @@ const TicketForm: React.FC<TicketFormProps> = ({ event }) => {
       }
 
       // For free events, continue with the current flow
-      // 2. Send Email via EmailJS
-      const templateParams = {
-        to_name: formData.name,
-        to_email: formData.email,
-        event_name: event.title,
-        event_date: event.date,
-        event_time: '10:00 AM', // Or dynamic if added later
-        event_location: event.location || 'Lab 404, PESITM',
-        student_id: formData.studentId,
-        branch: formData.branch,
-        year: formData.year,
-        phone: formData.phone,
-        team_name: formData.teamName || 'N/A'
-      };
+      // 2. Send Email via SMTP backend
+      await sendEventConfirm({
+        name: formData.name,
+        email: formData.email,
+        eventTitle: event.title,
+        eventDate: event.date,
+        eventLocation: event.location || 'Lab 404, PESITM',
+        whatsappLink: event.whatsappLink,
+      });
 
-      await emailjs.send(
-        import.meta.env.VITE_EMAILJS_SERVICE_ID,
-        import.meta.env.VITE_EMAILJS_EVENT_REGISTRATION_TEMPLATE_ID || import.meta.env.VITE_EMAILJS_APPLICATION_RECEIVED_ID, // fallback
-        templateParams,
-        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
-      );
 
       setIsSuccess(true);
     } catch (error) {

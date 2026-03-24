@@ -14,6 +14,7 @@ export interface EventData {
     description?: string;
     pricing?: EventPricing;
     maxRegistrations?: number;
+    whatsappLink?: string;
     createdAt?: number;
 }
 

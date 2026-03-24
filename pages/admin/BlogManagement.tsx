@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { subscribeToBlogPosts, addBlogPost, updateBlogPost, deleteBlogPost, BlogPostData } from '../../lib/blog';
-import { processImageFile } from '../../lib/imageUpload';
+import { uploadImageToStorage } from '../../lib/imageUpload';
 
 export const BlogManagement: React.FC = () => {
   const [blogs, setBlogs] = useState<BlogPostData[]>([]);
@@ -80,20 +80,26 @@ export const BlogManagement: React.FC = () => {
     }
   };
 
+
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     try {
-      const result = await processImageFile(file);
-      if (result) {
-        setFormData({ ...formData, image: result.base64 });
-        setImagePreview(result.base64);
-        toast.success('Image uploaded successfully');
-      }
+      setLoading(true);
+      toast.loading('Uploading image...', { id: 'image-upload' });
+      
+      const downloadURL = await uploadImageToStorage(file, 'blogs/');
+      
+      setFormData({ ...formData, image: downloadURL });
+      setImagePreview(downloadURL);
+      
+      toast.success('Image uploaded successfully', { id: 'image-upload' });
     } catch (error) {
       const errorMsg = error instanceof Error ? error.message : 'Failed to upload image';
-      toast.error(errorMsg);
+      toast.error(errorMsg, { id: 'image-upload' });
+    } finally {
+      setLoading(false);
     }
   };
 

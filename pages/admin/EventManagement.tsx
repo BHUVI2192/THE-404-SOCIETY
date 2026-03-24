@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { subscribeToEvents, addEvent, updateEvent, deleteEvent, EventData } from '../../lib/events';
+import { addEvent, updateEvent, deleteEvent, EventData, subscribeToEvents } from '../../lib/events';
 import toast from 'react-hot-toast';
-import { processImageFile } from '../../lib/imageUpload';
+import { uploadImageToStorage } from '../../lib/imageUpload';
 
 type FormMode = 'create' | 'edit' | null;
 
@@ -41,6 +41,7 @@ export const EventManagement: React.FC = () => {
       currency: 'INR',
     },
     maxRegistrations: undefined,
+    whatsappLink: '',
   });
 
   useEffect(() => {
@@ -68,6 +69,7 @@ export const EventManagement: React.FC = () => {
         currency: 'INR',
       },
       maxRegistrations: undefined,
+      whatsappLink: '',
     });
     setImagePreview('');
     setEditingId(null);
@@ -130,20 +132,26 @@ export const EventManagement: React.FC = () => {
     }
   };
 
+
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     try {
-      const result = await processImageFile(file);
-      if (result) {
-        setFormData({ ...formData, img: result.base64 });
-        setImagePreview(result.base64);
-        toast.success('Image uploaded successfully');
-      }
+      setLoading(true);
+      toast.loading('Uploading image...', { id: 'image-upload' });
+      
+      const downloadURL = await uploadImageToStorage(file, 'events/');
+      
+      setFormData({ ...formData, img: downloadURL });
+      setImagePreview(downloadURL);
+      
+      toast.success('Image uploaded successfully', { id: 'image-upload' });
     } catch (error) {
       const errorMsg = error instanceof Error ? error.message : 'Failed to upload image';
-      toast.error(errorMsg);
+      toast.error(errorMsg, { id: 'image-upload' });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -244,6 +252,16 @@ export const EventManagement: React.FC = () => {
                       <option value="open">Open</option>
                       <option value="locked">Locked</option>
                     </select>
+                  </div>
+                  <div className="adm-form-group">
+                    <label className="adm-form-label">WhatsApp Group Link</label>
+                    <input
+                      type="url"
+                      className="adm-input"
+                      placeholder="https://chat.whatsapp.com/..."
+                      value={formData.whatsappLink || ''}
+                      onChange={(e) => setFormData({ ...formData, whatsappLink: e.target.value })}
+                    />
                   </div>
                 </div>
 

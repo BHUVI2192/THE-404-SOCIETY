@@ -2,18 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { subscribeToCommunityApps, updateCommunityApp, deleteCommunityApp, CommunityApp } from '../../lib/community_apps';
 import { generateMemberId, setMemberId, validateMemberId } from '../../lib/memberIdService';
 import {
-  sendApplicationApprovedEmail
+  sendApplicationApprovedEmail,
+  sendApplicationRejectedEmail
 } from '../../lib/emailService';
 import toast from 'react-hot-toast';
 
-type ActionType = 'approve' | null;
+type ActionType = 'approve' | 'reject' | null;
 
 export const CommunityManagement: React.FC = () => {
   const [apps, setApps] = useState<CommunityApp[]>([]);
   const [filteredApps, setFilteredApps] = useState<CommunityApp[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState<'all' | 'pending' | 'approved'>('all');
+  const [statusFilter, setStatusFilter] = useState<'all' | 'pending' | 'approved' | 'rejected'>('all');
 
   // Modal state
   const [selectedApp, setSelectedApp] = useState<CommunityApp | null>(null);
@@ -116,6 +117,39 @@ export const CommunityManagement: React.FC = () => {
     } catch (error) {
       console.error('Error approving application:', error);
       toast.error('Failed to approve application');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleReject = async () => {
+    if (!selectedApp) return;
+
+    try {
+      setLoading(true);
+
+      // Update application
+      await updateCommunityApp(selectedApp.id!, {
+        status: 'rejected',
+        emailsSent: {
+          ...(selectedApp.emailsSent || {}),
+          applicationRejected: true,
+        },
+        updatedAt: Date.now(),
+      });
+
+      // Send rejection email
+      await sendApplicationRejectedEmail({
+        name: selectedApp.name,
+        email: selectedApp.email,
+        feedback: feedback || undefined
+      });
+
+      toast.success('Application rejected');
+      closeModal();
+    } catch (error) {
+      console.error('Error rejecting application:', error);
+      toast.error('Failed to reject application');
     } finally {
       setLoading(false);
     }
@@ -258,7 +292,7 @@ export const CommunityManagement: React.FC = () => {
         </div>
 
         <div className="adm-filter-group">
-          {(['all', 'pending', 'approved'] as const).map((status) => (
+          {(['all', 'pending', 'approved', 'rejected'] as const).map((status) => (
             <button
               key={status}
               onClick={() => setStatusFilter(status)}
@@ -374,12 +408,24 @@ export const CommunityManagement: React.FC = () => {
                       onClick={() => openActionModal(app, 'approve')}
                       disabled={loading}
                       className="adm-btn adm-btn--primary"
-                      style={{ flex: '1 1 100%' }}
+                      style={{ flex: '1 1 calc(50% - 4px)' }}
                     >
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: '16px', height: '16px' }}>
                         <polyline points="20 6 9 17 4 12" />
                       </svg>
                       Approve
+                    </button>
+                    <button
+                      onClick={() => openActionModal(app, 'reject')}
+                      disabled={loading}
+                      className="adm-btn adm-btn--danger"
+                      style={{ flex: '1 1 calc(50% - 4px)' }}
+                    >
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: '16px', height: '16px', transform: 'rotate(45deg)' }}>
+                        <line x1="12" y1="5" x2="12" y2="19" />
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                      </svg>
+                      Reject
                     </button>
                   </>
                 )}
@@ -436,7 +482,7 @@ export const CommunityManagement: React.FC = () => {
             boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
           }}>
             <h2 style={{ fontSize: '18px', fontWeight: '700', color: 'var(--adm-text)', marginBottom: '4px' }}>
-              ✅ Approve Application
+              {actionType === 'approve' ? '✅ Approve Application' : '❌ Reject Application'}
             </h2>
             <p style={{ fontSize: '13px', color: 'var(--adm-text-muted)', marginBottom: '20px' }}>
               {selectedApp.name} ({selectedApp.email})
@@ -495,15 +541,47 @@ export const CommunityManagement: React.FC = () => {
               </>
             )}
 
+            {/* Reject Form */}
+            {actionType === 'reject' && (
+              <div style={{ marginBottom: '20px' }}>
+                <p style={{ fontSize: '14px', color: 'var(--adm-text)', margin: '0 0 12px 0', lineHeight: 1.5 }}>
+                  Are you sure you want to reject this application? This will notify the applicant via email.
+                </p>
+                <div style={{ marginBottom: '16px' }}>
+                  <label style={{ fontSize: '12px', fontWeight: '600', color: 'var(--adm-text-muted)', display: 'block', marginBottom: '8px' }}>
+                    Feedback Reason (Optional)
+                  </label>
+                  <textarea
+                    placeholder="Provide a reason for rejection (optional)..."
+                    value={feedback}
+                    onChange={(e) => setFeedback(e.target.value)}
+                    style={{
+                      width: '100%',
+                      padding: '10px 12px',
+                      border: '1px solid var(--adm-border)',
+                      borderRadius: '6px',
+                      fontSize: '13px',
+                      color: 'var(--adm-text)',
+                      background: 'var(--adm-bg-secondary)',
+                      boxSizing: 'border-box',
+                      minHeight: '80px',
+                      resize: 'vertical'
+                    }}
+                  />
+                </div>
+              </div>
+            )}
+
+
             {/* Buttons */}
             <div style={{ display: 'flex', gap: '8px' }}>
               <button
-                onClick={handleApprove}
+                onClick={actionType === 'approve' ? handleApprove : handleReject}
                 disabled={loading}
-                className="adm-btn adm-btn--primary"
+                className={`adm-btn ${actionType === 'approve' ? 'adm-btn--primary' : 'adm-btn--danger'}`}
                 style={{ flex: 1 }}
               >
-                {loading ? 'Processing...' : 'Approve & Send Email'}
+                {loading ? 'Processing...' : (actionType === 'approve' ? 'Approve & Send Email' : 'Confirm Rejection')}
               </button>
               <button
                 onClick={closeModal}
