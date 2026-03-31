@@ -153,8 +153,13 @@ const Home: React.FC = () => {
                 <title>The 404 Society – PESITM Student Developer Community</title>
                 <meta name="description" content="The 404 Society is a student-run coding club at PESITM Shivamogga. Join our AI workshops, hackathons, full-stack development sessions, and peer-to-peer learning community." />
                 <meta property="og:title" content="The 404 Society – PESITM Student Developer Community" />
-                <meta property="og:description" content="Join our AI workshops, hackathons, and full-stack development sessions." />
+                <meta property="og:description" content="Where students build, code & innovate. The premier coding club at PESITM, Shivamogga." />
+                <meta property="og:image" content="https://the404society.in/logo.png?v=1.1" />
                 <meta property="og:type" content="website" />
+                <meta property="twitter:card" content="summary_large_image" />
+                <meta property="twitter:title" content="The 404 Society – PESITM Student Developer Community" />
+                <meta property="twitter:description" content="Where students build, code & innovate. The premier coding club at PESITM, Shivamogga." />
+                <meta property="twitter:image" content="https://the404society.in/logo.png?v=1.1" />
             </Helmet>
 
             {/* --- HERO SECTION --- */}

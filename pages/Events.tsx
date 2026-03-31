@@ -55,6 +55,8 @@ export default function EventsPage() {
       <Helmet>
         <title>Events & Sessions | The 404 Society</title>
         <meta name="description" content="Discover upcoming hackathons, AI workshops, and tech events hosted by The 404 Society at PESITM." />
+        <meta property="og:image" content="https://the404society.in/logo.png?v=1.1" />
+        <meta property="twitter:image" content="https://the404society.in/logo.png?v=1.1" />
       </Helmet>
       <div ref={pageRef} className="events-page-container">
         {/* --- HEADER --- */}

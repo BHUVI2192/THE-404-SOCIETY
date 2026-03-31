@@ -8,6 +8,8 @@ const About: React.FC = () => {
             <Helmet>
                 <title>About Us | The 404 Society</title>
                 <meta name="description" content="Learn about The 404 Society's mission, vision, and how we are empowering student developers at PESITM Shivamogga." />
+                <meta property="og:image" content="https://the404society.in/logo.png?v=1.1" />
+                <meta property="twitter:image" content="https://the404society.in/logo.png?v=1.1" />
             </Helmet>
             <div className="bg-white min-h-screen">
                 {/* 
