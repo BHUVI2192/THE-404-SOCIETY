@@ -17,6 +17,7 @@ import NotFound from './pages/NotFound';
 import EventRegistration from './pages/EventRegistration';
 import Payment from './pages/Payment';
 import PaymentStatus from './pages/PaymentStatus';
+import AIOnboarding from './pages/AIOnboarding';
 
 // Admin Pages
 import { AdminLayout } from './components/admin/AdminLayout';
@@ -107,6 +108,9 @@ const App: React.FC = () => {
             <Route path="/events/:eventId/payment" element={<Layout><Payment /></Layout>} />
             <Route path="/events/:eventId/payment-status" element={<Layout><PaymentStatus /></Layout>} />
 
+            {/* 404 AI Portal */}
+            <Route path="/404-ai" element={<AIOnboarding />} />
+            <Route path="/apply" element={<AIOnboarding />} />
 
             {/* 404 Page (No Layout) */}
             <Route path="*" element={<NotFound />} />

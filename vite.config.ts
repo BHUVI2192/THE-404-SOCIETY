@@ -118,6 +118,72 @@ export default defineConfig(({ mode }) => {
             });
           },
         },
+        // Dev-only middleware: handles /api/submit-404-application during local development.
+        {
+          name: 'submit-404-application-api',
+          configureServer(server) {
+            server.middlewares.use('/api/submit-404-application', (req: IncomingMessage, res: ServerResponse) => {
+              if (req.method !== 'POST') {
+                res.writeHead(405, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ error: 'Method not allowed' }));
+                return;
+              }
+
+              const emailUser = env.EMAIL_USER;
+              const emailPass = env.EMAIL_PASS;
+
+              if (!emailUser || !emailPass) {
+                res.writeHead(500, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ error: 'Email service not configured. Check .env.local for EMAIL_USER and EMAIL_PASS.' }));
+                return;
+              }
+
+              let body = '';
+              req.on('data', (chunk: Buffer) => { body += chunk.toString(); });
+              req.on('end', async () => {
+                try {
+                  const data = JSON.parse(body);
+                  const { name, email, company, frameworks, hardestIssue, experiences, currentDebugging, shareTraces, whyTest } = data;
+                  
+                  // Dynamically import nodemailer
+                  const nodemailer = await import('nodemailer');
+                  const transporter = nodemailer.createTransport({
+                    service: 'gmail',
+                    auth: {
+                      user: emailUser,
+                      pass: emailPass,
+                    },
+                  });
+
+                  // 1. Send admin email
+                  const adminHtml = `<h2>New 404 AI Application</h2><p>Name: ${name}</p><p>Email: ${email}</p><p>Company: ${company}</p><hr/><p>Frameworks: ${frameworks}</p><p>Experiences: ${experiences?.join(', ')}</p><hr/><p>Hardest Issue: ${hardestIssue}</p><p>Current Debugging: ${currentDebugging}</p><p>Share Traces: ${shareTraces}</p><p>Why Test: ${whyTest}</p>`;
+                  await transporter.sendMail({
+                    from: `"404 AI System" <${emailUser}>`,
+                    to: emailUser,
+                    subject: `New Application: ${name} from ${company}`,
+                    html: adminHtml,
+                  });
+
+                  // 2. Send user thank you email
+                  const userHtml = `<div style="font-family: sans-serif; max-w-2xl; color: #111;"><p>Hi ${name.split(' ')[0]},</p><p>Thanks for applying to test 404 AI. We're currently onboarding a curated group of engineers. We'll reach out soon.</p><p>Best,<br/>Founder, 404 AI</p></div>`;
+                  await transporter.sendMail({
+                    from: `"404 AI" <${emailUser}>`,
+                    to: email,
+                    subject: `404 AI — Early Access Application Received`,
+                    html: userHtml,
+                  });
+
+                  res.writeHead(200, { 'Content-Type': 'application/json' });
+                  res.end(JSON.stringify({ success: true }));
+                } catch (error: any) {
+                  console.error('Local Submit Application Error:', error);
+                  res.writeHead(500, { 'Content-Type': 'application/json' });
+                  res.end(JSON.stringify({ error: error.message || 'Failed to submit locally' }));
+                }
+              });
+            });
+          },
+        },
 
       ],
       define: {
