@@ -1,0 +1,14 @@
+[
+  {
+    "origin": [
+      "http://localhost:3000", 
+      "http://localhost:5173", 
+      "https://the404society.in", 
+      "https://www.the404society.in",
+      "https://the-404-society.vercel.app"
+    ],
+    "method": ["GET", "PUT", "POST", "DELETE", "HEAD"],
+    "responseHeader": ["Content-Type", "x-goog-resumable"],
+    "maxAgeSeconds": 3600
+  }
+]
