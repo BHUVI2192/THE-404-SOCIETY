@@ -1,5 +1,6 @@
 import { useState, useMemo, useCallback, useRef } from "react";
 import ReferenceLanding from "./ReferenceLanding";
+import "../app/globals.css";
 
 /* ═══════════════════════════════════════════════════════════════════
    404 AI — CAUSAL INTELLIGENCE PLATFORM
