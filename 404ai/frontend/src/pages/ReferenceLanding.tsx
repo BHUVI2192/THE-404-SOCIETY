@@ -28,10 +28,19 @@ export default function ReferenceLanding({ onRunTrace, samples, loading = false,
   const [err, setErr] = useState<string | null>(null);
 
   const scrollToTrace = () => {
-    const el = document.getElementById("trace-input");
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
-    } else if (onStart) {
+    if (onStart) {
+      onStart();
+    } else {
+      const el = document.getElementById("trace-input");
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  };
+
+  const handleSeeHowItWorks = (e?: React.MouseEvent) => {
+    if (onStart) {
+      if (e) e.preventDefault();
       onStart();
     }
   };
@@ -60,7 +69,7 @@ export default function ReferenceLanding({ onRunTrace, samples, loading = false,
         </a>
         <nav>
           <a href="#graph">Product</a>
-          <a href="#workflow">How it works</a>
+          <a href="#workflow" onClick={handleSeeHowItWorks}>How it works</a>
           <a href="#replay">Replay</a>
         </nav>
         <button className="reference-nav-cta" onClick={scrollToTrace}>
@@ -78,7 +87,7 @@ export default function ReferenceLanding({ onRunTrace, samples, loading = false,
             <button className="violet-button" onClick={scrollToTrace}>
               Start using HETU <ArrowUpRight size={14} />
             </button>
-            <a className="plain-link" href="#workflow">
+            <a className="plain-link" href="#workflow" onClick={handleSeeHowItWorks}>
               See how it works <ArrowUpRight size={14} />
             </a>
           </div>

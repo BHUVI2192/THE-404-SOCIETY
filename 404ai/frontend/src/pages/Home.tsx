@@ -387,6 +387,7 @@ const dot = (color = C.dot) => ({ width: 8, height: 8, borderRadius: "50%", back
 
 // ═══ APP ════════════════════════════════════════════════════════
 export default function Home() {
+  const [viewMode, setViewMode] = useState<"landing" | "workspace">("landing");
   const [analysis, setAnalysis] = useState<any>(null);
   const [selNode, setSelNode] = useState<any>(null);
   const [section, setSection] = useState("report");
@@ -396,6 +397,12 @@ export default function Home() {
   const [ckState, setCkState] = useState<any>({});
   const [fb, setFb] = useState<any>(null);
   const [fbText, setFbText] = useState("");
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [userHistory, setUserHistory] = useState<Array<{ id: string; name: string; trace: any }>>([
+    { id: "s1", name: '[[ {"span_id": "orch-001", "parent_span_id": null ...', trace: SAMPLES.cascading.trace },
+    { id: "s2", name: "Infinite Review Loop (6 iterations)", trace: SAMPLES.loop.trace },
+    { id: "s3", name: "Memory Poisoning (FDA XR-7)", trace: SAMPLES.memory.trace },
+  ]);
   const svgRef = useRef<SVGSVGElement>(null);
   const [vb, setVb] = useState<any>(null);
   const [drag, setDrag] = useState(false);
@@ -405,13 +412,29 @@ export default function Home() {
     setLoading(true); setErr(null); setFb(null); setCkState({});
     setTimeout(() => {
       try {
-        const r = analyze(trace);
+        let traceData = trace;
+        if (typeof trace === "string") {
+          try {
+            traceData = JSON.parse(trace);
+          } catch {
+            traceData = trace;
+          }
+        }
+        const r = analyze(traceData);
         setAnalysis(r);
+        setViewMode("workspace");
         setSelNode(r.root_cause.node);
         setSection("report");
         const pos = layoutN(r.graph.nodes, r.graph.edges);
         const xs = Object.values(pos).map((p: any) => p.x), ys = Object.values(pos).map((p: any) => p.y);
         setVb({ x: Math.min(...xs) - 100, y: Math.min(...ys) - 80, w: Math.max(...xs) - Math.min(...xs) + 240 + 200, h: Math.max(...ys) - Math.min(...ys) + 100 + 160 });
+        
+        // Add to history if unique
+        const traceSnippet = typeof trace === "string" ? trace.slice(0, 45) + "..." : "Custom OpenTelemetry Trace";
+        setUserHistory(prev => {
+          if (prev.some(h => JSON.stringify(h.trace) === JSON.stringify(traceData))) return prev;
+          return [{ id: `h_${Date.now()}`, name: traceSnippet, trace: traceData }, ...prev];
+        });
       } catch (e: any) {
         setErr(e.message);
       }
@@ -440,240 +463,457 @@ export default function Home() {
     setVb({ x: vb.x - (vb.w - vb.w * f) / 2, y: vb.y - (vb.h - vb.h * f) / 2, w: vb.w * f, h: vb.h * f });
   };
 
-  // ═══ LANDING PAGE (404 AI Official) ════════════════════════════
-  if (!analysis) {
+  // ═══ LANDING PAGE VIEW ════════════════════════════
+  if (viewMode === "landing") {
     return (
       <ReferenceLanding
-        onRunTrace={run}
+        onRunTrace={(t) => {
+          run(t);
+          setViewMode("workspace");
+        }}
         samples={SAMPLES}
         loading={loading}
+        onStart={() => setViewMode("workspace")}
       />
     );
   }
 
-
-  // ═══ DEBUGGER VIEW (Phase 1 + Phase 2 Execution Graph) ═════════
-  const { graph, root_cause: rc, impact_chain: ic, evidence, evidenceScore: es, propagation: prop, decisions, checklist, summaryReport, summary, agent_scores } = analysis;
-  const nC: any = { root_cause: { bg: C.desLight, border: C.des, text: "#8B2020" }, impacted: { bg: C.impactLight, border: C.impact, text: "#8B6914" }, error: { bg: "#FDF2F0", border: "#E74C3C30", text: "#C0392B" }, ok: { bg: C.bgWhite, border: C.border, text: C.textSec } };
-
+  // ═══ WORKSPACE VIEW (LLM Agent Front Page + Investigation Graph) ═════════
   return (
-    <div style={{ display: "flex", flexDirection: "column", height: "100vh", background: C.bg, color: C.text, fontFamily: "'Inter',sans-serif", overflow: "hidden" }}>
+    <div style={{ display: "flex", width: "100vw", height: "100vh", background: "#FAF9FB", color: C.text, fontFamily: "'DM Sans', 'Inter', sans-serif", overflow: "hidden" }}>
       <link href={FONT} rel="stylesheet" />
-      {/* Header */}
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 24px", height: 52, background: C.bgWhite, borderBottom: `1px solid ${C.border}`, flexShrink: 0 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <span style={{ fontSize: 16, fontWeight: 700, cursor: "pointer", color: "#000000", fontFamily: "'DM Sans', sans-serif", letterSpacing: "-0.04em" }} onClick={() => setAnalysis(null)}>HETU</span>
-          <span style={{ ...label, fontSize: 9, marginLeft: 8, color: C.textMut }}>INVESTIGATION REPORT</span>
-        </div>
-        <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-          <span style={{ fontSize: 10, ...mono, color: C.textMut }}>{summary.algorithm} · {summary.analysis_time_ms}ms</span>
-          {summary.root_cause_found && <span style={{ fontSize: 10, fontWeight: 700, color: C.des, background: C.desLight, padding: "4px 12px", borderRadius: 4, ...mono }}>DES IDENTIFIED</span>}
-          <button onClick={() => setAnalysis(null)} style={{ ...card, padding: "5px 14px", fontSize: 11, ...mono, color: C.textSec, cursor: "pointer" }}>New trace</button>
-        </div>
-      </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 400px", flex: 1, overflow: "hidden" }}>
-        {/* Graph */}
-        <div style={{ position: "relative", overflow: "hidden" }}>
-          <svg ref={svgRef} width="100%" height="100%" viewBox={vb ? `${vb.x} ${vb.y} ${vb.w} ${vb.h}` : "0 0 800 600"} onMouseDown={onMD} onMouseMove={onMM} onMouseUp={onMU} onMouseLeave={onMU} onWheel={onWh} style={{ cursor: drag ? "grabbing" : "grab", background: C.bg }}>
-            <defs><pattern id="g" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r=".6" fill={C.border} /></pattern></defs>
-            <rect x={vb ? vb.x - 3e3 : -3e3} y={vb ? vb.y - 3e3 : -3e3} width={(vb?.w || 800) + 6e3} height={(vb?.h || 600) + 6e3} fill="url(#g)" />
-            {graph.edges.map((e: any) => {
-              const sp = positions[e.source], tp = positions[e.target]; if (!sp || !tp) return null;
-              const x1 = sp.x + 100, y1 = sp.y + 68, x2 = tp.x + 100, y2 = tp.y, mid = (y1 + y2) / 2;
-              return <g key={e.id}><path d={`M${x1},${y1} C${x1},${mid} ${x2},${mid} ${x2},${y2}`} fill="none" stroke={e.is_impact_path ? C.impact : e.type === "HANDS_OFF" ? "#A8A0D0" : C.border} strokeWidth={e.is_impact_path ? 2.5 : 1.2} strokeDasharray={e.type === "HANDS_OFF" ? "5,3" : "none"} /><polygon points={`${x2 - 3},${y2 - 5} ${x2 + 3},${y2 - 5} ${x2},${y2}`} fill={e.is_impact_path ? C.impact : C.border} /></g>;
-            })}
-            {graph.nodes.map((n: any) => {
-              const p = positions[n.id]; if (!p) return null;
-              const c = nC[n.visual_status] || nC.ok;
-              const sel = n.id === selNode;
-              return <g key={n.id} className="gn" onClick={() => setSelNode(n.id)} style={{ cursor: "pointer" }}>
-                {n.is_root_cause && <rect x={p.x - 4} y={p.y - 4} width={208} height={76} rx={12} fill="none" stroke={C.des} strokeWidth={2} strokeDasharray="5,3"><animate attributeName="opacity" values="1;.3;1" dur="2.5s" repeatCount="indefinite" /></rect>}
-                {sel && !n.is_root_cause && <rect x={p.x - 2} y={p.y - 2} width={204} height={72} rx={11} fill="none" stroke={C.accent} strokeWidth={1.5} />}
-                <rect x={p.x} y={p.y} width={200} height={68} rx={10} fill={c.bg} stroke={c.border} strokeWidth={1.2} />
-                <text x={p.x + 10} y={p.y + 20} fill={c.text} fontSize={11} fontWeight={600} fontFamily="Inter,sans-serif">{n.agent}</text>
-                {n.is_root_cause && <><rect x={p.x + 158} y={p.y + 8} width={32} height={14} rx={3} fill={C.desLight} stroke={C.des} strokeWidth={.5} /><text x={p.x + 174} y={p.y + 18} fill={C.des} fontSize={7} fontWeight={700} textAnchor="middle" fontFamily="'Space Mono'">DES</text></>}
-                <text x={p.x + 10} y={p.y + 36} fill={C.textMut} fontSize={9} fontFamily="'Space Mono',monospace">{n.operation}{n.tool ? ` → ${n.tool}` : ""}</text>
-                <text x={p.x + 10} y={p.y + 50} fill={C.textMut} fontSize={8} fontFamily="'Space Mono',monospace">{n.tokens}tok · {n.duration_ms}ms</text>
-                {n.degradation != null && <><rect x={p.x + 10} y={p.y + 59} width={110} height={2.5} rx={1} fill={C.bg} /><rect x={p.x + 10} y={p.y + 59} width={110 * n.degradation} height={2.5} rx={1} fill={C.impact} /></>}
-              </g>;
-            })}
-          </svg>
-        </div>
-
-        {/* Right panel */}
-        <div style={{ background: C.bgWhite, borderLeft: `1px solid ${C.border}`, display: "flex", flexDirection: "column", overflow: "hidden" }}>
-          {/* Stats */}
-          <div style={{ display: "flex", padding: "10px 16px", borderBottom: `1px solid ${C.border}` }}>
-            {[{ v: summary.total_spans, l: "Spans" }, { v: summary.agent_count, l: "Agents" }, { v: summary.error_count, l: "Errors", c: C.des }, { v: es.score, l: "Evidence", c: es.score >= 70 ? C.ok : es.score >= 40 ? C.impact : C.des }].map(s => (
-              <div key={s.l} style={{ flex: 1, textAlign: "center" }}>
-                <div style={{ fontSize: 16, fontWeight: 700, ...mono, color: s.c || C.text }}>{s.v}</div>
-                <div style={{ ...label, fontSize: 7 }}>{s.l}</div>
-              </div>
-            ))}
+      {/* LEFT SIDEBAR (Matching Image 1) */}
+      <div style={{ width: sidebarOpen ? 250 : 0, transition: "width 0.2s ease", background: "#F5F5F7", borderRight: "1px solid #E5E5EB", display: "flex", flexDirection: "column", flexShrink: 0, overflow: "hidden", position: "relative" }}>
+        {/* Sidebar Header */}
+        <div style={{ padding: "14px 16px 10px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }} onClick={() => setViewMode("landing")}>
+            <div style={{ width: 22, height: 22, borderRadius: 6, background: "#18181B", display: "grid", placeItems: "center", color: "#FFF", fontSize: 12, fontWeight: 700 }}>✦</div>
+            <span style={{ fontSize: 15, fontWeight: 700, letterSpacing: "-0.02em", color: "#18181B" }}>HETU</span>
           </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+            <button style={{ background: "none", border: "none", color: "#71717A", cursor: "pointer", padding: 4 }} title="Search">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            </button>
+            <button onClick={() => setSidebarOpen(false)} style={{ background: "none", border: "none", color: "#71717A", cursor: "pointer", padding: 4 }} title="Toggle Sidebar">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/></svg>
+            </button>
+          </div>
+        </div>
 
-          {/* Confidence */}
-          {summary.root_cause_found && (
-            <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 16px", borderBottom: `1px solid ${C.border}` }}>
-              <span style={{ ...label, fontSize: 8 }}>CIA SCORE</span>
-              <div style={{ flex: 1, height: 4, background: C.bg, borderRadius: 2, overflow: "hidden" }}><div style={{ width: `${summary.root_cause_confidence * 100}%`, height: "100%", borderRadius: 2, background: summary.root_cause_confidence > .7 ? C.des : C.impact }} /></div>
-              <span style={{ fontSize: 12, fontWeight: 700, ...mono, color: summary.root_cause_confidence > .7 ? C.des : C.impact }}>{Math.round(summary.root_cause_confidence * 100)}%</span>
+        {/* Sidebar + New Button */}
+        <div style={{ padding: "4px 12px 10px 12px" }}>
+          <button
+            onClick={() => { setAnalysis(null); setInput(""); }}
+            style={{ width: "100%", padding: "8px 12px", background: "#FFFFFF", border: "1px solid #E4E4E7", borderRadius: 8, display: "flex", alignItems: "center", gap: 8, fontSize: 13, fontWeight: 500, color: "#18181B", cursor: "pointer", boxShadow: "0 1px 2px rgba(0,0,0,0.04)" }}
+          >
+            <span style={{ fontSize: 16, lineHeight: 1 }}>+</span> New
+          </button>
+        </div>
+
+        {/* Quick Menu */}
+        <div style={{ padding: "0 12px", display: "flex", flexDirection: "column", gap: 2, marginBottom: 12 }}>
+          {[
+            { icon: "💻", label: "Computer" },
+            { icon: "📄", label: "Artifacts" },
+            { icon: "⚙️", label: "Customize" },
+          ].map(m => (
+            <div key={m.label} style={{ display: "flex", alignItems: "center", gap: 10, padding: "6px 10px", borderRadius: 6, fontSize: 13, color: "#3F3F46", cursor: "pointer" }}>
+              <span style={{ fontSize: 14 }}>{m.icon}</span>
+              <span>{m.label}</span>
             </div>
-          )}
+          ))}
+        </div>
 
-          {/* Tabs */}
-          <div style={{ display: "flex", gap: 2, padding: "6px 12px", borderBottom: `1px solid ${C.border}`, flexWrap: "wrap" }}>
-            {["report", "evidence", "propagation", "decisions", "checklist", "export"].map(t => (
-              <button key={t} onClick={() => setSection(t)} style={{ padding: "6px 12px", background: section === t ? C.accentLight : "transparent", color: section === t ? C.accent : C.textMut, border: `1px solid ${section === t ? C.accent + "30" : "transparent"}`, borderRadius: 5, ...label, fontSize: 9, cursor: "pointer", letterSpacing: "1.5px" }}>{t}</button>
-            ))}
-          </div>
-
-          {/* Content */}
-          <div style={{ flex: 1, overflowY: "auto", padding: "14px 16px" }}>
-            {section === "report" && (
-              <div>
-                <div style={{ ...card, padding: 16, borderLeft: `3px solid ${C.des}`, marginBottom: 14 }}>
-                  <div style={{ ...label, color: C.des, marginBottom: 6, fontSize: 9 }}>DECISIVE ERROR STEP</div>
-                  <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 4 }}>{rc.agent} → {rc.operation}</div>
-                  <div style={{ fontSize: 12, color: C.textSec, lineHeight: 1.6, marginBottom: 6 }}>{rc.detail}</div>
-                  <div style={{ display: "flex", gap: 12 }}><span style={{ fontSize: 10, ...mono, color: C.textMut }}>Node: {rc.node}</span><span style={{ fontSize: 10, ...mono, color: C.des, fontWeight: 600 }}>Confidence: {Math.round(rc.confidence * 100)}%</span></div>
-                </div>
-                <div style={{ ...card, padding: 14, marginBottom: 14 }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}><span style={{ ...label, fontSize: 9 }}>EVIDENCE SCORE</span><span style={{ fontSize: 20, fontWeight: 700, ...mono, color: es.score >= 70 ? C.ok : es.score >= 40 ? C.impact : C.des }}>{es.score}</span></div>
-                  <div style={{ height: 5, background: C.bg, borderRadius: 3, overflow: "hidden", marginBottom: 6 }}><div style={{ width: `${es.score}%`, height: "100%", borderRadius: 3, background: es.score >= 70 ? C.ok : es.score >= 40 ? C.impact : C.des }} /></div>
-                  <div style={{ fontSize: 12, color: C.textSec }}>{es.explanation}</div>
-                  <div style={{ display: "flex", gap: 10, marginTop: 4 }}><span style={{ fontSize: 10, ...mono, color: C.ok }}>● {es.obs} observable</span><span style={{ fontSize: 10, ...mono, color: C.textMut }}>○ {es.inf} inferred</span></div>
-                </div>
-                {decisions.length > 0 && (
-                  <div style={{ ...card, padding: 14, borderLeft: `3px solid ${C.ok}`, marginBottom: 14 }}>
-                    <div style={{ ...label, color: C.ok, fontSize: 9, marginBottom: 6 }}>RECOMMENDED ACTION</div>
-                    <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 4 }}>[{decisions[0].pri}] {decisions[0].title}</div>
-                    <div style={{ fontSize: 12, color: C.textSec, lineHeight: 1.6 }}>{decisions[0].why}</div>
-                    <div style={{ fontSize: 10, ...mono, color: C.textMut, marginTop: 4 }}>Effort: {decisions[0].effort} · Confidence: {decisions[0].conf}</div>
-                  </div>
-                )}
-                <div style={{ ...card, padding: 14 }}>
-                  <div style={{ ...label, fontSize: 9, marginBottom: 10 }}>AGENT TRUST</div>
-                  {Object.entries(agent_scores).sort((a: any, b: any) => a[1] - b[1]).map(([ag, sc]: [string, any]) => (
-                    <div key={ag} style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 5 }}>
-                      <span style={{ fontSize: 11, fontWeight: 500, minWidth: 90, color: C.textSec }}>{ag}</span>
-                      <div style={{ flex: 1, height: 4, background: C.bg, borderRadius: 2, overflow: "hidden" }}><div style={{ width: `${sc}%`, height: "100%", borderRadius: 2, background: sc > 70 ? C.ok : sc > 40 ? C.impact : C.des }} /></div>
-                      <span style={{ fontSize: 11, fontWeight: 600, ...mono, color: sc > 70 ? C.ok : sc > 40 ? C.impact : C.des, minWidth: 30 }}>{sc}%</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {section === "evidence" && (
-              <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                {evidence.map((e: any) => (
-                  <div key={e.id} onClick={() => setSelNode(e.step)} style={{ ...card, padding: 14, cursor: "pointer", borderLeft: `3px solid ${e.sev === "critical" ? C.des : e.sev === "high" ? C.impact : C.textMut}` }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
-                      <span style={{ fontSize: 12, fontWeight: 600 }}>{e.title}</span>
-                      <div style={{ display: "flex", gap: 3 }}>
-                        <span style={{ fontSize: 9, ...label, padding: "2px 6px", borderRadius: 3, background: e.cat === "observable" ? C.okLight : C.tag, color: e.cat === "observable" ? C.ok : C.textMut, letterSpacing: "1px" }}>{e.cat}</span>
-                        <span style={{ fontSize: 9, ...label, padding: "2px 6px", borderRadius: 3, background: e.sev === "critical" ? C.desLight : C.tag, color: e.sev === "critical" ? C.des : C.textMut, letterSpacing: "1px" }}>{e.sev}</span>
-                      </div>
-                    </div>
-                    <div style={{ fontSize: 11, color: C.textSec, lineHeight: 1.5 }}>{e.desc}</div>
-                    <div style={{ fontSize: 10, ...mono, color: C.textMut, marginTop: 3 }}>Step: {e.step}</div>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {section === "propagation" && (
-              <div>
-                <div style={{ ...label, fontSize: 9, marginBottom: 10 }}>FAILURE PROPAGATION</div>
-                {prop.stages.map((s: any, i: number) => (
-                  <div key={s.id}>
-                    <div onClick={() => setSelNode(s.step)} style={{ ...card, padding: 14, cursor: "pointer", borderLeft: `3px solid ${s.sev === "critical" ? C.des : C.impact}` }}>
-                      <div style={{ display: "flex", justifyContent: "space-between" }}>
-                        <div>
-                          <div style={{ ...label, fontSize: 9, color: s.sev === "critical" ? C.des : C.impact, letterSpacing: "1.5px" }}>{s.label}</div>
-                          <div style={{ fontSize: 12, fontWeight: 600, marginTop: 3 }}>{s.agent}</div>
-                        </div>
-                        {s.deg && <span style={{ fontSize: 10, ...mono, color: C.impact }}>{Math.round(s.deg * 100)}%</span>}
-                      </div>
-                      <div style={{ fontSize: 11, color: C.textSec, lineHeight: 1.5, marginTop: 4 }}>{s.desc}</div>
-                    </div>
-                    {i < prop.stages.length - 1 && <div style={{ display: "flex", justifyContent: "center", padding: "2px 0" }}><div style={{ width: 1, height: 18, background: C.border }} /></div>}
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {section === "decisions" && (
-              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                <div style={{ ...label, fontSize: 9, marginBottom: 2 }}>RANKED ACTIONS</div>
-                {decisions.map((d: any) => (
-                  <div key={d.id} style={{ ...card, padding: 16 }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}><span style={{ fontSize: 13, fontWeight: 600 }}>{d.title}</span><span style={{ fontSize: 10, fontWeight: 700, color: d.pri === "P0" ? C.des : C.impact, ...mono, background: d.pri === "P0" ? C.desLight : C.impactLight, padding: "2px 8px", borderRadius: 4 }}>{d.pri}</span></div>
-                    {[{ l: "Why", v: d.why }, { l: "Impact", v: d.impact }, { l: "Risks", v: d.risks }].map(f => (
-                      <div key={f.l} style={{ marginBottom: 4 }}>
-                        <div style={{ ...label, fontSize: 8, marginBottom: 1 }}>{f.l}</div>
-                        <div style={{ fontSize: 11, color: C.textSec, lineHeight: 1.5 }}>{f.v}</div>
-                      </div>
-                    ))}
-                    <div style={{ display: "flex", gap: 14, marginTop: 3 }}><span style={{ fontSize: 10, ...mono, color: C.textMut }}>Confidence: {d.conf}</span><span style={{ fontSize: 10, ...mono, color: C.textMut }}>Effort: {d.effort}</span></div>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {section === "checklist" && (
-              <div>
-                <div style={{ ...label, fontSize: 9, marginBottom: 10 }}>VALIDATION CHECKLIST</div>
-                {checklist.map((c: any) => (
-                  <div key={c.id} onClick={() => setCkState((p: any) => ({ ...p, [c.id]: !p[c.id] }))} style={{ display: "flex", alignItems: "flex-start", gap: 10, padding: "10px 14px", ...card, marginBottom: 4, cursor: "pointer", background: ckState[c.id] ? C.okLight : C.bgWhite, borderColor: ckState[c.id] ? C.okBorder : C.border }}>
-                    <div style={{ width: 18, height: 18, borderRadius: 4, border: `2px solid ${ckState[c.id] ? C.ok : C.border}`, background: ckState[c.id] ? C.ok : "transparent", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1 }}>{ckState[c.id] && <span style={{ color: "#fff", fontSize: 11, fontWeight: 700 }}>✓</span>}</div>
-                    <span style={{ fontSize: 12, color: ckState[c.id] ? C.textMut : C.text, textDecoration: ckState[c.id] ? "line-through" : "none", lineHeight: 1.5 }}>{c.text}</span>
-                  </div>
-                ))}
-                <div style={{ marginTop: 8, fontSize: 11, ...mono, color: C.textMut, textAlign: "center" }}>{Object.values(ckState).filter(Boolean).length} / {checklist.length} completed</div>
-              </div>
-            )}
-
-            {section === "export" && (
-              <div>
-                <div style={{ ...label, fontSize: 9, marginBottom: 10 }}>ENGINEERING SUMMARY</div>
-                <div style={{ display: "flex", gap: 6, marginBottom: 12 }}>
-                  <button onClick={() => navigator.clipboard.writeText(summaryReport)} style={{ flex: 1, padding: "10px", ...mono, fontSize: 11, fontWeight: 600, background: C.accent, color: "#fff", border: "none", borderRadius: 5, cursor: "pointer" }}>Copy</button>
-                  <button onClick={() => { const b = new Blob([summaryReport], { type: "text/markdown" }); const a = document.createElement("a"); a.href = URL.createObjectURL(b); a.download = "404ai-report.md"; a.click(); }} style={{ flex: 1, padding: "10px", ...mono, fontSize: 11, fontWeight: 600, ...card, cursor: "pointer", color: C.text }}>Download .md</button>
-                </div>
-                <div style={{ ...card, padding: 14, ...mono, fontSize: 10, lineHeight: 1.7, color: C.textSec, whiteSpace: "pre-wrap", maxHeight: 300, overflowY: "auto" }}>{summaryReport}</div>
-                <div style={{ ...card, padding: 16, marginTop: 14 }}>
-                  <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 8 }}>Was this diagnosis helpful?</div>
-                  <div style={{ display: "flex", gap: 6 }}>
-                    <button onClick={() => setFb("yes")} style={{ flex: 1, padding: "8px", ...card, fontSize: 12, cursor: "pointer", background: fb === "yes" ? C.okLight : C.bgWhite, color: fb === "yes" ? C.ok : C.textSec, borderColor: fb === "yes" ? C.okBorder : C.border }}>👍 Correct</button>
-                    <button onClick={() => setFb("no")} style={{ flex: 1, padding: "8px", ...card, fontSize: 12, cursor: "pointer", background: fb === "no" ? C.desLight : C.bgWhite, color: fb === "no" ? C.des : C.textSec }}>👎 Incorrect</button>
-                  </div>
-                  {fb === "yes" && <div style={{ fontSize: 11, color: C.ok, marginTop: 6 }}>Thank you. Feedback recorded.</div>}
-                  {fb === "no" && <div style={{ marginTop: 6 }}><textarea value={fbText} onChange={e => setFbText(e.target.value)} placeholder="What actually caused the issue?" style={{ width: "100%", minHeight: 50, padding: 8, background: C.bg, border: `1px solid ${C.border}`, borderRadius: 4, fontSize: 11, ...mono, resize: "vertical", outline: "none", color: C.text }} /><button onClick={() => setFb("sent")} style={{ marginTop: 4, padding: "6px 14px", background: C.accent, color: "#fff", border: "none", borderRadius: 4, ...mono, fontSize: 10, cursor: "pointer" }}>Submit</button></div>}
-                  {fb === "sent" && <div style={{ fontSize: 11, color: C.ok, marginTop: 6 }}>Feedback recorded.</div>}
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Node detail */}
-          {selData && (
-            <div style={{ borderTop: `1px solid ${C.border}`, padding: 14, maxHeight: "32%", overflowY: "auto", flexShrink: 0, background: C.bgWhite }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 8 }}>
-                <span style={{ fontSize: 9, ...label, padding: "2px 7px", borderRadius: 3, background: selData.visual_status === "root_cause" ? C.desLight : C.tag, color: selData.visual_status === "root_cause" ? C.des : C.textMut, letterSpacing: "1px" }}>{selData.visual_status === "root_cause" ? "DES" : selData.visual_status}</span>
-                <span style={{ fontSize: 12, fontWeight: 600, ...mono }}>{selData.id}</span>
-              </div>
-              {[{ l: "Agent", v: selData.agent }, { l: "Operation", v: selData.operation + (selData.tool ? ` → ${selData.tool}` : "") }, selData.reasoning && { l: "Reasoning", v: selData.reasoning }, selData.output_summary && { l: "Output", v: selData.output_summary }, selData.error && { l: "Error", v: selData.error, c: C.des }].filter(Boolean).map((f: any) => (
-                <div key={f.l} style={{ marginBottom: 5 }}>
-                  <div style={{ ...label, fontSize: 8, marginBottom: 2 }}>{f.l}</div>
-                  <div style={{ fontSize: 11, color: f.c || C.textSec, lineHeight: 1.5, background: C.bg, padding: "6px 8px", borderRadius: 5, border: `1px solid ${C.border}`, ...mono, wordBreak: "break-word" }}>{f.v}</div>
+        {/* Collapsible Sections */}
+        <div style={{ flex: 1, overflowY: "auto", padding: "0 12px" }}>
+          {/* Pinned */}
+          <div style={{ marginBottom: 14 }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", fontSize: 11, fontWeight: 600, color: "#A1A1AA", padding: "4px 6px", textTransform: "none" }}>
+              <span>Pinned</span>
+              <span>∨</span>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 2, marginTop: 4 }}>
+              {["see the image I can't hear any...", "how to host a open source model...", "Hello Sir, This is Bhuvan N from..."].map(p => (
+                <div key={p} style={{ fontSize: 12, color: "#52525B", padding: "4px 8px", borderRadius: 4, cursor: "pointer", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                  {p}
                 </div>
               ))}
             </div>
-          )}
+          </div>
+
+          {/* Projects */}
+          <div style={{ marginBottom: 14 }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", fontSize: 11, fontWeight: 600, color: "#A1A1AA", padding: "4px 6px" }}>
+              <span>Projects</span>
+              <span>∨</span>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 2, marginTop: 4 }}>
+              {["404 AI", "MY one", "GLUCO-LUMIN AI", "Bookmarks", "AI JARVIS"].map(pj => (
+                <div key={pj} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: "#52525B", padding: "4px 8px", borderRadius: 4, cursor: "pointer" }}>
+                  <span>📁</span>
+                  <span>{pj}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Sessions / History */}
+          <div style={{ marginBottom: 14 }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", fontSize: 11, fontWeight: 600, color: "#A1A1AA", padding: "4px 6px" }}>
+              <span>Sessions</span>
+              <span>∨</span>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 2, marginTop: 4 }}>
+              {userHistory.map(h => (
+                <div
+                  key={h.id}
+                  onClick={() => run(h.trace)}
+                  style={{ fontSize: 12, color: "#3F3F46", padding: "5px 8px", borderRadius: 5, cursor: "pointer", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", background: analysis && JSON.stringify(analysis.spans) === JSON.stringify(h.trace) ? "#E4E4E7" : "transparent" }}
+                >
+                  {h.name}
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
+
+        {/* User Profile Footer (Matching Image 1) */}
+        <div style={{ padding: "12px", borderTop: "1px solid #E4E4E7", display: "flex", flexDirection: "column", gap: 8 }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <div style={{ width: 28, height: 28, borderRadius: "50%", background: "#E4E4E7", display: "grid", placeItems: "center", fontSize: 12, fontWeight: 600, color: "#3F3F46" }}>B</div>
+              <div style={{ display: "flex", flexDirection: "column" }}>
+                <span style={{ fontSize: 12, fontWeight: 600, color: "#18181B" }}>cnbhuvan0156987</span>
+                <span style={{ fontSize: 10, color: "#71717A" }}>Pro</span>
+              </div>
+            </div>
+            <button style={{ background: "none", border: "none", color: "#71717A", cursor: "pointer" }}>🔔</button>
+          </div>
+          <button style={{ background: "none", border: "none", fontSize: 12, color: "#71717A", textAlign: "left", padding: "2px 0", cursor: "pointer", display: "flex", alignItems: "center", gap: 6 }}>
+            <span>+</span> Add your team
+          </button>
+        </div>
+      </div>
+
+      {/* Sidebar Toggle Button if Collapsed */}
+      {!sidebarOpen && (
+        <button onClick={() => setSidebarOpen(true)} style={{ position: "absolute", top: 12, left: 12, zIndex: 100, background: "#FFF", border: "1px solid #E4E4E7", borderRadius: 6, padding: "6px 8px", cursor: "pointer", boxShadow: "0 2px 5px rgba(0,0,0,0.05)" }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/></svg>
+        </button>
+      )}
+
+      {/* RIGHT MAIN AREA */}
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", height: "100%", overflow: "hidden", background: "#FAF9FB" }}>
+
+        {/* CONDITION 1: NO ANALYSIS ACTIVE -> SHOW LLM AGENT FRONT PAGE (Matching Image 1) */}
+        {!analysis ? (
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "0 20px 80px 20px", position: "relative" }}>
+            
+            {/* Top Bar for Workspace */}
+            <div style={{ position: "absolute", top: 16, right: 24, display: "flex", gap: 10 }}>
+              <button onClick={() => setViewMode("landing")} style={{ background: "#FFFFFF", border: "1px solid #E4E4E7", borderRadius: 8, padding: "6px 14px", fontSize: 12, fontWeight: 500, color: "#3F3F46", cursor: "pointer" }}>Landing Page</button>
+            </div>
+
+            {/* Prompt Central Header */}
+            <div style={{ textAlign: "center", marginBottom: 28 }}>
+              <div style={{ fontSize: 13, color: "#71717A", marginBottom: 6, fontWeight: 500 }}>Search</div>
+              <h1 style={{ fontSize: 32, fontWeight: 600, color: "#18181B", letterSpacing: "-0.03em", fontFamily: "'DM Sans', sans-serif" }}>
+                What do you want to know?
+              </h1>
+            </div>
+
+            {/* Central LLM Agent Floating Input Box (Matching Image 1) */}
+            <div style={{ width: "100%", maxWidth: 720, background: "#FFFFFF", border: "1px solid #E4E4E7", borderRadius: 20, padding: "16px 20px", boxShadow: "0 10px 30px rgba(0,0,0,0.03)", transition: "border-color 0.2s, box-shadow 0.2s" }}>
+              <textarea
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    submit();
+                  }
+                }}
+                placeholder="Ask anything... or paste OpenTelemetry JSON trace logs"
+                rows={3}
+                style={{ width: "100%", border: "none", outline: "none", resize: "none", fontSize: 15, fontFamily: "'DM Sans', 'Inter', sans-serif", color: "#18181B", background: "transparent" }}
+              />
+
+              {/* Bottom Toolbar Inside Input Box */}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 12, pt: 8, borderTop: "1px solid #FAF9FB" }}>
+                {/* Left Action Pills */}
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <button style={{ background: "none", border: "none", fontSize: 18, color: "#71717A", cursor: "pointer", padding: "2px 6px" }}>+</button>
+                  <button style={{ background: "#F4F4F5", border: "1px solid #E4E4E7", borderRadius: 20, padding: "4px 12px", fontSize: 12, color: "#3F3F46", display: "flex", alignItems: "center", gap: 4, cursor: "pointer" }}>
+                    <span>🔍</span> Search ∨
+                  </button>
+                  <button style={{ background: "#F4F4F5", border: "1px solid #E4E4E7", borderRadius: 20, padding: "4px 12px", fontSize: 12, color: "#3F3F46", display: "flex", alignItems: "center", gap: 4, cursor: "pointer" }}>
+                    <span>💻</span> Computer
+                  </button>
+                </div>
+
+                {/* Right Action Pills */}
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <button style={{ background: "none", border: "none", fontSize: 12, color: "#71717A", display: "flex", alignItems: "center", gap: 4, cursor: "pointer" }}>
+                    Model ∨
+                  </button>
+                  <button style={{ background: "none", border: "none", fontSize: 14, color: "#71717A", cursor: "pointer" }}>🎙️</button>
+                  <button
+                    onClick={submit}
+                    disabled={loading || !input.trim()}
+                    style={{ width: 32, height: 32, borderRadius: "50%", background: input.trim() ? "#18181B" : "#E4E4E7", border: "none", display: "grid", placeItems: "center", color: "#FFF", cursor: input.trim() ? "pointer" : "default", transition: "background 0.2s" }}
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+            {err && <div style={{ marginTop: 12, color: C.des, fontSize: 12, ...mono }}>{err}</div>}
+
+            {/* Demo Suggestions Below Input */}
+            <div style={{ marginTop: 24, display: "flex", flexWrap: "wrap", gap: 10, justifyContent: "center", maxWidth: 720 }}>
+              {Object.entries(SAMPLES).map(([key, sample]: [string, any]) => (
+                <div
+                  key={key}
+                  onClick={() => {
+                    const formatted = JSON.stringify(sample.trace, null, 2);
+                    setInput(formatted);
+                    run(sample.trace);
+                  }}
+                  style={{ background: "#FFFFFF", border: "1px solid #E4E4E7", borderRadius: 12, padding: "10px 14px", cursor: "pointer", transition: "all 0.15s ease", display: "flex", alignItems: "center", gap: 8 }}
+                >
+                  <span style={{ fontSize: 12, fontWeight: 600, color: "#18181B" }}>{sample.name}</span>
+                  <span style={{ fontSize: 10, color: "#71717A" }}>→</span>
+                </div>
+              ))}
+            </div>
+
+          </div>
+        ) : (
+          
+          /* CONDITION 2: ANALYSIS IS ACTIVE -> SHOW GRAPH & INVESTIGATION REPORT (Matching Image 2) */
+          <div style={{ display: "flex", flexDirection: "column", height: "100%", width: "100%", overflow: "hidden" }}>
+            {/* Header */}
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 24px", height: 52, background: C.bgWhite, borderBottom: `1px solid ${C.border}`, flexShrink: 0 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <span style={{ fontSize: 16, fontWeight: 700, cursor: "pointer", color: "#000000", fontFamily: "'DM Sans', sans-serif", letterSpacing: "-0.04em" }} onClick={() => setAnalysis(null)}>HETU</span>
+                <span style={{ ...label, fontSize: 9, marginLeft: 8, color: C.textMut }}>INVESTIGATION REPORT</span>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                <span style={{ fontSize: 10, ...mono, color: C.textMut }}>{analysis.summary.algorithm} · {analysis.summary.analysis_time_ms}ms</span>
+                {analysis.summary.root_cause_found && <span style={{ fontSize: 10, fontWeight: 700, color: C.des, background: C.desLight, padding: "4px 12px", borderRadius: 4, ...mono }}>DES IDENTIFIED</span>}
+                <button onClick={() => setAnalysis(null)} style={{ ...card, padding: "5px 14px", fontSize: 11, ...mono, color: C.textSec, cursor: "pointer" }}>New trace</button>
+              </div>
+            </div>
+
+            {/* Split View: Left Graph SVG, Right Report Panel */}
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 400px", flex: 1, overflow: "hidden" }}>
+              {/* Graph */}
+              <div style={{ position: "relative", overflow: "hidden" }}>
+                <svg ref={svgRef} width="100%" height="100%" viewBox={vb ? `${vb.x} ${vb.y} ${vb.w} ${vb.h}` : "0 0 800 600"} onMouseDown={onMD} onMouseMove={onMM} onMouseUp={onMU} onMouseLeave={onMU} onWheel={onWh} style={{ cursor: drag ? "grabbing" : "grab", background: C.bg }}>
+                  <defs><pattern id="g" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r=".6" fill={C.border} /></pattern></defs>
+                  <rect x={vb ? vb.x - 3e3 : -3e3} y={vb ? vb.y - 3e3 : -3e3} width={(vb?.w || 800) + 6e3} height={(vb?.h || 600) + 6e3} fill="url(#g)" />
+                  {analysis.graph.edges.map((e: any) => {
+                    const sp = positions[e.source], tp = positions[e.target]; if (!sp || !tp) return null;
+                    const x1 = sp.x + 100, y1 = sp.y + 68, x2 = tp.x + 100, y2 = tp.y, mid = (y1 + y2) / 2;
+                    return <g key={e.id}><path d={`M${x1},${y1} C${x1},${mid} ${x2},${mid} ${x2},${y2}`} fill="none" stroke={e.is_impact_path ? C.impact : e.type === "HANDS_OFF" ? "#A8A0D0" : C.border} strokeWidth={e.is_impact_path ? 2.5 : 1.2} strokeDasharray={e.type === "HANDS_OFF" ? "5,3" : "none"} /><polygon points={`${x2 - 3},${y2 - 5} ${x2 + 3},${y2 - 5} ${x2},${y2}`} fill={e.is_impact_path ? C.impact : C.border} /></g>;
+                  })}
+                  {analysis.graph.nodes.map((n: any) => {
+                    const p = positions[n.id]; if (!p) return null;
+                    const nC: any = { root_cause: { bg: C.desLight, border: C.des, text: "#8B2020" }, impacted: { bg: C.impactLight, border: C.impact, text: "#8B6914" }, error: { bg: "#FDF2F0", border: "#E74C3C30", text: "#C0392B" }, ok: { bg: C.bgWhite, border: C.border, text: C.textSec } };
+                    const c = nC[n.visual_status] || nC.ok;
+                    const sel = n.id === selNode;
+                    return <g key={n.id} className="gn" onClick={() => setSelNode(n.id)} style={{ cursor: "pointer" }}>
+                      {n.is_root_cause && <rect x={p.x - 4} y={p.y - 4} width={208} height={76} rx={12} fill="none" stroke={C.des} strokeWidth={2} strokeDasharray="5,3"><animate attributeName="opacity" values="1;.3;1" dur="2.5s" repeatCount="indefinite" /></rect>}
+                      {sel && !n.is_root_cause && <rect x={p.x - 2} y={p.y - 2} width={204} height={72} rx={11} fill="none" stroke={C.accent} strokeWidth={1.5} />}
+                      <rect x={p.x} y={p.y} width={200} height={68} rx={10} fill={c.bg} stroke={c.border} strokeWidth={1.2} />
+                      <text x={p.x + 10} y={p.y + 20} fill={c.text} fontSize={11} fontWeight={600} fontFamily="Inter,sans-serif">{n.agent}</text>
+                      {n.is_root_cause && <><rect x={p.x + 158} y={p.y + 8} width={32} height={14} rx={3} fill={C.desLight} stroke={C.des} strokeWidth={.5} /><text x={p.x + 174} y={p.y + 18} fill={C.des} fontSize={7} fontWeight={700} textAnchor="middle" fontFamily="'Space Mono'">DES</text></>}
+                      <text x={p.x + 10} y={p.y + 36} fill={C.textMut} fontSize={9} fontFamily="'Space Mono',monospace">{n.operation}{n.tool ? ` → ${n.tool}` : ""}</text>
+                      <text x={p.x + 10} y={p.y + 50} fill={C.textMut} fontSize={8} fontFamily="'Space Mono',monospace">{n.tokens}tok · {n.duration_ms}ms</text>
+                      {n.degradation != null && <><rect x={p.x + 10} y={p.y + 59} width={110} height={2.5} rx={1} fill={C.bg} /><rect x={p.x + 10} y={p.y + 59} width={110 * n.degradation} height={2.5} rx={1} fill={C.impact} /></>}
+                    </g>;
+                  })}
+                </svg>
+              </div>
+
+              {/* Right panel */}
+              <div style={{ background: C.bgWhite, borderLeft: `1px solid ${C.border}`, display: "flex", flexDirection: "column", overflow: "hidden" }}>
+                {/* Stats */}
+                <div style={{ display: "flex", padding: "10px 16px", borderBottom: `1px solid ${C.border}` }}>
+                  {[{ v: analysis.summary.total_spans, l: "Spans" }, { v: analysis.summary.agent_count, l: "Agents" }, { v: analysis.summary.error_count, l: "Errors", c: C.des }, { v: analysis.evidenceScore.score, l: "Evidence", c: analysis.evidenceScore.score >= 70 ? C.ok : analysis.evidenceScore.score >= 40 ? C.impact : C.des }].map(s => (
+                    <div key={s.l} style={{ flex: 1, textAlign: "center" }}>
+                      <div style={{ fontSize: 16, fontWeight: 700, ...mono, color: s.c || C.text }}>{s.v}</div>
+                      <div style={{ ...label, fontSize: 7 }}>{s.l}</div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Confidence */}
+                {analysis.summary.root_cause_found && (
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 16px", borderBottom: `1px solid ${C.border}` }}>
+                    <span style={{ ...label, fontSize: 8 }}>CIA SCORE</span>
+                    <div style={{ flex: 1, height: 4, background: C.bg, borderRadius: 2, overflow: "hidden" }}><div style={{ width: `${analysis.summary.root_cause_confidence * 100}%`, height: "100%", borderRadius: 2, background: analysis.summary.root_cause_confidence > .7 ? C.des : C.impact }} /></div>
+                    <span style={{ fontSize: 12, fontWeight: 700, ...mono, color: analysis.summary.root_cause_confidence > .7 ? C.des : C.impact }}>{Math.round(analysis.summary.root_cause_confidence * 100)}%</span>
+                  </div>
+                )}
+
+                {/* Tabs */}
+                <div style={{ display: "flex", gap: 2, padding: "6px 12px", borderBottom: `1px solid ${C.border}`, flexWrap: "wrap" }}>
+                  {["report", "evidence", "propagation", "decisions", "checklist", "export"].map(t => (
+                    <button key={t} onClick={() => setSection(t)} style={{ padding: "6px 12px", background: section === t ? C.accentLight : "transparent", color: section === t ? C.accent : C.textMut, border: `1px solid ${section === t ? C.accent + "30" : "transparent"}`, borderRadius: 5, ...label, fontSize: 9, cursor: "pointer", letterSpacing: "1.5px" }}>{t}</button>
+                  ))}
+                </div>
+
+                {/* Tab Content */}
+                <div style={{ flex: 1, overflowY: "auto", padding: "14px 16px" }}>
+                  {section === "report" && (
+                    <div>
+                      <div style={{ ...card, padding: 16, borderLeft: `3px solid ${C.des}`, marginBottom: 14 }}>
+                        <div style={{ ...label, color: C.des, marginBottom: 6, fontSize: 9 }}>DECISIVE ERROR STEP</div>
+                        <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 4 }}>{analysis.root_cause.agent} → {analysis.root_cause.operation}</div>
+                        <div style={{ fontSize: 12, color: C.textSec, lineHeight: 1.6, marginBottom: 6 }}>{analysis.root_cause.detail}</div>
+                        <div style={{ display: "flex", gap: 12 }}><span style={{ fontSize: 10, ...mono, color: C.textMut }}>Node: {analysis.root_cause.node}</span><span style={{ fontSize: 10, ...mono, color: C.des, fontWeight: 600 }}>Confidence: {Math.round(analysis.root_cause.confidence * 100)}%</span></div>
+                      </div>
+                      <div style={{ ...card, padding: 14, marginBottom: 14 }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}><span style={{ ...label, fontSize: 9 }}>EVIDENCE SCORE</span><span style={{ fontSize: 20, fontWeight: 700, ...mono, color: analysis.evidenceScore.score >= 70 ? C.ok : analysis.evidenceScore.score >= 40 ? C.impact : C.des }}>{analysis.evidenceScore.score}</span></div>
+                        <div style={{ height: 5, background: C.bg, borderRadius: 3, overflow: "hidden", marginBottom: 6 }}><div style={{ width: `${analysis.evidenceScore.score}%`, height: "100%", borderRadius: 3, background: analysis.evidenceScore.score >= 70 ? C.ok : analysis.evidenceScore.score >= 40 ? C.impact : C.des }} /></div>
+                        <div style={{ fontSize: 12, color: C.textSec }}>{analysis.evidenceScore.explanation}</div>
+                        <div style={{ display: "flex", gap: 10, marginTop: 4 }}><span style={{ fontSize: 10, ...mono, color: C.ok }}>● {analysis.evidenceScore.obs} observable</span><span style={{ fontSize: 10, ...mono, color: C.textMut }}>○ {analysis.evidenceScore.inf} inferred</span></div>
+                      </div>
+                      {analysis.decisions.length > 0 && (
+                        <div style={{ ...card, padding: 14, borderLeft: `3px solid ${C.ok}`, marginBottom: 14 }}>
+                          <div style={{ ...label, color: C.ok, fontSize: 9, marginBottom: 6 }}>RECOMMENDED ACTION</div>
+                          <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 4 }}>[{analysis.decisions[0].pri}] {analysis.decisions[0].title}</div>
+                          <div style={{ fontSize: 12, color: C.textSec, lineHeight: 1.6 }}>{analysis.decisions[0].why}</div>
+                          <div style={{ fontSize: 10, ...mono, color: C.textMut, marginTop: 4 }}>Effort: {analysis.decisions[0].effort} · Confidence: {analysis.decisions[0].conf}</div>
+                        </div>
+                      )}
+                      <div style={{ ...card, padding: 14 }}>
+                        <div style={{ ...label, fontSize: 9, marginBottom: 10 }}>AGENT TRUST</div>
+                        {Object.entries(analysis.agent_scores).sort((a: any, b: any) => a[1] - b[1]).map(([ag, sc]: [string, any]) => (
+                          <div key={ag} style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 5 }}>
+                            <span style={{ fontSize: 11, fontWeight: 500, minWidth: 90, color: C.textSec }}>{ag}</span>
+                            <div style={{ flex: 1, height: 4, background: C.bg, borderRadius: 2, overflow: "hidden" }}><div style={{ width: `${sc}%`, height: "100%", borderRadius: 2, background: sc > 70 ? C.ok : sc > 40 ? C.impact : C.des }} /></div>
+                            <span style={{ fontSize: 11, fontWeight: 600, ...mono, color: sc > 70 ? C.ok : sc > 40 ? C.impact : C.des, minWidth: 30 }}>{sc}%</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {section === "evidence" && (
+                    <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                      {analysis.evidence.map((e: any) => (
+                        <div key={e.id} onClick={() => setSelNode(e.step)} style={{ ...card, padding: 14, cursor: "pointer", borderLeft: `3px solid ${e.sev === "critical" ? C.des : e.sev === "high" ? C.impact : C.textMut}` }}>
+                          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
+                            <span style={{ fontSize: 12, fontWeight: 600 }}>{e.title}</span>
+                            <div style={{ display: "flex", gap: 3 }}>
+                              <span style={{ fontSize: 9, ...label, padding: "2px 6px", borderRadius: 3, background: e.cat === "observable" ? C.okLight : C.tag, color: e.cat === "observable" ? C.ok : C.textMut, letterSpacing: "1px" }}>{e.cat}</span>
+                              <span style={{ fontSize: 9, ...label, padding: "2px 6px", borderRadius: 3, background: e.sev === "critical" ? C.desLight : C.tag, color: e.sev === "critical" ? C.des : C.textMut, letterSpacing: "1px" }}>{e.sev}</span>
+                            </div>
+                          </div>
+                          <div style={{ fontSize: 11, color: C.textSec, lineHeight: 1.5 }}>{e.desc}</div>
+                          <div style={{ fontSize: 10, ...mono, color: C.textMut, marginTop: 3 }}>Step: {e.step}</div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {section === "propagation" && (
+                    <div>
+                      <div style={{ ...label, fontSize: 9, marginBottom: 10 }}>FAILURE PROPAGATION</div>
+                      {analysis.propagation.stages.map((s: any, i: number) => (
+                        <div key={s.id}>
+                          <div onClick={() => setSelNode(s.step)} style={{ ...card, padding: 14, cursor: "pointer", borderLeft: `3px solid ${s.sev === "critical" ? C.des : C.impact}` }}>
+                            <div style={{ display: "flex", justifyContent: "space-between" }}>
+                              <div>
+                                <div style={{ ...label, fontSize: 9, color: s.sev === "critical" ? C.des : C.impact, letterSpacing: "1.5px" }}>{s.label}</div>
+                                <div style={{ fontSize: 12, fontWeight: 600, marginTop: 3 }}>{s.agent}</div>
+                              </div>
+                              {s.deg && <span style={{ fontSize: 10, ...mono, color: C.impact }}>{Math.round(s.deg * 100)}%</span>}
+                            </div>
+                            <div style={{ fontSize: 11, color: C.textSec, lineHeight: 1.5, marginTop: 4 }}>{s.desc}</div>
+                          </div>
+                          {i < analysis.propagation.stages.length - 1 && <div style={{ display: "flex", justifyContent: "center", padding: "2px 0" }}><div style={{ width: 1, height: 18, background: C.border }} /></div>}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {section === "decisions" && (
+                    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                      <div style={{ ...label, fontSize: 9, marginBottom: 2 }}>RANKED ACTIONS</div>
+                      {analysis.decisions.map((d: any) => (
+                        <div key={d.id} style={{ ...card, padding: 16 }}>
+                          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}><span style={{ fontSize: 13, fontWeight: 600 }}>{d.title}</span><span style={{ fontSize: 10, fontWeight: 700, color: d.pri === "P0" ? C.des : C.impact, ...mono, background: d.pri === "P0" ? C.desLight : C.impactLight, padding: "2px 8px", borderRadius: 4 }}>{d.pri}</span></div>
+                          {[{ l: "Why", v: d.why }, { l: "Impact", v: d.impact }, { l: "Risks", v: d.risks }].map(f => (
+                            <div key={f.l} style={{ marginBottom: 4 }}>
+                              <div style={{ ...label, fontSize: 8, marginBottom: 1 }}>{f.l}</div>
+                              <div style={{ fontSize: 11, color: C.textSec, lineHeight: 1.5 }}>{f.v}</div>
+                            </div>
+                          ))}
+                          <div style={{ display: "flex", gap: 14, marginTop: 3 }}><span style={{ fontSize: 10, ...mono, color: C.textMut }}>Confidence: {d.conf}</span><span style={{ fontSize: 10, ...mono, color: C.textMut }}>Effort: {d.effort}</span></div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {section === "checklist" && (
+                    <div>
+                      <div style={{ ...label, fontSize: 9, marginBottom: 10 }}>VALIDATION CHECKLIST</div>
+                      {analysis.checklist.map((c: any) => (
+                        <div key={c.id} onClick={() => setCkState((p: any) => ({ ...p, [c.id]: !p[c.id] }))} style={{ display: "flex", alignItems: "flex-start", gap: 10, padding: "10px 14px", ...card, marginBottom: 4, cursor: "pointer", background: ckState[c.id] ? C.okLight : C.bgWhite, borderColor: ckState[c.id] ? C.okBorder : C.border }}>
+                          <div style={{ width: 18, height: 18, borderRadius: 4, border: `2px solid ${ckState[c.id] ? C.ok : C.border}`, background: ckState[c.id] ? C.ok : "transparent", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1 }}>{ckState[c.id] && <span style={{ color: "#fff", fontSize: 11, fontWeight: 700 }}>✓</span>}</div>
+                          <span style={{ fontSize: 12, color: ckState[c.id] ? C.textMut : C.text, textDecoration: ckState[c.id] ? "line-through" : "none", lineHeight: 1.5 }}>{c.text}</span>
+                        </div>
+                      ))}
+                      <div style={{ marginTop: 8, fontSize: 11, ...mono, color: C.textMut, textAlign: "center" }}>{Object.values(ckState).filter(Boolean).length} / {analysis.checklist.length} completed</div>
+                    </div>
+                  )}
+
+                  {section === "export" && (
+                    <div>
+                      <div style={{ ...label, fontSize: 9, marginBottom: 10 }}>ENGINEERING SUMMARY</div>
+                      <div style={{ display: "flex", gap: 6, marginBottom: 12 }}>
+                        <button onClick={() => navigator.clipboard.writeText(analysis.summaryReport)} style={{ flex: 1, padding: "10px", ...mono, fontSize: 11, fontWeight: 600, background: C.accent, color: "#fff", border: "none", borderRadius: 5, cursor: "pointer" }}>Copy</button>
+                        <button onClick={() => { const b = new Blob([analysis.summaryReport], { type: "text/markdown" }); const a = document.createElement("a"); a.href = URL.createObjectURL(b); a.download = "404ai-report.md"; a.click(); }} style={{ flex: 1, padding: "10px", ...mono, fontSize: 11, fontWeight: 600, ...card, cursor: "pointer", color: C.text }}>Download .md</button>
+                      </div>
+                      <div style={{ ...card, padding: 14, ...mono, fontSize: 10, lineHeight: 1.7, color: C.textSec, whiteSpace: "pre-wrap", maxHeight: 300, overflowY: "auto" }}>{analysis.summaryReport}</div>
+                      <div style={{ ...card, padding: 16, marginTop: 14 }}>
+                        <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 8 }}>Was this diagnosis helpful?</div>
+                        <div style={{ display: "flex", gap: 6 }}>
+                          <button onClick={() => setFb("yes")} style={{ flex: 1, padding: "8px", ...card, fontSize: 12, cursor: "pointer", background: fb === "yes" ? C.okLight : C.bgWhite, color: fb === "yes" ? C.ok : C.textSec, borderColor: fb === "yes" ? C.okBorder : C.border }}>👍 Correct</button>
+                          <button onClick={() => setFb("no")} style={{ flex: 1, padding: "8px", ...card, fontSize: 12, cursor: "pointer", background: fb === "no" ? C.desLight : C.bgWhite, color: fb === "no" ? C.des : C.textSec }}>👎 Incorrect</button>
+                        </div>
+                        {fb === "yes" && <div style={{ fontSize: 11, color: C.ok, marginTop: 6 }}>Thank you. Feedback recorded.</div>}
+                        {fb === "no" && <div style={{ marginTop: 6 }}><textarea value={fbText} onChange={e => setFbText(e.target.value)} placeholder="What actually caused the issue?" style={{ width: "100%", minHeight: 50, padding: 8, background: C.bg, border: `1px solid ${C.border}`, borderRadius: 4, fontSize: 11, ...mono, resize: "vertical", outline: "none", color: C.text }} /><button onClick={() => setFb("sent")} style={{ marginTop: 4, padding: "6px 14px", background: C.accent, color: "#fff", border: "none", borderRadius: 4, ...mono, fontSize: 10, cursor: "pointer" }}>Submit</button></div>}
+                        {fb === "sent" && <div style={{ fontSize: 11, color: C.ok, marginTop: 6 }}>Feedback recorded.</div>}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Node detail */}
+                {selData && (
+                  <div style={{ borderTop: `1px solid ${C.border}`, padding: 14, maxHeight: "32%", overflowY: "auto", flexShrink: 0, background: C.bgWhite }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 8 }}>
+                      <span style={{ fontSize: 9, ...label, padding: "2px 7px", borderRadius: 3, background: selData.visual_status === "root_cause" ? C.desLight : C.tag, color: selData.visual_status === "root_cause" ? C.des : C.textMut, letterSpacing: "1px" }}>{selData.visual_status === "root_cause" ? "DES" : selData.visual_status}</span>
+                      <span style={{ fontSize: 12, fontWeight: 600, ...mono }}>{selData.id}</span>
+                    </div>
+                    {[{ l: "Agent", v: selData.agent }, { l: "Operation", v: selData.operation + (selData.tool ? ` → ${selData.tool}` : "") }, selData.reasoning && { l: "Reasoning", v: selData.reasoning }, selData.output_summary && { l: "Output", v: selData.output_summary }, selData.error && { l: "Error", v: selData.error, c: C.des }].filter(Boolean).map((f: any) => (
+                      <div key={f.l} style={{ marginBottom: 5 }}>
+                        <div style={{ ...label, fontSize: 8, marginBottom: 2 }}>{f.l}</div>
+                        <div style={{ fontSize: 11, color: f.c || C.textSec, lineHeight: 1.5, background: C.bg, padding: "6px 8px", borderRadius: 5, border: `1px solid ${C.border}`, ...mono, wordBreak: "break-word" }}>{f.v}</div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
       </div>
       <style>{`::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:${C.border};border-radius:3px}`}</style>
     </div>
