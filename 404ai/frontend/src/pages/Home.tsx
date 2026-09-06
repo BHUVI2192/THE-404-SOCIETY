@@ -1,5 +1,6 @@
-import { useState, useMemo, useCallback, useRef } from "react";
+import { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import ReferenceLanding from "./ReferenceLanding";
+import { supabase } from "../../../../lib/supabase";
 import "../app/globals.css";
 
 /* ═══════════════════════════════════════════════════════════════════
