@@ -74,21 +74,19 @@
  * - “data-only” → Place, Geometry utilities.
  */
 
-/// <reference types="@types/google.maps" />
-
 import { useEffect, useRef } from "react";
 import { usePersistFn } from "@/hooks/usePersistFn";
 import { cn } from "@/lib/utils";
 
 declare global {
   interface Window {
-    google?: typeof google;
+    google?: any;
   }
 }
 
-const API_KEY = import.meta.env.VITE_FRONTEND_FORGE_API_KEY;
+const API_KEY = (typeof import.meta !== 'undefined' && (import.meta as any).env?.VITE_FRONTEND_FORGE_API_KEY) || "";
 const FORGE_BASE_URL =
-  import.meta.env.VITE_FRONTEND_FORGE_API_URL ||
+  (typeof import.meta !== 'undefined' && (import.meta as any).env?.VITE_FRONTEND_FORGE_API_URL) ||
   "https://forge.butterfly-effect.dev";
 const MAPS_PROXY_URL = `${FORGE_BASE_URL}/v1/maps/proxy`;
 
@@ -111,9 +109,9 @@ function loadMapScript() {
 
 interface MapViewProps {
   className?: string;
-  initialCenter?: google.maps.LatLngLiteral;
+  initialCenter?: { lat: number; lng: number };
   initialZoom?: number;
-  onMapReady?: (map: google.maps.Map) => void;
+  onMapReady?: (map: any) => void;
 }
 
 export function MapView({
@@ -123,7 +121,7 @@ export function MapView({
   onMapReady,
 }: MapViewProps) {
   const mapContainer = useRef<HTMLDivElement>(null);
-  const map = useRef<google.maps.Map | null>(null);
+  const map = useRef<any>(null);
 
   const init = usePersistFn(async () => {
     await loadMapScript();

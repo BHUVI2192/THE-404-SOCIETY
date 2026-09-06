@@ -1,6 +1,6 @@
 import { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import ReferenceLanding from "./ReferenceLanding";
-import { supabase } from "../../../../lib/supabase";
+import { supabase } from "../lib/supabase";
 import "../app/globals.css";
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -9,7 +9,7 @@ import "../app/globals.css";
    UI matched to 404-ai.cofounder.company screenshots
    ═══════════════════════════════════════════════════════════════════ */
 
-const FONT = "https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Silkscreen:wght@400;700&display=swap";
+const FONT = "https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500;600&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap";
 
 // ═══ THEME — matches cofounder landing exactly ═══════════════════
 const C = {
@@ -18,9 +18,9 @@ const C = {
   bgDark: "#0F0F1A",       // dark sections
   border: "#DDDCE6",       // subtle borders
   borderHover: "#C5C4D0",
-  text: "#1A1A2E",         // near-black text
-  textSec: "#6B6880",      // secondary
-  textMut: "#9896A8",      // muted
+  text: "#111827",         // sharp main text
+  textSec: "#374151",      // crisp dark charcoal secondary text
+  textMut: "#4B5563",      // clear graphite muted text
   accent: "#5B5FC7",       // purple/indigo CTA
   accentLight: "#EEEDFA",  // purple tint bg
   accentHover: "#4A4EB5",
@@ -379,12 +379,13 @@ function layoutN(gn: any[], ge: any[]) {
   return pos;
 }
 
-// ═══ STYLES ═════════════════════════════════════════════════════
-const mono = { fontFamily: "'Space Mono','Courier New',monospace" };
-const silk = { fontFamily: "'Silkscreen','Space Mono',monospace" };
-const label = { ...mono, fontSize: 11, fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: "2px", color: C.textMut };
+// ═══ STYLES — Matched strictly to Landing Page (DM Sans, DM Mono, Newsreader) ════
+const mono = { fontFamily: "'DM Mono', monospace", fontWeight: 500 };
+const sans = { fontFamily: "'DM Mono', monospace", fontWeight: 500 };
+const serif = { fontFamily: "'DM Mono', monospace", fontWeight: 500 };
+const label = { fontFamily: "'DM Mono', monospace", fontSize: 11, fontWeight: 500, textTransform: "uppercase" as const, letterSpacing: "0.08em", color: C.textMut };
 const card = { background: C.bgWhite, border: `1px solid ${C.border}`, borderRadius: 10 };
-const dot = (color = C.dot) => ({ width: 8, height: 8, borderRadius: "50%", background: color, flexShrink: 0 });
+const dot = (color = C.dot) => ({ width: 6, height: 6, borderRadius: "50%", background: color, flexShrink: 0 });
 
 // ═══ APP ════════════════════════════════════════════════════════
 export default function Home() {
@@ -468,11 +469,13 @@ export default function Home() {
         });
 
         // Persist to Supabase
-        try {
-          supabase.from("hetu_history").insert([{ name: traceName, trace_data: traceData }]).then(() => {}).catch(() => {});
-        } catch {
-          // Ignore table error if not migrated
-        }
+        (async () => {
+          try {
+            await supabase.from("hetu_history").insert([{ name: traceName, trace_data: traceData }]);
+          } catch {
+            // Ignore table error if not migrated
+          }
+        })();
 
       } catch (e: any) {
         setErr(e.message);
@@ -517,30 +520,30 @@ export default function Home() {
     );
   }
 
-  // ═══ WORKSPACE VIEW (Clean Minimal Sidebar + Landing Palette) ═════════
+  // ═══ WORKSPACE VIEW (Spacious Sidebar + Clean Landing Typography + No Emojis) ═════════
   return (
-    <div style={{ display: "flex", width: "100vw", height: "100vh", background: C.bg, color: C.text, fontFamily: "'DM Sans', 'Inter', sans-serif", overflow: "hidden" }}>
+    <div style={{ display: "flex", width: "100vw", height: "100vh", background: C.bg, color: C.text, fontFamily: "'DM Mono', monospace", fontWeight: 500, overflow: "hidden" }}>
       <link href={FONT} rel="stylesheet" />
 
       {/* DOCS MODAL OVERLAY */}
       {showDocs && (
-        <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: "rgba(15,15,26,0.6)", backdropFilter: "blur(4px)", display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}>
-          <div style={{ background: C.bgWhite, border: `1px solid ${C.border}`, borderRadius: 16, width: "100%", maxWidth: 640, maxHeight: "85vh", overflowY: "auto", padding: 24, boxShadow: "0 20px 50px rgba(0,0,0,0.15)" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, borderBottom: `1px solid ${C.border}`, paddingBottom: 12 }}>
+        <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: "rgba(15,15,26,0.5)", backdropFilter: "blur(4px)", display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}>
+          <div style={{ background: C.bgWhite, border: `1px solid ${C.border}`, borderRadius: 12, width: "100%", maxWidth: 640, maxHeight: "85vh", overflowY: "auto", padding: 28, boxShadow: "0 20px 50px rgba(0,0,0,0.12)" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, borderBottom: `1px solid ${C.border}`, paddingBottom: 14 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <span style={{ fontSize: 18, fontWeight: 700, color: C.text }}>📚 HETU Documentation & Guide</span>
+                <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 20, fontWeight: 500, color: C.text }}>HETU Documentation & Guide</span>
               </div>
-              <button onClick={() => setShowDocs(false)} style={{ background: "none", border: "none", fontSize: 20, cursor: "pointer", color: C.textMut }}>✕</button>
+              <button onClick={() => setShowDocs(false)} style={{ background: "none", border: "none", fontSize: 18, cursor: "pointer", color: C.textMut }}>✕</button>
             </div>
             
-            <div style={{ fontSize: 13, color: C.textSec, lineHeight: 1.6 }}>
-              <h3 style={{ fontSize: 15, fontWeight: 600, color: C.text, marginBottom: 8 }}>How HETU Works</h3>
-              <p style={{ marginBottom: 12 }}>
-                HETU ingests OpenTelemetry execution spans from multi-agent frameworks (LangGraph, CrewAI, AutoGen) and constructs a <strong>Multi-Agent Cognitive Execution Graph</strong>. It applies <em>Counterfactual Causal Traversal</em> to pinpoint the <strong>Decisive Error Step (DES)</strong>—the earliest step where an error altered the run.
+            <div style={{ fontSize: 14, color: C.textSec, lineHeight: 1.6, fontFamily: "'DM Mono', monospace", fontWeight: 500 }}>
+              <h3 style={{ fontSize: 16, fontWeight: 600, color: C.text, marginBottom: 8 }}>How HETU Works</h3>
+              <p style={{ marginBottom: 16 }}>
+                HETU ingests OpenTelemetry execution spans from multi-agent frameworks (LangGraph, CrewAI, AutoGen) and constructs a <strong>Multi-Agent Cognitive Execution Graph</strong>. It applies <em>Counterfactual Causal Traversal</em> to pinpoint the <strong>Decisive Error Step (DES)</strong>—the earliest step where an error altered the run outcome.
               </p>
 
-              <h3 style={{ fontSize: 15, fontWeight: 600, color: C.text, marginBottom: 8, marginTop: 16 }}>Expected JSON Trace Format</h3>
-              <div style={{ background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: 12, ...mono, fontSize: 11, color: C.text, marginBottom: 14, whiteSpace: "pre-wrap" }}>
+              <h3 style={{ fontSize: 16, fontWeight: 600, color: C.text, marginBottom: 8 }}>Expected JSON Trace Format</h3>
+              <div style={{ background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: 14, ...mono, fontSize: 12, color: C.text, marginBottom: 16, whiteSpace: "pre-wrap" }}>
 {`[
   {
     "span_id": "orch-001",
@@ -555,27 +558,27 @@ export default function Home() {
 ]`}
               </div>
 
-              <h3 style={{ fontSize: 15, fontWeight: 600, color: C.text, marginBottom: 8 }}>AI Prompt Template</h3>
-              <p style={{ marginBottom: 8, fontSize: 12 }}>Copy this prompt and paste into ChatGPT/Claude/Gemini to generate compatible execution traces:</p>
-              <div style={{ background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: 12, ...mono, fontSize: 10, color: C.textSec, marginBottom: 16, whiteSpace: "pre-wrap", maxHeight: 150, overflowY: "auto" }}>
+              <h3 style={{ fontSize: 16, fontWeight: 600, color: C.text, marginBottom: 8 }}>AI Prompt Template</h3>
+              <p style={{ marginBottom: 8, fontSize: 13 }}>Copy this prompt and paste into ChatGPT/Claude/Gemini to generate compatible execution traces:</p>
+              <div style={{ background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: 14, ...mono, fontSize: 11, color: C.textSec, marginBottom: 20, whiteSpace: "pre-wrap", maxHeight: 150, overflowY: "auto" }}>
 {`Generate a realistic JSON execution trace for a multi-agent AI system experiencing a failure.
 Include fields: span_id, parent_span_id, agent, operation, status, duration_ms, tokens, reasoning, output_summary, error (if any), hallucination_risk (0-1).
 Ensure there is one clear Decisive Error Step (DES).`}
               </div>
 
-              <button onClick={() => setShowDocs(false)} style={{ width: "100%", padding: "10px", background: C.accent, color: "#FFF", border: "none", borderRadius: 8, fontWeight: 600, cursor: "pointer" }}>Got it</button>
+              <button onClick={() => setShowDocs(false)} className="primary-button" style={{ width: "100%" }}>Got it</button>
             </div>
           </div>
         </div>
       )}
 
-      {/* LEFT SIDEBAR (Clean & Essential Only) */}
-      <div style={{ width: sidebarOpen ? 240 : 0, transition: "width 0.2s ease", background: C.bgWhite, borderRight: `1px solid ${C.border}`, display: "flex", flexDirection: "column", flexShrink: 0, overflow: "hidden", position: "relative" }}>
+      {/* LEFT SIDEBAR (Spacious & Clean Typography, No Emojis) */}
+      <div style={{ width: sidebarOpen ? 260 : 0, transition: "width 0.2s ease", background: "#FAFAFC", borderRight: `1px solid ${C.border}`, display: "flex", flexDirection: "column", flexShrink: 0, overflow: "hidden", position: "relative" }}>
         {/* Sidebar Header */}
-        <div style={{ padding: "16px 16px 12px 16px", display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: `1px solid ${C.border}` }}>
+        <div style={{ padding: "20px 18px 16px 18px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }} onClick={() => setViewMode("landing")}>
-            <div style={{ width: 24, height: 24, borderRadius: 6, background: C.accent, display: "grid", placeItems: "center", color: "#FFF", fontSize: 12, fontWeight: 700 }}>✦</div>
-            <span style={{ fontSize: 16, fontWeight: 700, letterSpacing: "-0.03em", color: C.text }}>HETU</span>
+            <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 22, fontWeight: 500, color: "#111827", letterSpacing: "-0.04em" }}>HETU</span>
+            <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 9, color: C.accent, background: C.accentLight, padding: "2px 6px", borderRadius: 4, letterSpacing: "0.08em", fontWeight: 600 }}>STUDIO</span>
           </div>
           <button onClick={() => setSidebarOpen(false)} style={{ background: "none", border: "none", color: C.textMut, cursor: "pointer", padding: 4 }} title="Close Sidebar">
             ✕
@@ -583,38 +586,40 @@ Ensure there is one clear Decisive Error Step (DES).`}
         </div>
 
         {/* Action Buttons */}
-        <div style={{ padding: "12px 12px 6px 12px", display: "flex", flexDirection: "column", gap: 8 }}>
+        <div style={{ padding: "0 18px 16px 18px", display: "flex", flexDirection: "column", gap: 8 }}>
           <button
             onClick={() => { setAnalysis(null); setInput(""); }}
-            style={{ width: "100%", padding: "9px 12px", background: C.accent, border: "none", borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", gap: 8, fontSize: 13, fontWeight: 600, color: "#FFFFFF", cursor: "pointer", boxShadow: "0 2px 6px rgba(91,95,199,0.2)" }}
+            className="primary-button"
+            style={{ width: "100%", justifyContent: "center", borderRadius: 8, fontSize: 13 }}
           >
-            <span style={{ fontSize: 16, lineHeight: 1 }}>+</span> New Trace
+            + New Trace
           </button>
 
           <button
             onClick={() => setShowDocs(true)}
-            style={{ width: "100%", padding: "8px 12px", background: C.accentLight, border: `1px solid ${C.tagBorder}`, borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", gap: 6, fontSize: 12, fontWeight: 600, color: C.accent, cursor: "pointer" }}
+            className="secondary-button"
+            style={{ width: "100%", justifyContent: "center", borderRadius: 8, fontSize: 12, minHeight: 36 }}
           >
-            📖 Docs & Guide
+            Docs & Guide
           </button>
         </div>
 
         {/* Sidebar Content */}
-        <div style={{ flex: 1, overflowY: "auto", padding: "12px 12px" }}>
+        <div style={{ flex: 1, overflowY: "auto", scrollBehavior: "smooth", WebkitOverflowScrolling: "touch", padding: "0 18px 18px 18px" }}>
           {/* Pinned Scenarios */}
-          <div style={{ marginBottom: 18 }}>
-            <div style={{ fontSize: 10, fontWeight: 700, color: C.textMut, ...mono, letterSpacing: "1px", marginBottom: 6, paddingLeft: 4 }}>
-              📌 PINNED DEMOS
+          <div style={{ marginBottom: 24 }}>
+            <div style={{ fontSize: 10, fontWeight: 600, color: "#9CA3AF", fontFamily: "'DM Mono', monospace", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 10 }}>
+              PINNED DEMOS
             </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
               {Object.entries(SAMPLES).map(([key, sample]: [string, any]) => (
                 <div
                   key={key}
                   onClick={() => run(sample.trace)}
-                  style={{ fontSize: 12, color: C.text, padding: "7px 10px", borderRadius: 6, background: C.bg, border: `1px solid ${C.border}`, cursor: "pointer", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", transition: "border-color 0.15s" }}
+                  style={{ padding: "10px 12px", borderRadius: 8, background: "#FFFFFF", border: `1px solid ${C.border}`, cursor: "pointer", transition: "all 0.15s ease" }}
                 >
-                  <div style={{ fontWeight: 600, fontSize: 11 }}>{sample.name}</div>
-                  <div style={{ fontSize: 9, color: C.textMut, ...mono }}>{sample.tag}</div>
+                  <div style={{ fontSize: 13, fontWeight: 500, color: "#111827", fontFamily: "'DM Mono', monospace", marginBottom: 2 }}>{sample.name}</div>
+                  <div style={{ fontSize: 10, color: "#6B7280", fontFamily: "'DM Mono', monospace" }}>{sample.tag}</div>
                 </div>
               ))}
             </div>
@@ -622,15 +627,15 @@ Ensure there is one clear Decisive Error Step (DES).`}
 
           {/* History */}
           <div>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 6, paddingLeft: 4 }}>
-              <span style={{ fontSize: 10, fontWeight: 700, color: C.textMut, ...mono, letterSpacing: "1px" }}>📜 HISTORY (SUPABASE)</span>
+            <div style={{ fontSize: 10, fontWeight: 600, color: "#9CA3AF", fontFamily: "'DM Mono', monospace", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 10 }}>
+              HISTORY (SUPABASE)
             </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
               {userHistory.map(h => (
                 <div
                   key={h.id}
                   onClick={() => run(h.trace)}
-                  style={{ fontSize: 12, color: C.textSec, padding: "6px 8px", borderRadius: 5, cursor: "pointer", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", background: analysis && JSON.stringify(analysis.spans) === JSON.stringify(h.trace) ? C.accentLight : "transparent", borderLeft: analysis && JSON.stringify(analysis.spans) === JSON.stringify(h.trace) ? `3px solid ${C.accent}` : "3px solid transparent" }}
+                  style={{ padding: "8px 10px", borderRadius: 6, fontSize: 12, color: "#374151", fontFamily: "'DM Mono', monospace", fontWeight: 500, cursor: "pointer", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", background: analysis && JSON.stringify(analysis.spans) === JSON.stringify(h.trace) ? "#EEEDFA" : "transparent" }}
                 >
                   {h.name}
                 </div>
@@ -640,8 +645,8 @@ Ensure there is one clear Decisive Error Step (DES).`}
         </div>
 
         {/* Sidebar Footer Link */}
-        <div style={{ padding: "12px", borderTop: `1px solid ${C.border}`, textAlign: "center" }}>
-          <button onClick={() => setViewMode("landing")} style={{ background: "none", border: "none", fontSize: 11, ...mono, color: C.textMut, cursor: "pointer" }}>
+        <div style={{ padding: "14px 18px", borderTop: `1px solid ${C.border}` }}>
+          <button onClick={() => setViewMode("landing")} style={{ background: "none", border: "none", fontSize: 12, fontFamily: "'DM Mono', monospace", fontWeight: 500, color: "#6B7280", cursor: "pointer", padding: 0 }}>
             ← Back to Landing Page
           </button>
         </div>
@@ -649,7 +654,7 @@ Ensure there is one clear Decisive Error Step (DES).`}
 
       {/* Sidebar Re-open Button */}
       {!sidebarOpen && (
-        <button onClick={() => setSidebarOpen(true)} style={{ position: "absolute", top: 12, left: 12, zIndex: 100, background: C.bgWhite, border: `1px solid ${C.border}`, borderRadius: 6, padding: "6px 10px", cursor: "pointer", fontSize: 12, fontWeight: 600, color: C.text, boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}>
+        <button onClick={() => setSidebarOpen(true)} className="secondary-button small" style={{ position: "absolute", top: 14, left: 14, zIndex: 100 }}>
           ☰ Menu
         </button>
       )}
@@ -659,23 +664,23 @@ Ensure there is one clear Decisive Error Step (DES).`}
 
         {/* VIEW 1: NO TRACE RUNNING -> PROMPT INPUT SCREEN */}
         {!analysis ? (
-          <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "0 20px 60px 20px", position: "relative" }}>
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "0 24px 60px 24px", position: "relative" }}>
             
             {/* Header Title */}
-            <div style={{ textAlign: "center", marginBottom: 28 }}>
-              <span style={{ fontSize: 11, ...label, color: C.accent, background: C.accentLight, padding: "4px 12px", borderRadius: 20 }}>
-                HETU CAUSAL DEBUGGER
+            <div style={{ textAlign: "center", marginBottom: 32 }}>
+              <span className="eyebrow-pill" style={{ marginBottom: 16 }}>
+                <i /> HETU CAUSAL DEBUGGER
               </span>
-              <h1 style={{ fontSize: 34, fontWeight: 700, color: C.text, letterSpacing: "-0.03em", marginTop: 12, fontFamily: "'DM Sans', sans-serif" }}>
+              <h1 style={{ fontFamily: "'DM Mono', monospace", fontSize: 44, fontWeight: 500, color: "#111827", letterSpacing: "-0.04em", margin: "12px 0 8px 0" }}>
                 What do you want to analyze?
               </h1>
-              <p style={{ fontSize: 14, color: C.textSec, marginTop: 6, maxWidth: 520, margin: "6px auto 0 auto" }}>
-                Paste raw OpenTelemetry JSON traces below or choose a pinned demo scenario from the sidebar.
+              <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 15, fontWeight: 500, color: "#6B7280", margin: 0, maxWidth: 540 }}>
+                Paste raw OpenTelemetry JSON traces below or select a pinned demo scenario from the sidebar.
               </p>
             </div>
 
             {/* Prompt Input Box */}
-            <div style={{ width: "100%", maxWidth: 700, background: C.bgWhite, border: `1px solid ${C.border}`, borderRadius: 16, padding: "18px 20px", boxShadow: "0 12px 36px rgba(0,0,0,0.04)" }}>
+            <div style={{ width: "100%", maxWidth: 720, background: C.bgWhite, border: `1px solid ${C.border}`, borderRadius: 12, padding: "20px", boxShadow: "0 12px 40px rgba(17,24,39,0.06)" }}>
               <textarea
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
@@ -691,9 +696,9 @@ Ensure there is one clear Decisive Error Step (DES).`}
               />
 
               {/* Bottom Toolbar inside card */}
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 12, pt: 10, borderTop: `1px solid ${C.border}` }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 14, paddingTop: 12, borderTop: `1px solid ${C.border}` }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                  <span style={{ fontSize: 11, ...label, color: C.textMut, background: C.tag, padding: "4px 10px", borderRadius: 4 }}>
+                  <span style={{ fontSize: 11, ...mono, color: "#6B7280", background: C.tag, padding: "4px 10px", borderRadius: 4, border: `1px solid ${C.tagBorder}` }}>
                     Model: HETU-Causal-v1
                   </span>
                 </div>
@@ -701,16 +706,17 @@ Ensure there is one clear Decisive Error Step (DES).`}
                 <button
                   onClick={submit}
                   disabled={loading || !input.trim()}
-                  style={{ padding: "8px 18px", background: input.trim() ? C.accent : "#C5C4D0", border: "none", borderRadius: 6, color: "#FFFFFF", fontSize: 12, fontWeight: 600, ...mono, cursor: input.trim() ? "pointer" : "default", transition: "background 0.2s" }}
+                  className="primary-button"
+                  style={{ borderRadius: 7, fontSize: 13, minHeight: 38 }}
                 >
                   {loading ? "ANALYZING..." : "START ANALYSIS ↗"}
                 </button>
               </div>
             </div>
-            {err && <div style={{ marginTop: 12, color: C.des, fontSize: 12, ...mono }}>{err}</div>}
+            {err && <div style={{ marginTop: 14, color: C.des, fontSize: 12, ...mono }}>{err}</div>}
 
             {/* Quick Demo Cards */}
-            <div style={{ marginTop: 28, display: "flex", flexWrap: "wrap", gap: 10, justifyContent: "center", maxWidth: 700 }}>
+            <div style={{ marginTop: 32, display: "flex", flexWrap: "wrap", gap: 12, justifyContent: "center", maxWidth: 720 }}>
               {Object.entries(SAMPLES).map(([key, sample]: [string, any]) => (
                 <div
                   key={key}
@@ -719,9 +725,9 @@ Ensure there is one clear Decisive Error Step (DES).`}
                     setInput(formatted);
                     run(sample.trace);
                   }}
-                  style={{ background: C.bgWhite, border: `1px solid ${C.border}`, borderRadius: 10, padding: "10px 16px", cursor: "pointer", display: "flex", alignItems: "center", gap: 10, transition: "border-color 0.15s" }}
+                  style={{ background: C.bgWhite, border: `1px solid ${C.border}`, borderRadius: 8, padding: "10px 16px", cursor: "pointer", display: "flex", alignItems: "center", gap: 10, transition: "border-color 0.15s" }}
                 >
-                  <span style={{ fontSize: 12, fontWeight: 600, color: C.text }}>{sample.name}</span>
+                  <span style={{ fontSize: 13, fontWeight: 500, color: "#111827", fontFamily: "'DM Mono', monospace" }}>{sample.name}</span>
                   <span style={{ fontSize: 11, color: C.accent, ...mono }}>Run →</span>
                 </div>
               ))}
@@ -735,12 +741,12 @@ Ensure there is one clear Decisive Error Step (DES).`}
             {/* Header */}
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 24px", height: 52, background: C.bgWhite, borderBottom: `1px solid ${C.border}`, flexShrink: 0 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <span style={{ fontSize: 16, fontWeight: 700, cursor: "pointer", color: "#000000", fontFamily: "'DM Sans', sans-serif", letterSpacing: "-0.04em" }} onClick={() => setAnalysis(null)}>HETU</span>
+                <span style={{ fontSize: 18, fontWeight: 500, cursor: "pointer", color: "#111827", fontFamily: "'DM Mono', monospace", letterSpacing: "-0.04em" }} onClick={() => setAnalysis(null)}>HETU</span>
                 <span style={{ ...label, fontSize: 9, marginLeft: 8, color: C.textMut }}>INVESTIGATION REPORT</span>
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
                 <span style={{ fontSize: 10, ...mono, color: C.textMut }}>{analysis.summary.algorithm} · {analysis.summary.analysis_time_ms}ms</span>
-                {analysis.summary.root_cause_found && <span style={{ fontSize: 10, fontWeight: 700, color: C.des, background: C.desLight, padding: "4px 12px", borderRadius: 4, ...mono }}>DES IDENTIFIED</span>}
+                {analysis.summary.root_cause_found && <span style={{ fontSize: 10, color: C.des, background: C.desLight, padding: "4px 12px", borderRadius: 4, ...mono }}>DES IDENTIFIED</span>}
                 <button onClick={() => setAnalysis(null)} style={{ ...card, padding: "5px 14px", fontSize: 11, ...mono, color: C.textSec, cursor: "pointer" }}>New trace</button>
               </div>
             </div>
@@ -766,10 +772,10 @@ Ensure there is one clear Decisive Error Step (DES).`}
                       {n.is_root_cause && <rect x={p.x - 4} y={p.y - 4} width={208} height={76} rx={12} fill="none" stroke={C.des} strokeWidth={2} strokeDasharray="5,3"><animate attributeName="opacity" values="1;.3;1" dur="2.5s" repeatCount="indefinite" /></rect>}
                       {sel && !n.is_root_cause && <rect x={p.x - 2} y={p.y - 2} width={204} height={72} rx={11} fill="none" stroke={C.accent} strokeWidth={1.5} />}
                       <rect x={p.x} y={p.y} width={200} height={68} rx={10} fill={c.bg} stroke={c.border} strokeWidth={1.2} />
-                      <text x={p.x + 10} y={p.y + 20} fill={c.text} fontSize={11} fontWeight={600} fontFamily="Inter,sans-serif">{n.agent}</text>
-                      {n.is_root_cause && <><rect x={p.x + 158} y={p.y + 8} width={32} height={14} rx={3} fill={C.desLight} stroke={C.des} strokeWidth={.5} /><text x={p.x + 174} y={p.y + 18} fill={C.des} fontSize={7} fontWeight={700} textAnchor="middle" fontFamily="'Space Mono'">DES</text></>}
-                      <text x={p.x + 10} y={p.y + 36} fill={C.textMut} fontSize={9} fontFamily="'Space Mono',monospace">{n.operation}{n.tool ? ` → ${n.tool}` : ""}</text>
-                      <text x={p.x + 10} y={p.y + 50} fill={C.textMut} fontSize={8} fontFamily="'Space Mono',monospace">{n.tokens}tok · {n.duration_ms}ms</text>
+                      <text x={p.x + 10} y={p.y + 20} fill={c.text} fontSize={11} fontWeight={500} fontFamily="'DM Mono', monospace">{n.agent}</text>
+                      {n.is_root_cause && <><rect x={p.x + 158} y={p.y + 8} width={32} height={14} rx={3} fill={C.desLight} stroke={C.des} strokeWidth={.5} /><text x={p.x + 174} y={p.y + 18} fill={C.des} fontSize={7} fontWeight={700} textAnchor="middle" fontFamily="'DM Mono'">DES</text></>}
+                      <text x={p.x + 10} y={p.y + 36} fill={C.textMut} fontSize={9} fontFamily="'DM Mono',monospace">{n.operation}{n.tool ? ` → ${n.tool}` : ""}</text>
+                      <text x={p.x + 10} y={p.y + 50} fill={C.textMut} fontSize={8} fontFamily="'DM Mono',monospace">{n.tokens}tok · {n.duration_ms}ms</text>
                       {n.degradation != null && <><rect x={p.x + 10} y={p.y + 59} width={110} height={2.5} rx={1} fill={C.bg} /><rect x={p.x + 10} y={p.y + 59} width={110 * n.degradation} height={2.5} rx={1} fill={C.impact} /></>}
                     </g>;
                   })}
@@ -777,64 +783,64 @@ Ensure there is one clear Decisive Error Step (DES).`}
               </div>
 
               {/* Right panel */}
-              <div style={{ background: C.bgWhite, borderLeft: `1px solid ${C.border}`, display: "flex", flexDirection: "column", overflow: "hidden" }}>
+              <div style={{ background: C.bgWhite, borderLeft: `1px solid ${C.border}`, display: "flex", flexDirection: "column", overflow: "hidden", height: "100%" }}>
                 {/* Stats */}
-                <div style={{ display: "flex", padding: "10px 16px", borderBottom: `1px solid ${C.border}` }}>
+                <div style={{ display: "flex", padding: "10px 16px", borderBottom: `1px solid ${C.border}`, flexShrink: 0 }}>
                   {[{ v: analysis.summary.total_spans, l: "Spans" }, { v: analysis.summary.agent_count, l: "Agents" }, { v: analysis.summary.error_count, l: "Errors", c: C.des }, { v: analysis.evidenceScore.score, l: "Evidence", c: analysis.evidenceScore.score >= 70 ? C.ok : analysis.evidenceScore.score >= 40 ? C.impact : C.des }].map(s => (
                     <div key={s.l} style={{ flex: 1, textAlign: "center" }}>
-                      <div style={{ fontSize: 16, fontWeight: 700, ...mono, color: s.c || C.text }}>{s.v}</div>
-                      <div style={{ ...label, fontSize: 7 }}>{s.l}</div>
+                      <div style={{ fontSize: 16, ...mono, fontWeight: 600, color: s.c || "#111827" }}>{s.v}</div>
+                      <div style={{ ...label, fontSize: 8, color: "#4B5563" }}>{s.l}</div>
                     </div>
                   ))}
                 </div>
 
                 {/* Confidence */}
                 {analysis.summary.root_cause_found && (
-                  <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 16px", borderBottom: `1px solid ${C.border}` }}>
-                    <span style={{ ...label, fontSize: 8 }}>CIA SCORE</span>
-                    <div style={{ flex: 1, height: 4, background: C.bg, borderRadius: 2, overflow: "hidden" }}><div style={{ width: `${analysis.summary.root_cause_confidence * 100}%`, height: "100%", borderRadius: 2, background: analysis.summary.root_cause_confidence > .7 ? C.des : C.impact }} /></div>
-                    <span style={{ fontSize: 12, fontWeight: 700, ...mono, color: analysis.summary.root_cause_confidence > .7 ? C.des : C.impact }}>{Math.round(analysis.summary.root_cause_confidence * 100)}%</span>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 16px", borderBottom: `1px solid ${C.border}`, flexShrink: 0 }}>
+                    <span style={{ ...label, fontSize: 8, color: "#4B5563" }}>CIA SCORE</span>
+                    <div style={{ flex: 1, height: 5, background: C.bg, borderRadius: 3, overflow: "hidden" }}><div style={{ width: `${analysis.summary.root_cause_confidence * 100}%`, height: "100%", borderRadius: 3, background: analysis.summary.root_cause_confidence > .7 ? C.des : C.impact }} /></div>
+                    <span style={{ fontSize: 12, ...mono, fontWeight: 600, color: analysis.summary.root_cause_confidence > .7 ? C.des : C.impact }}>{Math.round(analysis.summary.root_cause_confidence * 100)}%</span>
                   </div>
                 )}
 
                 {/* Tabs */}
-                <div style={{ display: "flex", gap: 2, padding: "6px 12px", borderBottom: `1px solid ${C.border}`, flexWrap: "wrap" }}>
+                <div style={{ display: "flex", gap: 3, padding: "8px 12px", borderBottom: `1px solid ${C.border}`, flexWrap: "wrap", flexShrink: 0, background: "#FAFAFD" }}>
                   {["report", "evidence", "propagation", "decisions", "checklist", "export"].map(t => (
-                    <button key={t} onClick={() => setSection(t)} style={{ padding: "6px 12px", background: section === t ? C.accentLight : "transparent", color: section === t ? C.accent : C.textMut, border: `1px solid ${section === t ? C.accent + "30" : "transparent"}`, borderRadius: 5, ...label, fontSize: 9, cursor: "pointer", letterSpacing: "1.5px" }}>{t}</button>
+                    <button key={t} onClick={() => setSection(t)} style={{ ...label, padding: "6px 10px", background: section === t ? C.accentLight : "#F3F4F6", color: section === t ? C.accent : "#374151", border: `1px solid ${section === t ? C.accent + "50" : C.border}`, borderRadius: 5, fontSize: 9, fontWeight: 600, cursor: "pointer", letterSpacing: "1.2px" }}>{t}</button>
                   ))}
                 </div>
 
-                {/* Tab Content */}
-                <div style={{ flex: 1, overflowY: "auto", padding: "14px 16px" }}>
+                {/* Tab Content (Scrollable Container) */}
+                <div style={{ flex: 1, minHeight: 0, overflowY: "auto", scrollBehavior: "smooth", WebkitOverflowScrolling: "touch", overscrollBehavior: "contain", padding: "14px 16px 28px 16px" }}>
                   {section === "report" && (
                     <div>
                       <div style={{ ...card, padding: 16, borderLeft: `3px solid ${C.des}`, marginBottom: 14 }}>
-                        <div style={{ ...label, color: C.des, marginBottom: 6, fontSize: 9 }}>DECISIVE ERROR STEP</div>
-                        <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 4 }}>{analysis.root_cause.agent} → {analysis.root_cause.operation}</div>
-                        <div style={{ fontSize: 12, color: C.textSec, lineHeight: 1.6, marginBottom: 6 }}>{analysis.root_cause.detail}</div>
-                        <div style={{ display: "flex", gap: 12 }}><span style={{ fontSize: 10, ...mono, color: C.textMut }}>Node: {analysis.root_cause.node}</span><span style={{ fontSize: 10, ...mono, color: C.des, fontWeight: 600 }}>Confidence: {Math.round(analysis.root_cause.confidence * 100)}%</span></div>
+                        <div style={{ ...label, color: C.des, marginBottom: 6, fontSize: 9, fontWeight: 700 }}>DECISIVE ERROR STEP</div>
+                        <div style={{ fontSize: 14, fontWeight: 600, color: "#111827", marginBottom: 4 }}>{analysis.root_cause.agent} → {analysis.root_cause.operation}</div>
+                        <div style={{ fontSize: 12, color: "#374151", lineHeight: 1.6, marginBottom: 6 }}>{analysis.root_cause.detail}</div>
+                        <div style={{ display: "flex", gap: 12 }}><span style={{ fontSize: 10, ...mono, color: "#4B5563", fontWeight: 500 }}>Node: {analysis.root_cause.node}</span><span style={{ fontSize: 10, ...mono, color: C.des, fontWeight: 600 }}>Confidence: {Math.round(analysis.root_cause.confidence * 100)}%</span></div>
                       </div>
                       <div style={{ ...card, padding: 14, marginBottom: 14 }}>
-                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}><span style={{ ...label, fontSize: 9 }}>EVIDENCE SCORE</span><span style={{ fontSize: 20, fontWeight: 700, ...mono, color: analysis.evidenceScore.score >= 70 ? C.ok : analysis.evidenceScore.score >= 40 ? C.impact : C.des }}>{analysis.evidenceScore.score}</span></div>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}><span style={{ ...label, fontSize: 9, color: "#374151" }}>EVIDENCE SCORE</span><span style={{ fontSize: 20, ...mono, fontWeight: 600, color: analysis.evidenceScore.score >= 70 ? C.ok : analysis.evidenceScore.score >= 40 ? C.impact : C.des }}>{analysis.evidenceScore.score}</span></div>
                         <div style={{ height: 5, background: C.bg, borderRadius: 3, overflow: "hidden", marginBottom: 6 }}><div style={{ width: `${analysis.evidenceScore.score}%`, height: "100%", borderRadius: 3, background: analysis.evidenceScore.score >= 70 ? C.ok : analysis.evidenceScore.score >= 40 ? C.impact : C.des }} /></div>
-                        <div style={{ fontSize: 12, color: C.textSec }}>{analysis.evidenceScore.explanation}</div>
-                        <div style={{ display: "flex", gap: 10, marginTop: 4 }}><span style={{ fontSize: 10, ...mono, color: C.ok }}>● {analysis.evidenceScore.obs} observable</span><span style={{ fontSize: 10, ...mono, color: C.textMut }}>○ {analysis.evidenceScore.inf} inferred</span></div>
+                        <div style={{ fontSize: 12, color: "#374151", lineHeight: 1.5 }}>{analysis.evidenceScore.explanation}</div>
+                        <div style={{ display: "flex", gap: 10, marginTop: 6 }}><span style={{ fontSize: 10, ...mono, color: C.ok, fontWeight: 600 }}>● {analysis.evidenceScore.obs} observable</span><span style={{ fontSize: 10, ...mono, color: "#4B5563", fontWeight: 500 }}>○ {analysis.evidenceScore.inf} inferred</span></div>
                       </div>
                       {analysis.decisions.length > 0 && (
                         <div style={{ ...card, padding: 14, borderLeft: `3px solid ${C.ok}`, marginBottom: 14 }}>
-                          <div style={{ ...label, color: C.ok, fontSize: 9, marginBottom: 6 }}>RECOMMENDED ACTION</div>
-                          <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 4 }}>[{analysis.decisions[0].pri}] {analysis.decisions[0].title}</div>
-                          <div style={{ fontSize: 12, color: C.textSec, lineHeight: 1.6 }}>{analysis.decisions[0].why}</div>
-                          <div style={{ fontSize: 10, ...mono, color: C.textMut, marginTop: 4 }}>Effort: {analysis.decisions[0].effort} · Confidence: {analysis.decisions[0].conf}</div>
+                          <div style={{ ...label, color: C.ok, fontSize: 9, marginBottom: 6, fontWeight: 700 }}>RECOMMENDED ACTION</div>
+                          <div style={{ fontSize: 13, fontWeight: 600, color: "#111827", marginBottom: 4 }}>[{analysis.decisions[0].pri}] {analysis.decisions[0].title}</div>
+                          <div style={{ fontSize: 12, color: "#374151", lineHeight: 1.6 }}>{analysis.decisions[0].why}</div>
+                          <div style={{ fontSize: 10, ...mono, color: "#4B5563", marginTop: 4, fontWeight: 500 }}>Effort: {analysis.decisions[0].effort} · Confidence: {analysis.decisions[0].conf}</div>
                         </div>
                       )}
                       <div style={{ ...card, padding: 14 }}>
-                        <div style={{ ...label, fontSize: 9, marginBottom: 10 }}>AGENT TRUST</div>
+                        <div style={{ ...label, fontSize: 9, color: "#374151", marginBottom: 10 }}>AGENT TRUST</div>
                         {Object.entries(analysis.agent_scores).sort((a: any, b: any) => a[1] - b[1]).map(([ag, sc]: [string, any]) => (
-                          <div key={ag} style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 5 }}>
-                            <span style={{ fontSize: 11, fontWeight: 500, minWidth: 90, color: C.textSec }}>{ag}</span>
-                            <div style={{ flex: 1, height: 4, background: C.bg, borderRadius: 2, overflow: "hidden" }}><div style={{ width: `${sc}%`, height: "100%", borderRadius: 2, background: sc > 70 ? C.ok : sc > 40 ? C.impact : C.des }} /></div>
-                            <span style={{ fontSize: 11, fontWeight: 600, ...mono, color: sc > 70 ? C.ok : sc > 40 ? C.impact : C.des, minWidth: 30 }}>{sc}%</span>
+                          <div key={ag} style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
+                            <span style={{ fontSize: 11, fontWeight: 600, minWidth: 90, color: "#111827" }}>{ag}</span>
+                            <div style={{ flex: 1, height: 5, background: C.bg, borderRadius: 2.5, overflow: "hidden" }}><div style={{ width: `${sc}%`, height: "100%", borderRadius: 2.5, background: sc > 70 ? C.ok : sc > 40 ? C.impact : C.des }} /></div>
+                            <span style={{ fontSize: 11, ...mono, fontWeight: 600, color: sc > 70 ? C.ok : sc > 40 ? C.impact : C.des, minWidth: 34 }}>{sc}%</span>
                           </div>
                         ))}
                       </div>
@@ -844,16 +850,16 @@ Ensure there is one clear Decisive Error Step (DES).`}
                   {section === "evidence" && (
                     <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
                       {analysis.evidence.map((e: any) => (
-                        <div key={e.id} onClick={() => setSelNode(e.step)} style={{ ...card, padding: 14, cursor: "pointer", borderLeft: `3px solid ${e.sev === "critical" ? C.des : e.sev === "high" ? C.impact : C.textMut}` }}>
+                        <div key={e.id} onClick={() => setSelNode(e.step)} style={{ ...card, padding: 14, cursor: "pointer", borderLeft: `3px solid ${e.sev === "critical" ? C.des : e.sev === "high" ? C.impact : "#4B5563"}` }}>
                           <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
-                            <span style={{ fontSize: 12, fontWeight: 600 }}>{e.title}</span>
+                            <span style={{ fontSize: 12, fontWeight: 600, color: "#111827" }}>{e.title}</span>
                             <div style={{ display: "flex", gap: 3 }}>
-                              <span style={{ fontSize: 9, ...label, padding: "2px 6px", borderRadius: 3, background: e.cat === "observable" ? C.okLight : C.tag, color: e.cat === "observable" ? C.ok : C.textMut, letterSpacing: "1px" }}>{e.cat}</span>
-                              <span style={{ fontSize: 9, ...label, padding: "2px 6px", borderRadius: 3, background: e.sev === "critical" ? C.desLight : C.tag, color: e.sev === "critical" ? C.des : C.textMut, letterSpacing: "1px" }}>{e.sev}</span>
+                              <span style={{ ...label, fontSize: 9, padding: "2px 6px", borderRadius: 3, background: e.cat === "observable" ? C.okLight : C.tag, color: e.cat === "observable" ? C.ok : "#4B5563", letterSpacing: "1px" }}>{e.cat}</span>
+                              <span style={{ ...label, fontSize: 9, padding: "2px 6px", borderRadius: 3, background: e.sev === "critical" ? C.desLight : C.tag, color: e.sev === "critical" ? C.des : "#4B5563", letterSpacing: "1px" }}>{e.sev}</span>
                             </div>
                           </div>
-                          <div style={{ fontSize: 11, color: C.textSec, lineHeight: 1.5 }}>{e.desc}</div>
-                          <div style={{ fontSize: 10, ...mono, color: C.textMut, marginTop: 3 }}>Step: {e.step}</div>
+                          <div style={{ fontSize: 11, color: "#374151", lineHeight: 1.5 }}>{e.desc}</div>
+                          <div style={{ fontSize: 10, ...mono, color: "#4B5563", marginTop: 3 }}>Step: {e.step}</div>
                         </div>
                       ))}
                     </div>
@@ -861,18 +867,18 @@ Ensure there is one clear Decisive Error Step (DES).`}
 
                   {section === "propagation" && (
                     <div>
-                      <div style={{ ...label, fontSize: 9, marginBottom: 10 }}>FAILURE PROPAGATION</div>
+                      <div style={{ ...label, fontSize: 9, color: "#374151", marginBottom: 10 }}>FAILURE PROPAGATION</div>
                       {analysis.propagation.stages.map((s: any, i: number) => (
                         <div key={s.id}>
                           <div onClick={() => setSelNode(s.step)} style={{ ...card, padding: 14, cursor: "pointer", borderLeft: `3px solid ${s.sev === "critical" ? C.des : C.impact}` }}>
                             <div style={{ display: "flex", justifyContent: "space-between" }}>
                               <div>
                                 <div style={{ ...label, fontSize: 9, color: s.sev === "critical" ? C.des : C.impact, letterSpacing: "1.5px" }}>{s.label}</div>
-                                <div style={{ fontSize: 12, fontWeight: 600, marginTop: 3 }}>{s.agent}</div>
+                                <div style={{ fontSize: 12, fontWeight: 600, color: "#111827", marginTop: 3 }}>{s.agent}</div>
                               </div>
-                              {s.deg && <span style={{ fontSize: 10, ...mono, color: C.impact }}>{Math.round(s.deg * 100)}%</span>}
+                              {s.deg && <span style={{ fontSize: 10, ...mono, fontWeight: 600, color: C.impact }}>{Math.round(s.deg * 100)}%</span>}
                             </div>
-                            <div style={{ fontSize: 11, color: C.textSec, lineHeight: 1.5, marginTop: 4 }}>{s.desc}</div>
+                            <div style={{ fontSize: 11, color: "#374151", lineHeight: 1.5, marginTop: 4 }}>{s.desc}</div>
                           </div>
                           {i < analysis.propagation.stages.length - 1 && <div style={{ display: "flex", justifyContent: "center", padding: "2px 0" }}><div style={{ width: 1, height: 18, background: C.border }} /></div>}
                         </div>
@@ -882,17 +888,17 @@ Ensure there is one clear Decisive Error Step (DES).`}
 
                   {section === "decisions" && (
                     <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                      <div style={{ ...label, fontSize: 9, marginBottom: 2 }}>RANKED ACTIONS</div>
+                      <div style={{ ...label, fontSize: 9, color: "#374151", marginBottom: 2 }}>RANKED ACTIONS</div>
                       {analysis.decisions.map((d: any) => (
                         <div key={d.id} style={{ ...card, padding: 16 }}>
-                          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}><span style={{ fontSize: 13, fontWeight: 600 }}>{d.title}</span><span style={{ fontSize: 10, fontWeight: 700, color: d.pri === "P0" ? C.des : C.impact, ...mono, background: d.pri === "P0" ? C.desLight : C.impactLight, padding: "2px 8px", borderRadius: 4 }}>{d.pri}</span></div>
+                          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}><span style={{ fontSize: 13, fontWeight: 600, color: "#111827" }}>{d.title}</span><span style={{ fontSize: 10, color: d.pri === "P0" ? C.des : C.impact, ...mono, fontWeight: 600, background: d.pri === "P0" ? C.desLight : C.impactLight, padding: "2px 8px", borderRadius: 4 }}>{d.pri}</span></div>
                           {[{ l: "Why", v: d.why }, { l: "Impact", v: d.impact }, { l: "Risks", v: d.risks }].map(f => (
                             <div key={f.l} style={{ marginBottom: 4 }}>
-                              <div style={{ ...label, fontSize: 8, marginBottom: 1 }}>{f.l}</div>
-                              <div style={{ fontSize: 11, color: C.textSec, lineHeight: 1.5 }}>{f.v}</div>
+                              <div style={{ ...label, fontSize: 8, color: "#4B5563", marginBottom: 1 }}>{f.l}</div>
+                              <div style={{ fontSize: 11, color: "#374151", lineHeight: 1.5 }}>{f.v}</div>
                             </div>
                           ))}
-                          <div style={{ display: "flex", gap: 14, marginTop: 3 }}><span style={{ fontSize: 10, ...mono, color: C.textMut }}>Confidence: {d.conf}</span><span style={{ fontSize: 10, ...mono, color: C.textMut }}>Effort: {d.effort}</span></div>
+                          <div style={{ display: "flex", gap: 14, marginTop: 3 }}><span style={{ fontSize: 10, ...mono, color: "#4B5563" }}>Confidence: {d.conf}</span><span style={{ fontSize: 10, ...mono, color: "#4B5563" }}>Effort: {d.effort}</span></div>
                         </div>
                       ))}
                     </div>
@@ -900,50 +906,53 @@ Ensure there is one clear Decisive Error Step (DES).`}
 
                   {section === "checklist" && (
                     <div>
-                      <div style={{ ...label, fontSize: 9, marginBottom: 10 }}>VALIDATION CHECKLIST</div>
+                      <div style={{ ...label, fontSize: 9, color: "#374151", marginBottom: 10 }}>VALIDATION CHECKLIST</div>
                       {analysis.checklist.map((c: any) => (
                         <div key={c.id} onClick={() => setCkState((p: any) => ({ ...p, [c.id]: !p[c.id] }))} style={{ display: "flex", alignItems: "flex-start", gap: 10, padding: "10px 14px", ...card, marginBottom: 4, cursor: "pointer", background: ckState[c.id] ? C.okLight : C.bgWhite, borderColor: ckState[c.id] ? C.okBorder : C.border }}>
                           <div style={{ width: 18, height: 18, borderRadius: 4, border: `2px solid ${ckState[c.id] ? C.ok : C.border}`, background: ckState[c.id] ? C.ok : "transparent", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1 }}>{ckState[c.id] && <span style={{ color: "#fff", fontSize: 11, fontWeight: 700 }}>✓</span>}</div>
-                          <span style={{ fontSize: 12, color: ckState[c.id] ? C.textMut : C.text, textDecoration: ckState[c.id] ? "line-through" : "none", lineHeight: 1.5 }}>{c.text}</span>
+                          <span style={{ fontSize: 12, color: ckState[c.id] ? "#4B5563" : "#111827", textDecoration: ckState[c.id] ? "line-through" : "none", lineHeight: 1.5 }}>{c.text}</span>
                         </div>
                       ))}
-                      <div style={{ marginTop: 8, fontSize: 11, ...mono, color: C.textMut, textAlign: "center" }}>{Object.values(ckState).filter(Boolean).length} / {analysis.checklist.length} completed</div>
+                      <div style={{ marginTop: 8, fontSize: 11, ...mono, color: "#4B5563", textAlign: "center" }}>{Object.values(ckState).filter(Boolean).length} / {analysis.checklist.length} completed</div>
                     </div>
                   )}
 
                   {section === "export" && (
                     <div>
-                      <div style={{ ...label, fontSize: 9, marginBottom: 10 }}>ENGINEERING SUMMARY</div>
+                      <div style={{ ...label, fontSize: 9, color: "#374151", marginBottom: 10 }}>ENGINEERING SUMMARY</div>
                       <div style={{ display: "flex", gap: 6, marginBottom: 12 }}>
-                        <button onClick={() => navigator.clipboard.writeText(analysis.summaryReport)} style={{ flex: 1, padding: "10px", ...mono, fontSize: 11, fontWeight: 600, background: C.accent, color: "#fff", border: "none", borderRadius: 5, cursor: "pointer" }}>Copy</button>
-                        <button onClick={() => { const b = new Blob([analysis.summaryReport], { type: "text/markdown" }); const a = document.createElement("a"); a.href = URL.createObjectURL(b); a.download = "404ai-report.md"; a.click(); }} style={{ flex: 1, padding: "10px", ...mono, fontSize: 11, fontWeight: 600, ...card, cursor: "pointer", color: C.text }}>Download .md</button>
+                        <button onClick={() => navigator.clipboard.writeText(analysis.summaryReport)} style={{ flex: 1, padding: "10px", ...mono, fontSize: 11, fontWeight: 500, background: C.accent, color: "#fff", border: "none", borderRadius: 5, cursor: "pointer" }}>Copy</button>
+                        <button onClick={() => { const b = new Blob([analysis.summaryReport], { type: "text/markdown" }); const a = document.createElement("a"); a.href = URL.createObjectURL(b); a.download = "404ai-report.md"; a.click(); }} style={{ flex: 1, padding: "10px", ...mono, fontSize: 11, fontWeight: 500, ...card, cursor: "pointer", color: "#111827" }}>Download .md</button>
                       </div>
-                      <div style={{ ...card, padding: 14, ...mono, fontSize: 10, lineHeight: 1.7, color: C.textSec, whiteSpace: "pre-wrap", maxHeight: 300, overflowY: "auto" }}>{analysis.summaryReport}</div>
+                      <div style={{ ...card, padding: 14, ...mono, fontSize: 10, lineHeight: 1.7, color: "#374151", whiteSpace: "pre-wrap", maxHeight: 300, overflowY: "auto" }}>{analysis.summaryReport}</div>
                       <div style={{ ...card, padding: 16, marginTop: 14 }}>
-                        <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 8 }}>Was this diagnosis helpful?</div>
+                        <div style={{ fontSize: 12, marginBottom: 8, fontFamily: "'DM Mono', monospace", color: "#111827" }}>Was this diagnosis helpful?</div>
                         <div style={{ display: "flex", gap: 6 }}>
-                          <button onClick={() => setFb("yes")} style={{ flex: 1, padding: "8px", ...card, fontSize: 12, cursor: "pointer", background: fb === "yes" ? C.okLight : C.bgWhite, color: fb === "yes" ? C.ok : C.textSec, borderColor: fb === "yes" ? C.okBorder : C.border }}>👍 Correct</button>
-                          <button onClick={() => setFb("no")} style={{ flex: 1, padding: "8px", ...card, fontSize: 12, cursor: "pointer", background: fb === "no" ? C.desLight : C.bgWhite, color: fb === "no" ? C.des : C.textSec }}>👎 Incorrect</button>
+                          <button onClick={() => setFb("yes")} style={{ flex: 1, padding: "8px", ...card, fontSize: 12, fontFamily: "'DM Mono', monospace", cursor: "pointer", background: fb === "yes" ? C.okLight : C.bgWhite, color: fb === "yes" ? C.ok : "#374151", borderColor: fb === "yes" ? C.okBorder : C.border }}>✓ Correct</button>
+                          <button onClick={() => setFb("no")} style={{ flex: 1, padding: "8px", ...card, fontSize: 12, fontFamily: "'DM Mono', monospace", cursor: "pointer", background: fb === "no" ? C.desLight : C.bgWhite, color: fb === "no" ? C.des : "#374151" }}>✕ Incorrect</button>
                         </div>
-                        {fb === "yes" && <div style={{ fontSize: 11, color: C.ok, marginTop: 6 }}>Thank you. Feedback recorded.</div>}
-                        {fb === "no" && <div style={{ marginTop: 6 }}><textarea value={fbText} onChange={e => setFbText(e.target.value)} placeholder="What actually caused the issue?" style={{ width: "100%", minHeight: 50, padding: 8, background: C.bg, border: `1px solid ${C.border}`, borderRadius: 4, fontSize: 11, ...mono, resize: "vertical", outline: "none", color: C.text }} /><button onClick={() => setFb("sent")} style={{ marginTop: 4, padding: "6px 14px", background: C.accent, color: "#fff", border: "none", borderRadius: 4, ...mono, fontSize: 10, cursor: "pointer" }}>Submit</button></div>}
-                        {fb === "sent" && <div style={{ fontSize: 11, color: C.ok, marginTop: 6 }}>Feedback recorded.</div>}
+                        {fb === "yes" && <div style={{ fontSize: 11, color: C.ok, marginTop: 6, fontFamily: "'DM Mono', monospace" }}>Thank you. Feedback recorded.</div>}
+                        {fb === "no" && <div style={{ marginTop: 6 }}><textarea value={fbText} onChange={e => setFbText(e.target.value)} placeholder="What actually caused the issue?" style={{ width: "100%", minHeight: 50, padding: 8, background: C.bg, border: `1px solid ${C.border}`, borderRadius: 4, fontSize: 11, ...mono, resize: "vertical", outline: "none", color: "#111827" }} /><button onClick={() => setFb("sent")} style={{ marginTop: 4, padding: "6px 14px", background: C.accent, color: "#fff", border: "none", borderRadius: 4, ...mono, fontSize: 10, cursor: "pointer" }}>Submit</button></div>}
+                        {fb === "sent" && <div style={{ fontSize: 11, color: C.ok, marginTop: 6, fontFamily: "'DM Mono', monospace" }}>Feedback recorded.</div>}
                       </div>
                     </div>
                   )}
                 </div>
 
-                {/* Node detail */}
+                {/* Node detail inspector */}
                 {selData && (
-                  <div style={{ borderTop: `1px solid ${C.border}`, padding: 14, maxHeight: "32%", overflowY: "auto", flexShrink: 0, background: C.bgWhite }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 8 }}>
-                      <span style={{ fontSize: 9, ...label, padding: "2px 7px", borderRadius: 3, background: selData.visual_status === "root_cause" ? C.desLight : C.tag, color: selData.visual_status === "root_cause" ? C.des : C.textMut, letterSpacing: "1px" }}>{selData.visual_status === "root_cause" ? "DES" : selData.visual_status}</span>
-                      <span style={{ fontSize: 12, fontWeight: 600, ...mono }}>{selData.id}</span>
+                  <div style={{ borderTop: `1px solid ${C.border}`, padding: 14, maxHeight: "35%", overflowY: "auto", flexShrink: 0, background: C.bgWhite }}>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                        <span style={{ ...label, fontSize: 9, padding: "2px 7px", borderRadius: 3, background: selData.visual_status === "root_cause" ? C.desLight : C.tag, color: selData.visual_status === "root_cause" ? C.des : "#4B5563", letterSpacing: "1px" }}>{selData.visual_status === "root_cause" ? "DES" : selData.visual_status}</span>
+                        <span style={{ fontSize: 12, ...mono, fontWeight: 600, color: "#111827" }}>{selData.id}</span>
+                      </div>
+                      <button onClick={() => setSelNode(null)} style={{ background: "none", border: "none", fontSize: 14, cursor: "pointer", color: "#4B5563", padding: "0 4px" }} title="Close Inspector">✕</button>
                     </div>
                     {[{ l: "Agent", v: selData.agent }, { l: "Operation", v: selData.operation + (selData.tool ? ` → ${selData.tool}` : "") }, selData.reasoning && { l: "Reasoning", v: selData.reasoning }, selData.output_summary && { l: "Output", v: selData.output_summary }, selData.error && { l: "Error", v: selData.error, c: C.des }].filter(Boolean).map((f: any) => (
-                      <div key={f.l} style={{ marginBottom: 5 }}>
-                        <div style={{ ...label, fontSize: 8, marginBottom: 2 }}>{f.l}</div>
-                        <div style={{ fontSize: 11, color: f.c || C.textSec, lineHeight: 1.5, background: C.bg, padding: "6px 8px", borderRadius: 5, border: `1px solid ${C.border}`, ...mono, wordBreak: "break-word" }}>{f.v}</div>
+                      <div key={f.l} style={{ marginBottom: 6 }}>
+                        <div style={{ ...label, fontSize: 8, color: "#4B5563", marginBottom: 2 }}>{f.l}</div>
+                        <div style={{ fontSize: 11, color: f.c || "#111827", lineHeight: 1.5, background: "#F3F4F6", padding: "6px 10px", borderRadius: 5, border: `1px solid ${C.border}`, ...mono, wordBreak: "break-word" }}>{f.v}</div>
                       </div>
                     ))}
                   </div>
@@ -954,7 +963,7 @@ Ensure there is one clear Decisive Error Step (DES).`}
         )}
 
       </div>
-      <style>{`::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:${C.border};border-radius:3px}`}</style>
+      <style>{`::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:#f1f1f8}::-webkit-scrollbar-thumb{background:#b0b0cc;border-radius:4px}`}</style>
     </div>
   );
 }

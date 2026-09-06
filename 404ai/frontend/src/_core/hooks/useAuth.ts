@@ -14,18 +14,22 @@ export function useAuth(options?: UseAuthOptions) {
   // the state cookie, so calling it per render would overwrite the cookie and
   // desync it from an in-flight login's `state`.
   const { redirectOnUnauthenticated = false, redirectPath } = options ?? {};
-  const utils = trpc.useUtils();
+  const utils = (trpc as any).useUtils();
 
-  const meQuery = trpc.auth.me.useQuery(undefined, {
-    retry: false,
-    refetchOnWindowFocus: false,
-  });
+  const meQuery = (trpc as any).auth?.me?.useQuery
+    ? (trpc as any).auth.me.useQuery(undefined, {
+        retry: false,
+        refetchOnWindowFocus: false,
+      })
+    : { data: null, isLoading: false, error: null, refetch: () => {} };
 
-  const logoutMutation = trpc.auth.logout.useMutation({
-    onSuccess: () => {
-      utils.auth.me.setData(undefined, null);
-    },
-  });
+  const logoutMutation = (trpc as any).auth?.logout?.useMutation
+    ? (trpc as any).auth.logout.useMutation({
+        onSuccess: () => {
+          (utils as any)?.auth?.me?.setData(undefined, null);
+        },
+      })
+    : { mutateAsync: async () => {}, isPending: false, error: null };
 
   const logout = useCallback(async () => {
     try {
@@ -45,8 +49,8 @@ export function useAuth(options?: UseAuthOptions) {
       try {
         sessionStorage.removeItem("manus-cookie");
       } catch {}
-      utils.auth.me.setData(undefined, null);
-      await utils.auth.me.invalidate();
+      (utils as any)?.auth?.me?.setData?.(undefined, null);
+      await (utils as any)?.auth?.me?.invalidate?.();
     }
   }, [logoutMutation, utils]);
 

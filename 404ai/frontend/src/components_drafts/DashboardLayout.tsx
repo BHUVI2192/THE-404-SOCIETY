@@ -23,7 +23,10 @@ import { startLogin } from "@/const";
 import { useIsMobile } from "@/hooks/useMobile";
 import { LayoutDashboard, LogOut, PanelLeft, Users } from "lucide-react";
 import { CSSProperties, useEffect, useRef, useState } from "react";
-import { useLocation } from "wouter";
+const useLocation = () => [
+  typeof window !== "undefined" ? window.location.pathname : "/",
+  (p: string) => typeof window !== "undefined" && (window.location.href = p)
+] as const;
 import { DashboardLayoutSkeleton } from './DashboardLayoutSkeleton';
 import { Button } from "./ui/button";
 

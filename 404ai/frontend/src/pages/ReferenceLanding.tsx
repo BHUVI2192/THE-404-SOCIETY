@@ -172,58 +172,7 @@ export default function ReferenceLanding({ onRunTrace, samples, loading = false,
           </div>
         </section>
 
-        {/* Trace Input & Sample Cards Section */}
-        <section className="trace-input-section" id="trace-input">
-          <div className="trace-section-header">
-            <span className="trace-bullet">•</span>
-            <span className="trace-header-title">PASTE TRACE</span>
-          </div>
 
-          <div className="trace-input-box">
-            <textarea
-              className="trace-textarea"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder={`[\n  {\n    "span_id": "orch-001",\n    "parent_span_id": null,\n    "agent": "Orchestrator"\n  }\n]`}
-              rows={6}
-            />
-            <button
-              className="start-analysis-btn"
-              onClick={handleSubmit}
-              disabled={loading || !input.trim()}
-            >
-              {loading ? "ANALYZING..." : "START ANALYSIS ↗"}
-            </button>
-          </div>
-          {err && <div className="trace-error-msg">{err}</div>}
-
-          <div className="trace-section-header" style={{ marginTop: "48px" }}>
-            <span className="trace-bullet">•</span>
-            <span className="trace-header-title">SELECT A TRACE</span>
-          </div>
-
-          <div className="sample-traces-container">
-            {samples &&
-              Object.entries(samples).map(([key, sample]: [string, any]) => (
-                <div
-                  key={key}
-                  className="sample-trace-card"
-                  onClick={() => {
-                    const formatted = JSON.stringify(sample.trace, null, 2);
-                    setInput(formatted);
-                    onRunTrace(sample.trace);
-                  }}
-                >
-                  <div className="sample-card-head">
-                    <span className="sample-card-tag">{sample.tag}</span>
-                    <ArrowUpRight size={16} className="sample-card-arrow" />
-                  </div>
-                  <h3 className="sample-card-title">{sample.name}</h3>
-                  <p className="sample-card-desc">{sample.desc}</p>
-                </div>
-              ))}
-          </div>
-        </section>
 
         <section className="workflow-section" id="workflow">
           <div className="reference-section-label">
