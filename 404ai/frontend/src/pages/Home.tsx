@@ -398,11 +398,41 @@ export default function Home() {
   const [fb, setFb] = useState<any>(null);
   const [fbText, setFbText] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [showDocs, setShowDocs] = useState(false);
   const [userHistory, setUserHistory] = useState<Array<{ id: string; name: string; trace: any }>>([
-    { id: "s1", name: '[[ {"span_id": "orch-001", "parent_span_id": null ...', trace: SAMPLES.cascading.trace },
-    { id: "s2", name: "Infinite Review Loop (6 iterations)", trace: SAMPLES.loop.trace },
-    { id: "s3", name: "Memory Poisoning (FDA XR-7)", trace: SAMPLES.memory.trace },
+    { id: "s1", name: "Cascading Semantic Failure", trace: SAMPLES.cascading.trace },
+    { id: "s2", name: "Infinite Review Loop", trace: SAMPLES.loop.trace },
+    { id: "s3", name: "Memory Poisoning", trace: SAMPLES.memory.trace },
   ]);
+
+  // Load history from Supabase on mount
+  useEffect(() => {
+    async function loadSupabaseHistory() {
+      try {
+        const { data, error } = await supabase
+          .from("hetu_history")
+          .select("*")
+          .order("created_at", { ascending: false })
+          .limit(15);
+
+        if (!error && data && data.length > 0) {
+          const dbHistory = data.map((item: any) => ({
+            id: item.id || `db_${Math.random()}`,
+            name: item.name || "Trace Analysis Run",
+            trace: item.trace_data || item.trace
+          }));
+          setUserHistory(prev => {
+            const combined = [...dbHistory, ...prev];
+            return combined.filter((v, i, a) => a.findIndex(t => JSON.stringify(t.trace) === JSON.stringify(v.trace)) === i);
+          });
+        }
+      } catch (e) {
+        console.warn("Supabase history sync fallback to local state", e);
+      }
+    }
+    loadSupabaseHistory();
+  }, []);
+
   const svgRef = useRef<SVGSVGElement>(null);
   const [vb, setVb] = useState<any>(null);
   const [drag, setDrag] = useState(false);
@@ -429,12 +459,20 @@ export default function Home() {
         const xs = Object.values(pos).map((p: any) => p.x), ys = Object.values(pos).map((p: any) => p.y);
         setVb({ x: Math.min(...xs) - 100, y: Math.min(...ys) - 80, w: Math.max(...xs) - Math.min(...xs) + 240 + 200, h: Math.max(...ys) - Math.min(...ys) + 100 + 160 });
         
-        // Add to history if unique
-        const traceSnippet = typeof trace === "string" ? trace.slice(0, 45) + "..." : "Custom OpenTelemetry Trace";
+        // Add to history and save to Supabase
+        const traceName = Array.isArray(traceData) && traceData[0]?.agent ? `${traceData[0].agent} Trace Run` : "Custom OpenTelemetry Trace";
         setUserHistory(prev => {
           if (prev.some(h => JSON.stringify(h.trace) === JSON.stringify(traceData))) return prev;
-          return [{ id: `h_${Date.now()}`, name: traceSnippet, trace: traceData }, ...prev];
+          return [{ id: `h_${Date.now()}`, name: traceName, trace: traceData }, ...prev];
         });
+
+        // Persist to Supabase
+        try {
+          supabase.from("hetu_history").insert([{ name: traceName, trace_data: traceData }]).then(() => {}).catch(() => {});
+        } catch {
+          // Ignore table error if not migrated
+        }
+
       } catch (e: any) {
         setErr(e.message);
       }
@@ -478,98 +516,120 @@ export default function Home() {
     );
   }
 
-  // ═══ WORKSPACE VIEW (LLM Agent Front Page + Investigation Graph) ═════════
+  // ═══ WORKSPACE VIEW (Clean Minimal Sidebar + Landing Palette) ═════════
   return (
-    <div style={{ display: "flex", width: "100vw", height: "100vh", background: "#FAF9FB", color: C.text, fontFamily: "'DM Sans', 'Inter', sans-serif", overflow: "hidden" }}>
+    <div style={{ display: "flex", width: "100vw", height: "100vh", background: C.bg, color: C.text, fontFamily: "'DM Sans', 'Inter', sans-serif", overflow: "hidden" }}>
       <link href={FONT} rel="stylesheet" />
 
-      {/* LEFT SIDEBAR (Matching Image 1) */}
-      <div style={{ width: sidebarOpen ? 250 : 0, transition: "width 0.2s ease", background: "#F5F5F7", borderRight: "1px solid #E5E5EB", display: "flex", flexDirection: "column", flexShrink: 0, overflow: "hidden", position: "relative" }}>
-        {/* Sidebar Header */}
-        <div style={{ padding: "14px 16px 10px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }} onClick={() => setViewMode("landing")}>
-            <div style={{ width: 22, height: 22, borderRadius: 6, background: "#18181B", display: "grid", placeItems: "center", color: "#FFF", fontSize: 12, fontWeight: 700 }}>✦</div>
-            <span style={{ fontSize: 15, fontWeight: 700, letterSpacing: "-0.02em", color: "#18181B" }}>HETU</span>
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <button style={{ background: "none", border: "none", color: "#71717A", cursor: "pointer", padding: 4 }} title="Search">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-            </button>
-            <button onClick={() => setSidebarOpen(false)} style={{ background: "none", border: "none", color: "#71717A", cursor: "pointer", padding: 4 }} title="Toggle Sidebar">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/></svg>
-            </button>
+      {/* DOCS MODAL OVERLAY */}
+      {showDocs && (
+        <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: "rgba(15,15,26,0.6)", backdropFilter: "blur(4px)", display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}>
+          <div style={{ background: C.bgWhite, border: `1px solid ${C.border}`, borderRadius: 16, width: "100%", maxWidth: 640, maxHeight: "85vh", overflowY: "auto", padding: 24, boxShadow: "0 20px 50px rgba(0,0,0,0.15)" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, borderBottom: `1px solid ${C.border}`, paddingBottom: 12 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <span style={{ fontSize: 18, fontWeight: 700, color: C.text }}>📚 HETU Documentation & Guide</span>
+              </div>
+              <button onClick={() => setShowDocs(false)} style={{ background: "none", border: "none", fontSize: 20, cursor: "pointer", color: C.textMut }}>✕</button>
+            </div>
+            
+            <div style={{ fontSize: 13, color: C.textSec, lineHeight: 1.6 }}>
+              <h3 style={{ fontSize: 15, fontWeight: 600, color: C.text, marginBottom: 8 }}>How HETU Works</h3>
+              <p style={{ marginBottom: 12 }}>
+                HETU ingests OpenTelemetry execution spans from multi-agent frameworks (LangGraph, CrewAI, AutoGen) and constructs a <strong>Multi-Agent Cognitive Execution Graph</strong>. It applies <em>Counterfactual Causal Traversal</em> to pinpoint the <strong>Decisive Error Step (DES)</strong>—the earliest step where an error altered the run.
+              </p>
+
+              <h3 style={{ fontSize: 15, fontWeight: 600, color: C.text, marginBottom: 8, marginTop: 16 }}>Expected JSON Trace Format</h3>
+              <div style={{ background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: 12, ...mono, fontSize: 11, color: C.text, marginBottom: 14, whiteSpace: "pre-wrap" }}>
+{`[
+  {
+    "span_id": "orch-001",
+    "parent_span_id": null,
+    "agent": "Orchestrator",
+    "operation": "plan_task",
+    "status": "ok",
+    "reasoning": "User requested Q4 revenue report",
+    "output_summary": "Task plan generated",
+    "hallucination_risk": 0
+  }
+]`}
+              </div>
+
+              <h3 style={{ fontSize: 15, fontWeight: 600, color: C.text, marginBottom: 8 }}>AI Prompt Template</h3>
+              <p style={{ marginBottom: 8, fontSize: 12 }}>Copy this prompt and paste into ChatGPT/Claude/Gemini to generate compatible execution traces:</p>
+              <div style={{ background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: 12, ...mono, fontSize: 10, color: C.textSec, marginBottom: 16, whiteSpace: "pre-wrap", maxHeight: 150, overflowY: "auto" }}>
+{`Generate a realistic JSON execution trace for a multi-agent AI system experiencing a failure.
+Include fields: span_id, parent_span_id, agent, operation, status, duration_ms, tokens, reasoning, output_summary, error (if any), hallucination_risk (0-1).
+Ensure there is one clear Decisive Error Step (DES).`}
+              </div>
+
+              <button onClick={() => setShowDocs(false)} style={{ width: "100%", padding: "10px", background: C.accent, color: "#FFF", border: "none", borderRadius: 8, fontWeight: 600, cursor: "pointer" }}>Got it</button>
+            </div>
           </div>
         </div>
+      )}
 
-        {/* Sidebar + New Button */}
-        <div style={{ padding: "4px 12px 10px 12px" }}>
-          <button
-            onClick={() => { setAnalysis(null); setInput(""); }}
-            style={{ width: "100%", padding: "8px 12px", background: "#FFFFFF", border: "1px solid #E4E4E7", borderRadius: 8, display: "flex", alignItems: "center", gap: 8, fontSize: 13, fontWeight: 500, color: "#18181B", cursor: "pointer", boxShadow: "0 1px 2px rgba(0,0,0,0.04)" }}
-          >
-            <span style={{ fontSize: 16, lineHeight: 1 }}>+</span> New
+      {/* LEFT SIDEBAR (Clean & Essential Only) */}
+      <div style={{ width: sidebarOpen ? 240 : 0, transition: "width 0.2s ease", background: C.bgWhite, borderRight: `1px solid ${C.border}`, display: "flex", flexDirection: "column", flexShrink: 0, overflow: "hidden", position: "relative" }}>
+        {/* Sidebar Header */}
+        <div style={{ padding: "16px 16px 12px 16px", display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: `1px solid ${C.border}` }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }} onClick={() => setViewMode("landing")}>
+            <div style={{ width: 24, height: 24, borderRadius: 6, background: C.accent, display: "grid", placeItems: "center", color: "#FFF", fontSize: 12, fontWeight: 700 }}>✦</div>
+            <span style={{ fontSize: 16, fontWeight: 700, letterSpacing: "-0.03em", color: C.text }}>HETU</span>
+          </div>
+          <button onClick={() => setSidebarOpen(false)} style={{ background: "none", border: "none", color: C.textMut, cursor: "pointer", padding: 4 }} title="Close Sidebar">
+            ✕
           </button>
         </div>
 
-        {/* Quick Menu */}
-        <div style={{ padding: "0 12px", display: "flex", flexDirection: "column", gap: 2, marginBottom: 12 }}>
-          {[
-            { icon: "💻", label: "Computer" },
-            { icon: "📄", label: "Artifacts" },
-            { icon: "⚙️", label: "Customize" },
-          ].map(m => (
-            <div key={m.label} style={{ display: "flex", alignItems: "center", gap: 10, padding: "6px 10px", borderRadius: 6, fontSize: 13, color: "#3F3F46", cursor: "pointer" }}>
-              <span style={{ fontSize: 14 }}>{m.icon}</span>
-              <span>{m.label}</span>
-            </div>
-          ))}
+        {/* Action Buttons */}
+        <div style={{ padding: "12px 12px 6px 12px", display: "flex", flexDirection: "column", gap: 8 }}>
+          <button
+            onClick={() => { setAnalysis(null); setInput(""); }}
+            style={{ width: "100%", padding: "9px 12px", background: C.accent, border: "none", borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", gap: 8, fontSize: 13, fontWeight: 600, color: "#FFFFFF", cursor: "pointer", boxShadow: "0 2px 6px rgba(91,95,199,0.2)" }}
+          >
+            <span style={{ fontSize: 16, lineHeight: 1 }}>+</span> New Trace
+          </button>
+
+          <button
+            onClick={() => setShowDocs(true)}
+            style={{ width: "100%", padding: "8px 12px", background: C.accentLight, border: `1px solid ${C.tagBorder}`, borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", gap: 6, fontSize: 12, fontWeight: 600, color: C.accent, cursor: "pointer" }}
+          >
+            📖 Docs & Guide
+          </button>
         </div>
 
-        {/* Collapsible Sections */}
-        <div style={{ flex: 1, overflowY: "auto", padding: "0 12px" }}>
-          {/* Pinned */}
-          <div style={{ marginBottom: 14 }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", fontSize: 11, fontWeight: 600, color: "#A1A1AA", padding: "4px 6px", textTransform: "none" }}>
-              <span>Pinned</span>
-              <span>∨</span>
+        {/* Sidebar Content */}
+        <div style={{ flex: 1, overflowY: "auto", padding: "12px 12px" }}>
+          {/* Pinned Scenarios */}
+          <div style={{ marginBottom: 18 }}>
+            <div style={{ fontSize: 10, fontWeight: 700, color: C.textMut, ...mono, letterSpacing: "1px", marginBottom: 6, paddingLeft: 4 }}>
+              📌 PINNED DEMOS
             </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 2, marginTop: 4 }}>
-              {["see the image I can't hear any...", "how to host a open source model...", "Hello Sir, This is Bhuvan N from..."].map(p => (
-                <div key={p} style={{ fontSize: 12, color: "#52525B", padding: "4px 8px", borderRadius: 4, cursor: "pointer", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                  {p}
+            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+              {Object.entries(SAMPLES).map(([key, sample]: [string, any]) => (
+                <div
+                  key={key}
+                  onClick={() => run(sample.trace)}
+                  style={{ fontSize: 12, color: C.text, padding: "7px 10px", borderRadius: 6, background: C.bg, border: `1px solid ${C.border}`, cursor: "pointer", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", transition: "border-color 0.15s" }}
+                >
+                  <div style={{ fontWeight: 600, fontSize: 11 }}>{sample.name}</div>
+                  <div style={{ fontSize: 9, color: C.textMut, ...mono }}>{sample.tag}</div>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Projects */}
-          <div style={{ marginBottom: 14 }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", fontSize: 11, fontWeight: 600, color: "#A1A1AA", padding: "4px 6px" }}>
-              <span>Projects</span>
-              <span>∨</span>
+          {/* History */}
+          <div>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 6, paddingLeft: 4 }}>
+              <span style={{ fontSize: 10, fontWeight: 700, color: C.textMut, ...mono, letterSpacing: "1px" }}>📜 HISTORY (SUPABASE)</span>
             </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 2, marginTop: 4 }}>
-              {["404 AI", "MY one", "GLUCO-LUMIN AI", "Bookmarks", "AI JARVIS"].map(pj => (
-                <div key={pj} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: "#52525B", padding: "4px 8px", borderRadius: 4, cursor: "pointer" }}>
-                  <span>📁</span>
-                  <span>{pj}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Sessions / History */}
-          <div style={{ marginBottom: 14 }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", fontSize: 11, fontWeight: 600, color: "#A1A1AA", padding: "4px 6px" }}>
-              <span>Sessions</span>
-              <span>∨</span>
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 2, marginTop: 4 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
               {userHistory.map(h => (
                 <div
                   key={h.id}
                   onClick={() => run(h.trace)}
-                  style={{ fontSize: 12, color: "#3F3F46", padding: "5px 8px", borderRadius: 5, cursor: "pointer", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", background: analysis && JSON.stringify(analysis.spans) === JSON.stringify(h.trace) ? "#E4E4E7" : "transparent" }}
+                  style={{ fontSize: 12, color: C.textSec, padding: "6px 8px", borderRadius: 5, cursor: "pointer", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", background: analysis && JSON.stringify(analysis.spans) === JSON.stringify(h.trace) ? C.accentLight : "transparent", borderLeft: analysis && JSON.stringify(analysis.spans) === JSON.stringify(h.trace) ? `3px solid ${C.accent}` : "3px solid transparent" }}
                 >
                   {h.name}
                 </div>
@@ -578,53 +638,43 @@ export default function Home() {
           </div>
         </div>
 
-        {/* User Profile Footer (Matching Image 1) */}
-        <div style={{ padding: "12px", borderTop: "1px solid #E4E4E7", display: "flex", flexDirection: "column", gap: 8 }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-              <div style={{ width: 28, height: 28, borderRadius: "50%", background: "#E4E4E7", display: "grid", placeItems: "center", fontSize: 12, fontWeight: 600, color: "#3F3F46" }}>B</div>
-              <div style={{ display: "flex", flexDirection: "column" }}>
-                <span style={{ fontSize: 12, fontWeight: 600, color: "#18181B" }}>cnbhuvan0156987</span>
-                <span style={{ fontSize: 10, color: "#71717A" }}>Pro</span>
-              </div>
-            </div>
-            <button style={{ background: "none", border: "none", color: "#71717A", cursor: "pointer" }}>🔔</button>
-          </div>
-          <button style={{ background: "none", border: "none", fontSize: 12, color: "#71717A", textAlign: "left", padding: "2px 0", cursor: "pointer", display: "flex", alignItems: "center", gap: 6 }}>
-            <span>+</span> Add your team
+        {/* Sidebar Footer Link */}
+        <div style={{ padding: "12px", borderTop: `1px solid ${C.border}`, textAlign: "center" }}>
+          <button onClick={() => setViewMode("landing")} style={{ background: "none", border: "none", fontSize: 11, ...mono, color: C.textMut, cursor: "pointer" }}>
+            ← Back to Landing Page
           </button>
         </div>
       </div>
 
-      {/* Sidebar Toggle Button if Collapsed */}
+      {/* Sidebar Re-open Button */}
       {!sidebarOpen && (
-        <button onClick={() => setSidebarOpen(true)} style={{ position: "absolute", top: 12, left: 12, zIndex: 100, background: "#FFF", border: "1px solid #E4E4E7", borderRadius: 6, padding: "6px 8px", cursor: "pointer", boxShadow: "0 2px 5px rgba(0,0,0,0.05)" }}>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/></svg>
+        <button onClick={() => setSidebarOpen(true)} style={{ position: "absolute", top: 12, left: 12, zIndex: 100, background: C.bgWhite, border: `1px solid ${C.border}`, borderRadius: 6, padding: "6px 10px", cursor: "pointer", fontSize: 12, fontWeight: 600, color: C.text, boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}>
+          ☰ Menu
         </button>
       )}
 
-      {/* RIGHT MAIN AREA */}
-      <div style={{ flex: 1, display: "flex", flexDirection: "column", height: "100%", overflow: "hidden", background: "#FAF9FB" }}>
+      {/* MAIN CONTENT AREA */}
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", height: "100%", overflow: "hidden", background: C.bg }}>
 
-        {/* CONDITION 1: NO ANALYSIS ACTIVE -> SHOW LLM AGENT FRONT PAGE (Matching Image 1) */}
+        {/* VIEW 1: NO TRACE RUNNING -> PROMPT INPUT SCREEN */}
         {!analysis ? (
-          <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "0 20px 80px 20px", position: "relative" }}>
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "0 20px 60px 20px", position: "relative" }}>
             
-            {/* Top Bar for Workspace */}
-            <div style={{ position: "absolute", top: 16, right: 24, display: "flex", gap: 10 }}>
-              <button onClick={() => setViewMode("landing")} style={{ background: "#FFFFFF", border: "1px solid #E4E4E7", borderRadius: 8, padding: "6px 14px", fontSize: 12, fontWeight: 500, color: "#3F3F46", cursor: "pointer" }}>Landing Page</button>
-            </div>
-
-            {/* Prompt Central Header */}
+            {/* Header Title */}
             <div style={{ textAlign: "center", marginBottom: 28 }}>
-              <div style={{ fontSize: 13, color: "#71717A", marginBottom: 6, fontWeight: 500 }}>Search</div>
-              <h1 style={{ fontSize: 32, fontWeight: 600, color: "#18181B", letterSpacing: "-0.03em", fontFamily: "'DM Sans', sans-serif" }}>
-                What do you want to know?
+              <span style={{ fontSize: 11, ...label, color: C.accent, background: C.accentLight, padding: "4px 12px", borderRadius: 20 }}>
+                HETU CAUSAL DEBUGGER
+              </span>
+              <h1 style={{ fontSize: 34, fontWeight: 700, color: C.text, letterSpacing: "-0.03em", marginTop: 12, fontFamily: "'DM Sans', sans-serif" }}>
+                What do you want to analyze?
               </h1>
+              <p style={{ fontSize: 14, color: C.textSec, marginTop: 6, maxWidth: 520, margin: "6px auto 0 auto" }}>
+                Paste raw OpenTelemetry JSON traces below or choose a pinned demo scenario from the sidebar.
+              </p>
             </div>
 
-            {/* Central LLM Agent Floating Input Box (Matching Image 1) */}
-            <div style={{ width: "100%", maxWidth: 720, background: "#FFFFFF", border: "1px solid #E4E4E7", borderRadius: 20, padding: "16px 20px", boxShadow: "0 10px 30px rgba(0,0,0,0.03)", transition: "border-color 0.2s, box-shadow 0.2s" }}>
+            {/* Prompt Input Box */}
+            <div style={{ width: "100%", maxWidth: 700, background: C.bgWhite, border: `1px solid ${C.border}`, borderRadius: 16, padding: "18px 20px", boxShadow: "0 12px 36px rgba(0,0,0,0.04)" }}>
               <textarea
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
@@ -634,44 +684,32 @@ export default function Home() {
                     submit();
                   }
                 }}
-                placeholder="Ask anything... or paste OpenTelemetry JSON trace logs"
-                rows={3}
-                style={{ width: "100%", border: "none", outline: "none", resize: "none", fontSize: 15, fontFamily: "'DM Sans', 'Inter', sans-serif", color: "#18181B", background: "transparent" }}
+                placeholder={`[\n  {\n    "span_id": "orch-001",\n    "parent_span_id": null,\n    "agent": "Orchestrator"\n  }\n]`}
+                rows={5}
+                style={{ width: "100%", border: "none", outline: "none", resize: "none", fontSize: 13, ...mono, color: C.text, background: "transparent" }}
               />
 
-              {/* Bottom Toolbar Inside Input Box */}
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 12, pt: 8, borderTop: "1px solid #FAF9FB" }}>
-                {/* Left Action Pills */}
+              {/* Bottom Toolbar inside card */}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 12, pt: 10, borderTop: `1px solid ${C.border}` }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                  <button style={{ background: "none", border: "none", fontSize: 18, color: "#71717A", cursor: "pointer", padding: "2px 6px" }}>+</button>
-                  <button style={{ background: "#F4F4F5", border: "1px solid #E4E4E7", borderRadius: 20, padding: "4px 12px", fontSize: 12, color: "#3F3F46", display: "flex", alignItems: "center", gap: 4, cursor: "pointer" }}>
-                    <span>🔍</span> Search ∨
-                  </button>
-                  <button style={{ background: "#F4F4F5", border: "1px solid #E4E4E7", borderRadius: 20, padding: "4px 12px", fontSize: 12, color: "#3F3F46", display: "flex", alignItems: "center", gap: 4, cursor: "pointer" }}>
-                    <span>💻</span> Computer
-                  </button>
+                  <span style={{ fontSize: 11, ...label, color: C.textMut, background: C.tag, padding: "4px 10px", borderRadius: 4 }}>
+                    Model: HETU-Causal-v1
+                  </span>
                 </div>
 
-                {/* Right Action Pills */}
-                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                  <button style={{ background: "none", border: "none", fontSize: 12, color: "#71717A", display: "flex", alignItems: "center", gap: 4, cursor: "pointer" }}>
-                    Model ∨
-                  </button>
-                  <button style={{ background: "none", border: "none", fontSize: 14, color: "#71717A", cursor: "pointer" }}>🎙️</button>
-                  <button
-                    onClick={submit}
-                    disabled={loading || !input.trim()}
-                    style={{ width: 32, height: 32, borderRadius: "50%", background: input.trim() ? "#18181B" : "#E4E4E7", border: "none", display: "grid", placeItems: "center", color: "#FFF", cursor: input.trim() ? "pointer" : "default", transition: "background 0.2s" }}
-                  >
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                  </button>
-                </div>
+                <button
+                  onClick={submit}
+                  disabled={loading || !input.trim()}
+                  style={{ padding: "8px 18px", background: input.trim() ? C.accent : "#C5C4D0", border: "none", borderRadius: 6, color: "#FFFFFF", fontSize: 12, fontWeight: 600, ...mono, cursor: input.trim() ? "pointer" : "default", transition: "background 0.2s" }}
+                >
+                  {loading ? "ANALYZING..." : "START ANALYSIS ↗"}
+                </button>
               </div>
             </div>
             {err && <div style={{ marginTop: 12, color: C.des, fontSize: 12, ...mono }}>{err}</div>}
 
-            {/* Demo Suggestions Below Input */}
-            <div style={{ marginTop: 24, display: "flex", flexWrap: "wrap", gap: 10, justifyContent: "center", maxWidth: 720 }}>
+            {/* Quick Demo Cards */}
+            <div style={{ marginTop: 28, display: "flex", flexWrap: "wrap", gap: 10, justifyContent: "center", maxWidth: 700 }}>
               {Object.entries(SAMPLES).map(([key, sample]: [string, any]) => (
                 <div
                   key={key}
@@ -680,10 +718,10 @@ export default function Home() {
                     setInput(formatted);
                     run(sample.trace);
                   }}
-                  style={{ background: "#FFFFFF", border: "1px solid #E4E4E7", borderRadius: 12, padding: "10px 14px", cursor: "pointer", transition: "all 0.15s ease", display: "flex", alignItems: "center", gap: 8 }}
+                  style={{ background: C.bgWhite, border: `1px solid ${C.border}`, borderRadius: 10, padding: "10px 16px", cursor: "pointer", display: "flex", alignItems: "center", gap: 10, transition: "border-color 0.15s" }}
                 >
-                  <span style={{ fontSize: 12, fontWeight: 600, color: "#18181B" }}>{sample.name}</span>
-                  <span style={{ fontSize: 10, color: "#71717A" }}>→</span>
+                  <span style={{ fontSize: 12, fontWeight: 600, color: C.text }}>{sample.name}</span>
+                  <span style={{ fontSize: 11, color: C.accent, ...mono }}>Run →</span>
                 </div>
               ))}
             </div>
@@ -691,7 +729,7 @@ export default function Home() {
           </div>
         ) : (
           
-          /* CONDITION 2: ANALYSIS IS ACTIVE -> SHOW GRAPH & INVESTIGATION REPORT (Matching Image 2) */
+          /* VIEW 2: GRAPH & ENGINEERING REPORT VIEW (Matching Image 2) */
           <div style={{ display: "flex", flexDirection: "column", height: "100%", width: "100%", overflow: "hidden" }}>
             {/* Header */}
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 24px", height: 52, background: C.bgWhite, borderBottom: `1px solid ${C.border}`, flexShrink: 0 }}>
