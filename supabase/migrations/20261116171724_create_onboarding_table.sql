@@ -51,3 +51,4 @@ CREATE POLICY "Allow delete for onboarding applications"
 -- Index for fast lookup by email and status
 CREATE INDEX IF NOT EXISTS idx_onboarding_email ON public.onboarding_applications(email);
 CREATE INDEX IF NOT EXISTS idx_onboarding_status ON public.onboarding_applications(status);
+

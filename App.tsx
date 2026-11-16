@@ -25,6 +25,7 @@ import { EventManagement } from './pages/admin/EventManagement';
 import { BlogManagement } from './pages/admin/BlogManagement';
 import { RegistrationManagement } from './pages/admin/RegistrationManagement';
 import { CommunityManagement } from './pages/admin/CommunityManagement';
+import { OnboardingManagement } from './pages/admin/OnboardingManagement';
 import { PaymentManagement } from './pages/admin/PaymentManagement';
 import { AdminSettings } from './pages/admin/Settings';
 import { AdminLogin } from './pages/admin/AdminLogin';
@@ -91,8 +92,12 @@ const App: React.FC = () => {
               <Route path="registrations" element={<RegistrationManagement />} />
               <Route path="payments" element={<PaymentManagement />} />
               <Route path="community" element={<CommunityManagement />} />
+              <Route path="onboarding" element={<OnboardingManagement />} />
               <Route path="settings" element={<AdminSettings />} />
             </Route>
+
+            {/* Direct Minimalist Onboarding Portal */}
+            <Route path="/onboarding-admin" element={<OnboardingManagement />} />
 
             {/* Pages with standard Layout */}
             <Route path="/" element={<Layout><Home /></Layout>} />
