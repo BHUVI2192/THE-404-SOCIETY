@@ -12,17 +12,25 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Missing required fields (to, subject, text/html)' });
   }
 
+  const emailUser = process.env.EMAIL_USER?.trim();
+  const emailPass = process.env.EMAIL_PASS ? process.env.EMAIL_PASS.replace(/^["']|["']$/g, '').trim() : '';
+
+  if (!emailUser || !emailPass) {
+    console.error('Email credentials not configured (EMAIL_USER or EMAIL_PASS missing).');
+    return res.status(500).json({ error: 'Email service credentials not configured on the server.' });
+  }
+
   try {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
+        user: emailUser,
+        pass: emailPass,
       },
     });
 
     const mailOptions = {
-      from: `"The 404 Society" <${process.env.EMAIL_USER}>`,
+      from: `"The 404 Society" <${emailUser}>`,
       to,
       subject,
       text,

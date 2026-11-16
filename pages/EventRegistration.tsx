@@ -205,14 +205,18 @@ const TicketForm: React.FC<TicketFormProps> = ({ event }) => {
 
       // For free events, continue with the current flow
       // 2. Send Email via SMTP backend
-      await sendEventConfirm({
-        name: formData.name,
-        email: formData.email,
-        eventTitle: event.title,
-        eventDate: event.date,
-        eventLocation: event.location || 'Lab 404, PESITM',
-        whatsappLink: event.whatsappLink,
-      });
+      try {
+        await sendEventConfirm({
+          name: formData.name,
+          email: formData.email,
+          eventTitle: event.title,
+          eventDate: event.date,
+          eventLocation: event.location || 'Lab 404, PESITM',
+          whatsappLink: event.whatsappLink,
+        });
+      } catch (emailErr) {
+        console.warn("Could not send confirmation email via SMTP:", emailErr);
+      }
 
 
       setIsSuccess(true);

@@ -177,10 +177,14 @@ export default function Community() {
       });
 
       // Auto-send confirmation email to the applicant using SMTP backend
-      await sendApplicationReceivedEmail({
-          name: formData.name,
-          email: formData.email,
-      });
+      try {
+        await sendApplicationReceivedEmail({
+            name: formData.name,
+            email: formData.email,
+        });
+      } catch (emailErr) {
+        console.warn("Could not send confirmation email via SMTP:", emailErr);
+      }
 
       setFormStatus('success');
     } catch (error) {
