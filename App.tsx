@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { Layout } from './components/UI';
 
@@ -9,7 +9,6 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Events from './pages/Events';
 import Join from './pages/Join';
-import HetuApp from './404ai/frontend/src/pages/Home';
 
 
 import Blog from './pages/Blog';
@@ -18,7 +17,6 @@ import NotFound from './pages/NotFound';
 import EventRegistration from './pages/EventRegistration';
 import Payment from './pages/Payment';
 import PaymentStatus from './pages/PaymentStatus';
-import AIOnboarding from './pages/AIOnboarding';
 
 // Admin Pages
 import { AdminLayout } from './components/admin/AdminLayout';
@@ -109,12 +107,6 @@ const App: React.FC = () => {
             <Route path="/events/:eventId/payment" element={<Layout><Payment /></Layout>} />
             <Route path="/events/:eventId/payment-status" element={<Layout><PaymentStatus /></Layout>} />
 
-            {/* HETU AI Portal */}
-            <Route path="/hetu.ai" element={<HetuApp />} />
-            <Route path="/hetu" element={<HetuApp />} />
-            <Route path="/hetu-ai" element={<HetuApp />} />
-            <Route path="/404-ai" element={<HetuApp />} />
-            <Route path="/apply" element={<AIOnboarding />} />
 
             {/* 404 Page (No Layout) */}
             <Route path="*" element={<NotFound />} />

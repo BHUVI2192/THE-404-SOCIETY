@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './src/output.css';
-import './404ai/frontend/src/app/globals.css';
 import App from './App';
 
 const rootElement = document.getElementById('root');
