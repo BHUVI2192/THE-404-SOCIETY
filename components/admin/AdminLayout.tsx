@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { AnimatedLiquidBackground } from "./AnimatedLiquidBackground";
 import "./AdminLayout.css";
 
 const NAV_ITEMS = [
@@ -156,6 +157,9 @@ export const AdminLayout: React.FC = () => {
 
   return (
     <div className="adm-root">
+      {/* ── Ambient White Liquid Gradient Background ── */}
+      <AnimatedLiquidBackground />
+
       {/* ── Sidebar (desktop) ── */}
       <aside className={`adm-sidebar ${sidebarOpen ? "adm-sidebar--open" : ""}`}>
         <div className="adm-sidebar__brand">

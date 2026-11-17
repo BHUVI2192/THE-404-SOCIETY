@@ -18,7 +18,6 @@ import {
   Share2, 
   CheckCircle2, 
   Clock, 
-  XCircle,
   FileText
 } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
@@ -233,23 +232,23 @@ export const OnboardingManagement: React.FC = () => {
   }, [apps]);
 
   return (
-    <div className="min-h-screen bg-black text-white font-sans selection:bg-white selection:text-black pb-24">
-      <Toaster position="bottom-right" toastOptions={{ style: { background: '#111', color: '#fff', border: '1px solid #333' } }} />
+    <div className="min-h-screen text-black font-sans pb-24 relative z-10 selection:bg-black selection:text-white">
+      <Toaster position="bottom-right" toastOptions={{ style: { background: '#000', color: '#fff', border: '1px solid #222', borderRadius: '10px' } }} />
 
       {/* TOP HEADER */}
-      <div className="border-b border-zinc-800 bg-black/80 backdrop-blur-md sticky top-0 z-30 px-6 py-5">
+      <div className="border-b border-black/10 bg-white/70 backdrop-blur-xl sticky top-0 z-30 px-6 py-5">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <div className="flex items-center gap-3">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="text-[11px] font-mono tracking-widest uppercase text-zinc-400">
+            <div className="flex items-center gap-2.5">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="text-[11px] font-mono tracking-widest uppercase text-zinc-500 font-bold">
                 SUPABASE SQL // ONBOARDING DATABASE
               </span>
             </div>
-            <h1 className="text-2xl font-bold tracking-tight mt-1 text-white flex items-center gap-2">
+            <h1 className="text-2xl font-extrabold tracking-tight mt-1 text-black flex items-center gap-2.5">
               Onboarding Submissions
-              <span className="text-xs font-mono font-normal bg-zinc-900 border border-zinc-800 px-2 py-0.5 rounded text-zinc-400">
-                {metrics.total} Total
+              <span className="text-xs font-mono font-bold bg-black text-white px-2 py-0.5 rounded-full">
+                {metrics.total}
               </span>
             </h1>
           </div>
@@ -258,14 +257,14 @@ export const OnboardingManagement: React.FC = () => {
             <button
               onClick={() => fetchApplications(true)}
               disabled={refreshing}
-              className="inline-flex items-center gap-2 px-3 py-2 bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 rounded-lg text-xs font-mono text-zinc-200 transition-all disabled:opacity-50"
+              className="inline-flex items-center gap-2 px-3.5 py-2 bg-white hover:bg-zinc-50 border border-black/10 rounded-xl text-xs font-mono font-bold text-zinc-800 transition-all shadow-sm disabled:opacity-50"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${refreshing ? 'animate-spin' : ''}`} />
               Sync
             </button>
             <button
               onClick={handleExportCSV}
-              className="inline-flex items-center gap-2 px-3 py-2 bg-white text-black hover:bg-zinc-200 font-semibold rounded-lg text-xs transition-all"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-black text-white hover:bg-zinc-800 font-bold rounded-xl text-xs transition-all shadow-sm"
             >
               <Download className="w-3.5 h-3.5" />
               Export CSV
@@ -277,25 +276,25 @@ export const OnboardingManagement: React.FC = () => {
       <div className="max-w-7xl mx-auto px-6 pt-8">
         {/* METRIC STATS */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <div className="bg-zinc-950 border border-zinc-900 rounded-xl p-4">
-            <p className="text-[11px] font-mono text-zinc-500 uppercase tracking-wider">Total Received</p>
-            <p className="text-3xl font-bold tracking-tight text-white mt-1 font-mono">{metrics.total}</p>
+          <div className="bg-white/80 backdrop-blur-md border border-black/10 rounded-2xl p-5 shadow-sm hover:border-black/20 transition-all">
+            <p className="text-[11px] font-mono font-bold text-zinc-400 uppercase tracking-wider">Total Received</p>
+            <p className="text-3xl font-extrabold tracking-tight text-black mt-1 font-mono">{metrics.total}</p>
           </div>
-          <div className="bg-zinc-950 border border-zinc-900 rounded-xl p-4">
-            <p className="text-[11px] font-mono text-amber-500/80 uppercase tracking-wider flex items-center gap-1.5">
+          <div className="bg-white/80 backdrop-blur-md border border-black/10 rounded-2xl p-5 shadow-sm hover:border-black/20 transition-all">
+            <p className="text-[11px] font-mono font-bold text-amber-600 uppercase tracking-wider flex items-center gap-1.5">
               <Clock className="w-3 h-3" /> Under Review
             </p>
-            <p className="text-3xl font-bold tracking-tight text-amber-400 mt-1 font-mono">{metrics.pending}</p>
+            <p className="text-3xl font-extrabold tracking-tight text-black mt-1 font-mono">{metrics.pending}</p>
           </div>
-          <div className="bg-zinc-950 border border-zinc-900 rounded-xl p-4">
-            <p className="text-[11px] font-mono text-emerald-500/80 uppercase tracking-wider flex items-center gap-1.5">
+          <div className="bg-white/80 backdrop-blur-md border border-black/10 rounded-2xl p-5 shadow-sm hover:border-black/20 transition-all">
+            <p className="text-[11px] font-mono font-bold text-emerald-600 uppercase tracking-wider flex items-center gap-1.5">
               <CheckCircle2 className="w-3 h-3" /> Approved
             </p>
-            <p className="text-3xl font-bold tracking-tight text-emerald-400 mt-1 font-mono">{metrics.approved}</p>
+            <p className="text-3xl font-extrabold tracking-tight text-black mt-1 font-mono">{metrics.approved}</p>
           </div>
-          <div className="bg-zinc-950 border border-zinc-900 rounded-xl p-4">
-            <p className="text-[11px] font-mono text-zinc-500 uppercase tracking-wider">Acceptance Rate</p>
-            <p className="text-3xl font-bold tracking-tight text-zinc-200 mt-1 font-mono">{metrics.acceptanceRate}%</p>
+          <div className="bg-white/80 backdrop-blur-md border border-black/10 rounded-2xl p-5 shadow-sm hover:border-black/20 transition-all">
+            <p className="text-[11px] font-mono font-bold text-zinc-400 uppercase tracking-wider">Acceptance Rate</p>
+            <p className="text-3xl font-extrabold tracking-tight text-black mt-1 font-mono">{metrics.acceptanceRate}%</p>
           </div>
         </div>
 
@@ -303,18 +302,18 @@ export const OnboardingManagement: React.FC = () => {
         <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 mb-6">
           {/* SEARCH */}
           <div className="relative flex-1 max-w-md">
-            <Search className="w-4 h-4 text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-zinc-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search by name, email, college, skills..."
-              className="w-full bg-zinc-950 border border-zinc-800 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-zinc-400 font-sans transition-all"
+              className="w-full bg-white/90 backdrop-blur-md border border-black/10 rounded-xl pl-10 pr-4 py-2.5 text-sm text-black placeholder:text-zinc-400 focus:outline-none focus:border-black transition-all shadow-sm font-sans"
             />
             {search && (
               <button
                 onClick={() => setSearch('')}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-black"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -322,7 +321,7 @@ export const OnboardingManagement: React.FC = () => {
           </div>
 
           {/* STATUS FILTER PILLS */}
-          <div className="flex items-center gap-1 p-1 bg-zinc-950 border border-zinc-800 rounded-xl text-xs font-mono">
+          <div className="flex items-center gap-1 p-1 bg-white/80 backdrop-blur-md border border-black/10 rounded-xl text-xs font-mono shadow-sm">
             {(['all', 'pending', 'approved', 'rejected'] as const).map((tab) => {
               const count =
                 tab === 'all'
@@ -334,14 +333,14 @@ export const OnboardingManagement: React.FC = () => {
                 <button
                   key={tab}
                   onClick={() => setStatusFilter(tab)}
-                  className={`px-3 py-1.5 rounded-lg uppercase transition-all flex items-center gap-1.5 ${
+                  className={`px-3 py-1.5 rounded-lg uppercase transition-all flex items-center gap-1.5 font-bold ${
                     active
-                      ? 'bg-white text-black font-semibold'
-                      : 'text-zinc-400 hover:text-white hover:bg-zinc-900'
+                      ? 'bg-black text-white'
+                      : 'text-zinc-600 hover:text-black hover:bg-black/5'
                   }`}
                 >
                   <span>{tab}</span>
-                  <span className={`text-[10px] px-1.5 py-0.2 rounded ${active ? 'bg-zinc-200 text-black' : 'bg-zinc-900 text-zinc-500'}`}>
+                  <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${active ? 'bg-zinc-800 text-white' : 'bg-zinc-100 text-zinc-500'}`}>
                     {count}
                   </span>
                 </button>
@@ -351,16 +350,16 @@ export const OnboardingManagement: React.FC = () => {
         </div>
 
         {/* APPLICATIONS TABLE */}
-        <div className="bg-zinc-950 border border-zinc-900 rounded-2xl overflow-hidden shadow-2xl">
+        <div className="bg-white/90 backdrop-blur-xl border border-black/10 rounded-2xl overflow-hidden shadow-sm">
           {loading ? (
             <div className="py-24 text-center">
-              <RefreshCw className="w-6 h-6 animate-spin mx-auto text-zinc-500 mb-3" />
+              <RefreshCw className="w-6 h-6 animate-spin mx-auto text-zinc-400 mb-3" />
               <p className="text-zinc-500 font-mono text-xs">Querying Supabase database...</p>
             </div>
           ) : filteredApps.length === 0 ? (
             <div className="py-24 text-center px-4">
-              <FileText className="w-10 h-10 text-zinc-700 mx-auto mb-3" />
-              <h3 className="text-base font-semibold text-zinc-300">No applications found</h3>
+              <FileText className="w-10 h-10 text-zinc-300 mx-auto mb-3" />
+              <h3 className="text-base font-bold text-black">No applications found</h3>
               <p className="text-zinc-500 text-xs mt-1 max-w-sm mx-auto">
                 {search || statusFilter !== 'all'
                   ? 'No results match your search and filter criteria.'
@@ -371,39 +370,39 @@ export const OnboardingManagement: React.FC = () => {
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm">
                 <thead>
-                  <tr className="border-b border-zinc-800/80 bg-zinc-900/40 text-[11px] font-mono text-zinc-400 uppercase tracking-wider">
-                    <th className="py-3.5 px-6">Applicant</th>
-                    <th className="py-3.5 px-6">College & Year</th>
-                    <th className="py-3.5 px-6">Skills & Focus</th>
-                    <th className="py-3.5 px-6">Status</th>
-                    <th className="py-3.5 px-6">Applied Date</th>
-                    <th className="py-3.5 px-6 text-right">Actions</th>
+                  <tr className="border-b border-black/10 bg-zinc-50/80 text-[11px] font-mono text-zinc-500 uppercase tracking-wider">
+                    <th className="py-4 px-6 font-bold">Applicant</th>
+                    <th className="py-4 px-6 font-bold">College & Year</th>
+                    <th className="py-4 px-6 font-bold">Skills & Focus</th>
+                    <th className="py-4 px-6 font-bold">Status</th>
+                    <th className="py-4 px-6 font-bold">Applied Date</th>
+                    <th className="py-4 px-6 font-bold text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-zinc-900">
+                <tbody className="divide-y divide-black/5">
                   {filteredApps.map((app) => (
                     <tr
                       key={app.id}
                       onClick={() => setSelectedApp(app)}
-                      className="hover:bg-zinc-900/50 cursor-pointer transition-colors group"
+                      className="hover:bg-black/[0.02] cursor-pointer transition-colors group"
                     >
                       {/* APPLICANT */}
                       <td className="py-4 px-6">
                         <div className="flex items-center gap-3">
-                          <div className="w-9 h-9 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center font-mono font-bold text-sm text-zinc-300 group-hover:border-zinc-500 transition-colors">
+                          <div className="w-9 h-9 rounded-full bg-black text-white flex items-center justify-center font-mono font-bold text-sm">
                             {(app.name || 'U')[0].toUpperCase()}
                           </div>
                           <div>
-                            <div className="font-semibold text-white group-hover:text-zinc-200 flex items-center gap-2">
+                            <div className="font-bold text-black group-hover:text-zinc-700 flex items-center gap-2">
                               {app.name}
                               {app.member_id && (
-                                <span className="text-[10px] font-mono bg-zinc-800 text-zinc-300 px-1.5 py-0.5 rounded">
+                                <span className="text-[10px] font-mono bg-zinc-100 text-zinc-700 px-1.5 py-0.5 rounded border border-black/10">
                                   {app.member_id}
                                 </span>
                               )}
                             </div>
                             <div className="text-xs text-zinc-500 font-mono flex items-center gap-1.5 mt-0.5">
-                              <Mail className="w-3 h-3" />
+                              <Mail className="w-3 h-3 text-zinc-400" />
                               {app.email}
                             </div>
                           </div>
@@ -411,18 +410,18 @@ export const OnboardingManagement: React.FC = () => {
                       </td>
 
                       {/* COLLEGE & YEAR */}
-                      <td className="py-4 px-6 text-xs text-zinc-300">
-                        <div className="font-medium text-white">{app.college || '—'}</div>
+                      <td className="py-4 px-6 text-xs text-zinc-700">
+                        <div className="font-semibold text-black">{app.college || '—'}</div>
                         <div className="text-zinc-500 text-[11px] font-mono mt-0.5">{app.year || '—'}</div>
                       </td>
 
                       {/* SKILLS */}
                       <td className="py-4 px-6 max-w-xs">
-                        <div className="text-xs text-zinc-300 truncate font-mono">
+                        <div className="text-xs text-black font-semibold truncate font-mono">
                           {app.skills || app.interest || '—'}
                         </div>
                         {app.reason && (
-                          <div className="text-[11px] text-zinc-500 truncate mt-0.5">
+                          <div className="text-[11px] text-zinc-500 truncate mt-0.5 italic">
                             "{app.reason}"
                           </div>
                         )}
@@ -431,16 +430,16 @@ export const OnboardingManagement: React.FC = () => {
                       {/* STATUS */}
                       <td className="py-4 px-6">
                         <span
-                          className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-mono font-medium border ${
+                          className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-mono font-bold border ${
                             app.status === 'approved'
-                              ? 'bg-emerald-950/40 text-emerald-400 border-emerald-800/60'
+                              ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
                               : app.status === 'rejected'
-                              ? 'bg-rose-950/40 text-rose-400 border-rose-800/60'
-                              : 'bg-amber-950/40 text-amber-300 border-amber-800/60'
+                              ? 'bg-rose-50 text-rose-700 border-rose-200'
+                              : 'bg-amber-50 text-amber-700 border-amber-200'
                           }`}
                         >
                           <span className={`w-1.5 h-1.5 rounded-full ${
-                            app.status === 'approved' ? 'bg-emerald-400' : app.status === 'rejected' ? 'bg-rose-400' : 'bg-amber-400'
+                            app.status === 'approved' ? 'bg-emerald-500' : app.status === 'rejected' ? 'bg-rose-500' : 'bg-amber-500'
                           }`} />
                           {app.status ? app.status.toUpperCase() : 'PENDING'}
                         </span>
@@ -460,7 +459,7 @@ export const OnboardingManagement: React.FC = () => {
                         <div className="flex items-center justify-end gap-1.5">
                           <button
                             onClick={() => setSelectedApp(app)}
-                            className="p-1.5 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg transition-colors"
+                            className="p-1.5 text-zinc-500 hover:text-black hover:bg-black/5 rounded-lg transition-colors"
                             title="View Details"
                           >
                             <Eye className="w-4 h-4" />
@@ -469,8 +468,8 @@ export const OnboardingManagement: React.FC = () => {
                             onClick={() => handleUpdateStatus(app.id, app.status === 'approved' ? 'pending' : 'approved')}
                             className={`p-1.5 rounded-lg transition-colors ${
                               app.status === 'approved'
-                                ? 'text-emerald-400 hover:bg-emerald-950/60'
-                                : 'text-zinc-500 hover:text-emerald-400 hover:bg-zinc-800'
+                                ? 'text-emerald-600 hover:bg-emerald-50'
+                                : 'text-zinc-400 hover:text-emerald-600 hover:bg-emerald-50'
                             }`}
                             title={app.status === 'approved' ? 'Mark Pending' : 'Approve'}
                           >
@@ -478,7 +477,7 @@ export const OnboardingManagement: React.FC = () => {
                           </button>
                           <button
                             onClick={() => handleDelete(app.id)}
-                            className="p-1.5 text-zinc-500 hover:text-rose-400 hover:bg-zinc-800 rounded-lg transition-colors"
+                            className="p-1.5 text-zinc-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
                             title="Delete"
                           >
                             <Trash2 className="w-4 h-4" />
@@ -497,24 +496,24 @@ export const OnboardingManagement: React.FC = () => {
       {/* DETAIL MODAL DRAWER */}
       {selectedApp && (
         <div
-          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 md:p-6"
+          className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 md:p-6"
           onClick={() => setSelectedApp(null)}
         >
           <div
-            className="bg-zinc-950 border border-zinc-800 rounded-2xl w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden"
+            className="bg-white border border-black/10 rounded-2xl w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             {/* MODAL HEADER */}
-            <div className="px-6 py-5 border-b border-zinc-800/80 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-xl bg-white text-black flex items-center justify-center font-bold text-xl">
+            <div className="px-6 py-5 border-b border-black/10 flex items-center justify-between bg-zinc-50/50">
+              <div className="flex items-center gap-3.5">
+                <div className="w-11 h-11 rounded-xl bg-black text-white flex items-center justify-center font-bold text-lg font-mono">
                   {(selectedApp.name || 'U')[0].toUpperCase()}
                 </div>
                 <div>
-                  <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                  <h2 className="text-xl font-extrabold text-black flex items-center gap-2">
                     {selectedApp.name}
                   </h2>
-                  <p className="text-xs text-zinc-400 font-mono mt-0.5">
+                  <p className="text-xs text-zinc-500 font-mono mt-0.5">
                     Applied {new Date(selectedApp.created_at).toLocaleString()}
                   </p>
                 </div>
@@ -522,7 +521,7 @@ export const OnboardingManagement: React.FC = () => {
 
               <button
                 onClick={() => setSelectedApp(null)}
-                className="p-2 text-zinc-500 hover:text-white rounded-lg hover:bg-zinc-900 transition-colors"
+                className="p-2 text-zinc-400 hover:text-black rounded-lg hover:bg-black/5 transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -531,15 +530,15 @@ export const OnboardingManagement: React.FC = () => {
             {/* MODAL BODY */}
             <div className="p-6 overflow-y-auto space-y-6 flex-1 text-sm font-sans">
               {/* STATUS BAR */}
-              <div className="flex items-center justify-between p-3.5 bg-zinc-900/60 border border-zinc-800 rounded-xl">
+              <div className="flex items-center justify-between p-3.5 bg-zinc-50 border border-black/5 rounded-xl">
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-mono text-zinc-400 uppercase">Current Status:</span>
-                  <span className={`px-2 py-0.5 rounded text-xs font-mono font-semibold ${
+                  <span className="text-xs font-mono font-bold text-zinc-500 uppercase">Status:</span>
+                  <span className={`px-2.5 py-0.5 rounded text-xs font-mono font-bold ${
                     selectedApp.status === 'approved'
-                      ? 'bg-emerald-950 text-emerald-400 border border-emerald-800'
+                      ? 'bg-emerald-100 text-emerald-800'
                       : selectedApp.status === 'rejected'
-                      ? 'bg-rose-950 text-rose-400 border border-rose-800'
-                      : 'bg-amber-950 text-amber-300 border border-amber-800'
+                      ? 'bg-rose-100 text-rose-800'
+                      : 'bg-amber-100 text-amber-800'
                   }`}>
                     {selectedApp.status.toUpperCase()}
                   </span>
@@ -548,56 +547,56 @@ export const OnboardingManagement: React.FC = () => {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => handleUpdateStatus(selectedApp.id, 'approved')}
-                    className="px-3 py-1.5 bg-emerald-500 hover:bg-emerald-400 text-black font-semibold rounded-lg text-xs transition-colors"
+                    className="px-3.5 py-1.5 bg-black text-white hover:bg-zinc-800 font-bold rounded-lg text-xs transition-colors"
                   >
                     Approve
                   </button>
                   <button
                     onClick={() => handleUpdateStatus(selectedApp.id, 'rejected')}
-                    className="px-3 py-1.5 bg-zinc-900 hover:bg-rose-950 text-zinc-400 hover:text-rose-400 border border-zinc-800 hover:border-rose-900 rounded-lg text-xs transition-colors"
+                    className="px-3.5 py-1.5 bg-white hover:bg-rose-50 text-rose-600 border border-rose-200 rounded-lg text-xs font-bold transition-colors"
                   >
                     Reject
                   </button>
                   <button
                     onClick={() => handleUpdateStatus(selectedApp.id, 'pending')}
-                    className="px-3 py-1.5 bg-zinc-900 hover:bg-zinc-800 text-zinc-400 rounded-lg text-xs transition-colors"
+                    className="px-3.5 py-1.5 bg-white hover:bg-zinc-100 text-zinc-700 border border-black/10 rounded-lg text-xs font-bold transition-colors"
                   >
-                    Reset Pending
+                    Reset
                   </button>
                 </div>
               </div>
 
               {/* CONTACT DETAILS */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="p-4 bg-zinc-900/40 border border-zinc-900 rounded-xl">
-                  <p className="text-[11px] font-mono uppercase text-zinc-500 flex items-center gap-1.5">
+                <div className="p-4 bg-zinc-50 border border-black/5 rounded-xl">
+                  <p className="text-[11px] font-mono font-bold uppercase text-zinc-500 flex items-center gap-1.5">
                     <Mail className="w-3.5 h-3.5 text-zinc-400" /> Email Address
                   </p>
                   <div className="flex items-center justify-between mt-1">
-                    <span className="text-sm text-white font-mono break-all">{selectedApp.email}</span>
+                    <span className="text-sm text-black font-mono font-medium break-all">{selectedApp.email}</span>
                     <button
                       onClick={() => handleCopy(selectedApp.email, 'email')}
-                      className="p-1 text-zinc-500 hover:text-white"
+                      className="p-1 text-zinc-400 hover:text-black"
                       title="Copy email"
                     >
-                      {copiedField === 'email' ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                      {copiedField === 'email' ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
                     </button>
                   </div>
                 </div>
 
-                <div className="p-4 bg-zinc-900/40 border border-zinc-900 rounded-xl">
-                  <p className="text-[11px] font-mono uppercase text-zinc-500 flex items-center gap-1.5">
+                <div className="p-4 bg-zinc-50 border border-black/5 rounded-xl">
+                  <p className="text-[11px] font-mono font-bold uppercase text-zinc-500 flex items-center gap-1.5">
                     <Phone className="w-3.5 h-3.5 text-zinc-400" /> Phone / Contact
                   </p>
                   <div className="flex items-center justify-between mt-1">
-                    <span className="text-sm text-white font-mono">{selectedApp.contact || 'Not provided'}</span>
+                    <span className="text-sm text-black font-mono font-medium">{selectedApp.contact || 'Not provided'}</span>
                     {selectedApp.contact && (
                       <button
                         onClick={() => handleCopy(selectedApp.contact || '', 'phone')}
-                        className="p-1 text-zinc-500 hover:text-white"
+                        className="p-1 text-zinc-400 hover:text-black"
                         title="Copy phone"
                       >
-                        {copiedField === 'phone' ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                        {copiedField === 'phone' ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
                       </button>
                     )}
                   </div>
@@ -606,24 +605,24 @@ export const OnboardingManagement: React.FC = () => {
 
               {/* ACADEMICS */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="p-4 bg-zinc-900/40 border border-zinc-900 rounded-xl">
-                  <p className="text-[11px] font-mono uppercase text-zinc-500 flex items-center gap-1.5">
+                <div className="p-4 bg-zinc-50 border border-black/5 rounded-xl">
+                  <p className="text-[11px] font-mono font-bold uppercase text-zinc-500 flex items-center gap-1.5">
                     <GraduationCap className="w-3.5 h-3.5 text-zinc-400" /> College / Institution
                   </p>
-                  <p className="text-sm text-white font-medium mt-1">{selectedApp.college || '—'}</p>
+                  <p className="text-sm text-black font-semibold mt-1">{selectedApp.college || '—'}</p>
                 </div>
 
-                <div className="p-4 bg-zinc-900/40 border border-zinc-900 rounded-xl">
-                  <p className="text-[11px] font-mono uppercase text-zinc-500 flex items-center gap-1.5">
+                <div className="p-4 bg-zinc-50 border border-black/5 rounded-xl">
+                  <p className="text-[11px] font-mono font-bold uppercase text-zinc-500 flex items-center gap-1.5">
                     <Calendar className="w-3.5 h-3.5 text-zinc-400" /> Year of Study
                   </p>
-                  <p className="text-sm text-white font-medium mt-1">{selectedApp.year || '—'}</p>
+                  <p className="text-sm text-black font-semibold mt-1">{selectedApp.year || '—'}</p>
                 </div>
               </div>
 
               {/* SKILLS & INTEREST */}
-              <div className="p-4 bg-zinc-900/40 border border-zinc-900 rounded-xl space-y-3">
-                <p className="text-[11px] font-mono uppercase text-zinc-500 flex items-center gap-1.5">
+              <div className="p-4 bg-zinc-50 border border-black/5 rounded-xl space-y-3">
+                <p className="text-[11px] font-mono font-bold uppercase text-zinc-500 flex items-center gap-1.5">
                   <Sparkles className="w-3.5 h-3.5 text-zinc-400" /> Skills & Tech Stack
                 </p>
                 {selectedApp.skills ? (
@@ -631,56 +630,56 @@ export const OnboardingManagement: React.FC = () => {
                     {selectedApp.skills.split(',').map((skill, i) => (
                       <span
                         key={i}
-                        className="px-2.5 py-1 bg-zinc-900 border border-zinc-800 rounded-lg text-xs font-mono text-zinc-200"
+                        className="px-2.5 py-1 bg-white border border-black/10 rounded-lg text-xs font-mono font-bold text-black shadow-2xs"
                       >
                         {skill.trim()}
                       </span>
                     ))}
                   </div>
                 ) : (
-                  <p className="text-xs text-zinc-500">None specified</p>
+                  <p className="text-xs text-zinc-400">None specified</p>
                 )}
 
                 {selectedApp.interest && (
-                  <div className="pt-2 border-t border-zinc-900">
-                    <p className="text-[11px] font-mono uppercase text-zinc-500">Domain Interest</p>
-                    <p className="text-sm text-zinc-300 mt-0.5">{selectedApp.interest}</p>
+                  <div className="pt-2 border-t border-black/5">
+                    <p className="text-[11px] font-mono font-bold uppercase text-zinc-500">Domain Interest</p>
+                    <p className="text-sm text-zinc-800 font-medium mt-0.5">{selectedApp.interest}</p>
                   </div>
                 )}
               </div>
 
               {/* WHY JOIN REASON */}
-              <div className="p-4 bg-zinc-900/40 border border-zinc-900 rounded-xl">
-                <p className="text-[11px] font-mono uppercase text-zinc-500 mb-2">
+              <div className="p-4 bg-zinc-50 border border-black/5 rounded-xl">
+                <p className="text-[11px] font-mono font-bold uppercase text-zinc-500 mb-2">
                   Why do you want to join The 404 Society?
                 </p>
-                <div className="p-3 bg-black/60 border border-zinc-900 rounded-lg text-zinc-300 text-xs leading-relaxed whitespace-pre-wrap">
+                <div className="p-3.5 bg-white border border-black/5 rounded-lg text-zinc-800 text-xs leading-relaxed whitespace-pre-wrap font-sans">
                   {selectedApp.reason || 'No statement provided.'}
                 </div>
               </div>
 
               {/* SOCIAL / PORTFOLIO */}
               {selectedApp.social && (
-                <div className="p-4 bg-zinc-900/40 border border-zinc-900 rounded-xl">
-                  <p className="text-[11px] font-mono uppercase text-zinc-500 flex items-center gap-1.5 mb-1">
+                <div className="p-4 bg-zinc-50 border border-black/5 rounded-xl">
+                  <p className="text-[11px] font-mono font-bold uppercase text-zinc-500 flex items-center gap-1.5 mb-1">
                     <Share2 className="w-3.5 h-3.5 text-zinc-400" /> Links & Social Profiles
                   </p>
-                  <p className="text-sm text-zinc-300 font-mono break-all">{selectedApp.social}</p>
+                  <p className="text-sm text-black font-mono break-all font-medium">{selectedApp.social}</p>
                 </div>
               )}
 
               {/* SYSTEM METADATA */}
-              <div className="pt-2 text-[11px] font-mono text-zinc-600 flex flex-wrap items-center justify-between gap-2 border-t border-zinc-900">
+              <div className="pt-2 text-[11px] font-mono text-zinc-400 flex flex-wrap items-center justify-between gap-2 border-t border-black/5">
                 <span>Database ID: {selectedApp.id}</span>
                 <span>Created: {new Date(selectedApp.created_at).toISOString()}</span>
               </div>
             </div>
 
             {/* MODAL FOOTER */}
-            <div className="px-6 py-4 border-t border-zinc-800/80 bg-zinc-900/40 flex items-center justify-between">
+            <div className="px-6 py-4 border-t border-black/10 bg-zinc-50 flex items-center justify-between">
               <button
                 onClick={() => handleDelete(selectedApp.id)}
-                className="inline-flex items-center gap-1.5 text-xs text-rose-400 hover:text-rose-300 transition-colors"
+                className="inline-flex items-center gap-1.5 text-xs text-rose-600 hover:text-rose-700 font-semibold transition-colors"
               >
                 <Trash2 className="w-3.5 h-3.5" />
                 Delete Application
@@ -688,7 +687,7 @@ export const OnboardingManagement: React.FC = () => {
 
               <button
                 onClick={() => setSelectedApp(null)}
-                className="px-4 py-2 bg-white text-black hover:bg-zinc-200 font-semibold rounded-lg text-xs transition-colors"
+                className="px-5 py-2 bg-black text-white hover:bg-zinc-800 font-bold rounded-xl text-xs transition-colors"
               >
                 Close
               </button>
@@ -699,5 +698,5 @@ export const OnboardingManagement: React.FC = () => {
     </div>
   );
 };
-export default OnboardingManagement;
 
+export default OnboardingManagement;

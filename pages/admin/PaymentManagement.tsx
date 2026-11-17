@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { subscribeToPayments, exportPaymentsToCSV, getEventPaymentStats } from '../../lib/payments';
+import { subscribeToPayments, exportPaymentsToCSV } from '../../lib/payments';
 import { PaymentData } from '../../types';
 import { subscribeToEvents, EventData } from '../../lib/events';
 import toast from 'react-hot-toast';
@@ -99,27 +99,21 @@ export const PaymentManagement: React.FC = () => {
 
   const handleExportCSV = async () => {
     try {
-      await exportPaymentsToCSV(filteredPayments);
-      toast.success('Exported to CSV');
+      toast.loading('Exporting payments...', { id: 'export-payments' });
+      exportPaymentsToCSV(filteredPayments);
+      toast.success('Payments exported successfully', { id: 'export-payments' });
     } catch (error) {
-      toast.error('Failed to export CSV');
+      toast.error('Failed to export payments', { id: 'export-payments' });
     }
   };
 
   const getStatusBadge = (status: string) => {
-    const statusColors: Record<string, string> = {
-      captured: 'bg-green-100 text-green-800 border-green-300',
-      pending: 'bg-yellow-100 text-yellow-800 border-yellow-300',
-      failed: 'bg-red-100 text-red-800 border-red-300',
-      refunded: 'bg-gray-100 text-gray-800 border-gray-300',
-    };
+    let badgeType = 'adm-badge--warning';
+    if (status === 'success' || status === 'captured') badgeType = 'adm-badge--success';
+    if (status === 'failed') badgeType = 'adm-badge--danger';
 
     return (
-      <span
-        className={`px-2 py-1 text-xs font-bold uppercase rounded border-2 ${
-          statusColors[status] || 'bg-gray-100 text-gray-800 border-gray-300'
-        }`}
-      >
+      <span className={`adm-badge ${badgeType}`}>
         {status}
       </span>
     );
@@ -152,60 +146,56 @@ export const PaymentManagement: React.FC = () => {
           disabled={filteredPayments.length === 0}
           className="adm-btn adm-btn--primary"
         >
-          <Download className="w-5 h-5" />
+          <Download className="w-4 h-4" />
           Export CSV
         </button>
       </div>
 
-      {/* Stats Dashboard */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        {/* Total Revenue */}
-        <div className="bg-white border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-6">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-bold uppercase text-gray-600">Total Revenue</span>
-            <DollarSign className="w-8 h-8 text-green-600" />
+      {/* Minimalist Stats Grid */}
+      <div className="adm-stats-grid">
+        <div className="adm-stat-card">
+          <div className="adm-stat-card__icon">
+            <DollarSign className="w-5 h-5 text-black" />
           </div>
-          <div className="text-3xl font-black">₹{stats.totalRevenue.toLocaleString('en-IN')}</div>
-          <div className="text-xs text-gray-500 mt-1">
-            From {stats.capturedPayments} successful payments
-          </div>
+          <div className="adm-stat-card__label">Total Revenue</div>
+          <div className="adm-stat-card__value">₹{stats.totalRevenue.toLocaleString('en-IN')}</div>
+          <div className="adm-stat-card__sub">{stats.capturedPayments} successful payments</div>
         </div>
 
-        {/* Total Payments */}
-        <div className="bg-white border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-6">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-bold uppercase text-gray-600">Total Payments</span>
-            <CreditCard className="w-8 h-8 text-blue-600" />
+        <div className="adm-stat-card">
+          <div className="adm-stat-card__icon">
+            <CreditCard className="w-5 h-5 text-black" />
           </div>
-          <div className="text-3xl font-black">{stats.totalPayments}</div>
-          <div className="text-xs text-gray-500 mt-1">All payment transactions</div>
+          <div className="adm-stat-card__label">Total Payments</div>
+          <div className="adm-stat-card__value">{stats.totalPayments}</div>
+          <div className="adm-stat-card__sub">All recorded transactions</div>
         </div>
 
-        {/* Pending Payments */}
-        <div className="bg-white border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-6">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-bold uppercase text-gray-600">Pending</span>
-            <TrendingUp className="w-8 h-8 text-yellow-600" />
+        <div className="adm-stat-card">
+          <div className="adm-stat-card__icon">
+            <TrendingUp className="w-5 h-5 text-black" />
           </div>
-          <div className="text-3xl font-black">{stats.pendingPayments}</div>
-          <div className="text-xs text-gray-500 mt-1">Awaiting confirmation</div>
+          <div className="adm-stat-card__label">Pending</div>
+          <div className="adm-stat-card__value">{stats.pendingPayments}</div>
+          <div className="adm-stat-card__sub">Awaiting confirmation</div>
         </div>
 
-        {/* Failed Payments */}
-        <div className="bg-white border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-6">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-bold uppercase text-gray-600">Failed</span>
-            <AlertCircle className="w-8 h-8 text-red-600" />
+        <div className="adm-stat-card">
+          <div className="adm-stat-card__icon">
+            <AlertCircle className="w-5 h-5 text-black" />
           </div>
-          <div className="text-3xl font-black">{stats.failedPayments}</div>
-          <div className="text-xs text-gray-500 mt-1">Unsuccessful attempts</div>
+          <div className="adm-stat-card__label">Failed</div>
+          <div className="adm-stat-card__value">{stats.failedPayments}</div>
+          <div className="adm-stat-card__sub">Unsuccessful attempts</div>
         </div>
       </div>
 
-      {/* Filters */}
-      <div className="adm-filters">
+      {/* Toolbar Filters */}
+      <div className="adm-toolbar">
         <div className="adm-search">
-          <Search className="w-5 h-5 text-gray-400" />
+          <div className="adm-search__icon">
+            <Search className="w-4 h-4" />
+          </div>
           <input
             type="text"
             placeholder="Search by name, email, or ID..."
@@ -219,6 +209,7 @@ export const PaymentManagement: React.FC = () => {
           value={filterEvent}
           onChange={(e) => setFilterEvent(e.target.value)}
           className="adm-select"
+          style={{ flex: '0 0 200px' }}
         >
           <option value="all">All Events</option>
           {events.map((event) => (
@@ -232,17 +223,17 @@ export const PaymentManagement: React.FC = () => {
           value={filterStatus}
           onChange={(e) => setFilterStatus(e.target.value)}
           className="adm-select"
+          style={{ flex: '0 0 160px' }}
         >
           <option value="all">All Statuses</option>
-          <option value="captured">Captured</option>
+          <option value="success">Success</option>
           <option value="pending">Pending</option>
           <option value="failed">Failed</option>
-          <option value="refunded">Refunded</option>
         </select>
       </div>
 
       {/* Results Count */}
-      <div className="adm-results-count">
+      <div style={{ fontSize: '12px', color: 'var(--adm-text-muted)', fontFamily: 'var(--adm-font-mono)', marginBottom: '14px' }}>
         Showing {filteredPayments.length} of {payments.length} payments
       </div>
 
@@ -250,17 +241,19 @@ export const PaymentManagement: React.FC = () => {
       {loading ? (
         <div className="adm-loading">Loading payments...</div>
       ) : filteredPayments.length === 0 ? (
-        <div className="adm-empty">
-          <CreditCard className="w-16 h-16 text-gray-300 mb-4" />
-          <h3 className="text-xl font-bold mb-2">No payments found</h3>
-          <p className="text-gray-600">
-            {searchTerm || filterEvent !== 'all' || filterStatus !== 'all'
-              ? 'Try adjusting your filters'
-              : 'Payments will appear here once users make event registrations'}
-          </p>
+        <div className="adm-table-wrapper">
+          <div className="adm-empty">
+            <CreditCard className="w-12 h-12 text-zinc-300 mb-3" />
+            <div className="adm-empty__title">No payments found</div>
+            <div className="adm-empty__description">
+              {searchTerm || filterEvent !== 'all' || filterStatus !== 'all'
+                ? 'Try adjusting your filters'
+                : 'Payments will appear here once users make event registrations'}
+            </div>
+          </div>
         </div>
       ) : (
-        <div className="adm-table-container">
+        <div className="adm-table-wrapper">
           <table className="adm-table">
             <thead>
               <tr>
@@ -268,48 +261,42 @@ export const PaymentManagement: React.FC = () => {
                 <th>Customer</th>
                 <th>Event</th>
                 <th>Amount</th>
-                <th>Payment Method</th>
+                <th>Method</th>
                 <th>Status</th>
-                <th>Order ID</th>
-                <th>Payment ID</th>
-                <th>Registration ID</th>
+                <th>Order / Payment ID</th>
               </tr>
             </thead>
             <tbody>
               {filteredPayments.map((payment) => (
                 <tr key={payment.id}>
-                  <td className="whitespace-nowrap">
+                  <td style={{ whiteSpace: 'nowrap', fontSize: '12px', fontFamily: 'var(--adm-font-mono)' }}>
                     {payment.createdAt ? formatDate(payment.createdAt) : '-'}
                   </td>
                   <td>
-                    <div className="font-medium">{payment.userName || '-'}</div>
-                    <div className="text-xs text-gray-500">{payment.userEmail || '-'}</div>
+                    <div style={{ fontWeight: 600, color: 'var(--adm-text)' }}>{payment.userName || '-'}</div>
+                    <div style={{ fontSize: '12px', color: 'var(--adm-text-muted)' }}>{payment.userEmail || '-'}</div>
                     {payment.userPhone && (
-                      <div className="text-xs text-gray-500">{payment.userPhone}</div>
+                      <div style={{ fontSize: '11px', color: 'var(--adm-text-muted)', fontFamily: 'var(--adm-font-mono)' }}>
+                        {payment.userPhone}
+                      </div>
                     )}
                   </td>
-                  <td>
-                    <div className="font-medium">
-                      {events.find((e) => e.id === payment.eventId)?.title || payment.eventId}
-                    </div>
+                  <td style={{ fontWeight: 500 }}>
+                    {events.find((e) => e.id === payment.eventId)?.title || payment.eventId}
                   </td>
-                  <td className="font-bold">{formatAmount(payment.amount)}</td>
-                  <td className="capitalize">{payment.paymentMethod || '-'}</td>
+                  <td style={{ fontFamily: 'var(--adm-font-mono)', fontWeight: 700, color: 'var(--adm-text)' }}>
+                    {formatAmount(payment.amount)}
+                  </td>
+                  <td style={{ textTransform: 'capitalize', fontSize: '12px' }}>
+                    {payment.paymentMethod || '-'}
+                  </td>
                   <td>{getStatusBadge(payment.status)}</td>
                   <td>
-                    <code className="text-xs bg-gray-100 px-2 py-1 rounded">
-                      {payment.razorpayOrderId || '-'}
-                    </code>
-                  </td>
-                  <td>
-                    <code className="text-xs bg-gray-100 px-2 py-1 rounded">
-                      {payment.razorpayPaymentId || '-'}
-                    </code>
-                  </td>
-                  <td>
-                    <code className="text-xs bg-gray-100 px-2 py-1 rounded">
-                      {payment.registrationId || '-'}
-                    </code>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
+                      <span className="adm-tag" style={{ fontSize: '11px' }}>
+                        {payment.razorpayOrderId || payment.razorpayPaymentId || '-'}
+                      </span>
+                    </div>
                   </td>
                 </tr>
               ))}
