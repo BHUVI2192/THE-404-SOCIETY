@@ -29,6 +29,7 @@ import { OnboardingManagement } from './pages/admin/OnboardingManagement';
 import { PaymentManagement } from './pages/admin/PaymentManagement';
 import { AdminSettings } from './pages/admin/Settings';
 import { AdminLogin } from './pages/admin/AdminLogin';
+import YouDecideStudio from './pages/YouDecideStudio';
 
 
 // Scroll to top helper
@@ -98,6 +99,11 @@ const App: React.FC = () => {
 
             {/* Direct Minimalist Onboarding Portal */}
             <Route path="/onboarding-admin" element={<OnboardingManagement />} />
+
+            {/* Special youdecide.studio Launch Countdown */}
+            <Route path="/youdecide.studio" element={<YouDecideStudio />} />
+            <Route path="/youdecide-studio" element={<YouDecideStudio />} />
+            <Route path="/the404society/youdecide.studio" element={<YouDecideStudio />} />
 
             {/* Pages with standard Layout */}
             <Route path="/" element={<Layout><Home /></Layout>} />

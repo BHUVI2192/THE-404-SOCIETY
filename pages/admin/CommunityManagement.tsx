@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { subscribeToCommunityApps, updateCommunityApp, deleteCommunityApp, CommunityApp } from '../../lib/community_apps';
 import { generateMemberId, setMemberId, validateMemberId } from '../../lib/memberIdService';
+import { saveApprovedMember } from '../../lib/members';
 import {
   sendApplicationApprovedEmail,
   sendApplicationRejectedEmail
@@ -102,6 +103,20 @@ export const CommunityManagement: React.FC = () => {
           applicationApproved: true,
         },
         updatedAt: Date.now(),
+      });
+
+      // Persist permanently to members database (Supabase + Firestore) for collaboration access
+      await saveApprovedMember({
+        memberId,
+        name: selectedApp.name,
+        email: selectedApp.email,
+        contact: selectedApp.contact,
+        college: selectedApp.college,
+        year: selectedApp.year,
+        interest: selectedApp.interest,
+        skills: selectedApp.skills,
+        social: selectedApp.social,
+        reason: selectedApp.reason,
       });
 
       // Send approval email
