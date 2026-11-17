@@ -1,34 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
+import ProCountdown from '../components/CountDown';
 
 // Target date: November 25, 2026
-const TARGET_DATE = new Date('2026-11-25T00:00:00');
+const TARGET_DATE = '2026-11-25T00:00:00';
 
-interface TimeLeft {
-  days: number;
-  hours: number;
-  minutes: number;
-  seconds: number;
-}
-
-function getTimeLeft(): TimeLeft {
-  const now = new Date().getTime();
-  const distance = TARGET_DATE.getTime() - now;
-
-  if (distance <= 0) {
-    return { days: 0, hours: 0, minutes: 0, seconds: 0 };
-  }
-
-  return {
-    days: Math.floor(distance / (1000 * 60 * 60 * 24)),
-    hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-    minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
-    seconds: Math.floor((distance % (1000 * 60)) / 1000),
-  };
-}
-
-// Animated liquid/orb background using canvas
-const LiquidBackground: React.FC = () => {
+// Minimalist Ambient Signal Blue & White Background
+const AmbientSignalBackground: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -47,12 +25,12 @@ const LiquidBackground: React.FC = () => {
     resize();
     window.addEventListener('resize', resize);
 
+    // Subtle Signal Blue (#1920F0) and pure white floating ambient lighting
     const orbs = [
-      { x: 0.2, y: 0.3, r: 0.45, color: 'rgba(102,179,255,0.35)', speed: 0.0007 },
-      { x: 0.8, y: 0.6, r: 0.4, color: 'rgba(180,220,255,0.25)', speed: 0.0005 },
-      { x: 0.5, y: 0.1, r: 0.35, color: 'rgba(66,153,225,0.2)', speed: 0.0009 },
-      { x: 0.1, y: 0.8, r: 0.3, color: 'rgba(255,255,255,0.15)', speed: 0.0006 },
-      { x: 0.9, y: 0.1, r: 0.3, color: 'rgba(147,197,253,0.2)', speed: 0.0008 },
+      { x: 0.3, y: 0.25, r: 0.45, color: 'rgba(25, 32, 240, 0.12)', speed: 0.0005 },
+      { x: 0.75, y: 0.7, r: 0.42, color: 'rgba(97, 105, 255, 0.10)', speed: 0.0004 },
+      { x: 0.5, y: 0.1, r: 0.35, color: 'rgba(229, 231, 255, 0.35)', speed: 0.0007 },
+      { x: 0.1, y: 0.8, r: 0.32, color: 'rgba(25, 32, 240, 0.07)', speed: 0.0006 },
     ];
 
     const draw = () => {
@@ -60,23 +38,24 @@ const LiquidBackground: React.FC = () => {
       const w = canvas.width;
       const h = canvas.height;
 
-      // Base background gradient
+      // Base pure minimalist white & soft ice gradient
       const bg = ctx.createLinearGradient(0, 0, w, h);
-      bg.addColorStop(0, '#f0f7ff');
-      bg.addColorStop(0.5, '#e8f4fd');
-      bg.addColorStop(1, '#dbeafe');
+      bg.addColorStop(0, '#FFFFFF');
+      bg.addColorStop(0.4, '#FAFAFA');
+      bg.addColorStop(0.8, '#F5F5FF');
+      bg.addColorStop(1, '#EBF0FF');
       ctx.fillStyle = bg;
       ctx.fillRect(0, 0, w, h);
 
-      // Draw animated orbs
+      // Render ambient soft blur orbs
       orbs.forEach((orb, i) => {
-        const cx = (orb.x + Math.sin(t * orb.speed + i) * 0.15) * w;
-        const cy = (orb.y + Math.cos(t * orb.speed * 0.7 + i) * 0.15) * h;
+        const cx = (orb.x + Math.sin(t * orb.speed + i) * 0.1) * w;
+        const cy = (orb.y + Math.cos(t * orb.speed * 0.7 + i) * 0.1) * h;
         const radius = orb.r * Math.min(w, h);
 
         const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
         grad.addColorStop(0, orb.color);
-        grad.addColorStop(1, 'rgba(255,255,255,0)');
+        grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
 
         ctx.beginPath();
         ctx.arc(cx, cy, radius, 0, Math.PI * 2);
@@ -110,74 +89,79 @@ const LiquidBackground: React.FC = () => {
   );
 };
 
-// Single countdown digit block
-const CountBlock: React.FC<{ value: number; label: string }> = ({ value, label }) => {
-  const displayValue = String(value).padStart(2, '0');
+// Official Vector Logo Component for youdecide.studio
+const YouDecideLogo: React.FC<{ height?: number; className?: string }> = ({
+  height = 36,
+  className = '',
+}) => {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
-      <div
-        style={{
-          position: 'relative',
-          width: 'clamp(80px, 18vw, 160px)',
-          height: 'clamp(90px, 20vw, 180px)',
-          background: 'rgba(255,255,255,0.65)',
-          backdropFilter: 'blur(20px)',
-          WebkitBackdropFilter: 'blur(20px)',
-          border: '1px solid rgba(102,179,255,0.3)',
-          borderRadius: '20px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          boxShadow: '0 8px 40px rgba(66,153,225,0.12), inset 0 1px 0 rgba(255,255,255,0.8)',
-        }}
-      >
-        <span
-          style={{
-            fontFamily: '"Space Mono", "JetBrains Mono", monospace',
-            fontSize: 'clamp(36px, 9vw, 80px)',
-            fontWeight: 700,
-            color: '#0a1628',
-            letterSpacing: '-2px',
-            lineHeight: 1,
-          }}
-        >
-          {displayValue}
-        </span>
-      </div>
-      <span
-        style={{
-          fontFamily: '"Manrope", sans-serif',
-          fontSize: 'clamp(9px, 1.5vw, 13px)',
-          fontWeight: 600,
-          letterSpacing: '0.25em',
-          textTransform: 'uppercase',
-          color: '#3b82f6',
-        }}
-      >
-        {label}
-      </span>
-    </div>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="-9 -741 7720 921"
+      role="img"
+      aria-label="youdecide.studio"
+      style={{ height: `${height}px`, width: 'auto', display: 'block' }}
+      className={className}
+    >
+      <title>youdecide.studio</title>
+      <g id="logo">
+        <path
+          id="letters"
+          fill="#171717"
+          d="M110 150V38H181Q207 38 219 30.5Q231 23 239 4L250 -27H209L21 -536H174L297 -167L412 -536H565L359 51Q341 104 307 127Q273 150 212 150Z M856 12Q774 12 713 -22.5Q652 -57 618 -120Q584 -183 584 -268Q584 -353 618 -415.5Q652 -478 713 -513Q774 -548 856 -548Q938 -548 999.5 -513Q1061 -478 1094.5 -415.5Q1128 -353 1128 -268Q1128 -183 1094.5 -120Q1061 -57 999.5 -22.5Q938 12 856 12ZM856 -103Q912 -103 943 -146.5Q974 -190 974 -268Q974 -346 943 -389.5Q912 -433 856 -433Q800 -433 769 -389.5Q738 -346 738 -268Q738 -190 769 -146.5Q800 -103 856 -103Z M1389 12Q1307 12 1260 -41Q1213 -94 1213 -190V-534H1341V-222Q1341 -154 1363.5 -123Q1386 -92 1432 -92Q1483 -92 1512 -126.5Q1541 -161 1541 -227V-534H1669V0H1552L1550 -87Q1508 12 1389 12Z M1978 12Q1910 12 1860.5 -22Q1811 -56 1784 -118.5Q1757 -181 1757 -267Q1757 -352 1784.5 -415Q1812 -478 1861.5 -512Q1911 -546 1978 -546Q2034 -546 2076.5 -523Q2119 -500 2141 -458V-710H2269V0H2147L2144 -79Q2122 -36 2078 -12Q2034 12 1978 12ZM2017 -92Q2076 -92 2108.5 -137.5Q2141 -183 2141 -267Q2141 -352 2109 -397Q2077 -442 2017 -442Q1959 -442 1924.5 -395.5Q1890 -349 1890 -267Q1890 -187 1924.5 -139.5Q1959 -92 2017 -92Z M2611 12Q2533 12 2476.5 -22.5Q2420 -57 2389.5 -119.5Q2359 -182 2359 -266Q2359 -350 2389.5 -412.5Q2420 -475 2476 -509.5Q2532 -544 2608 -544Q2680 -544 2735 -510.5Q2790 -477 2820.5 -414Q2851 -351 2851 -262V-235H2469Q2473 -157 2510.5 -118Q2548 -79 2612 -79Q2659 -79 2689.5 -100.5Q2720 -122 2733 -160L2843 -153Q2822 -78 2760.5 -33Q2699 12 2611 12ZM2469 -315H2739Q2734 -386 2698 -420Q2662 -454 2608 -454Q2551 -454 2514.5 -418.5Q2478 -383 2469 -315Z M3165 12Q3089 12 3032 -22.5Q2975 -57 2944 -119.5Q2913 -182 2913 -266Q2913 -350 2944 -412.5Q2975 -475 3032 -509.5Q3089 -544 3165 -544Q3262 -544 3326 -493.5Q3390 -443 3403 -351L3292 -345Q3284 -397 3250 -424.5Q3216 -452 3165 -452Q3098 -452 3060.5 -402.5Q3023 -353 3023 -266Q3023 -178 3060.5 -129Q3098 -80 3165 -80Q3216 -80 3250 -108.5Q3284 -137 3292 -195L3403 -189Q3390 -97 3326.5 -42.5Q3263 12 3165 12Z M3482 0V-530H3566V0ZM3480 -613V-711H3568V-613Z M3886 12Q3817 12 3766.5 -22Q3716 -56 3689 -118Q3662 -180 3662 -265Q3662 -350 3689 -412Q3716 -474 3766.5 -508Q3817 -542 3886 -542Q3939 -542 3983 -519.5Q4027 -497 4049 -456V-710H4133V0H4057L4054 -80Q4032 -37 3987 -12.5Q3942 12 3886 12ZM3903 -68Q3974 -68 4011.5 -121Q4049 -174 4049 -265Q4049 -357 4011.5 -409.5Q3974 -462 3903 -462Q3833 -462 3791.5 -409.5Q3750 -357 3750 -265Q3750 -174 3791.5 -121Q3833 -68 3903 -68Z M4478 12Q4403 12 4348.5 -22Q4294 -56 4264.5 -118.5Q4235 -181 4235 -265Q4235 -349 4264.5 -411Q4294 -473 4347.5 -507.5Q4401 -542 4474 -542Q4543 -542 4596 -509.5Q4649 -477 4678.5 -415Q4708 -353 4708 -264V-239H4323Q4328 -154 4368.5 -111Q4409 -68 4478 -68Q4530 -68 4563.5 -92.5Q4597 -117 4610 -157L4700 -150Q4679 -79 4620.5 -33.5Q4562 12 4478 12ZM4323 -313H4616Q4610 -390 4571.5 -426Q4533 -462 4474 -462Q4413 -462 4373.5 -424.5Q4334 -387 4323 -313Z"
+        />
+        <circle id="dot" fill="#1920F0" cx="4853" cy="-95" r="95" />
+        <path
+          id="studio"
+          fill="#71717A"
+          d="M5235 12Q5126 12 5069 -38.5Q5012 -89 5006 -167L5094 -173Q5102 -125 5133.5 -96.5Q5165 -68 5235 -68Q5289 -68 5318.5 -85.5Q5348 -103 5348 -142Q5348 -163 5338.5 -177Q5329 -191 5301 -201.5Q5273 -212 5219 -222Q5145 -236 5103 -257Q5061 -278 5044 -308Q5027 -338 5027 -380Q5027 -451 5079.5 -496.5Q5132 -542 5228 -542Q5298 -542 5342.5 -517.5Q5387 -493 5410 -454Q5433 -415 5438 -372L5350 -366Q5346 -404 5318.5 -433Q5291 -462 5226 -462Q5169 -462 5142 -440Q5115 -418 5115 -384Q5115 -345 5140 -326.5Q5165 -308 5235 -296Q5313 -283 5357 -263Q5401 -243 5418.5 -213.5Q5436 -184 5436 -142Q5436 -69 5379.5 -28.5Q5323 12 5235 12Z M5714 0Q5642 0 5607.5 -33Q5573 -66 5573 -136V-456H5495V-530H5573V-654H5657V-530H5798V-456H5657V-138Q5657 -102 5673 -88Q5689 -74 5722 -74H5798V0Z M6068 12Q5989 12 5941.5 -41.5Q5894 -95 5894 -189V-530H5978V-212Q5978 -135 6005.5 -98.5Q6033 -62 6090 -62Q6153 -62 6189 -102.5Q6225 -143 6225 -214V-530H6309V0H6229V-86Q6185 12 6068 12Z M6635 12Q6566 12 6515.5 -22Q6465 -56 6438 -118Q6411 -180 6411 -265Q6411 -350 6438 -412Q6465 -474 6515.5 -508Q6566 -542 6635 -542Q6688 -542 6732 -519.5Q6776 -497 6798 -456V-710H6882V0H6806L6803 -80Q6781 -37 6736 -12.5Q6691 12 6635 12ZM6652 -68Q6723 -68 6760.5 -121Q6798 -174 6798 -265Q6798 -357 6760.5 -409.5Q6723 -462 6652 -462Q6582 -462 6540.5 -409.5Q6499 -357 6499 -265Q6499 -174 6540.5 -121Q6582 -68 6652 -68Z M7010 0V-530H7094V0ZM7008 -613V-711H7096V-613Z M7439 12Q7366 12 7311 -22Q7256 -56 7226 -118.5Q7196 -181 7196 -265Q7196 -350 7226 -412Q7256 -474 7311 -508Q7366 -542 7439 -542Q7512 -542 7566.5 -508Q7621 -474 7651 -412Q7681 -350 7681 -265Q7681 -181 7651 -118.5Q7621 -56 7566.5 -22Q7512 12 7439 12ZM7439 -68Q7512 -68 7552.5 -120.5Q7593 -173 7593 -265Q7593 -357 7552.5 -409.5Q7512 -462 7439 -462Q7366 -462 7325 -409.5Q7284 -357 7284 -265Q7284 -173 7325 -120.5Q7366 -68 7439 -68Z"
+        />
+      </g>
+    </svg>
   );
 };
 
 const YouDecideStudio: React.FC = () => {
-  const [timeLeft, setTimeLeft] = useState<TimeLeft>(getTimeLeft());
-  const launched = timeLeft.days === 0 && timeLeft.hours === 0 && timeLeft.minutes === 0 && timeLeft.seconds === 0;
+  const [fontSize, setFontSize] = useState<number>(64);
+  const [gap, setGap] = useState<number>(28);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setTimeLeft(getTimeLeft());
-    }, 1000);
-    return () => clearInterval(interval);
+    const handleResize = () => {
+      const w = window.innerWidth;
+      if (w < 440) {
+        setFontSize(32);
+        setGap(10);
+      } else if (w < 640) {
+        setFontSize(42);
+        setGap(16);
+      } else if (w < 860) {
+        setFontSize(54);
+        setGap(22);
+      } else if (w < 1100) {
+        setFontSize(64);
+        setGap(28);
+      } else {
+        setFontSize(74);
+        setGap(32);
+      }
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   return (
     <>
       <Helmet>
-        <title>YouDecide Studio | The 404 Society</title>
-        <meta name="description" content="Something is coming. The 404 Society — YouDecide Studio." />
+        <title>youdecide.studio — The Future is Collaborative</title>
+        <meta
+          name="description"
+          content="Something remarkable is in the works. youdecide.studio launch countdown."
+        />
+        {/* Google Fonts: Geist & Geist Mono */}
         <link
-          href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Geist+Mono:wght@400;500;600;700&display=swap"
           rel="stylesheet"
         />
       </Helmet>
@@ -192,11 +176,14 @@ const YouDecideStudio: React.FC = () => {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
+          fontFamily: 'Geist, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+          color: '#171717',
+          backgroundColor: '#FFFFFF',
         }}
       >
-        <LiquidBackground />
+        <AmbientSignalBackground />
 
-        {/* Content */}
+        {/* Content Container */}
         <div
           style={{
             position: 'relative',
@@ -205,29 +192,32 @@ const YouDecideStudio: React.FC = () => {
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: 'clamp(32px, 6vh, 60px)',
-            padding: '40px 24px',
+            gap: 'clamp(28px, 4.5vh, 48px)',
+            padding: '48px 24px',
             textAlign: 'center',
             width: '100%',
+            maxWidth: '1120px',
           }}
         >
-          {/* Top badge */}
+          {/* Top Pill: Community Affiliation */}
           <div
             style={{
               display: 'inline-flex',
               alignItems: 'center',
               gap: '8px',
-              background: 'rgba(255,255,255,0.7)',
-              backdropFilter: 'blur(12px)',
-              border: '1px solid rgba(102,179,255,0.35)',
-              borderRadius: '100px',
-              padding: '8px 20px',
-              fontFamily: '"Manrope", sans-serif',
+              background: 'rgba(255, 255, 255, 0.85)',
+              backdropFilter: 'blur(16px)',
+              WebkitBackdropFilter: 'blur(16px)',
+              border: '1px solid #E4E4E7',
+              borderRadius: '999px',
+              padding: '6px 16px',
               fontSize: '11px',
-              fontWeight: 700,
-              letterSpacing: '0.2em',
+              fontFamily: '"Geist Mono", monospace',
+              fontWeight: 500,
+              letterSpacing: '0.08em',
               textTransform: 'uppercase',
-              color: '#3b82f6',
+              color: '#71717A',
+              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
             }}
           >
             <span
@@ -235,181 +225,128 @@ const YouDecideStudio: React.FC = () => {
                 width: '6px',
                 height: '6px',
                 borderRadius: '50%',
-                background: '#3b82f6',
-                animation: 'pulse 2s infinite',
+                backgroundColor: '#1920F0', // Signal Blue
+                boxShadow: '0 0 10px rgba(25, 32, 240, 0.6)',
+                animation: 'signalPulse 2.2s infinite ease-in-out',
               }}
             />
-            The 404 Society
+            <span>Initiative by The 404 Society</span>
           </div>
 
-          {/* Title */}
-          <div>
-            <h1
-              style={{
-                fontFamily: '"Manrope", sans-serif',
-                fontSize: 'clamp(36px, 9vw, 96px)',
-                fontWeight: 800,
-                color: '#0a1628',
-                letterSpacing: '-3px',
-                lineHeight: 0.95,
-                margin: 0,
-                textTransform: 'uppercase',
-              }}
-            >
-              YouDecide
-            </h1>
-            <h2
-              style={{
-                fontFamily: '"Space Mono", monospace',
-                fontSize: 'clamp(14px, 3vw, 28px)',
-                fontWeight: 400,
-                color: '#3b82f6',
-                letterSpacing: '0.3em',
-                margin: '8px 0 0',
-                textTransform: 'uppercase',
-              }}
-            >
-              .studio
-            </h2>
-          </div>
-
-          {/* Tagline */}
-          <p
-            style={{
-              fontFamily: '"Manrope", sans-serif',
-              fontSize: 'clamp(14px, 2.5vw, 20px)',
-              fontWeight: 500,
-              color: '#1e3a5f',
-              maxWidth: '540px',
-              lineHeight: 1.6,
-              margin: 0,
-              opacity: 0.75,
-            }}
-          >
-            {launched
-              ? 'We\'re live. Something remarkable begins now.'
-              : 'Something remarkable is on its way. The community decides what\'s next.'}
-          </p>
-
-          {/* Countdown */}
-          {!launched ? (
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'flex-start',
-                gap: 'clamp(8px, 3vw, 32px)',
-                flexWrap: 'wrap',
-                justifyContent: 'center',
-              }}
-            >
-              <CountBlock value={timeLeft.days} label="Days" />
-              <div
-                style={{
-                  fontFamily: '"Space Mono", monospace',
-                  fontSize: 'clamp(28px, 7vw, 72px)',
-                  fontWeight: 700,
-                  color: '#3b82f6',
-                  marginTop: 'clamp(20px, 4vw, 48px)',
-                  opacity: 0.6,
-                  animation: 'blink 1s step-end infinite',
-                }}
-              >
-                :
-              </div>
-              <CountBlock value={timeLeft.hours} label="Hours" />
-              <div
-                style={{
-                  fontFamily: '"Space Mono", monospace',
-                  fontSize: 'clamp(28px, 7vw, 72px)',
-                  fontWeight: 700,
-                  color: '#3b82f6',
-                  marginTop: 'clamp(20px, 4vw, 48px)',
-                  opacity: 0.6,
-                  animation: 'blink 1s step-end infinite',
-                }}
-              >
-                :
-              </div>
-              <CountBlock value={timeLeft.minutes} label="Minutes" />
-              <div
-                style={{
-                  fontFamily: '"Space Mono", monospace',
-                  fontSize: 'clamp(28px, 7vw, 72px)',
-                  fontWeight: 700,
-                  color: '#3b82f6',
-                  marginTop: 'clamp(20px, 4vw, 48px)',
-                  opacity: 0.6,
-                  animation: 'blink 1s step-end infinite',
-                }}
-              >
-                :
-              </div>
-              <CountBlock value={timeLeft.seconds} label="Seconds" />
-            </div>
-          ) : (
-            <div
-              style={{
-                fontFamily: '"Space Mono", monospace',
-                fontSize: 'clamp(24px, 6vw, 56px)',
-                fontWeight: 700,
-                color: '#3b82f6',
-                letterSpacing: '-1px',
-              }}
-            >
-              WE'RE LIVE 🚀
-            </div>
-          )}
-
-          {/* Target date label */}
+          {/* Official Brand Logo */}
           <div
             style={{
-              fontFamily: '"Space Mono", monospace',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              padding: '8px 0',
+            }}
+          >
+            <YouDecideLogo height={44} />
+          </div>
+
+          {/* Narrative Line */}
+          <p
+            style={{
+              fontSize: 'clamp(15px, 2.2vw, 19px)',
+              fontWeight: 400,
+              color: '#52525B',
+              maxWidth: '520px',
+              lineHeight: 1.6,
+              margin: '0 auto',
+              letterSpacing: '-0.01em',
+            }}
+          >
+            A collective laboratory where builders design, build, and deploy together.
+          </p>
+
+          {/* Minimalist Frosted Frame housing the Exact Framer Countdown */}
+          <div
+            style={{
+              position: 'relative',
+              background: 'rgba(255, 255, 255, 0.72)',
+              backdropFilter: 'blur(28px)',
+              WebkitBackdropFilter: 'blur(28px)',
+              border: '1px solid rgba(228, 228, 231, 0.8)',
+              borderRadius: '24px',
+              padding: 'clamp(28px, 5vw, 44px) clamp(16px, 4vw, 56px)',
+              boxShadow:
+                '0 24px 64px -12px rgba(25, 32, 240, 0.08), 0 4px 16px rgba(0, 0, 0, 0.02), inset 0 1px 0 rgba(255, 255, 255, 0.9)',
+              maxWidth: '100%',
+              overflow: 'hidden',
+            }}
+          >
+            {/* Countdown Component from Framer with Signal Blue accent */}
+            <ProCountdown
+              targetDate={TARGET_DATE}
+              tint="#171717"
+              labelColor="#1920F0"
+              fontSize={fontSize}
+              gap={gap}
+              showSeparators={true}
+              fontFamily="Geist Mono"
+              fontWeight={600}
+            />
+          </div>
+
+          {/* Launch Date Indicator */}
+          <div
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '10px',
+              fontFamily: '"Geist Mono", monospace',
               fontSize: '11px',
-              letterSpacing: '0.3em',
-              color: '#3b82f6',
-              opacity: 0.5,
+              fontWeight: 500,
+              letterSpacing: '0.12em',
+              color: '#1920F0',
               textTransform: 'uppercase',
             }}
           >
-            Launching 25 Nov 2026
+            <span style={{ opacity: 0.4 }}>[</span>
+            <span>Target Deploy: 25 Nov 2026</span>
+            <span style={{ opacity: 0.4 }}>]</span>
           </div>
 
-          {/* Footer */}
+          {/* Minimalist Footer */}
           <div
             style={{
               position: 'fixed',
-              bottom: '28px',
+              bottom: '22px',
               left: '50%',
               transform: 'translateX(-50%)',
-              fontFamily: '"Manrope", sans-serif',
+              fontFamily: '"Geist Mono", monospace',
               fontSize: '11px',
-              fontWeight: 600,
-              letterSpacing: '0.15em',
-              color: '#3b82f6',
-              opacity: 0.4,
-              textTransform: 'uppercase',
+              fontWeight: 500,
+              letterSpacing: '0.06em',
+              color: '#A1A1AA',
               whiteSpace: 'nowrap',
             }}
           >
-            © 2026 The 404 Society
+            © 2026 youdecide.studio · All rights reserved
           </div>
         </div>
       </div>
 
       <style>{`
-        @keyframes pulse {
-          0%, 100% { opacity: 1; transform: scale(1); }
-          50% { opacity: 0.5; transform: scale(0.85); }
+        @keyframes signalPulse {
+          0%, 100% {
+            transform: scale(1);
+            opacity: 1;
+            box-shadow: 0 0 0 0 rgba(25, 32, 240, 0.4);
+          }
+          50% {
+            transform: scale(1.15);
+            opacity: 0.8;
+            box-shadow: 0 0 0 6px rgba(25, 32, 240, 0);
+          }
         }
-        @keyframes blink {
-          0%, 100% { opacity: 0.6; }
-          50% { opacity: 0.1; }
+        * {
+          box-sizing: border-box;
         }
-        * { box-sizing: border-box; }
       `}</style>
     </>
   );
 };
 
 export default YouDecideStudio;
-
