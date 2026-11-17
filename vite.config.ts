@@ -74,8 +74,8 @@ export default defineConfig(({ mode }) => {
                 return;
               }
 
-              const emailUser = env.EMAIL_USER;
-              const emailPass = env.EMAIL_PASS;
+              const emailUser = env.EMAIL_USER?.trim();
+              const emailPass = env.EMAIL_PASS ? env.EMAIL_PASS.replace(/^["']|["']$/g, '').trim() : '';
 
               if (!emailUser || !emailPass) {
                 res.writeHead(500, { 'Content-Type': 'application/json' });

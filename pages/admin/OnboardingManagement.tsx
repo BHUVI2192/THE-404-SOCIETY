@@ -700,3 +700,4 @@ export const OnboardingManagement: React.FC = () => {
   );
 };
 export default OnboardingManagement;
+
