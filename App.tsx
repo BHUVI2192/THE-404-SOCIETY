@@ -103,7 +103,12 @@ const App: React.FC = () => {
             {/* Special youdecide.studio Launch Countdown */}
             <Route path="/youdecide.studio" element={<YouDecideStudio />} />
             <Route path="/youdecide-studio" element={<YouDecideStudio />} />
+            <Route path="/youdecidestudio" element={<YouDecideStudio />} />
+            <Route path="/youdecide" element={<YouDecideStudio />} />
             <Route path="/the404society/youdecide.studio" element={<YouDecideStudio />} />
+            <Route path="/the404society/youdecidestudio" element={<YouDecideStudio />} />
+            <Route path="/the-404-society/youdecide.studio" element={<YouDecideStudio />} />
+            <Route path="/the-404-society/youdecidestudio" element={<YouDecideStudio />} />
 
             {/* Pages with standard Layout */}
             <Route path="/" element={<Layout><Home /></Layout>} />

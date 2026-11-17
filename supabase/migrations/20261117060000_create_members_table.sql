@@ -54,3 +54,4 @@ CREATE POLICY "Allow delete for members"
 CREATE INDEX IF NOT EXISTS idx_members_member_id ON public.members(member_id);
 CREATE INDEX IF NOT EXISTS idx_members_email ON public.members(email);
 CREATE INDEX IF NOT EXISTS idx_members_status ON public.members(status);
+

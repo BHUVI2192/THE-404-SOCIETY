@@ -176,6 +176,15 @@
 }
 </script>
 
+  <script>
+    // Handle SPA direct URL pathing when using HashRouter
+    (function () {
+      var path = window.location.pathname;
+      if (path && path !== '/' && !window.location.hash) {
+        window.location.replace('/#' + path);
+      }
+    })();
+  </script>
 </head>
 
 <body>
