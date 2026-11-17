@@ -14,6 +14,7 @@ import BlogDetail from './pages/BlogDetail';
 import NotFound from './pages/NotFound';
 import EventRegistration from './pages/EventRegistration';
 import YouDecideStudio from './pages/YouDecideStudio';
+import YouDecideLocal from './pages/YouDecideLocal';
 
 // Admin Pages
 import { AdminLayout } from './components/admin/AdminLayout';
@@ -100,6 +101,7 @@ const App: React.FC = () => {
 
             {/* Special Pages (No Layout) */}
             <Route path="/youdecide.studio" element={<YouDecideStudio />} />
+            <Route path="/youdecide.local" element={<YouDecideLocal />} />
 
             {/* 404 Page (No Layout) */}
             <Route path="*" element={<NotFound />} />
