@@ -1,152 +1,414 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { ProCountdown } from '../components/CountDown';
-import { AnimatedLiquidBackground } from '../components/admin/AnimatedLiquidBackground';
-import { ArrowLeft, Sparkles, ExternalLink } from 'lucide-react';
 
-export const YouDecideStudio: React.FC = () => {
-  // Target: 25th Nov 2026 00:00:00 IST
-  const targetDate = "2026-11-25T00:00:00";
+// Target date: November 25, 2026
+const TARGET_DATE = new Date('2026-11-25T00:00:00');
+
+interface TimeLeft {
+  days: number;
+  hours: number;
+  minutes: number;
+  seconds: number;
+}
+
+function getTimeLeft(): TimeLeft {
+  const now = new Date().getTime();
+  const distance = TARGET_DATE.getTime() - now;
+
+  if (distance <= 0) {
+    return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+  }
+
+  return {
+    days: Math.floor(distance / (1000 * 60 * 60 * 24)),
+    hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+    minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
+    seconds: Math.floor((distance % (1000 * 60)) / 1000),
+  };
+}
+
+// Animated liquid/orb background using canvas
+const LiquidBackground: React.FC = () => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let animId: number;
+    let t = 0;
+
+    const resize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+    resize();
+    window.addEventListener('resize', resize);
+
+    const orbs = [
+      { x: 0.2, y: 0.3, r: 0.45, color: 'rgba(102,179,255,0.35)', speed: 0.0007 },
+      { x: 0.8, y: 0.6, r: 0.4, color: 'rgba(180,220,255,0.25)', speed: 0.0005 },
+      { x: 0.5, y: 0.1, r: 0.35, color: 'rgba(66,153,225,0.2)', speed: 0.0009 },
+      { x: 0.1, y: 0.8, r: 0.3, color: 'rgba(255,255,255,0.15)', speed: 0.0006 },
+      { x: 0.9, y: 0.1, r: 0.3, color: 'rgba(147,197,253,0.2)', speed: 0.0008 },
+    ];
+
+    const draw = () => {
+      t += 1;
+      const w = canvas.width;
+      const h = canvas.height;
+
+      // Base background gradient
+      const bg = ctx.createLinearGradient(0, 0, w, h);
+      bg.addColorStop(0, '#f0f7ff');
+      bg.addColorStop(0.5, '#e8f4fd');
+      bg.addColorStop(1, '#dbeafe');
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, w, h);
+
+      // Draw animated orbs
+      orbs.forEach((orb, i) => {
+        const cx = (orb.x + Math.sin(t * orb.speed + i) * 0.15) * w;
+        const cy = (orb.y + Math.cos(t * orb.speed * 0.7 + i) * 0.15) * h;
+        const radius = orb.r * Math.min(w, h);
+
+        const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
+        grad.addColorStop(0, orb.color);
+        grad.addColorStop(1, 'rgba(255,255,255,0)');
+
+        ctx.beginPath();
+        ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+        ctx.fillStyle = grad;
+        ctx.fill();
+      });
+
+      animId = requestAnimationFrame(draw);
+    };
+
+    draw();
+
+    return () => {
+      cancelAnimationFrame(animId);
+      window.removeEventListener('resize', resize);
+    };
+  }, []);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      style={{
+        position: 'fixed',
+        inset: 0,
+        width: '100%',
+        height: '100%',
+        zIndex: 0,
+        pointerEvents: 'none',
+      }}
+    />
+  );
+};
+
+// Single countdown digit block
+const CountBlock: React.FC<{ value: number; label: string }> = ({ value, label }) => {
+  const displayValue = String(value).padStart(2, '0');
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
+      <div
+        style={{
+          position: 'relative',
+          width: 'clamp(80px, 18vw, 160px)',
+          height: 'clamp(90px, 20vw, 180px)',
+          background: 'rgba(255,255,255,0.65)',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+          border: '1px solid rgba(102,179,255,0.3)',
+          borderRadius: '20px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          boxShadow: '0 8px 40px rgba(66,153,225,0.12), inset 0 1px 0 rgba(255,255,255,0.8)',
+        }}
+      >
+        <span
+          style={{
+            fontFamily: '"Space Mono", "JetBrains Mono", monospace',
+            fontSize: 'clamp(36px, 9vw, 80px)',
+            fontWeight: 700,
+            color: '#0a1628',
+            letterSpacing: '-2px',
+            lineHeight: 1,
+          }}
+        >
+          {displayValue}
+        </span>
+      </div>
+      <span
+        style={{
+          fontFamily: '"Manrope", sans-serif',
+          fontSize: 'clamp(9px, 1.5vw, 13px)',
+          fontWeight: 600,
+          letterSpacing: '0.25em',
+          textTransform: 'uppercase',
+          color: '#3b82f6',
+        }}
+      >
+        {label}
+      </span>
+    </div>
+  );
+};
+
+const YouDecideStudio: React.FC = () => {
+  const [timeLeft, setTimeLeft] = useState<TimeLeft>(getTimeLeft());
+  const launched = timeLeft.days === 0 && timeLeft.hours === 0 && timeLeft.minutes === 0 && timeLeft.seconds === 0;
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimeLeft(getTimeLeft());
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <>
       <Helmet>
-        <title>youdecide.studio | The 404 Society</title>
-        <meta
-          name="description"
-          content="The official countdown to youdecide.studio by The 404 Society. Launching November 25, 2026."
-        />
-        <meta property="og:title" content="youdecide.studio | The 404 Society" />
-        <meta
-          property="og:description"
-          content="Something extraordinary is arriving on November 25, 2026."
+        <title>YouDecide Studio | The 404 Society</title>
+        <meta name="description" content="Something is coming. The 404 Society — YouDecide Studio." />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap"
+          rel="stylesheet"
         />
       </Helmet>
 
       <div
-        className="min-h-screen relative flex flex-col justify-between p-6 sm:p-12 overflow-hidden selection:bg-black selection:text-white"
         style={{
-          fontFamily: "'Manrope', -apple-system, BlinkMacSystemFont, sans-serif",
-          color: '#09090b',
+          position: 'relative',
+          minHeight: '100vh',
+          width: '100%',
+          overflow: 'hidden',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
         }}
       >
-        {/* Ambient Blue and White Liquid WebGL Shader Background */}
-        <AnimatedLiquidBackground
-          color1="#0c2340"
-          color2="#38bdf8"
-          color3="#ffffff"
-          speed={0.8}
-          scale={0.015}
-          swirl={0.55}
-          swirlIterations={14}
-          softness={0.52}
-          opacity={0.88}
-        />
+        <LiquidBackground />
 
-        {/* Subtle ambient light gradient mesh */}
+        {/* Content */}
         <div
-          className="absolute inset-0 pointer-events-none"
           style={{
-            background:
-              'radial-gradient(circle at 50% 20%, rgba(255, 255, 255, 0.7) 0%, transparent 65%), radial-gradient(circle at 80% 80%, rgba(56, 189, 248, 0.15) 0%, transparent 50%)',
+            position: 'relative',
             zIndex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 'clamp(32px, 6vh, 60px)',
+            padding: '40px 24px',
+            textAlign: 'center',
+            width: '100%',
           }}
-        />
-
-        {/* Top Header */}
-        <header className="relative z-10 w-full max-w-6xl mx-auto flex items-center justify-between pt-2">
-          <NavLink
-            to="/"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/70 backdrop-blur-md border border-black/10 text-xs font-mono font-bold uppercase tracking-widest text-black hover:bg-black hover:text-white transition-all shadow-sm group"
-          >
-            <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-1 transition-transform" />
-            <span>The 404 Society</span>
-          </NavLink>
-
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/60 backdrop-blur-md border border-black/10 font-mono text-xs font-bold tracking-wider text-black">
-            <span className="w-2 h-2 rounded-full bg-sky-500 animate-pulse" />
-            <span>NOV 25, 2026</span>
-          </div>
-        </header>
-
-        {/* Centerpiece Hero Container */}
-        <main className="relative z-10 w-full max-w-4xl mx-auto my-auto py-12 flex flex-col items-center text-center">
-          
-          {/* Studio Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/80 backdrop-blur-xl border border-black/10 shadow-[0_2px_12px_rgba(0,0,0,0.04)] mb-8">
-            <Sparkles className="w-3.5 h-3.5 text-sky-600" />
-            <span className="font-mono text-[11px] font-bold tracking-[2px] uppercase text-zinc-700">
-              youdecide.studio // Initiative
-            </span>
-          </div>
-
-          {/* Heading */}
-          <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter text-black leading-[0.95] mb-6">
-            The Countdown
-            <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-black via-zinc-800 to-sky-700">
-              Has Begun.
-            </span>
-          </h1>
-
-          <p className="text-base sm:text-xl text-zinc-600 max-w-2xl font-medium mb-12 sm:mb-16 leading-relaxed">
-            A new frontier of collaboration, design, and engineering is coming to life.
-            Mark your calendar for November 25, 2026.
-          </p>
-
-          {/* Frosted Glass Countdown Card */}
+        >
+          {/* Top badge */}
           <div
-            className="w-full max-w-3xl rounded-3xl p-8 sm:p-12 border border-black/10 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.12),0_4px_16px_rgba(0,0,0,0.04)]"
             style={{
-              background: 'rgba(255, 255, 255, 0.82)',
-              backdropFilter: 'blur(30px) saturate(180%)',
-              WebkitBackdropFilter: 'blur(30px) saturate(180%)',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              background: 'rgba(255,255,255,0.7)',
+              backdropFilter: 'blur(12px)',
+              border: '1px solid rgba(102,179,255,0.35)',
+              borderRadius: '100px',
+              padding: '8px 20px',
+              fontFamily: '"Manrope", sans-serif',
+              fontSize: '11px',
+              fontWeight: 700,
+              letterSpacing: '0.2em',
+              textTransform: 'uppercase',
+              color: '#3b82f6',
             }}
           >
-            <ProCountdown
-              targetDate={targetDate}
-              tint="#000000"
-              labelColor="#52525b"
-              fontSize={54}
-              gap={24}
-              showSeparators={true}
-              fontFamily="Space Mono"
+            <span
+              style={{
+                width: '6px',
+                height: '6px',
+                borderRadius: '50%',
+                background: '#3b82f6',
+                animation: 'pulse 2s infinite',
+              }}
             />
+            The 404 Society
           </div>
 
-          {/* Actions */}
-          <div className="mt-12 flex flex-wrap items-center justify-center gap-4">
-            <NavLink
-              to="/join"
-              className="px-7 py-3.5 rounded-xl bg-black text-white font-semibold text-sm hover:bg-zinc-800 transition-all shadow-[0_4px_16px_rgba(0,0,0,0.2)] hover:-translate-y-0.5 inline-flex items-center gap-2"
+          {/* Title */}
+          <div>
+            <h1
+              style={{
+                fontFamily: '"Manrope", sans-serif',
+                fontSize: 'clamp(36px, 9vw, 96px)',
+                fontWeight: 800,
+                color: '#0a1628',
+                letterSpacing: '-3px',
+                lineHeight: 0.95,
+                margin: 0,
+                textTransform: 'uppercase',
+              }}
             >
-              <span>Join The 404 Society</span>
-              <ExternalLink className="w-4 h-4" />
-            </NavLink>
-
-            <NavLink
-              to="/events"
-              className="px-7 py-3.5 rounded-xl bg-white/80 backdrop-blur-md text-black font-semibold text-sm border border-black/10 hover:bg-white transition-all shadow-sm hover:-translate-y-0.5 inline-flex items-center gap-2"
+              YouDecide
+            </h1>
+            <h2
+              style={{
+                fontFamily: '"Space Mono", monospace',
+                fontSize: 'clamp(14px, 3vw, 28px)',
+                fontWeight: 400,
+                color: '#3b82f6',
+                letterSpacing: '0.3em',
+                margin: '8px 0 0',
+                textTransform: 'uppercase',
+              }}
             >
-              <span>Explore Upcoming Events</span>
-            </NavLink>
+              .studio
+            </h2>
           </div>
-        </main>
 
-        {/* Footer */}
-        <footer className="relative z-10 w-full max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-black/5 text-xs text-zinc-500 font-mono">
-          <div>© 2026 The 404 Society. All rights reserved.</div>
-          <div className="flex items-center gap-4">
-            <span>PESITM Shivamogga</span>
-            <span>•</span>
-            <span className="text-black font-bold">youdecide.studio</span>
+          {/* Tagline */}
+          <p
+            style={{
+              fontFamily: '"Manrope", sans-serif',
+              fontSize: 'clamp(14px, 2.5vw, 20px)',
+              fontWeight: 500,
+              color: '#1e3a5f',
+              maxWidth: '540px',
+              lineHeight: 1.6,
+              margin: 0,
+              opacity: 0.75,
+            }}
+          >
+            {launched
+              ? 'We\'re live. Something remarkable begins now.'
+              : 'Something remarkable is on its way. The community decides what\'s next.'}
+          </p>
+
+          {/* Countdown */}
+          {!launched ? (
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'flex-start',
+                gap: 'clamp(8px, 3vw, 32px)',
+                flexWrap: 'wrap',
+                justifyContent: 'center',
+              }}
+            >
+              <CountBlock value={timeLeft.days} label="Days" />
+              <div
+                style={{
+                  fontFamily: '"Space Mono", monospace',
+                  fontSize: 'clamp(28px, 7vw, 72px)',
+                  fontWeight: 700,
+                  color: '#3b82f6',
+                  marginTop: 'clamp(20px, 4vw, 48px)',
+                  opacity: 0.6,
+                  animation: 'blink 1s step-end infinite',
+                }}
+              >
+                :
+              </div>
+              <CountBlock value={timeLeft.hours} label="Hours" />
+              <div
+                style={{
+                  fontFamily: '"Space Mono", monospace',
+                  fontSize: 'clamp(28px, 7vw, 72px)',
+                  fontWeight: 700,
+                  color: '#3b82f6',
+                  marginTop: 'clamp(20px, 4vw, 48px)',
+                  opacity: 0.6,
+                  animation: 'blink 1s step-end infinite',
+                }}
+              >
+                :
+              </div>
+              <CountBlock value={timeLeft.minutes} label="Minutes" />
+              <div
+                style={{
+                  fontFamily: '"Space Mono", monospace',
+                  fontSize: 'clamp(28px, 7vw, 72px)',
+                  fontWeight: 700,
+                  color: '#3b82f6',
+                  marginTop: 'clamp(20px, 4vw, 48px)',
+                  opacity: 0.6,
+                  animation: 'blink 1s step-end infinite',
+                }}
+              >
+                :
+              </div>
+              <CountBlock value={timeLeft.seconds} label="Seconds" />
+            </div>
+          ) : (
+            <div
+              style={{
+                fontFamily: '"Space Mono", monospace',
+                fontSize: 'clamp(24px, 6vw, 56px)',
+                fontWeight: 700,
+                color: '#3b82f6',
+                letterSpacing: '-1px',
+              }}
+            >
+              WE'RE LIVE 🚀
+            </div>
+          )}
+
+          {/* Target date label */}
+          <div
+            style={{
+              fontFamily: '"Space Mono", monospace',
+              fontSize: '11px',
+              letterSpacing: '0.3em',
+              color: '#3b82f6',
+              opacity: 0.5,
+              textTransform: 'uppercase',
+            }}
+          >
+            Launching 25 Nov 2026
           </div>
-        </footer>
+
+          {/* Footer */}
+          <div
+            style={{
+              position: 'fixed',
+              bottom: '28px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              fontFamily: '"Manrope", sans-serif',
+              fontSize: '11px',
+              fontWeight: 600,
+              letterSpacing: '0.15em',
+              color: '#3b82f6',
+              opacity: 0.4,
+              textTransform: 'uppercase',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            © 2026 The 404 Society
+          </div>
+        </div>
       </div>
+
+      <style>{`
+        @keyframes pulse {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50% { opacity: 0.5; transform: scale(0.85); }
+        }
+        @keyframes blink {
+          0%, 100% { opacity: 0.6; }
+          50% { opacity: 0.1; }
+        }
+        * { box-sizing: border-box; }
+      `}</style>
     </>
   );
 };
 
 export default YouDecideStudio;
-

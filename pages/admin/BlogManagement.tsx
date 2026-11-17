@@ -69,6 +69,10 @@ export const BlogManagement: React.FC = () => {
   };
 
   const handleDelete = async (id: string) => {
+    if (id.startsWith('hc-')) {
+      toast.error('Built-in blog posts cannot be deleted');
+      return;
+    }
     if (!window.confirm('Are you sure you want to delete this blog?')) return;
 
     try {

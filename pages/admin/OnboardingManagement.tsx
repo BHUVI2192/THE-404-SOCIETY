@@ -21,8 +21,6 @@ import {
   FileText
 } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
-import { generateMemberId } from '../../lib/memberIdService';
-import { saveApprovedMember } from '../../lib/members';
 
 export interface OnboardingApp {
   id: string;
@@ -117,51 +115,24 @@ export const OnboardingManagement: React.FC = () => {
   const handleUpdateStatus = async (id: string, newStatus: string) => {
     const updatingToast = toast.loading(`Updating status to ${newStatus.toUpperCase()}...`);
     try {
-      const targetApp = apps.find((a) => a.id === id);
-      let memberId = targetApp?.member_id;
-
-      if (newStatus === 'approved' && !memberId) {
-        memberId = await generateMemberId();
-      }
-
-      const updatePayload: Record<string, any> = {
-        status: newStatus,
-        updated_at: new Date().toISOString(),
-      };
-      if (memberId) {
-        updatePayload.member_id = memberId;
-      }
-
       const { error } = await supabase
         .from('onboarding_applications')
-        .update(updatePayload)
+        .update({ 
+          status: newStatus,
+          updated_at: new Date().toISOString()
+        })
         .eq('id', id);
 
       if (error) throw error;
 
-      if (newStatus === 'approved' && targetApp) {
-        await saveApprovedMember({
-          memberId: memberId || '404-2026-001',
-          name: targetApp.name,
-          email: targetApp.email,
-          contact: targetApp.contact,
-          college: targetApp.college,
-          year: targetApp.year,
-          interest: targetApp.interest,
-          skills: targetApp.skills,
-          social: targetApp.social,
-          reason: targetApp.reason,
-        });
-      }
-
       setApps((prev) =>
-        prev.map((app) => (app.id === id ? { ...app, status: newStatus, member_id: memberId || app.member_id } : app))
+        prev.map((app) => (app.id === id ? { ...app, status: newStatus } : app))
       );
       if (selectedApp && selectedApp.id === id) {
-        setSelectedApp({ ...selectedApp, status: newStatus, member_id: memberId || selectedApp.member_id });
+        setSelectedApp({ ...selectedApp, status: newStatus });
       }
 
-      toast.success(`Application marked as ${newStatus}${memberId ? ` (${memberId})` : ''}`, { id: updatingToast });
+      toast.success(`Application marked as ${newStatus}`, { id: updatingToast });
     } catch (err: any) {
       console.error('Status update failed:', err);
       toast.error(err.message || 'Failed to update status', { id: updatingToast });

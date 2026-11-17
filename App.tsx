@@ -9,12 +9,11 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Events from './pages/Events';
 import Join from './pages/Join';
-
-
 import Blog from './pages/Blog';
 import BlogDetail from './pages/BlogDetail';
 import NotFound from './pages/NotFound';
 import EventRegistration from './pages/EventRegistration';
+import YouDecideStudio from './pages/YouDecideStudio';
 
 // Admin Pages
 import { AdminLayout } from './components/admin/AdminLayout';
@@ -23,11 +22,10 @@ import { EventManagement } from './pages/admin/EventManagement';
 import { BlogManagement } from './pages/admin/BlogManagement';
 import { RegistrationManagement } from './pages/admin/RegistrationManagement';
 import { CommunityManagement } from './pages/admin/CommunityManagement';
-import { OnboardingManagement } from './pages/admin/OnboardingManagement';
 import { AdminSettings } from './pages/admin/Settings';
 import { AdminLogin } from './pages/admin/AdminLogin';
-import YouDecideStudio from './pages/YouDecideStudio';
 
+import Lenis from 'lenis';
 
 // Scroll to top helper
 const ScrollToTop = () => {
@@ -37,8 +35,6 @@ const ScrollToTop = () => {
   }, [pathname]);
   return null;
 };
-
-import Lenis from 'lenis';
 
 // Smooth Scroll Wrapper
 const SmoothScrolling = ({ children }: { children: React.ReactNode }) => {
@@ -89,33 +85,21 @@ const App: React.FC = () => {
               <Route path="blogs" element={<BlogManagement />} />
               <Route path="registrations" element={<RegistrationManagement />} />
               <Route path="community" element={<CommunityManagement />} />
-              <Route path="onboarding" element={<OnboardingManagement />} />
               <Route path="settings" element={<AdminSettings />} />
             </Route>
-
-            {/* Direct Minimalist Onboarding Portal */}
-            <Route path="/onboarding-admin" element={<OnboardingManagement />} />
-
-            {/* Special youdecide.studio Launch Countdown */}
-            <Route path="/youdecide.studio" element={<YouDecideStudio />} />
-            <Route path="/youdecide-studio" element={<YouDecideStudio />} />
-            <Route path="/youdecidestudio" element={<YouDecideStudio />} />
-            <Route path="/youdecide" element={<YouDecideStudio />} />
-            <Route path="/the404society/youdecide.studio" element={<YouDecideStudio />} />
-            <Route path="/the404society/youdecidestudio" element={<YouDecideStudio />} />
-            <Route path="/the-404-society/youdecide.studio" element={<YouDecideStudio />} />
-            <Route path="/the-404-society/youdecidestudio" element={<YouDecideStudio />} />
 
             {/* Pages with standard Layout */}
             <Route path="/" element={<Layout><Home /></Layout>} />
             <Route path="/about" element={<Layout><About /></Layout>} />
             <Route path="/events" element={<Layout><Events /></Layout>} />
             <Route path="/join" element={<Layout><Join /></Layout>} />
-
             <Route path="/blog" element={<Layout><Blog /></Layout>} />
             <Route path="/blog/:blogId" element={<Layout><BlogDetail /></Layout>} />
             <Route path="/register-event/:eventId" element={<Layout><EventRegistration /></Layout>} />
             <Route path="/events/:eventId/register" element={<Layout><EventRegistration /></Layout>} />
+
+            {/* Special Pages (No Layout) */}
+            <Route path="/youdecide.studio" element={<YouDecideStudio />} />
 
             {/* 404 Page (No Layout) */}
             <Route path="*" element={<NotFound />} />

@@ -368,7 +368,7 @@ export const EventManagement: React.FC = () => {
                             }}
                           />
                           <small style={{ color: '#888', marginTop: '4px', display: 'block' }}>
-                            Registration entry fee for attendees
+                            Amount will be charged via Razorpay gateway
                           </small>
                         </div>
 

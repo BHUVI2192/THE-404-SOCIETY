@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { subscribeToCommunityApps, updateCommunityApp, deleteCommunityApp, CommunityApp } from '../../lib/community_apps';
 import { generateMemberId, setMemberId, validateMemberId } from '../../lib/memberIdService';
-import { saveApprovedMember } from '../../lib/members';
+import { saveMember } from '../../lib/members';
 import {
   sendApplicationApprovedEmail,
   sendApplicationRejectedEmail
@@ -105,19 +105,23 @@ export const CommunityManagement: React.FC = () => {
         updatedAt: Date.now(),
       });
 
-      // Persist permanently to members database (Supabase + Firestore) for collaboration access
-      await saveApprovedMember({
-        memberId,
-        name: selectedApp.name,
-        email: selectedApp.email,
-        contact: selectedApp.contact,
-        college: selectedApp.college,
-        year: selectedApp.year,
-        interest: selectedApp.interest,
-        skills: selectedApp.skills,
-        social: selectedApp.social,
-        reason: selectedApp.reason,
-      });
+      // Store member in global members registry for future collaboration app
+      try {
+        await saveMember({
+          memberId,
+          name: selectedApp.name,
+          email: selectedApp.email,
+          social: selectedApp.social || null,
+          college: selectedApp.college,
+          year: selectedApp.year,
+          interest: selectedApp.interest,
+          approvedAt: Date.now(),
+          communityAppId: selectedApp.id,
+        });
+      } catch (memberErr) {
+        console.warn('[CommunityManagement] Failed to save to members registry:', memberErr);
+        // Non-fatal — approval still succeeds
+      }
 
       // Send approval email
       await sendApplicationApprovedEmail({

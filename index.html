@@ -176,20 +176,12 @@
 }
 </script>
 
-  <script>
-    // Handle SPA direct URL pathing when using HashRouter
-    (function () {
-      var path = window.location.pathname;
-      if (path && path !== '/' && !window.location.hash) {
-        window.location.replace('/#' + path);
-      }
-    })();
-  </script>
 </head>
 
 <body>
   <div id="root"></div>
   <script type="module" src="/index.tsx"></script>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </body>
 
 </html>
