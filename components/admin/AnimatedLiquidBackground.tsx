@@ -11,6 +11,11 @@ export interface LiquidBackgroundProps {
   swirlIterations?: number;
   softness?: number;
   distortion?: number;
+  shape?: number; // 0: Checks, 1: Stripes, 2: Edge
+  shapeScale?: number;
+  proportion?: number;
+  offset?: number;
+  opacity?: number;
   className?: string;
   style?: React.CSSProperties;
 }
@@ -22,6 +27,10 @@ void main() {
 }
 `;
 
+/**
+ * Exact Framer warpFragmentShader from AnimatedLiquidBackground-Prod
+ * Supports Checks (0), Stripes (1), Edge (2) with swirl & 3D perlin noise
+ */
 const warpFragmentShader = `#version 300 es
 precision highp float;
 
@@ -87,7 +96,7 @@ vec4 blend_colors(vec4 c1, vec4 c2, vec4 c3, float mixer, float edgesWidth, floa
 
 void main() {
   vec2 uv = gl_FragCoord.xy / u_resolution.xy;
-  float t = 0.4 * u_time;
+  float t = 0.5 * u_time;
   float noise_scale = 0.0005 + 0.006 * u_scale;
 
   uv -= 0.5;
@@ -102,20 +111,37 @@ void main() {
   uv.x += 4.0 * u_distortion * n2 * cos(angle);
   uv.y += 4.0 * u_distortion * n2 * sin(angle);
 
-  float iterations_number = ceil(clamp(u_swirlIterations, 1.0, 20.0));
+  float iterations_number = ceil(clamp(u_swirlIterations, 1.0, 30.0));
   for (float i = 1.0; i <= iterations_number; i++) {
     uv.x += clamp(u_swirl, 0.0, 2.0) / i * cos(t + i * 1.5 * uv.y);
     uv.y += clamp(u_swirl, 0.0, 2.0) / i * cos(t + i * 1.0 * uv.x);
   }
 
   float proportion = clamp(u_proportion, 0.0, 1.0);
-  float sh = 1.0 - uv.y;
-  sh -= 0.5;
-  sh /= (noise_scale * u_resolution.y);
-  sh += 0.5;
-  float shape_scaling = 0.2 * (1.0 - u_shapeScale);
-  float shape = smoothstep(0.45 - shape_scaling, 0.55 + shape_scaling, sh + 0.3 * (proportion - 0.5));
-  float mixer = shape;
+  float shape = 0.0;
+  float mixer = 0.0;
+
+  if (u_shape < 0.5) {
+    // Checks (Prism preset)
+    vec2 checks_shape_uv = uv * (0.5 + 3.5 * u_shapeScale);
+    shape = 0.5 + 0.5 * sin(checks_shape_uv.x) * cos(checks_shape_uv.y);
+    mixer = shape + 0.48 * sign(proportion - 0.5) * pow(abs(proportion - 0.5), 0.5);
+  } else if (u_shape < 1.5) {
+    // Stripes
+    vec2 stripes_shape_uv = uv * (0.25 + 3.0 * u_shapeScale);
+    float f = fract(stripes_shape_uv.y);
+    shape = smoothstep(0.0, 0.55, f) * smoothstep(1.0, 0.45, f);
+    mixer = shape + 0.48 * sign(proportion - 0.5) * pow(abs(proportion - 0.5), 0.5);
+  } else {
+    // Edge
+    float sh = 1.0 - uv.y;
+    sh -= 0.5;
+    sh /= (noise_scale * u_resolution.y);
+    sh += 0.5;
+    float shape_scaling = 0.2 * (1.0 - u_shapeScale);
+    shape = smoothstep(0.45 - shape_scaling, 0.55 + shape_scaling, sh + 0.3 * (proportion - 0.5));
+    mixer = shape;
+  }
 
   vec4 color_mix = blend_colors(u_color1, u_color2, u_color3, mixer, 1.0 - clamp(u_softness, 0.0, 1.0), 0.01 + 0.01 * u_scale);
   fragColor = vec4(color_mix.rgb, color_mix.a);
@@ -135,17 +161,32 @@ function hexToRgba(hex: string): [number, number, number, number] {
   ];
 }
 
+/**
+ * AnimatedLiquidBackground using the exact Framer Prism preset:
+ * - Color 1: #050505
+ * - Color 2: #66B3FF (Prism Cyan/Blue)
+ * - Color 3: #FFFFFF (Clean White)
+ * - Shape: Checks (0)
+ * - Rotation: -50 deg
+ * - Softness: 0.47
+ * - Swirl: 0.50 with 16 iterations
+ */
 export const AnimatedLiquidBackground: React.FC<LiquidBackgroundProps> = ({
-  color1 = '#f8fafc',
-  color2 = '#e2e8f0',
-  color3 = '#ffffff',
-  speed = 1.2,
-  scale = 0.8,
-  rotation = 0.2,
-  swirl = 0.45,
-  swirlIterations = 6,
-  softness = 1.0,
-  distortion = 0.12,
+  color1 = '#050505',
+  color2 = '#66B3FF',
+  color3 = '#FFFFFF',
+  speed = 1.0,
+  scale = 0.01,
+  rotation = -0.277, // -50 degrees in shader rotation units (-50/180)
+  swirl = 0.5,
+  swirlIterations = 16,
+  softness = 0.47,
+  distortion = 0.0,
+  shape = 0.0, // Checks
+  shapeScale = 0.45,
+  proportion = 0.01,
+  offset = -2990,
+  opacity = 0.85,
   className = '',
   style = {},
 }) => {
@@ -162,7 +203,6 @@ export const AnimatedLiquidBackground: React.FC<LiquidBackgroundProps> = ({
     const gl = canvas.getContext('webgl2', { alpha: true, antialias: true, depth: false });
     if (!gl) return;
 
-    // Compile Shader helper
     const createShader = (type: number, source: string) => {
       const shader = gl.createShader(type);
       if (!shader) return null;
@@ -197,105 +237,142 @@ export const AnimatedLiquidBackground: React.FC<LiquidBackgroundProps> = ({
     gl.deleteShader(vertShader);
     gl.deleteShader(fragShader);
 
-    // Setup Quad Buffer
+    // Quad Buffer
     const positionBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-    const positions = new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]);
-    gl.bufferData(gl.ARRAY_BUFFER, positions, gl.STATIC_DRAW);
+    gl.bufferData(
+      gl.ARRAY_BUFFER,
+      new Float32Array([
+        -1.0, -1.0,
+         1.0, -1.0,
+        -1.0,  1.0,
+        -1.0,  1.0,
+         1.0, -1.0,
+         1.0,  1.0,
+      ]),
+      gl.STATIC_DRAW
+    );
 
-    const posLoc = gl.getAttribLocation(program, 'a_position');
-    gl.enableVertexAttribArray(posLoc);
-    gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
+    const vao = gl.createVertexArray();
+    gl.bindVertexArray(vao);
+    gl.enableVertexAttribArray(0);
+    gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
 
-    // Uniform locations
-    const uTime = gl.getUniformLocation(program, 'u_time');
-    const uResolution = gl.getUniformLocation(program, 'u_resolution');
-    const uPixelRatio = gl.getUniformLocation(program, 'u_pixelRatio');
-    const uScale = gl.getUniformLocation(program, 'u_scale');
-    const uRotation = gl.getUniformLocation(program, 'u_rotation');
-    const uColor1 = gl.getUniformLocation(program, 'u_color1');
-    const uColor2 = gl.getUniformLocation(program, 'u_color2');
-    const uColor3 = gl.getUniformLocation(program, 'u_color3');
-    const uProportion = gl.getUniformLocation(program, 'u_proportion');
-    const uSoftness = gl.getUniformLocation(program, 'u_softness');
-    const uShape = gl.getUniformLocation(program, 'u_shape');
-    const uShapeScale = gl.getUniformLocation(program, 'u_shapeScale');
-    const uDistortion = gl.getUniformLocation(program, 'u_distortion');
-    const uSwirl = gl.getUniformLocation(program, 'u_swirl');
-    const uSwirlIterations = gl.getUniformLocation(program, 'u_swirlIterations');
+    // Get Uniform Locations
+    const uTimeLoc = gl.getUniformLocation(program, 'u_time');
+    const uPixelLoc = gl.getUniformLocation(program, 'u_pixelRatio');
+    const uResLoc = gl.getUniformLocation(program, 'u_resolution');
+    const uScaleLoc = gl.getUniformLocation(program, 'u_scale');
+    const uRotLoc = gl.getUniformLocation(program, 'u_rotation');
+    const uColor1Loc = gl.getUniformLocation(program, 'u_color1');
+    const uColor2Loc = gl.getUniformLocation(program, 'u_color2');
+    const uColor3Loc = gl.getUniformLocation(program, 'u_color3');
+    const uPropLoc = gl.getUniformLocation(program, 'u_proportion');
+    const uSoftLoc = gl.getUniformLocation(program, 'u_softness');
+    const uShapeLoc = gl.getUniformLocation(program, 'u_shape');
+    const uShapeScaleLoc = gl.getUniformLocation(program, 'u_shapeScale');
+    const uDistLoc = gl.getUniformLocation(program, 'u_distortion');
+    const uSwirlLoc = gl.getUniformLocation(program, 'u_swirl');
+    const uSwirlIterLoc = gl.getUniformLocation(program, 'u_swirlIterations');
 
-    let animationFrameId: number;
-    let startTime = performance.now();
+    let animationId: number;
+    let startTime = performance.now() + offset;
 
     const handleResize = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      const width = canvas.clientWidth * dpr;
-      const height = canvas.clientHeight * dpr;
-      if (canvas.width !== width || canvas.height !== height) {
-        canvas.width = width;
-        canvas.height = height;
-        gl.viewport(0, 0, width, height);
+      const width = canvas.clientWidth || window.innerWidth;
+      const height = canvas.clientHeight || window.innerHeight;
+
+      if (canvas.width !== width * dpr || canvas.height !== height * dpr) {
+        canvas.width = width * dpr;
+        canvas.height = height * dpr;
+        gl.viewport(0, 0, canvas.width, canvas.height);
       }
     };
 
+    window.addEventListener('resize', handleResize);
     handleResize();
-    const resizeObserver = new ResizeObserver(handleResize);
-    resizeObserver.observe(canvas);
 
     const render = (now: number) => {
       const elapsed = ((now - startTime) / 1000) * speed;
 
       gl.useProgram(program);
-      gl.uniform1f(uTime, elapsed);
-      gl.uniform2f(uResolution, canvas.width, canvas.height);
-      gl.uniform1f(uPixelRatio, Math.min(window.devicePixelRatio || 1, 2));
+      gl.bindVertexArray(vao);
 
-      gl.uniform1f(uScale, scale);
-      gl.uniform1f(uRotation, rotation);
-      gl.uniform4fv(uColor1, rgba1);
-      gl.uniform4fv(uColor2, rgba2);
-      gl.uniform4fv(uColor3, rgba3);
-      gl.uniform1f(uProportion, 0.45);
-      gl.uniform1f(uSoftness, softness);
-      gl.uniform1f(uShape, 2.0); // Edge shape for ambient wave/liquid
-      gl.uniform1f(uShapeScale, 0.5);
-      gl.uniform1f(uDistortion, distortion);
-      gl.uniform1f(uSwirl, swirl);
-      gl.uniform1f(uSwirlIterations, swirlIterations);
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      gl.uniform1f(uTimeLoc, elapsed);
+      gl.uniform1f(uPixelLoc, dpr);
+      gl.uniform2f(uResLoc, canvas.width, canvas.height);
+      gl.uniform1f(uScaleLoc, scale);
+      gl.uniform1f(uRotLoc, rotation);
+      gl.uniform4f(uColor1Loc, rgba1[0], rgba1[1], rgba1[2], rgba1[3]);
+      gl.uniform4f(uColor2Loc, rgba2[0], rgba2[1], rgba2[2], rgba2[3]);
+      gl.uniform4f(uColor3Loc, rgba3[0], rgba3[1], rgba3[2], rgba3[3]);
+      gl.uniform1f(uPropLoc, proportion);
+      gl.uniform1f(uSoftLoc, softness);
+      gl.uniform1f(uShapeLoc, shape);
+      gl.uniform1f(uShapeScaleLoc, shapeScale);
+      gl.uniform1f(uDistLoc, distortion);
+      gl.uniform1f(uSwirlLoc, swirl);
+      gl.uniform1f(uSwirlIterLoc, swirlIterations);
 
       gl.drawArrays(gl.TRIANGLES, 0, 6);
-      animationFrameId = requestAnimationFrame(render);
+      animationId = requestAnimationFrame(render);
     };
 
-    animationFrameId = requestAnimationFrame(render);
+    animationId = requestAnimationFrame(render);
 
     return () => {
-      cancelAnimationFrame(animationFrameId);
-      resizeObserver.disconnect();
-      if (gl) {
-        gl.deleteBuffer(positionBuffer);
-        gl.deleteProgram(program);
-      }
+      window.removeEventListener('resize', handleResize);
+      cancelAnimationFrame(animationId);
+      gl.deleteBuffer(positionBuffer);
+      gl.deleteVertexArray(vao);
+      gl.deleteProgram(program);
     };
-  }, [rgba1, rgba2, rgba3, speed, scale, rotation, swirl, swirlIterations, softness, distortion]);
+  }, [
+    rgba1,
+    rgba2,
+    rgba3,
+    speed,
+    scale,
+    rotation,
+    swirl,
+    swirlIterations,
+    softness,
+    distortion,
+    shape,
+    shapeScale,
+    proportion,
+    offset,
+  ]);
 
   return (
     <div
-      className={`pointer-events-none fixed inset-0 z-0 overflow-hidden ${className}`}
-      style={style}
-      aria-hidden="true"
+      className={`fixed inset-0 pointer-events-none ${className}`}
+      style={{
+        zIndex: 0,
+        overflow: 'hidden',
+        background: '#fafafa',
+        ...style,
+      }}
     >
       <canvas
         ref={canvasRef}
-        className="w-full h-full block opacity-90"
-        style={{ width: '100%', height: '100%' }}
+        style={{
+          width: '100%',
+          height: '100%',
+          display: 'block',
+          opacity: opacity,
+        }}
       />
-      {/* Ambient lighting gradient overlay for a polished white-and-black contrast */}
-      <div 
-        className="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-white/70 backdrop-blur-[1px]"
+      {/* Soft ambient overlay ensuring clean readability with the prism liquid below */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            'radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.75) 100%)',
+        }}
       />
     </div>
   );
 };
-
-export default AnimatedLiquidBackground;

@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { Bell, LogOut, Check, Sparkles } from "lucide-react";
 import { AnimatedLiquidBackground } from "./AnimatedLiquidBackground";
+import { subscribeToCommunityApps } from "../../lib/community_apps";
 import "./AdminLayout.css";
 
 const NAV_ITEMS = [
@@ -55,16 +57,6 @@ const NAV_ITEMS = [
     label: "Registrations",
   },
   {
-    to: "/admin/payments",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-        <rect x="1" y="4" width="22" height="16" rx="2" ry="2" />
-        <line x1="1" y1="10" x2="23" y2="10" />
-      </svg>
-    ),
-    label: "Payments",
-  },
-  {
     to: "/admin/community",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -75,17 +67,6 @@ const NAV_ITEMS = [
       </svg>
     ),
     label: "Community",
-  },
-  {
-    to: "/admin/onboarding",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-        <circle cx="9" cy="7" r="4" />
-        <polyline points="16 11 18 13 22 9" />
-      </svg>
-    ),
-    label: "Onboarding (SQL)",
   },
   {
     to: "/admin/settings",
@@ -102,8 +83,23 @@ const NAV_ITEMS = [
 export const AdminLayout: React.FC = () => {
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [notifOpen, setNotifOpen] = useState(false);
+  const [pendingCount, setPendingCount] = useState<number>(0);
 
-  React.useEffect(() => {
+  // Subscribe to community pending count
+  useEffect(() => {
+    try {
+      const unsubscribe = subscribeToCommunityApps((apps) => {
+        const pending = apps.filter((a) => a.status === "pending").length;
+        setPendingCount(pending);
+      });
+      return () => unsubscribe();
+    } catch {
+      // ignore
+    }
+  }, []);
+
+  useEffect(() => {
     const checkAuth = () => {
       const isAuthenticated = localStorage.getItem('adminAuth') === 'true';
       const authTimeStr = localStorage.getItem('adminAuthTime');
@@ -125,13 +121,9 @@ export const AdminLayout: React.FC = () => {
       }
     };
 
-    // Check immediately on mount
     checkAuth();
-
-    // Set up interval to check every minute
     const intervalId = setInterval(checkAuth, 60 * 1000);
 
-    // Throttle activity updates to at most once every 30 seconds
     let lastUpdate = Date.now();
     const updateActivity = () => {
       const now = Date.now();
@@ -141,7 +133,6 @@ export const AdminLayout: React.FC = () => {
       }
     };
 
-    // Listen for user activity
     const activityEvents = ['mousedown', 'keydown', 'scroll', 'touchstart'];
     activityEvents.forEach(event => {
       document.addEventListener(event, updateActivity, { passive: true });
@@ -157,7 +148,7 @@ export const AdminLayout: React.FC = () => {
 
   return (
     <div className="adm-root">
-      {/* ── Ambient White Liquid Gradient Background ── */}
+      {/* ── Framer Prism Animated Liquid Background ── */}
       <AnimatedLiquidBackground />
 
       {/* ── Sidebar (desktop) ── */}
@@ -180,6 +171,9 @@ export const AdminLayout: React.FC = () => {
             >
               <span className="adm-sidebar__icon">{item.icon}</span>
               <span className="adm-sidebar__label">{item.label}</span>
+              {item.label === "Community" && pendingCount > 0 && (
+                <span className="adm-sidebar__badge">{pendingCount}</span>
+              )}
             </NavLink>
           ))}
         </nav>
@@ -192,12 +186,8 @@ export const AdminLayout: React.FC = () => {
             navigate('/');
           }}
         >
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-            <polyline points="16 17 21 12 16 7" />
-            <line x1="21" y1="12" x2="9" y2="12" />
-          </svg>
-          Exit Admin
+          <LogOut className="w-4 h-4 text-white" strokeWidth={2.2} />
+          <span>Exit Admin</span>
         </button>
       </aside>
 
@@ -223,7 +213,60 @@ export const AdminLayout: React.FC = () => {
           <div className="adm-topbar__brand-mobile">
             <span className="adm-sidebar__logo">404</span>
           </div>
+          
           <div className="adm-topbar__right">
+            {/* Clean Pure-Black Notification Button with Pure-White Bell */}
+            <div style={{ position: "relative" }}>
+              <button
+                className="adm-topbar__notif-btn"
+                onClick={() => setNotifOpen(!notifOpen)}
+                title="Notifications"
+                aria-label="Notifications"
+              >
+                <Bell className="w-4 h-4 text-white" strokeWidth={2.2} />
+                {pendingCount > 0 && (
+                  <span className="adm-topbar__notif-badge">{pendingCount}</span>
+                )}
+              </button>
+
+              {/* Notification Popup Dropdown */}
+              {notifOpen && (
+                <div className="adm-topbar__notif-dropdown">
+                  <div className="adm-topbar__notif-header">
+                    <span style={{ fontWeight: 700, fontSize: "13px" }}>Notifications</span>
+                    <span style={{ fontSize: "11px", fontFamily: "var(--adm-font-mono)", opacity: 0.7 }}>
+                      {pendingCount} Pending
+                    </span>
+                  </div>
+                  <div className="adm-topbar__notif-body">
+                    {pendingCount > 0 ? (
+                      <div
+                        className="adm-topbar__notif-item"
+                        onClick={() => {
+                          setNotifOpen(false);
+                          navigate("/admin/community");
+                        }}
+                      >
+                        <div className="adm-topbar__notif-dot" />
+                        <div>
+                          <div style={{ fontWeight: 600, fontSize: "12.5px", color: "#000000" }}>
+                            {pendingCount} Pending Community Request{pendingCount > 1 ? "s" : ""}
+                          </div>
+                          <div style={{ fontSize: "11.5px", color: "#71717a" }}>
+                            Click to review and approve members
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div style={{ padding: "16px", textAlign: "center", fontSize: "12.5px", color: "#71717a" }}>
+                        All caught up! No pending requests.
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+
             <div className="adm-topbar__avatar">A</div>
             <span className="adm-topbar__admin-label">Admin</span>
           </div>
@@ -243,7 +286,7 @@ export const AdminLayout: React.FC = () => {
             to={item.to}
             end={item.end}
             className={({ isActive }) =>
-              `adm-bottomnav__item ${isActive ? "adm-bottomnav__item--active" : ""}`
+              `adm-bottomnav__link ${isActive ? "adm-bottomnav__link--active" : ""}`
             }
           >
             <span className="adm-bottomnav__icon">{item.icon}</span>

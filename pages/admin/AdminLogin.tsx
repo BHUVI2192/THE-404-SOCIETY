@@ -203,27 +203,36 @@ export const AdminLogin: React.FC = () => {
                         </button>
                     </form>
 
-                    {/* Footer link */}
+                    {/* Footer link button */}
                     <div className="mt-8 text-center pt-5 border-t border-black/5">
                         <button
                             onClick={() => navigate('/')}
                             style={{
-                                background: 'transparent',
-                                border: 'none',
-                                color: '#71717a',
+                                background: '#000000',
+                                border: '1px solid #000000',
+                                color: '#ffffff',
+                                borderRadius: '10px',
+                                padding: '9px 16px',
                                 fontSize: '13px',
                                 fontWeight: 600,
                                 cursor: 'pointer',
                                 display: 'inline-flex',
                                 alignItems: 'center',
-                                gap: '6px',
-                                transition: 'color 0.2s ease',
+                                gap: '8px',
+                                transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
+                                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
                             }}
-                            onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = '#000000')}
-                            onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = '#71717a')}
+                            onMouseEnter={(e) => {
+                                (e.currentTarget as HTMLButtonElement).style.background = '#27272a';
+                                (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(-1px)';
+                            }}
+                            onMouseLeave={(e) => {
+                                (e.currentTarget as HTMLButtonElement).style.background = '#000000';
+                                (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(0)';
+                            }}
                         >
-                            <ArrowLeft className="w-3.5 h-3.5" />
-                            Return to public site
+                            <ArrowLeft className="w-3.5 h-3.5 text-white" strokeWidth={2.2} />
+                            <span>Return to public site</span>
                         </button>
                     </div>
                 </div>

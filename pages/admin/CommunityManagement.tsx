@@ -474,12 +474,13 @@ export const CommunityManagement: React.FC = () => {
           padding: '20px',
         }}>
           <div style={{
-            background: 'var(--adm-bg-primary)',
-            borderRadius: '12px',
-            padding: '24px',
+            background: '#ffffff',
+            borderRadius: '16px',
+            border: '1px solid rgba(0, 0, 0, 0.1)',
+            padding: '28px',
             maxWidth: '500px',
             width: '100%',
-            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
+            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
           }}>
             <h2 style={{ fontSize: '18px', fontWeight: '700', color: 'var(--adm-text)', marginBottom: '4px' }}>
               {actionType === 'approve' ? '✅ Approve Application' : '❌ Reject Application'}
@@ -503,12 +504,12 @@ export const CommunityManagement: React.FC = () => {
                     style={{
                       width: '100%',
                       padding: '10px 12px',
-                      border: '1px solid var(--adm-border)',
                       borderRadius: '6px',
                       fontSize: '13px',
                       fontFamily: 'monospace',
-                      color: 'var(--adm-text)',
-                      background: 'var(--adm-bg-secondary)',
+                      color: '#000000',
+                      background: '#ffffff',
+                      border: '1px solid rgba(0, 0, 0, 0.15)',
                       boxSizing: 'border-box',
                     }}
                   />
@@ -529,11 +530,11 @@ export const CommunityManagement: React.FC = () => {
                     style={{
                       width: '100%',
                       padding: '10px 12px',
-                      border: '1px solid var(--adm-border)',
                       borderRadius: '6px',
                       fontSize: '13px',
-                      color: 'var(--adm-text)',
-                      background: 'var(--adm-bg-secondary)',
+                      color: '#000000',
+                      background: '#ffffff',
+                      border: '1px solid rgba(0, 0, 0, 0.15)',
                       boxSizing: 'border-box',
                     }}
                   />
@@ -558,11 +559,11 @@ export const CommunityManagement: React.FC = () => {
                     style={{
                       width: '100%',
                       padding: '10px 12px',
-                      border: '1px solid var(--adm-border)',
                       borderRadius: '6px',
                       fontSize: '13px',
-                      color: 'var(--adm-text)',
-                      background: 'var(--adm-bg-secondary)',
+                      color: '#000000',
+                      background: '#ffffff',
+                      border: '1px solid rgba(0, 0, 0, 0.15)',
                       boxSizing: 'border-box',
                       minHeight: '80px',
                       resize: 'vertical'
