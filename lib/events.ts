@@ -1,169 +1,133 @@
-import { collection, getDocs, doc, getDoc, addDoc, updateDoc, deleteDoc, query, orderBy, onSnapshot } from "firebase/firestore";
-import { db } from "./firebase";
-import { EventPricing } from "../types";
+/**
+ * lib/events.ts — Events data layer (Supabase only)
+ */
+import { supabase } from './supabase';
+import { EventPricing } from '../types';
 
 export interface EventData {
-    id?: string;
-    title: string;
-    date: string;
-    year: string;
-    location: string;
-    img: string;
-    status: "open" | "locked";
-    category?: string;
-    description?: string;
-    pricing?: EventPricing;
-    maxRegistrations?: number;
-    whatsappLink?: string;
-    createdAt?: number;
+  id?: string;
+  title: string;
+  date: string;
+  year: string;
+  location: string;
+  img: string;
+  status: 'open' | 'locked';
+  category?: string;
+  description?: string;
+  pricing?: EventPricing;
+  maxRegistrations?: number;
+  whatsappLink?: string;
+  createdAt?: number;
 }
 
-const EVENTS_COLLECTION = "nexus_events";
+// Map Supabase snake_case row → camelCase EventData
+const fromRow = (row: any): EventData => ({
+  id: row.id,
+  title: row.title,
+  date: row.date,
+  year: row.year,
+  location: row.location,
+  img: row.img,
+  status: row.status,
+  category: row.category ?? undefined,
+  description: row.description ?? undefined,
+  pricing: row.pricing ?? undefined,
+  maxRegistrations: row.max_registrations ?? undefined,
+  whatsappLink: row.whatsapp_link ?? undefined,
+  createdAt: row.created_at,
+});
 
-export const getEvents = async (): Promise<EventData[]> => {
-    try {
-        const eventsRef = collection(db, EVENTS_COLLECTION);
-        const q = query(eventsRef, orderBy("createdAt", "desc"));
-        const snapshot = await getDocs(q);
-        return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as EventData));
-    } catch (e) {
-        console.error("Error getting events:", e);
-        return [];
-    }
+// Map EventData → Supabase insert/update payload
+const toRow = (e: Partial<EventData>) => {
+  const row: any = {};
+  if (e.title !== undefined) row.title = e.title;
+  if (e.date !== undefined) row.date = e.date;
+  if (e.year !== undefined) row.year = e.year;
+  if (e.location !== undefined) row.location = e.location;
+  if (e.img !== undefined) row.img = e.img;
+  if (e.status !== undefined) row.status = e.status;
+  if (e.category !== undefined) row.category = e.category;
+  if (e.description !== undefined) row.description = e.description;
+  if (e.pricing !== undefined) row.pricing = e.pricing;
+  if (e.maxRegistrations !== undefined) row.max_registrations = e.maxRegistrations;
+  if (e.whatsappLink !== undefined) row.whatsapp_link = e.whatsappLink;
+  return row;
 };
 
-export const subscribeToEvents = (callback: (events: EventData[]) => void) => {
-    const eventsRef = collection(db, EVENTS_COLLECTION);
-    const q = query(eventsRef, orderBy("createdAt", "desc"));
-    return onSnapshot(q, (snapshot) => {
-        const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as EventData));
-        callback(data);
-    }, (error) => {
-        console.error("Error subscribing to events:", error);
-        callback([]);
-    });
+export const getEvents = async (): Promise<EventData[]> => {
+  const { data, error } = await supabase
+    .from('events')
+    .select('*')
+    .order('created_at', { ascending: false });
+  if (error) { console.error('getEvents error:', error); return []; }
+  return (data || []).map(fromRow);
+};
+
+export const subscribeToEvents = (callback: (events: EventData[]) => void): (() => void) => {
+  // Initial fetch
+  getEvents().then(callback);
+  // Realtime subscription
+  const channel = supabase
+    .channel('events_changes')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'events' }, () => {
+      getEvents().then(callback);
+    })
+    .subscribe();
+  return () => { supabase.removeChannel(channel); };
 };
 
 export const getEventById = async (id: string): Promise<EventData | null> => {
-    try {
-        const docRef = doc(db, EVENTS_COLLECTION, id);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-            return { id: docSnap.id, ...docSnap.data() } as EventData;
-        }
-        return null;
-    } catch (e) {
-        console.error("Error getting event by id:", e);
-        return null;
-    }
+  const { data, error } = await supabase
+    .from('events')
+    .select('*')
+    .eq('id', id)
+    .single();
+  if (error || !data) return null;
+  return fromRow(data);
 };
 
-/**
- * Remove undefined fields from an object (Firestore doesn't accept undefined)
- */
-const cleanUndefinedFields = (obj: any): any => {
-    if (obj === null || obj === undefined) {
-        return obj;
-    }
-    
-    if (Array.isArray(obj)) {
-        return obj.map(item => cleanUndefinedFields(item));
-    }
-    
-    if (typeof obj === 'object') {
-        const cleaned: any = {};
-        for (const [key, value] of Object.entries(obj)) {
-            if (value !== undefined) {
-                cleaned[key] = cleanUndefinedFields(value);
-            }
-        }
-        return cleaned;
-    }
-    
-    return obj;
+export const addEvent = async (event: Omit<EventData, 'id'>): Promise<string | null> => {
+  const { data, error } = await supabase
+    .from('events')
+    .insert([{ ...toRow(event), created_at: Date.now() }])
+    .select('id')
+    .single();
+  if (error) { console.error('addEvent error:', error); return null; }
+  return data?.id ?? null;
 };
 
-export const addEvent = async (event: Omit<EventData, "id">) => {
-    try {
-        const eventsRef = collection(db, EVENTS_COLLECTION);
-        const newEvent = cleanUndefinedFields({ ...event, createdAt: Date.now() });
-        const docRef = await addDoc(eventsRef, newEvent);
-        return docRef.id;
-    } catch (e) {
-        console.error("Error adding event:", e);
-        return null;
-    }
+export const updateEvent = async (id: string, data: Partial<EventData>): Promise<void> => {
+  const { error } = await supabase.from('events').update(toRow(data)).eq('id', id);
+  if (error) console.error('updateEvent error:', error);
 };
 
-export const updateEvent = async (id: string, data: Partial<EventData>) => {
-    try {
-        const docRef = doc(db, EVENTS_COLLECTION, id);
-        const cleanedData = cleanUndefinedFields(data);
-        await updateDoc(docRef, cleanedData);
-    } catch (e) {
-        console.error("Error updating event:", e);
-    }
+export const deleteEvent = async (id: string): Promise<void> => {
+  const { error } = await supabase.from('events').delete().eq('id', id);
+  if (error) console.error('deleteEvent error:', error);
 };
 
-export const deleteEvent = async (id: string) => {
-    try {
-        const docRef = doc(db, EVENTS_COLLECTION, id);
-        await deleteDoc(docRef);
-    } catch (e) {
-        console.error("Error deleting event:", e);
-    }
-};
+// ── Pricing helpers (unchanged logic) ──────────────────────
+export const isEventFree = (event: EventData): boolean =>
+  event.pricing?.isFree !== false;
 
-/**
- * Check if an event is free
- */
-export const isEventFree = (event: EventData): boolean => {
-    return event.pricing?.isFree !== false;
-};
-
-/**
- * Get effective price for an event (considering early bird discount)
- */
 export const getEffectivePrice = (event: EventData): number => {
-    if (!event.pricing || event.pricing.isFree) {
-        return 0;
-    }
-
-    const baseAmount = event.pricing.amount;
-    
-    // Check early bird discount
-    if (event.pricing.earlyBirdDiscount?.enabled) {
-        const validUntil = new Date(event.pricing.earlyBirdDiscount.validUntil);
-        const now = new Date();
-        
-        if (now <= validUntil) {
-            const discount = event.pricing.earlyBirdDiscount.discountPercent;
-            return Math.round(baseAmount * (1 - discount / 100));
-        }
-    }
-    
-    return baseAmount;
-};
-
-/**
- * Format price for display
- */
-export const formatPrice = (amountInPaise: number): string => {
-    const rupees = amountInPaise / 100;
-    return `₹${rupees.toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`;
-};
-
-/**
- * Check if early bird discount is active
- */
-export const isEarlyBirdActive = (event: EventData): boolean => {
-    if (!event.pricing?.earlyBirdDiscount?.enabled) {
-        return false;
-    }
-    
+  if (!event.pricing || event.pricing.isFree) return 0;
+  const baseAmount = event.pricing.amount;
+  if (event.pricing.earlyBirdDiscount?.enabled) {
     const validUntil = new Date(event.pricing.earlyBirdDiscount.validUntil);
-    const now = new Date();
-    
-    return now <= validUntil;
+    if (new Date() <= validUntil) {
+      return Math.round(baseAmount * (1 - event.pricing.earlyBirdDiscount.discountPercent / 100));
+    }
+  }
+  return baseAmount;
 };
 
+export const formatPrice = (amountInPaise: number): string => {
+  const rupees = amountInPaise / 100;
+  return `₹${rupees.toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`;
+};
+
+export const isEarlyBirdActive = (event: EventData): boolean => {
+  if (!event.pricing?.earlyBirdDiscount?.enabled) return false;
+  return new Date() <= new Date(event.pricing.earlyBirdDiscount.validUntil);
+};

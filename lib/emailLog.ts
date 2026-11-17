@@ -1,8 +1,20 @@
-import { collection, doc, getDocs, addDoc, query, orderBy, limit, where, deleteDoc } from "firebase/firestore";
-import { db } from "./firebase";
-import { EmailLog } from "../types";
+/**
+ * lib/emailLog.ts — Email audit logs (Supabase only)
+ * Table: email_logs
+ */
+import { supabase } from './supabase';
+import { EmailLog } from '../types';
 
-const EMAIL_LOG_COLLECTION = "nexus_email_logs";
+const fromRow = (row: any): EmailLog => ({
+  id: row.id,
+  recipientEmail: row.recipient_email,
+  recipientName: row.recipient_name,
+  trigger: row.trigger,
+  subject: row.subject,
+  status: row.status,
+  error: row.error ?? undefined,
+  timestamp: row.timestamp,
+});
 
 export const logEmail = async (
   recipientEmail: string,
@@ -12,77 +24,53 @@ export const logEmail = async (
   status: 'sent' | 'failed' = 'sent',
   error?: string
 ): Promise<void> => {
-  try {
-    const logsRef = collection(db, EMAIL_LOG_COLLECTION);
-    const newLog = {
-      recipientEmail,
-      recipientName,
-      trigger,
-      subject,
-      status,
-      error: error || null,
-      timestamp: Date.now(),
-    };
-    await addDoc(logsRef, newLog);
-  } catch (err) {
-    console.error("Error logging email:", err);
-  }
+  const { error: dbError } = await supabase.from('email_logs').insert([{
+    recipient_email: recipientEmail,
+    recipient_name: recipientName,
+    trigger,
+    subject,
+    status,
+    error: error || null,
+    timestamp: Date.now(),
+  }]);
+  if (dbError) console.error('logEmail error:', dbError);
 };
 
 export const getEmailLogs = async (limitCount?: number): Promise<EmailLog[]> => {
-  try {
-    const logsRef = collection(db, EMAIL_LOG_COLLECTION);
-    let q = query(logsRef, orderBy("timestamp", "desc"));
-    if (limitCount) {
-      q = query(logsRef, orderBy("timestamp", "desc"), limit(limitCount));
-    }
-    const snapshot = await getDocs(q);
-    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as EmailLog));
-  } catch (error) {
-    console.error("Error getting email logs:", error);
-    return [];
-  }
+  let query = supabase.from('email_logs').select('*').order('timestamp', { ascending: false });
+  if (limitCount) query = query.limit(limitCount);
+  const { data, error } = await query;
+  if (error) { console.error('getEmailLogs error:', error); return []; }
+  return (data || []).map(fromRow);
 };
 
 export const getEmailLogsByTrigger = async (trigger: string): Promise<EmailLog[]> => {
-  try {
-    const logsRef = collection(db, EMAIL_LOG_COLLECTION);
-    const q = query(logsRef, where("trigger", "==", trigger), orderBy("timestamp", "desc"));
-    const snapshot = await getDocs(q);
-    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as EmailLog));
-  } catch (error) {
-    console.error("Error getting email logs by trigger:", error);
-    return [];
-  }
+  const { data, error } = await supabase
+    .from('email_logs')
+    .select('*')
+    .eq('trigger', trigger)
+    .order('timestamp', { ascending: false });
+  if (error) { console.error('getEmailLogsByTrigger error:', error); return []; }
+  return (data || []).map(fromRow);
 };
 
 export const getEmailLogsByRecipient = async (email: string): Promise<EmailLog[]> => {
-  try {
-    const logsRef = collection(db, EMAIL_LOG_COLLECTION);
-    const q = query(logsRef, where("recipientEmail", "==", email), orderBy("timestamp", "desc"));
-    const snapshot = await getDocs(q);
-    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as EmailLog));
-  } catch (error) {
-    console.error("Error getting email logs by recipient:", error);
-    return [];
-  }
+  const { data, error } = await supabase
+    .from('email_logs')
+    .select('*')
+    .eq('recipient_email', email)
+    .order('timestamp', { ascending: false });
+  if (error) { console.error('getEmailLogsByRecipient error:', error); return []; }
+  return (data || []).map(fromRow);
 };
 
-export const clearOldLogs = async (daysOld: number = 90): Promise<number> => {
-  try {
-    const logsRef = collection(db, EMAIL_LOG_COLLECTION);
-    const cutoffTime = Date.now() - daysOld * 24 * 60 * 60 * 1000;
-    const q = query(logsRef, where("timestamp", "<", cutoffTime));
-    const snapshot = await getDocs(q);
-
-    let deletedCount = 0;
-    for (const document of snapshot.docs) {
-      await deleteDoc(doc(db, EMAIL_LOG_COLLECTION, document.id));
-      deletedCount++;
-    }
-    return deletedCount;
-  } catch (error) {
-    console.error("Error clearing old logs:", error);
-    return 0;
-  }
+export const clearOldLogs = async (daysOld = 90): Promise<number> => {
+  const cutoffTime = Date.now() - daysOld * 24 * 60 * 60 * 1000;
+  const { data, error } = await supabase
+    .from('email_logs')
+    .delete()
+    .lt('timestamp', cutoffTime)
+    .select('id');
+  if (error) { console.error('clearOldLogs error:', error); return 0; }
+  return data?.length ?? 0;
 };

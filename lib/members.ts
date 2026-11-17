@@ -1,77 +1,83 @@
 /**
- * lib/members.ts
- * Member registry — stores approved community members for use
- * in the future project collaboration app.
+ * lib/members.ts — Members registry (Supabase only)
+ * Table: members
+ * Used by community approval flow + future project collaboration app.
  */
-
-import {
-  collection,
-  addDoc,
-  getDocs,
-  query,
-  where,
-  orderBy,
-  limit,
-  DocumentData,
-  QuerySnapshot,
-} from 'firebase/firestore';
-import { db } from './firebase';
-
-const MEMBERS_COLLECTION = 'members';
+import { supabase } from './supabase';
 
 export interface Member {
-  id?: string;          // Firestore doc ID
+  id?: string;
   memberId: string;     // 404-YYYY-NNN format
   name: string;
   email: string;
-  social?: string | null;   // LinkedIn / portfolio URL
+  social?: string | null;
   college?: string;
   year?: string;
   interest?: string;
-  approvedAt: number;   // Unix timestamp ms
-  communityAppId?: string; // Reference back to nexus_community_applications doc
+  approvedAt: number;
+  communityAppId?: string;
 }
 
-/**
- * Save an approved member to the members registry.
- * Called by CommunityManagement after approval.
- */
+const fromRow = (row: any): Member => ({
+  id: row.id,
+  memberId: row.member_id,
+  name: row.name,
+  email: row.email,
+  social: row.social ?? null,
+  college: row.college ?? undefined,
+  year: row.year ?? undefined,
+  interest: row.interest ?? undefined,
+  approvedAt: row.approved_at,
+  communityAppId: row.community_app_id ?? undefined,
+});
+
 export async function saveMember(member: Omit<Member, 'id'>): Promise<string> {
-  const docRef = await addDoc(collection(db, MEMBERS_COLLECTION), member);
-  console.log(`[members] Saved member ${member.memberId} → Firestore id: ${docRef.id}`);
-  return docRef.id;
+  const { data, error } = await supabase
+    .from('members')
+    .insert([{
+      member_id: member.memberId,
+      name: member.name,
+      email: member.email,
+      social: member.social ?? null,
+      college: member.college ?? null,
+      year: member.year ?? null,
+      interest: member.interest ?? null,
+      approved_at: member.approvedAt,
+      community_app_id: member.communityAppId ?? null,
+    }])
+    .select('id')
+    .single();
+  if (error) {
+    console.error('[members] saveMember error:', error);
+    throw error;
+  }
+  console.log(`[members] Saved member ${member.memberId} → Supabase id: ${data.id}`);
+  return data.id;
 }
 
-/**
- * Get all members, ordered by approval date (newest first).
- */
 export async function getMembers(): Promise<Member[]> {
-  const snap: QuerySnapshot<DocumentData> = await getDocs(
-    query(collection(db, MEMBERS_COLLECTION), orderBy('approvedAt', 'desc'))
-  );
-  return snap.docs.map(doc => ({ id: doc.id, ...doc.data() } as Member));
+  const { data, error } = await supabase
+    .from('members')
+    .select('*')
+    .order('approved_at', { ascending: false });
+  if (error) { console.error('[members] getMembers error:', error); return []; }
+  return (data || []).map(fromRow);
 }
 
-/**
- * Find a member by their member ID (404-YYYY-NNN).
- */
 export async function getMemberByMemberId(memberId: string): Promise<Member | null> {
-  const snap = await getDocs(
-    query(collection(db, MEMBERS_COLLECTION), where('memberId', '==', memberId), limit(1))
-  );
-  if (snap.empty) return null;
-  const doc = snap.docs[0];
-  return { id: doc.id, ...doc.data() } as Member;
+  const { data } = await supabase
+    .from('members')
+    .select('*')
+    .eq('member_id', memberId)
+    .single();
+  return data ? fromRow(data) : null;
 }
 
-/**
- * Find a member by their email address.
- */
 export async function getMemberByEmail(email: string): Promise<Member | null> {
-  const snap = await getDocs(
-    query(collection(db, MEMBERS_COLLECTION), where('email', '==', email), limit(1))
-  );
-  if (snap.empty) return null;
-  const doc = snap.docs[0];
-  return { id: doc.id, ...doc.data() } as Member;
+  const { data } = await supabase
+    .from('members')
+    .select('*')
+    .eq('email', email)
+    .single();
+  return data ? fromRow(data) : null;
 }

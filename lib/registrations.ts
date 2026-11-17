@@ -1,127 +1,122 @@
-import { collection, getDocs, doc, getDoc, deleteDoc, addDoc, query, orderBy, onSnapshot, updateDoc, where, limit } from "firebase/firestore";
-import { db } from "./firebase";
+/**
+ * lib/registrations.ts — Event Registrations (Supabase only)
+ * Table: registrations
+ */
+import { supabase } from './supabase';
 
 export interface Registration {
-    id?: string;
-    eventId: string;
-    eventTitle: string;
-    name: string;
-    email: string;
-    studentId?: string;
-    phone?: string;
-    branch?: string;
-    year?: string;
-    teamName?: string;
-    paymentStatus?: 'not_required' | 'pending' | 'completed' | 'failed';
-    paymentId?: string;
-    amountPaid?: number; // in paise
-    createdAt?: number;
+  id?: string;
+  eventId: string;
+  eventTitle: string;
+  name: string;
+  email: string;
+  studentId?: string;
+  phone?: string;
+  branch?: string;
+  year?: string;
+  teamName?: string;
+  paymentStatus?: 'not_required' | 'pending' | 'completed' | 'failed';
+  paymentId?: string;
+  amountPaid?: number;
+  createdAt?: number;
 }
 
-const REG_COLLECTION = "nexus_registrations";
+const fromRow = (row: any): Registration => ({
+  id: row.id,
+  eventId: row.event_id,
+  eventTitle: row.event_title,
+  name: row.name,
+  email: row.email,
+  studentId: row.student_id ?? undefined,
+  phone: row.phone ?? undefined,
+  branch: row.branch ?? undefined,
+  year: row.year ?? undefined,
+  teamName: row.team_name ?? undefined,
+  paymentStatus: row.payment_status ?? 'not_required',
+  paymentId: row.payment_id ?? undefined,
+  amountPaid: row.amount_paid ?? undefined,
+  createdAt: row.created_at,
+});
+
+const toRow = (r: Partial<Registration>) => {
+  const row: any = {};
+  if (r.eventId !== undefined) row.event_id = r.eventId;
+  if (r.eventTitle !== undefined) row.event_title = r.eventTitle;
+  if (r.name !== undefined) row.name = r.name;
+  if (r.email !== undefined) row.email = r.email;
+  if (r.studentId !== undefined) row.student_id = r.studentId;
+  if (r.phone !== undefined) row.phone = r.phone;
+  if (r.branch !== undefined) row.branch = r.branch;
+  if (r.year !== undefined) row.year = r.year;
+  if (r.teamName !== undefined) row.team_name = r.teamName;
+  if (r.paymentStatus !== undefined) row.payment_status = r.paymentStatus;
+  if (r.paymentId !== undefined) row.payment_id = r.paymentId;
+  if (r.amountPaid !== undefined) row.amount_paid = r.amountPaid;
+  return row;
+};
 
 /** Returns true if (email + eventId) already has a registration */
 export const checkDuplicateRegistration = async (email: string, eventId: string): Promise<boolean> => {
-    try {
-        const regsRef = collection(db, REG_COLLECTION);
-        const q = query(regsRef, where("email", "==", email.trim().toLowerCase()), where("eventId", "==", eventId), limit(1));
-        const snapshot = await getDocs(q);
-        return !snapshot.empty;
-    } catch {
-        return false; // fail open — don't block if Firestore check fails
-    }
+  const { data } = await supabase
+    .from('registrations')
+    .select('id')
+    .eq('email', email.trim().toLowerCase())
+    .eq('event_id', eventId)
+    .limit(1);
+  return (data?.length ?? 0) > 0;
 };
 
 export const getRegistrations = async (): Promise<Registration[]> => {
-    try {
-        const regsRef = collection(db, REG_COLLECTION);
-        const q = query(regsRef, orderBy("createdAt", "desc"));
-        const snapshot = await getDocs(q);
-        return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Registration));
-    } catch (error) {
-        console.error("Error getting registrations:", error);
-        return [];
-    }
+  const { data, error } = await supabase
+    .from('registrations')
+    .select('*')
+    .order('created_at', { ascending: false });
+  if (error) { console.error('getRegistrations error:', error); return []; }
+  return (data || []).map(fromRow);
 };
 
-export const subscribeToRegistrations = (callback: (regs: Registration[]) => void) => {
-    const regsRef = collection(db, REG_COLLECTION);
-    const q = query(regsRef, orderBy("createdAt", "desc"));
-    return onSnapshot(q, (snapshot) => {
-        const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Registration));
-        callback(data);
-    }, (error) => {
-        console.error("Error subscribing to registrations:", error);
-        callback([]);
-    });
+export const subscribeToRegistrations = (callback: (regs: Registration[]) => void): (() => void) => {
+  getRegistrations().then(callback);
+  const channel = supabase
+    .channel('registrations_changes')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'registrations' }, () => {
+      getRegistrations().then(callback);
+    })
+    .subscribe();
+  return () => { supabase.removeChannel(channel); };
 };
 
 export const saveRegistration = async (reg: Omit<Registration, 'id'>) => {
-    try {
-        const regsRef = collection(db, REG_COLLECTION);
-        const newReg = { ...reg, email: reg.email?.trim().toLowerCase(), createdAt: Date.now() };
-        const docRef = await addDoc(regsRef, newReg);
-        return { id: docRef.id };
-    } catch (error) {
-        console.error("Error saving registration:", error);
-    }
+  const { data, error } = await supabase
+    .from('registrations')
+    .insert([{ ...toRow(reg), email: reg.email?.trim().toLowerCase(), created_at: Date.now() }])
+    .select('id')
+    .single();
+  if (error) { console.error('saveRegistration error:', error); throw error; }
+  return { id: data.id };
 };
 
-export const deleteRegistration = async (id: string) => {
-    try {
-        const docRef = doc(db, REG_COLLECTION, id);
-        await deleteDoc(docRef);
-    } catch (error) {
-        console.error("Error deleting registration:", error);
-    }
+export const deleteRegistration = async (id: string): Promise<void> => {
+  const { error } = await supabase.from('registrations').delete().eq('id', id);
+  if (error) console.error('deleteRegistration error:', error);
 };
 
-/**
- * Update registration payment status
- */
 export const updateRegistrationPayment = async (
-    registrationId: string,
-    paymentStatus: Registration['paymentStatus'],
-    paymentId?: string,
-    amountPaid?: number
-) => {
-    try {
-        const docRef = doc(db, REG_COLLECTION, registrationId);
-        const updateData: Partial<Registration> = {
-            paymentStatus
-        };
-        
-        if (paymentId) {
-            updateData.paymentId = paymentId;
-        }
-        
-        if (amountPaid !== undefined) {
-            updateData.amountPaid = amountPaid;
-        }
-        
-        await updateDoc(docRef, updateData);
-        return true;
-    } catch (error) {
-        console.error("Error updating registration payment:", error);
-        return false;
-    }
+  registrationId: string,
+  paymentStatus: Registration['paymentStatus'],
+  paymentId?: string,
+  amountPaid?: number
+): Promise<boolean> => {
+  const updateData: any = { payment_status: paymentStatus };
+  if (paymentId) updateData.payment_id = paymentId;
+  if (amountPaid !== undefined) updateData.amount_paid = amountPaid;
+  const { error } = await supabase.from('registrations').update(updateData).eq('id', registrationId);
+  if (error) { console.error('updateRegistrationPayment error:', error); return false; }
+  return true;
 };
 
-/**
- * Get registration by ID
- */
 export const getRegistrationById = async (id: string): Promise<Registration | null> => {
-    try {
-        const docRef = doc(db, REG_COLLECTION, id);
-        const docSnap = await getDoc(docRef);
-        
-        if (docSnap.exists()) {
-            return { id: docSnap.id, ...docSnap.data() } as Registration;
-        }
-        return null;
-    } catch (error) {
-        console.error("Error getting registration by ID:", error);
-        return null;
-    }
+  const { data, error } = await supabase.from('registrations').select('*').eq('id', id).single();
+  if (error || !data) return null;
+  return fromRow(data);
 };
-

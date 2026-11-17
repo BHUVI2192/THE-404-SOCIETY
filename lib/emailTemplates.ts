@@ -1,8 +1,5 @@
-import { collection, getDocs, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
-import { db } from "./firebase";
+import { supabase } from "./supabase";
 import { EmailTemplate } from "../types";
-
-const EMAIL_TEMPLATES_COLLECTION = "email_templates";
 
 // Default templates
 const DEFAULT_TEMPLATES: Omit<EmailTemplate, 'id'>[] = [
@@ -94,28 +91,53 @@ The 404 Society Team`,
   },
 ];
 
+const fromRow = (row: any): EmailTemplate => ({
+  id: row.id,
+  trigger: row.trigger,
+  subject: row.subject,
+  body: row.body,
+  enabled: row.enabled,
+  variables: row.variables || [],
+  createdAt: row.created_at,
+  updatedAt: row.updated_at,
+});
+
 // Initialize templates if they don't exist
 export const initializeTemplates = async () => {
   try {
     const templates = await getEmailTemplates();
     if (templates.length === 0) {
-      const templatesRef = collection(db, EMAIL_TEMPLATES_COLLECTION);
       for (const template of DEFAULT_TEMPLATES) {
-        // Use the trigger string as the document ID
-        const docRef = doc(templatesRef, template.trigger);
-        await setDoc(docRef, { ...template, id: template.trigger });
+        await supabase.from('email_templates').upsert({
+          id: template.trigger,
+          trigger: template.trigger,
+          subject: template.subject,
+          body: template.body,
+          enabled: template.enabled,
+          variables: template.variables,
+          created_at: template.createdAt,
+          updated_at: template.updatedAt,
+        }, { onConflict: 'trigger' });
       }
     }
   } catch (error) {
-    console.error("Error initializing templates:", error);
+    console.error("Error initializing templates in Supabase:", error);
   }
 };
 
 export const getEmailTemplates = async (): Promise<EmailTemplate[]> => {
   try {
-    const templatesRef = collection(db, EMAIL_TEMPLATES_COLLECTION);
-    const snapshot = await getDocs(templatesRef);
-    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as EmailTemplate));
+    const { data, error } = await supabase
+      .from('email_templates')
+      .select('*')
+      .order('created_at', { ascending: true });
+
+    if (error) {
+      console.error("Error getting email templates:", error);
+      return [];
+    }
+
+    return (data || []).map(fromRow);
   } catch (error) {
     console.error("Error getting templates:", error);
     return [];
@@ -124,15 +146,19 @@ export const getEmailTemplates = async (): Promise<EmailTemplate[]> => {
 
 export const getEmailTemplate = async (trigger: string): Promise<EmailTemplate | undefined> => {
   try {
-    // Attempt to load from doc ID (trigger setup)
-    const docRef = doc(db, EMAIL_TEMPLATES_COLLECTION, trigger);
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      return { id: docSnap.id, ...docSnap.data() } as EmailTemplate;
+    const { data, error } = await supabase
+      .from('email_templates')
+      .select('*')
+      .eq('trigger', trigger)
+      .single();
+
+    if (error || !data) {
+      // Fallback: check in DEFAULT_TEMPLATES
+      const found = DEFAULT_TEMPLATES.find((t) => t.trigger === trigger);
+      return found ? { ...found, id: found.trigger } : undefined;
     }
-    // Fallback search
-    const templates = await getEmailTemplates();
-    return templates.find((t) => t.trigger === trigger);
+
+    return fromRow(data);
   } catch (error) {
     console.error("Error getting template by trigger:", error);
     return undefined;
@@ -141,8 +167,20 @@ export const getEmailTemplate = async (trigger: string): Promise<EmailTemplate |
 
 export const updateEmailTemplate = async (id: string, data: Partial<EmailTemplate>) => {
   try {
-    const docRef = doc(db, EMAIL_TEMPLATES_COLLECTION, id);
-    await updateDoc(docRef, { ...data, updatedAt: Date.now() });
+    const updatePayload: any = { updated_at: Date.now() };
+    if (data.subject !== undefined) updatePayload.subject = data.subject;
+    if (data.body !== undefined) updatePayload.body = data.body;
+    if (data.enabled !== undefined) updatePayload.enabled = data.enabled;
+    if (data.variables !== undefined) updatePayload.variables = data.variables;
+
+    const { error } = await supabase
+      .from('email_templates')
+      .update(updatePayload)
+      .eq('id', id);
+
+    if (error) {
+      console.error("Error updating template in Supabase:", error);
+    }
   } catch (error) {
     console.error("Error updating template:", error);
   }
@@ -150,11 +188,17 @@ export const updateEmailTemplate = async (id: string, data: Partial<EmailTemplat
 
 export const toggleEmailTemplate = async (id: string) => {
   try {
-    const docRef = doc(db, EMAIL_TEMPLATES_COLLECTION, id);
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      const current = docSnap.data().enabled;
-      await updateDoc(docRef, { enabled: !current, updatedAt: Date.now() });
+    const { data, error } = await supabase
+      .from('email_templates')
+      .select('enabled')
+      .eq('id', id)
+      .single();
+
+    if (!error && data) {
+      await supabase
+        .from('email_templates')
+        .update({ enabled: !data.enabled, updated_at: Date.now() })
+        .eq('id', id);
     }
   } catch (error) {
     console.error("Error toggling template:", error);
