@@ -1,0 +1,83 @@
+[
+  {
+    "slug": "frontend",
+    "title": "Frontend Engineering",
+    "category": "Web Development",
+    "badge": "Most Popular",
+    "description": "Master modern client-side engineering from web core and TypeScript to component architectures, Next.js, and AI-enabled interfaces.",
+    "totalTopics": 22,
+    "stageCount": 5
+  },
+  {
+    "slug": "backend",
+    "title": "Backend Engineering",
+    "category": "System Architecture",
+    "badge": "Core Track",
+    "description": "Build robust, scalable distributed backends with SQL/NoSQL databases, microservices, auth, and cloud deployments.",
+    "totalTopics": 20,
+    "stageCount": 5
+  },
+  {
+    "slug": "ai-engineer",
+    "title": "AI & LLM Engineering",
+    "category": "Artificial Intelligence",
+    "badge": "Trending",
+    "description": "Master foundation models, prompt engineering, RAG architectures, vector search, and autonomous multi-agent pipelines.",
+    "totalTopics": 20,
+    "stageCount": 5
+  },
+  {
+    "slug": "full-stack",
+    "title": "Full-Stack Engineering",
+    "category": "Full Stack",
+    "badge": "Comprehensive",
+    "description": "The end-to-end journey of shipping complete modern applications from UI and state to API endpoints, databases, and automated clouds.",
+    "totalTopics": 20,
+    "stageCount": 5
+  },
+  {
+    "slug": "devops",
+    "title": "DevOps & Cloud Architecture",
+    "category": "Infrastructure",
+    "badge": "Operations",
+    "description": "Learn modern infrastructure as code, container orchestration with Kubernetes, CI/CD pipelines, and cloud reliability engineering.",
+    "totalTopics": 20,
+    "stageCount": 5
+  },
+  {
+    "slug": "android",
+    "title": "Android & Mobile Engineering",
+    "category": "Mobile Development",
+    "badge": "Mobile",
+    "description": "Build high-performance, modern Android applications using Kotlin, Jetpack Compose, Coroutines, and clean MVVM/MVI architectures.",
+    "totalTopics": 20,
+    "stageCount": 5
+  },
+  {
+    "slug": "system-design",
+    "title": "System Design & Architecture",
+    "category": "Architecture",
+    "badge": "Advanced",
+    "description": "Architect planetary-scale distributed systems, master caching layers, database partitioning, event-driven architectures, and high availability.",
+    "totalTopics": 20,
+    "stageCount": 5
+  },
+  {
+    "slug": "python",
+    "title": "Python Developer",
+    "category": "Software Engineering",
+    "badge": "Versatile",
+    "description": "From syntax fundamentals, OOP, and async IO to building high-throughput FastAPI microservices and data pipelines.",
+    "totalTopics": 20,
+    "stageCount": 5
+  },
+  {
+    "slug": "cyber-security",
+    "title": "Cyber Security & Defense",
+    "category": "Security",
+    "badge": "Crucial",
+    "description": "Learn modern security principles, web application security (OWASP Top 10), network defense, cryptography, and cloud hardening.",
+    "totalTopics": 20,
+    "stageCount": 5
+  }
+]

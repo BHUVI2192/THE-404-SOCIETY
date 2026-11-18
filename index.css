@@ -12,6 +12,33 @@
   color: var(--color-text-black);
   background-color: var(--color-bg-white);
 
+  /* YouDecide Studio Design Tokens */
+  --ys-blue-900: #0A0B38;
+  --ys-blue-800: #0D116D;
+  --ys-blue-700: #0F14A9;
+  --ys-blue-600: #0D14D3;
+  --ys-blue-500: #1920F0;
+  --ys-blue-400: #6169FF;
+  --ys-blue-300: #99A0FF;
+  --ys-blue-200: #CCCFFF;
+  --ys-blue-100: #E5E7FF;
+  --ys-blue-50: #F5F5FF;
+  --ys-ink: #171717;
+  --ys-white: #FFFFFF;
+  --ys-midnight: #080921;
+  --ys-grey-50: #FAFAFA;
+  --ys-grey-100: #F4F4F5;
+  --ys-grey-200: #E4E4E7;
+  --ys-grey-300: #D4D4D8;
+  --ys-grey-400: #A1A1AA;
+  --ys-grey-500: #71717A;
+  --ys-grey-600: #52525B;
+  --ys-grey-700: #3F3F46;
+  --ys-grey-800: #27272A;
+  --ys-grey-900: #171717;
+  --ys-font-sans: 'Geist', system-ui, -apple-system, sans-serif;
+  --ys-font-mono: 'Geist Mono', ui-monospace, monospace;
+
   /* Fallback/Legacy references if needed */
   --color-accent-purple: #8B5CF6;
   --color-accent-mint: #34D399;

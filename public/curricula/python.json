@@ -1,0 +1,659 @@
+{
+  "id": "python",
+  "slug": "python",
+  "title": "Python Developer",
+  "category": "Software Engineering",
+  "badge": "Versatile",
+  "description": "From syntax fundamentals, OOP, and async IO to building high-throughput FastAPI microservices and data pipelines.",
+  "totalTopics": 20,
+  "stages": [
+    {
+      "id": "py-p1",
+      "phaseNumber": 1,
+      "title": "Python Core & Syntax",
+      "subtitle": "Data types, control flow, functions, and list comprehensions",
+      "color": "amber",
+      "topics": [
+        {
+          "id": "py-basics",
+          "title": "Syntax, Variables, Types & Memory Model",
+          "slug": "py-basics",
+          "description": "Setup the environment for python and get started with the basics.",
+          "stageId": "py-p1",
+          "stageName": "Python Core & Syntax",
+          "stageColor": "amber",
+          "order": 1,
+          "tags": [
+            "Basics"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "Python Basics",
+              "url": "https://www.tutorialspoint.com/python/python_basic_syntax.htm",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "Python for Beginners - Learn Python in 1 Hour",
+              "url": "https://www.youtube.com/watch?v=kqtD5dpn9C8",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/kqtD5dpn9C8"
+            }
+          ]
+        },
+        {
+          "id": "py-datastruct",
+          "title": "Lists, Tuples, Dictionaries & Sets",
+          "slug": "py-datastruct",
+          "description": "Arrays store elements in contiguous memory locations, resulting in easily calculable addresses for the elements stored and this allows faster access to an element at a specific index. Linked lists are less rigid in their storage structure and elements are usually not stored in contiguous locations, hence they need to be stored with additional tags giving a reference to the next element. This difference in the data storage scheme decides which data structure would be more suitable for a given situation.",
+          "stageId": "py-p1",
+          "stageName": "Python Core & Syntax",
+          "stageColor": "amber",
+          "order": 2,
+          "tags": [
+            "Data Structures"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "Arrays in Python",
+              "url": "https://www.edureka.co/blog/arrays-in-python/",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "Array Data Structure | Illustrated Data Structures",
+              "url": "https://www.youtube.com/watch?v=QJNwK2uJyGs",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/QJNwK2uJyGs"
+            },
+            {
+              "type": "video",
+              "title": "Linked List Data Structure | Illustrated Data Structures",
+              "url": "https://www.youtube.com/watch?v=odW9FU8jPRQ",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/odW9FU8jPRQ"
+            }
+          ]
+        },
+        {
+          "id": "py-functions",
+          "title": "Functions, Decorators, *args & **kwargs",
+          "slug": "py-functions",
+          "description": "In programming, a function is a reusable block of code that executes a certain functionality when it is called. Functions are integral parts of every programming language because they help make your code more modular and reusable. In Python, we define a function with the `def` keyword, then write the function identifier (name) followed by parentheses and a colon.",
+          "stageId": "py-p1",
+          "stageName": "Python Core & Syntax",
+          "stageColor": "amber",
+          "order": 3,
+          "tags": [
+            "Functions"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "Built-in Functions in Python",
+              "url": "https://docs.python.org/3/library/functions.html",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Defining Python Functions",
+              "url": "https://realpython.com/defining-your-own-python-function/",
+              "embedUrl": null
+            }
+          ]
+        },
+        {
+          "id": "py-git",
+          "title": "Git & Virtual Environments (uv, poetry, venv)",
+          "slug": "py-git",
+          "description": "Git is a distributed version control system tracking code changes and enabling collaborative development. Features branching, merging, and complete project history. Allows offline work with local repositories. Fast, flexible, and the most popular VCS for software projects.",
+          "stageId": "py-p1",
+          "stageName": "Python Core & Syntax",
+          "stageColor": "amber",
+          "order": 4,
+          "tags": [
+            "Environment"
+          ],
+          "resources": [
+            {
+              "type": "course",
+              "title": "Why use Git? (Interactive Lesson)",
+              "url": "https://inter-git.com/lessons/introduction",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Tutorial: Git for Absolutely Everyone",
+              "url": "https://thenewstack.io/tutorial-git-for-absolutely-everyone/",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "Git & GitHub Crash Course For Beginners",
+              "url": "https://www.youtube.com/watch?v=SWYqp7iY_Tc",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/SWYqp7iY_Tc"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "py-p2",
+      "phaseNumber": 2,
+      "title": "OOP, Functional & Async IO",
+      "subtitle": "Classes, dunder methods, generators and asyncio event loops",
+      "color": "blue",
+      "topics": [
+        {
+          "id": "py-oop",
+          "title": "Object-Oriented Python (Inheritance, Dunder Methods)",
+          "slug": "py-oop",
+          "description": "Loops are programming structures that allow you to execute a block of code repeatedly as long as a specific condition remains true or for a set number of iterations. In Python, the two primary types of loops are `for` loops, which are typically used to iterate over a sequence like a list, tuple, or string, and `while` loops, which continue running until a defined logical condition evaluates to false. These tools are essential for automating repetitive tasks and processing collections of data efficiently within your programs.",
+          "stageId": "py-p2",
+          "stageName": "OOP, Functional & Async IO",
+          "stageColor": "blue",
+          "order": 1,
+          "tags": [
+            "OOP"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "Python \"while\" Loops (Indefinite Iteration)",
+              "url": "https://realpython.com/python-while-loop/",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Python \"for\" Loops (Definite Iteration)",
+              "url": "https://realpython.com/python-for-loop/#the-guts-of-the-python-for-loop",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "Python For Loops",
+              "url": "https://www.youtube.com/watch?v=KWgYha0clzw",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/KWgYha0clzw"
+            }
+          ]
+        },
+        {
+          "id": "py-generators",
+          "title": "Iterators, Generators & Context Managers",
+          "slug": "py-generators",
+          "description": "An iterator is an object that contains a countable number of values. An iterator is an object that can be iterated upon, meaning that you can traverse through all the values. Technically, in Python, an iterator is an object which implements the iterator protocol, which consist of the methods **iter**() and **next**() .",
+          "stageId": "py-p2",
+          "stageName": "OOP, Functional & Async IO",
+          "stageColor": "blue",
+          "order": 2,
+          "tags": [
+            "Memory"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "Python Official Documentation on Iterators",
+              "url": "https://docs.python.org/3/tutorial/classes.html#iterators",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Python Iterators",
+              "url": "https://www.programiz.com/python-programming/iterator",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Iterators and Iterables in Python",
+              "url": "https://realpython.com/python-iterators-iterables/",
+              "embedUrl": null
+            }
+          ]
+        },
+        {
+          "id": "py-async",
+          "title": "Asyncio, Coroutines & Event Loops",
+          "slug": "py-async",
+          "description": "Asynchronous programming, supported by asyncio, allows code to be executed without blocking, using async and await. This is especially useful for I/O tasks such as networking or file manipulation, allowing thousands of connections to be handled without blocking the main thread.",
+          "stageId": "py-p2",
+          "stageName": "OOP, Functional & Async IO",
+          "stageColor": "blue",
+          "order": 3,
+          "tags": [
+            "Concurrency"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "Python AsyncIO library",
+              "url": "https://docs.python.org/3/library/asyncio.html",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Async IO in Python: A Complete Walkthrough",
+              "url": "https://realpython.com/async-io-python/",
+              "embedUrl": null
+            }
+          ]
+        },
+        {
+          "id": "py-typing",
+          "title": "Type Hints & Pydantic Data Validation",
+          "slug": "py-typing",
+          "description": "Variables are used to store information to be referenced and manipulated in a computer program. They also provide a way of labeling data with a descriptive name, so our programs can be understood more clearly by the reader and ourselves. It is helpful to think of variables as containers that hold information. Their sole purpose is to label and store data in memory. This data can then be used throughout your program.",
+          "stageId": "py-p2",
+          "stageName": "OOP, Functional & Async IO",
+          "stageColor": "blue",
+          "order": 4,
+          "tags": [
+            "Types"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "Variables in Python",
+              "url": "https://realpython.com/python-variables",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Python for Beginners: Data Types",
+              "url": "https://thenewstack.io/python-for-beginners-data-types/",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "Python Variables and Data Types",
+              "url": "https://www.youtube.com/playlist?list=PLBlnK6fEyqRhN-sfWgCU1z_Qhakc1AGOn",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/videoseries?list=PLBlnK6fEyqRhN-sfWgCU1z_Qhakc1AGOn"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "py-p3",
+      "phaseNumber": 3,
+      "title": "Web Frameworks & APIs",
+      "subtitle": "FastAPI, Django ORM, REST, and WebSockets",
+      "color": "emerald",
+      "topics": [
+        {
+          "id": "py-fastapi",
+          "title": "FastAPI, OpenAPI & Dependency Injection",
+          "slug": "py-fastapi",
+          "description": "REST API is an architectural style using standard HTTP methods (GET, POST, PUT, DELETE) to interact with URI-represented resources. It's stateless, requiring complete request information, uses HTTP status codes, and typically communicates via JSON/XML. Popular for simplicity and scalability.",
+          "stageId": "py-p3",
+          "stageName": "Web Frameworks & APIs",
+          "stageColor": "emerald",
+          "order": 1,
+          "tags": [
+            "Web API"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "What is a REST API?",
+              "url": "https://www.redhat.com/en/topics/api/what-is-a-rest-api",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Best practices for RESTful web API design",
+              "url": "https://learn.microsoft.com/en-us/azure/architecture/best-practices/api-design",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Learn REST: A RESTful Tutorial",
+              "url": "https://restapitutorial.com/",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "REST API Best Practices – REST Endpoint Design",
+              "url": "https://www.youtube.com/watch?v=1Wl-rtew1_E",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/1Wl-rtew1_E"
+            }
+          ]
+        },
+        {
+          "id": "py-django",
+          "title": "Django, MTV Pattern & Admin Console",
+          "slug": "py-django",
+          "description": "Django is a free and open-source, Python-based web framework that follows the model–template–views architectural pattern. It is maintained by the Django Software Foundation, an independent organization established in the US as a 501 non-profit",
+          "stageId": "py-p3",
+          "stageName": "Web Frameworks & APIs",
+          "stageColor": "emerald",
+          "order": 2,
+          "tags": [
+            "Framework"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "Getting Started",
+              "url": "https://www.djangoproject.com/start/",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Is Django Synchronous or Asynchronous?",
+              "url": "https://stackoverflow.com/questions/58548089/django-is-synchronous-or-asynchronous",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "Python Django Tutorial for Beginners",
+              "url": "https://www.youtube.com/watch?v=rHux0gMZ3Eg",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/rHux0gMZ3Eg"
+            }
+          ]
+        },
+        {
+          "id": "py-sql",
+          "title": "SQLAlchemy ORM & Database Migrations (Alembic)",
+          "slug": "py-sql",
+          "description": "Microsoft SQL Server is a relational database management system for structured data management. Supports querying, transactions, data warehousing with T-SQL, SSIS integration, SSAS analytics, and SSRS reporting. Used in enterprise environments for reliable storage and processing.",
+          "stageId": "py-p3",
+          "stageName": "Web Frameworks & APIs",
+          "stageColor": "emerald",
+          "order": 3,
+          "tags": [
+            "Database"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "MS SQL",
+              "url": "https://www.microsoft.com/en-ca/sql-server/",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Tutorials for SQL Server",
+              "url": "https://docs.microsoft.com/en-us/sql/sql-server/tutorials-for-sql-server-2016?view=sql-server-ver15",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "SQL Server tutorial for beginners",
+              "url": "https://www.youtube.com/watch?v=-EPMOaV7h_Q",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/-EPMOaV7h_Q"
+            }
+          ]
+        },
+        {
+          "id": "py-auth",
+          "title": "JWT Authentication & OAuth2 in Python",
+          "slug": "py-auth",
+          "description": "Authentication strategies verify a user's identity to grant access. Common methods include Basic Auth (username/password), Session-based (server remembers login), Token-based (like JWT, a secure digital key), OAuth (for third-party access like \"Login with Google\"), and SSO (Single Sign-On, one login for many apps). Knowing these helps choose the right security for your app.",
+          "stageId": "py-p3",
+          "stageName": "Web Frameworks & APIs",
+          "stageColor": "emerald",
+          "order": 4,
+          "tags": [
+            "Security"
+          ],
+          "resources": []
+        }
+      ]
+    },
+    {
+      "id": "py-p4",
+      "phaseNumber": 4,
+      "title": "Testing, Quality & Tooling",
+      "subtitle": "Pytest, mocking, linting (Ruff), and CI workflows",
+      "color": "purple",
+      "topics": [
+        {
+          "id": "py-pytest",
+          "title": "Unit Testing with Pytest & Fixtures",
+          "slug": "py-pytest",
+          "description": "Testing in programming means checking if your code works as expected. It's a systematic way to find and fix errors (bugs) before your code goes live. Imagine building a beautiful house without checking if the walls are straight or the roof doesn't leak—that's what coding without testing can feel like!",
+          "stageId": "py-p4",
+          "stageName": "Testing, Quality & Tooling",
+          "stageColor": "purple",
+          "order": 1,
+          "tags": [
+            "Testing"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "Unit Testing in Python",
+              "url": "https://docs.python.org/3/library/unittest.html",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Python Testing Tutorial",
+              "url": "https://realpython.com/python-testing/",
+              "embedUrl": null
+            }
+          ]
+        },
+        {
+          "id": "py-ruff",
+          "title": "Formatting & Linting with Ruff & Black",
+          "slug": "py-ruff",
+          "description": "Python code formatting is crucial for maintaining readability, consistency, and reducing errors. Black is a code formatter for Python. It is a tool that automatically formats Python code to adhere to the PEP 8 style guide. It is a great tool to use in your Python projects to ensure that your code is formatted consistently and correctly.",
+          "stageId": "py-p4",
+          "stageName": "Testing, Quality & Tooling",
+          "stageColor": "purple",
+          "order": 2,
+          "tags": [
+            "Code Quality"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "Pylint for Python",
+              "url": "https://www.pylint.org/",
+              "embedUrl": null
+            },
+            {
+              "type": "official",
+              "title": "Black Documentation",
+              "url": "https://black.readthedocs.io/en/stable/",
+              "embedUrl": null
+            }
+          ]
+        },
+        {
+          "id": "py-docker",
+          "title": "Dockerizing Python Apps & Multi-stage Builds",
+          "slug": "py-docker",
+          "description": "Comprehensive technical guide and engineering practices for mastering Dockerizing Python Apps & Multi-stage Builds. Explore the curated video tutorials, official documentation, and deep-dive references below to build production competency.",
+          "stageId": "py-p4",
+          "stageName": "Testing, Quality & Tooling",
+          "stageColor": "purple",
+          "order": 3,
+          "tags": [
+            "Containers"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "Engineering Guide: Dockerizing Python Apps & Multi-stage Builds",
+              "url": "https://developer.mozilla.org/"
+            }
+          ]
+        },
+        {
+          "id": "py-celery",
+          "title": "Background Tasks with Celery & Redis",
+          "slug": "py-celery",
+          "description": "Redis is an open-source, in-memory data structure store supporting strings, lists, sets, hashes, and sorted sets. Used for caching, session management, real-time analytics, and message brokering. Offers persistence, replication, clustering, and low-latency high-throughput performance.",
+          "stageId": "py-p4",
+          "stageName": "Testing, Quality & Tooling",
+          "stageColor": "purple",
+          "order": 4,
+          "tags": [
+            "Background Jobs"
+          ],
+          "resources": [
+            {
+              "type": "course",
+              "title": "Redis Crash Course",
+              "url": "https://www.youtube.com/watch?v=XCsS_NVAa1g",
+              "embedUrl": null
+            },
+            {
+              "type": "official",
+              "title": "Redis Documentation",
+              "url": "https://redis.io/docs/latest/",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "Redis Tutorial for Beginners",
+              "url": "https://www.youtube.com/watch?v=jgpVdJB2sKQ",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/jgpVdJB2sKQ"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "py-p5",
+      "phaseNumber": 5,
+      "title": "Production Deployment & Data",
+      "subtitle": "Gunicorn, Uvicorn workers, cloud hosting, and data stacks",
+      "color": "rose",
+      "topics": [
+        {
+          "id": "py-production",
+          "title": "Production Deployments (Uvicorn + Gunicorn)",
+          "slug": "py-production",
+          "description": "Deployment is the process of making a website or web application available for users to access on the internet. It involves taking the code, assets (like images and fonts), and configuration files and placing them on a server or hosting platform. This process often includes steps like bundling the code, optimizing assets for performance, and configuring the server to properly serve the application.",
+          "stageId": "py-p5",
+          "stageName": "Production Deployment & Data",
+          "stageColor": "rose",
+          "order": 1,
+          "tags": [
+            "Deployment"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "A Beginner’s Guide To Web Deployment",
+              "url": "https://medium.com/devjavu/a-beginners-guide-to-web-deployment-b4ce704fe097",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Deploying frontend applications — the fun way",
+              "url": "https://hackernoon.com/deploying-frontend-applications-the-fun-way-bc3f69e15331",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Top 5 Platforms to Deploy Your Frontend Projects",
+              "url": "https://strapi.io/blog/top-platforms-for-frontend-projects",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "How To Deploy a Website (to the internet)",
+              "url": "https://www.youtube.com/watch?v=NBrQp6-721c",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/NBrQp6-721c"
+            }
+          ]
+        },
+        {
+          "id": "py-data",
+          "title": "Data Processing with Polars & Pandas",
+          "slug": "py-data",
+          "description": "Comprehensive technical guide and engineering practices for mastering Data Processing with Polars & Pandas. Explore the curated video tutorials, official documentation, and deep-dive references below to build production competency.",
+          "stageId": "py-p5",
+          "stageName": "Production Deployment & Data",
+          "stageColor": "rose",
+          "order": 2,
+          "tags": [
+            "Data Engineering"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "Engineering Guide: Data Processing with Polars & Pandas",
+              "url": "https://developer.mozilla.org/"
+            }
+          ]
+        },
+        {
+          "id": "py-cloud",
+          "title": "Serverless Python (AWS Lambda, Cloud Run)",
+          "slug": "py-cloud",
+          "description": "AWS Neptune is a fully managed graph database supporting property graph and RDF models. Uses Gremlin and SPARQL query languages for complex relationships in social networks, recommendations, and fraud detection. Offers high availability, multi-AZ replication, and up to 15 read replicas.",
+          "stageId": "py-p5",
+          "stageName": "Production Deployment & Data",
+          "stageColor": "rose",
+          "order": 3,
+          "tags": [
+            "Serverless"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "AWS Neptune",
+              "url": "https://aws.amazon.com/neptune/",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Setting Up Amazon Neptune Graph Database",
+              "url": "https://cliffordedsouza.medium.com/setting-up-amazon-neptune-graph-database-2b73512a7388",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "Getting Started with Neptune Serverless",
+              "url": "https://www.youtube.com/watch?v=b04-jjM9t4g",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/b04-jjM9t4g"
+            }
+          ]
+        },
+        {
+          "id": "py-security",
+          "title": "Security Best Practices & Vulnerability Audits",
+          "slug": "py-security",
+          "description": "Web security protects websites from cyber threats through HTTPS/TLS, XSS/SQL injection/CSRF prevention, CSP, secure authentication, input validation, and regular updates. Involves understanding OWASP Top Ten vulnerabilities, access controls, secure coding practices, and threat awareness for comprehensive protection.",
+          "stageId": "py-p5",
+          "stageName": "Production Deployment & Data",
+          "stageColor": "rose",
+          "order": 4,
+          "tags": [
+            "Security"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "OWASP Website",
+              "url": "https://owasp.org/",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "OWASP Cheatsheets",
+              "url": "https://cheatsheetseries.owasp.org/cheatsheets/AJAX_Security_Cheat_Sheet.html",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Content Security Policy (CSP)",
+              "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "OWASP ZAP Step-by-Step Tutorial",
+              "url": "https://www.youtube.com/playlist?list=PLH8n_ayg-60J9i3nsLybper-DR3zJw6Z5",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/videoseries?list=PLH8n_ayg-60J9i3nsLybper-DR3zJw6Z5"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

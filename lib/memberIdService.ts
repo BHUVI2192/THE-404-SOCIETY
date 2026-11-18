@@ -5,7 +5,7 @@
 import { supabase } from './supabase';
 
 export const validateMemberId = (memberId: string): boolean =>
-  /^404-\d{4}-\d{3}$/.test(memberId);
+  /^404-[A-Z0-9]{3,12}$/i.test(memberId) || /^404-\d{4}-\d{3}$/.test(memberId);
 
 export const getYearCounter = async (year: number): Promise<number> => {
   const { data } = await supabase

@@ -1,0 +1,652 @@
+{
+  "id": "full-stack",
+  "slug": "full-stack",
+  "title": "Full-Stack Engineering",
+  "category": "Full Stack",
+  "badge": "Comprehensive",
+  "description": "The end-to-end journey of shipping complete modern applications from UI and state to API endpoints, databases, and automated clouds.",
+  "totalTopics": 20,
+  "stages": [
+    {
+      "id": "fs-p1",
+      "phaseNumber": 1,
+      "title": "Web & Client Foundations",
+      "subtitle": "HTML5, Modern CSS, and Core JavaScript",
+      "color": "amber",
+      "topics": [
+        {
+          "id": "fs-web",
+          "title": "Web Architecture & DNS/HTTP",
+          "slug": "fs-web",
+          "description": "The internet is a global network connecting computers and devices for information sharing. Enables browsing, email, streaming, and communication through interconnected systems. Acts as worldwide infrastructure facilitating access to online resources and services.",
+          "stageId": "fs-p1",
+          "stageName": "Web & Client Foundations",
+          "stageColor": "amber",
+          "order": 1,
+          "tags": [
+            "Fundamentals"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "How does the Internet Work?",
+              "url": "https://cs.fyi/guide/how-does-internet-work",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "How Does the Internet Work? MDN Docs",
+              "url": "https://developer.mozilla.org/en-US/docs/Learn/Common_questions/How_does_the_Internet_work",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "How the Internet Works in 5 Minutes",
+              "url": "https://www.youtube.com/watch?v=7_LPdttKXPc",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/7_LPdttKXPc"
+            }
+          ]
+        },
+        {
+          "id": "fs-html-css",
+          "title": "Semantic HTML & Modern Responsive CSS",
+          "slug": "fs-html-css",
+          "description": "HTML stands for HyperText Markup Language. It is used on the frontend and gives the structure to the webpage which you can style using CSS and make interactive using JavaScript.",
+          "stageId": "fs-p1",
+          "stageName": "Web & Client Foundations",
+          "stageColor": "amber",
+          "order": 2,
+          "tags": [
+            "Markup"
+          ],
+          "resources": [
+            {
+              "type": "video",
+              "title": "HTML Full Course for Beginners",
+              "url": "https://youtu.be/mJgBOIoGihA",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/mJgBOIoGihA"
+            },
+            {
+              "type": "video",
+              "title": "HTML Full Course - Build a Website Tutorial",
+              "url": "https://www.youtube.com/watch?v=pQN-pnXPaVg",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/pQN-pnXPaVg"
+            }
+          ]
+        },
+        {
+          "id": "fs-js-ts",
+          "title": "TypeScript & JavaScript ES6+",
+          "slug": "fs-js-ts",
+          "description": "JavaScript allows you to add interactivity to your pages. Common examples that you may have seen on the websites are sliders, click interactions, popups and so on.",
+          "stageId": "fs-p1",
+          "stageName": "Web & Client Foundations",
+          "stageColor": "amber",
+          "order": 3,
+          "tags": [
+            "Scripting"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "The Modern JavaScript Tutorial",
+              "url": "https://javascript.info/",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Build 30 Javascript projects in 30 days",
+              "url": "https://javascript30.com/",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "JavaScript Crash Course for Beginners",
+              "url": "https://youtu.be/hdI2bqOjy3c?t=2",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/hdI2bqOjy3c"
+            }
+          ]
+        },
+        {
+          "id": "fs-git",
+          "title": "Git & Modern Branching Workflows",
+          "slug": "fs-git",
+          "description": "Git is a free and open source distributed version control system designed to handle everything from small to very large projects with speed and efficiency.",
+          "stageId": "fs-p1",
+          "stageName": "Web & Client Foundations",
+          "stageColor": "amber",
+          "order": 4,
+          "tags": [
+            "VCS"
+          ],
+          "resources": [
+            {
+              "type": "course",
+              "title": "Why use Git? (Interactive Lesson)",
+              "url": "https://inter-git.com/lessons/introduction",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Tutorial: Git for Absolutely Everyone",
+              "url": "https://thenewstack.io/tutorial-git-for-absolutely-everyone/",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "Git & GitHub Crash Course For Beginners",
+              "url": "https://www.youtube.com/watch?v=SWYqp7iY_Tc",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/SWYqp7iY_Tc"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fs-p2",
+      "phaseNumber": 2,
+      "title": "Frontend Framework & State",
+      "subtitle": "React, Tailwind CSS and Component Hierarchies",
+      "color": "blue",
+      "topics": [
+        {
+          "id": "fs-react",
+          "title": "React Core & Functional Components",
+          "slug": "fs-react",
+          "description": "React is the most popular front-end JavaScript library for building user interfaces. React can also render on the server using Node and power mobile apps using React Native.",
+          "stageId": "fs-p2",
+          "stageName": "Frontend Framework & State",
+          "stageColor": "blue",
+          "order": 1,
+          "tags": [
+            "Components"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "Getting Started with React",
+              "url": "https://react.dev/learn/tutorial-tic-tac-toe",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "React JS Course for Beginners",
+              "url": "https://www.youtube.com/watch?v=nTeuhbP7wdE",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/nTeuhbP7wdE"
+            },
+            {
+              "type": "video",
+              "title": "React Course - Beginners Tutorial for React",
+              "url": "https://www.youtube.com/watch?v=bMknfKXIFA8",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/bMknfKXIFA8"
+            }
+          ]
+        },
+        {
+          "id": "fs-tailwind",
+          "title": "Tailwind CSS & Modern Design Systems",
+          "slug": "fs-tailwind",
+          "description": "CSS Framework that provides atomic CSS classes to help you style components e.g. `flex`, `pt-4`, `text-center` and `rotate-90` that can be composed to build any design, directly in your markup.",
+          "stageId": "fs-p2",
+          "stageName": "Frontend Framework & State",
+          "stageColor": "blue",
+          "order": 2,
+          "tags": [
+            "Styling"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "Tailwind CSS",
+              "url": "https://tailwindcss.com",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "Tailwind CSS Full Course for Beginners",
+              "url": "https://www.youtube.com/watch?v=lCxcTsOHrjo",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/lCxcTsOHrjo"
+            },
+            {
+              "type": "video",
+              "title": "Tailwind CSS Crash Course",
+              "url": "https://www.youtube.com/watch?v=UBOj6rqRUME",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/UBOj6rqRUME"
+            },
+            {
+              "type": "video",
+              "title": "Should You Use Tailwind CSS?",
+              "url": "https://www.youtube.com/watch?v=hdGsFpZ0J2E",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/hdGsFpZ0J2E"
+            }
+          ]
+        },
+        {
+          "id": "fs-state",
+          "title": "Global State Management & Data Fetching",
+          "slug": "fs-state",
+          "description": "Comprehensive technical guide and engineering practices for mastering Global State Management & Data Fetching. Explore the curated video tutorials, official documentation, and deep-dive references below to build production competency.",
+          "stageId": "fs-p2",
+          "stageName": "Frontend Framework & State",
+          "stageColor": "blue",
+          "order": 3,
+          "tags": [
+            "State"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "Engineering Guide: Global State Management & Data Fetching",
+              "url": "https://developer.mozilla.org/"
+            }
+          ]
+        },
+        {
+          "id": "fs-forms",
+          "title": "Forms, Validation & User Feedback",
+          "slug": "fs-forms",
+          "description": "Comprehensive technical guide and engineering practices for mastering Forms, Validation & User Feedback. Explore the curated video tutorials, official documentation, and deep-dive references below to build production competency.",
+          "stageId": "fs-p2",
+          "stageName": "Frontend Framework & State",
+          "stageColor": "blue",
+          "order": 4,
+          "tags": [
+            "UX"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "Engineering Guide: Forms, Validation & User Feedback",
+              "url": "https://developer.mozilla.org/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fs-p3",
+      "phaseNumber": 3,
+      "title": "Backend Server & Database",
+      "subtitle": "Node.js/Express, PostgreSQL, and Query Optimization",
+      "color": "emerald",
+      "topics": [
+        {
+          "id": "fs-node",
+          "title": "Node.js & Express REST Endpoints",
+          "slug": "fs-node",
+          "description": "Node.js is an open-source and cross-platform JavaScript runtime environment. It is a popular tool for almost any kind of project! Node.js runs the V8 JavaScript engine, Google Chrome's core, outside the browser. This allows Node.js to be very performant. A Node.js app runs in a single process, without creating a new thread for every request. Node.js provides a set of asynchronous I/O primitives in its standard library that prevent JavaScript code from blocking and generally, libraries in Node.js are written using non-blocking paradigms, making blocking behavior the exception rather than the norm.",
+          "stageId": "fs-p3",
+          "stageName": "Backend Server & Database",
+          "stageColor": "emerald",
+          "order": 1,
+          "tags": [
+            "Server"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "Node.js Website",
+              "url": "https://nodejs.org/en/about/",
+              "embedUrl": null
+            },
+            {
+              "type": "official",
+              "title": "Learn Node.js Official Website",
+              "url": "https://nodejs.org/en/learn/getting-started/introduction-to-nodejs",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "Node.js and Express.js Full Course",
+              "url": "https://www.youtube.com/watch?v=Oe421EPjeBE",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/Oe421EPjeBE"
+            }
+          ]
+        },
+        {
+          "id": "fs-sql",
+          "title": "PostgreSQL & Relational Data Modeling",
+          "slug": "fs-sql",
+          "description": "PostgreSQL, also known as Postgres, is a free and open-source relational database management system emphasizing extensibility and SQL compliance.",
+          "stageId": "fs-p3",
+          "stageName": "Backend Server & Database",
+          "stageColor": "emerald",
+          "order": 2,
+          "tags": [
+            "Database"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "PostgreSQL Website",
+              "url": "https://www.postgresql.org/",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Learn PostgreSQL - Full Tutorial for Beginners",
+              "url": "https://www.postgresqltutorial.com/",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "Postgres tutorial for Beginners",
+              "url": "https://www.youtube.com/watch?v=eMIxuk0nOkU",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/eMIxuk0nOkU"
+            }
+          ]
+        },
+        {
+          "id": "fs-orm",
+          "title": "ORMs (Prisma / Drizzle) & Migrations",
+          "slug": "fs-orm",
+          "description": "Terraform is an extremely popular open source Infrastructure as Code (IaC) tool that can be used with many different cloud and service provider APIs. Terraform focuses on an immutable approach to infrastructure, with a terraform state file center to tracking the status of your real world infrastructure.",
+          "stageId": "fs-p3",
+          "stageName": "Backend Server & Database",
+          "stageColor": "emerald",
+          "order": 3,
+          "tags": [
+            "Data Access"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "Terraform Documentation",
+              "url": "https://www.terraform.io/docs",
+              "embedUrl": null
+            },
+            {
+              "type": "official",
+              "title": "Terraform Tutorials",
+              "url": "https://learn.hashicorp.com/terraform",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "Intro to Terraform",
+              "url": "https://www.youtube.com/watch?v=h970ZBgKINg&ab_channel=HashiCorp",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/h970ZBgKINg"
+            }
+          ]
+        },
+        {
+          "id": "fs-auth",
+          "title": "Authentication, Sessions & JWT Security",
+          "slug": "fs-auth",
+          "description": "JWT stands for JSON Web Token is a token-based encryption open standard/methodology that is used to transfer information securely as a JSON object. Clients and Servers use JWT to securely share information, with the JWT containing encoded JSON objects and claims. JWTs are designed to be compact, safe to use within URLs, and ideal for SSO contexts.",
+          "stageId": "fs-p3",
+          "stageName": "Backend Server & Database",
+          "stageColor": "emerald",
+          "order": 4,
+          "tags": [
+            "Auth"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "Introduction to JSON Web Tokens",
+              "url": "https://jwt.io/introduction",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "What is JWT?",
+              "url": "https://www.akana.com/blog/what-is-jwt",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "What Is JWT and Why Should You Use JWT",
+              "url": "https://www.youtube.com/watch?v=7Q17ubqLfaM",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/7Q17ubqLfaM"
+            },
+            {
+              "type": "video",
+              "title": "JWT Authentication Tutorial - Node.js",
+              "url": "https://www.youtube.com/watch?v=mbsmsi7l3r4",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/mbsmsi7l3r4"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fs-p4",
+      "phaseNumber": 4,
+      "title": "Full-Stack Frameworks",
+      "subtitle": "Unified SSR, Server Actions, and BaaS Platforms",
+      "color": "purple",
+      "topics": [
+        {
+          "id": "fs-next",
+          "title": "Next.js App Router & Server Actions",
+          "slug": "fs-next",
+          "description": "Next.js is a React framework supporting server-side rendering and static site generation. Features automatic code splitting, file-based routing, CSS support, API routes, and optimized performance. Includes live updates, smart preloading, and easy deployment. Ideal for SEO-friendly applications.",
+          "stageId": "fs-p4",
+          "stageName": "Full-Stack Frameworks",
+          "stageColor": "purple",
+          "order": 1,
+          "tags": [
+            "SSR/SSG"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "Next.js Website",
+              "url": "https://nextjs.org/",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "Next.js for Beginners - Full Course at freeCodeCamp YouTube Channel",
+              "url": "https://youtu.be/1WmNXEVia8I",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/1WmNXEVia8I"
+            }
+          ]
+        },
+        {
+          "id": "fs-supabase",
+          "title": "Supabase (Auth, Storage & Row Level Security)",
+          "slug": "fs-supabase",
+          "description": "Database indexes are data structures that speed up data retrieval by creating references to table data without full table scans. Include B-tree, bitmap, and hash types. Enhance query performance but increase storage requirements and slow down writes due to index maintenance.",
+          "stageId": "fs-p4",
+          "stageName": "Full-Stack Frameworks",
+          "stageColor": "purple",
+          "order": 2,
+          "tags": [
+            "BaaS"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "PostgreSQL - Indexes",
+              "url": "https://www.postgresql.org/docs/current/indexes.html",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "What is a Database Index?",
+              "url": "https://www.codecademy.com/article/sql-indexes",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Use the Index, Luke! - A Guide to Database Performance for Developers",
+              "url": "https://use-the-index-luke.com/",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "Database Indexing Explained",
+              "url": "https://www.youtube.com/watch?v=-qNSXK7s7_w",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/-qNSXK7s7_w"
+            }
+          ]
+        },
+        {
+          "id": "fs-test",
+          "title": "End-to-End Testing & Integration Tests",
+          "slug": "fs-test",
+          "description": "Testing verifies software functionality and quality through unit, integration, functional, UI/UX, performance, security, accessibility, and compatibility testing. Modern approaches use automated tools, CI/CD pipelines, TDD, and BDD methodologies. Early bug detection improves application reliability.",
+          "stageId": "fs-p4",
+          "stageName": "Full-Stack Frameworks",
+          "stageColor": "purple",
+          "order": 3,
+          "tags": [
+            "Quality"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "The Different Types of Software Tests",
+              "url": "https://www.atlassian.com/continuous-delivery/software-testing/types-of-software-testing",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "How to Test Web Applications - dotJS 2024",
+              "url": "https://www.youtube.com/watch?v=l3qjQpYBR8c",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/l3qjQpYBR8c"
+            }
+          ]
+        },
+        {
+          "id": "fs-api-sec",
+          "title": "Rate Limiting, CORS & Input Sanitization",
+          "slug": "fs-api-sec",
+          "description": "Web security protects websites from cyber threats through HTTPS/TLS, XSS/SQL injection/CSRF prevention, CSP, secure authentication, input validation, and regular updates. Involves understanding OWASP Top Ten vulnerabilities, access controls, secure coding practices, and threat awareness for comprehensive protection.",
+          "stageId": "fs-p4",
+          "stageName": "Full-Stack Frameworks",
+          "stageColor": "purple",
+          "order": 4,
+          "tags": [
+            "Security"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "OWASP Website",
+              "url": "https://owasp.org/",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "OWASP Cheatsheets",
+              "url": "https://cheatsheetseries.owasp.org/cheatsheets/AJAX_Security_Cheat_Sheet.html",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Content Security Policy (CSP)",
+              "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "OWASP ZAP Step-by-Step Tutorial",
+              "url": "https://www.youtube.com/playlist?list=PLH8n_ayg-60J9i3nsLybper-DR3zJw6Z5",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/videoseries?list=PLH8n_ayg-60J9i3nsLybper-DR3zJw6Z5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fs-p5",
+      "phaseNumber": 5,
+      "title": "Deployment & Production Scale",
+      "subtitle": "Docker, Vercel/Cloudflare, and Monitoring",
+      "color": "rose",
+      "topics": [
+        {
+          "id": "fs-docker",
+          "title": "Containerization with Docker",
+          "slug": "fs-docker",
+          "description": "Comprehensive technical guide and engineering practices for mastering Containerization with Docker. Explore the curated video tutorials, official documentation, and deep-dive references below to build production competency.",
+          "stageId": "fs-p5",
+          "stageName": "Deployment & Production Scale",
+          "stageColor": "rose",
+          "order": 1,
+          "tags": [
+            "DevOps"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "Engineering Guide: Containerization with Docker",
+              "url": "https://developer.mozilla.org/"
+            }
+          ]
+        },
+        {
+          "id": "fs-ci-cd",
+          "title": "CI/CD Pipelines (GitHub Actions)",
+          "slug": "fs-ci-cd",
+          "description": "GitHub Actions is a workflow automation tool provided by GitHub that can be used to automate various tasks in the app development process.",
+          "stageId": "fs-p5",
+          "stageName": "Deployment & Production Scale",
+          "stageColor": "rose",
+          "order": 2,
+          "tags": [
+            "Automation"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "GitHub Actions Documentation",
+              "url": "https://docs.github.com/en/actions",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "5 Ways to DevOps-ify your App",
+              "url": "https://www.youtube.com/watch?v=eB0nUzAI7M8",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/eB0nUzAI7M8"
+            },
+            {
+              "type": "video",
+              "title": "DevOps CI/CD Explained in 100 Seconds",
+              "url": "https://www.youtube.com/watch?v=scEDHsr3APg",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/scEDHsr3APg"
+            }
+          ]
+        },
+        {
+          "id": "fs-cloud",
+          "title": "Cloud Hosting & Edge Functions",
+          "slug": "fs-cloud",
+          "description": "Now that you know the basics of AWS, you should be able to deploy your application to AWS. You don't need to use all the AWS services, here is what you can probably get started with:\n\n*   Setup an EC2 instance using any AMI (e.g. latest version of Ubuntu)\n\n*   SSH into the EC2 instance using the key pair you created\n\n*   Install Node.js on the EC2 instance\n\n*   Install Git on the EC2 instance\n\n*   Clone your application from GitHub\n\n*   Install and configure database on the EC2 instance (e.g. PostgreSQL)\n\n*   Make sure that the security group of the EC2 instance allows HTTP and HTTPS traffic\n\n*   Try to access your application using the public IP address of the EC2 instance\n\n*   Purchase or setup a domain name using Route53 (or any other domain name provider) and point it to the public IP address of the EC2 instance\n\n*   Setup HTTPs using [certbot]()\n\n*   And voilla! You have deployed your application to AWS!",
+          "stageId": "fs-p5",
+          "stageName": "Deployment & Production Scale",
+          "stageColor": "rose",
+          "order": 3,
+          "tags": [
+            "Infrastructure"
+          ],
+          "resources": [
+            {
+              "type": "video",
+              "title": "Deploy Node App on AWS EC2",
+              "url": "https://youtu.be/oHAQ3TzUTro",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/oHAQ3TzUTro"
+            }
+          ]
+        },
+        {
+          "id": "fs-perf",
+          "title": "Application Caching, CDN & Analytics",
+          "slug": "fs-perf",
+          "description": "You should now implement monitoring and autorestarts for your application using monit. Regarding autorestarts, you can also use [pm2](https://pm2.keymetrics.io/).\n\nHere are some of the monitors you should implement for the application.\n\n*   CPU Usage\n\n*   Memory Usage\n\n*   Disk Usage\n\n*   Network Usage\n\n*   Service Availability\n\n*   Process Availability\n\nMonit comes with existing configurations for many services. You can find them in `/etc/monit/conf-available`. You can copy them (and modify if required) to `/etc/monit/conf-enabled` to enable them.",
+          "stageId": "fs-p5",
+          "stageName": "Deployment & Production Scale",
+          "stageColor": "rose",
+          "order": 4,
+          "tags": [
+            "Observability"
+          ],
+          "resources": []
+        }
+      ]
+    }
+  ]
+}

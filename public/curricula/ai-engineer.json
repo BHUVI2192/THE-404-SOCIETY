@@ -1,0 +1,616 @@
+{
+  "id": "ai-engineer",
+  "slug": "ai-engineer",
+  "title": "AI & LLM Engineering",
+  "category": "Artificial Intelligence",
+  "badge": "Trending",
+  "description": "Master foundation models, prompt engineering, RAG architectures, vector search, and autonomous multi-agent pipelines.",
+  "totalTopics": 20,
+  "stages": [
+    {
+      "id": "ai-p1",
+      "phaseNumber": 1,
+      "title": "Python, Math & AI Foundations",
+      "subtitle": "Vectors, tensors, and the computational building blocks",
+      "color": "amber",
+      "topics": [
+        {
+          "id": "ai-python",
+          "title": "Python for AI, NumPy & Pandas",
+          "slug": "ai-python",
+          "description": "Python is a high-level, interpreted language known for readability, simplicity, and versatility. Supports multiple paradigms with rich ecosystem including Django/Flask (web), Pandas/NumPy (data), TensorFlow/PyTorch (ML). Used for web development, data science, automation, and scripting.",
+          "stageId": "ai-p1",
+          "stageName": "Python, Math & AI Foundations",
+          "stageColor": "amber",
+          "order": 1,
+          "tags": [
+            "Python"
+          ],
+          "resources": [
+            {
+              "type": "course",
+              "title": "Python Full Course for free",
+              "url": "https://www.youtube.com/watch?v=ix9cRaBkVe0",
+              "embedUrl": null
+            },
+            {
+              "type": "official",
+              "title": "Python Website",
+              "url": "https://www.python.org/",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Automate the Boring Stuff",
+              "url": "https://automatetheboringstuff.com/",
+              "embedUrl": null
+            }
+          ]
+        },
+        {
+          "id": "ai-math",
+          "title": "Linear Algebra, Probability & Calculus",
+          "slug": "ai-math",
+          "description": "Comprehensive technical guide and engineering practices for mastering Linear Algebra, Probability & Calculus. Explore the curated video tutorials, official documentation, and deep-dive references below to build production competency.",
+          "stageId": "ai-p1",
+          "stageName": "Python, Math & AI Foundations",
+          "stageColor": "amber",
+          "order": 2,
+          "tags": [
+            "Mathematics"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "Engineering Guide: Linear Algebra, Probability & Calculus",
+              "url": "https://developer.mozilla.org/"
+            }
+          ]
+        },
+        {
+          "id": "ai-ml-basics",
+          "title": "Supervised vs. Unsupervised Learning",
+          "slug": "ai-ml-basics",
+          "description": "Comprehensive technical guide and engineering practices for mastering Supervised vs. Unsupervised Learning. Explore the curated video tutorials, official documentation, and deep-dive references below to build production competency.",
+          "stageId": "ai-p1",
+          "stageName": "Python, Math & AI Foundations",
+          "stageColor": "amber",
+          "order": 3,
+          "tags": [
+            "ML Core"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "Engineering Guide: Supervised vs. Unsupervised Learning",
+              "url": "https://developer.mozilla.org/"
+            }
+          ]
+        },
+        {
+          "id": "ai-nn",
+          "title": "Neural Networks & PyTorch Fundamentals",
+          "slug": "ai-nn",
+          "description": "Comprehensive technical guide and engineering practices for mastering Neural Networks & PyTorch Fundamentals. Explore the curated video tutorials, official documentation, and deep-dive references below to build production competency.",
+          "stageId": "ai-p1",
+          "stageName": "Python, Math & AI Foundations",
+          "stageColor": "amber",
+          "order": 4,
+          "tags": [
+            "Deep Learning"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "Engineering Guide: Neural Networks & PyTorch Fundamentals",
+              "url": "https://developer.mozilla.org/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ai-p2",
+      "phaseNumber": 2,
+      "title": "Transformers & Foundation Models",
+      "subtitle": "Attention mechanisms, embeddings and modern LLM architecture",
+      "color": "blue",
+      "topics": [
+        {
+          "id": "ai-transformer",
+          "title": "The Transformer Architecture & Self-Attention",
+          "slug": "ai-transformer",
+          "description": "Sentence Transformers are a type of model designed to generate high-quality embeddings for sentences, allowing them to capture the semantic meaning of text. Unlike traditional word embeddings, which represent individual words, Sentence Transformers understand the context of entire sentences, making them ideal for tasks that require semantic similarity, such as sentence clustering, semantic search, and paraphrase detection. Built on top of transformer models like BERT and RoBERTa, they convert sentences into dense vectors, where similar sentences are placed closer together in vector space.",
+          "stageId": "ai-p2",
+          "stageName": "Transformers & Foundation Models",
+          "stageColor": "blue",
+          "order": 1,
+          "tags": [
+            "Deep Learning"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "What is BERT?",
+              "url": "https://h2o.ai/wiki/bert/",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "SentenceTransformers Documentation",
+              "url": "https://sbert.net/",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Using Sentence Transformers at Hugging Face",
+              "url": "https://huggingface.co/docs/hub/sentence-transformers",
+              "embedUrl": null
+            }
+          ]
+        },
+        {
+          "id": "ai-hf",
+          "title": "Hugging Face Transformers & Datasets",
+          "slug": "ai-hf",
+          "description": "The Hugging Face Hub is a central platform where users can discover, share, and collaborate on pre-trained models, datasets, and demos for machine learning. It hosts a vast repository of resources contributed by the community, allowing users to easily access and integrate these assets into their AI projects. The Hub provides tools for version control, model card documentation, and even web-based deployment, simplifying the process of leveraging existing AI models and contributing back to the open-source community.",
+          "stageId": "ai-p2",
+          "stageName": "Transformers & Foundation Models",
+          "stageColor": "blue",
+          "order": 2,
+          "tags": [
+            "Model Hub"
+          ],
+          "resources": [
+            {
+              "type": "course",
+              "title": "The Hugging Face Hub (LLM Course)",
+              "url": "https://huggingface.co/learn/nlp-course/en/chapter4/1",
+              "embedUrl": null
+            },
+            {
+              "type": "official",
+              "title": "Hugging Face Documentation",
+              "url": "https://huggingface.co/docs/hub/en/index",
+              "embedUrl": null
+            }
+          ]
+        },
+        {
+          "id": "ai-embeddings",
+          "title": "Text Embeddings & Semantic Similarity",
+          "slug": "ai-embeddings",
+          "description": "Embeddings are dense, continuous vector representations of data, such as words, sentences, or images, in a lower-dimensional space. They capture the semantic relationships and patterns in the data, where similar items are placed closer together in the vector space. In machine learning, embeddings are used to convert complex data into a numerical form that models can process more easily. For example, word embeddings represent words based on their meanings and contexts, allowing models to understand relationships like synonyms or analogies. Embeddings are widely used in tasks like natural language processing, recommendation systems, and image recognition to improve model performance and efficiency.",
+          "stageId": "ai-p2",
+          "stageName": "Transformers & Foundation Models",
+          "stageColor": "blue",
+          "order": 3,
+          "tags": [
+            "Vector Math"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "What are Embeddings in Machine Learning?",
+              "url": "https://www.cloudflare.com/en-gb/learning/ai/what-are-embeddings/",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "What is Embedding?",
+              "url": "https://www.ibm.com/topics/embedding",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "What are Word Embeddings",
+              "url": "https://www.youtube.com/watch?v=wgfSDrqYMJ4",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/wgfSDrqYMJ4"
+            }
+          ]
+        },
+        {
+          "id": "ai-tokenization",
+          "title": "Tokenization, BPE & Context Windows",
+          "slug": "ai-tokenization",
+          "description": "The context window is the amount of text an LLM can process in a single request, measured in tokens. It includes the system prompt, conversation history, retrieved documents, and the model's own output as it generates a response. Once the total content exceeds this limit, older or lower priority information has to be dropped, summarized, or moved out of the active context. Model providers have expanded context windows significantly over the past few years, but a larger window does not guarantee the model uses all of it well.",
+          "stageId": "ai-p2",
+          "stageName": "Transformers & Foundation Models",
+          "stageColor": "blue",
+          "order": 4,
+          "tags": [
+            "LLM Core"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "What is a context window?",
+              "url": "https://www.ibm.com/think/topics/context-window",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Coding Agents Don’t Need Bigger Context Windows",
+              "url": "https://towardsdatascience.com/coding-agents-dont-need-bigger-context-windows-they-need-a-context-compiler/",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "What is a Context Window? Unlocking LLM Secrets",
+              "url": "https://www.youtube.com/watch?v=-QVoIxEpFkM",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/-QVoIxEpFkM"
+            },
+            {
+              "type": "video",
+              "title": "Why LLMs get dumb (Context Windows Explained)",
+              "url": "https://www.youtube.com/watch?v=TeQDr4DkLYo",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/TeQDr4DkLYo"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ai-p3",
+      "phaseNumber": 3,
+      "title": "LLM APIs & Prompt Engineering",
+      "subtitle": "Structured outputs, function calling and multi-modal models",
+      "color": "emerald",
+      "topics": [
+        {
+          "id": "ai-apis",
+          "title": "OpenAI & Gemini API Integration",
+          "slug": "ai-apis",
+          "description": "The Gemini API offers methods to convert text, images, or other data types into numerical vector representations called embeddings. These embeddings capture the semantic meaning and relationships between different pieces of information, allowing for efficient similarity search, clustering, and other machine learning tasks. These proprietary models are offered as a service, often through an API, and require payment or subscription.",
+          "stageId": "ai-p3",
+          "stageName": "LLM APIs & Prompt Engineering",
+          "stageColor": "emerald",
+          "order": 1,
+          "tags": [
+            "API Integration"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "Embeddings",
+              "url": "https://ai.google.dev/gemini-api/docs/embeddings",
+              "embedUrl": null
+            },
+            {
+              "type": "official",
+              "title": "Gemini Embedding now generally available in the Gemini API",
+              "url": "https://developers.googleblog.com/gemini-embedding-available-gemini-api/",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "What are text embeddings?",
+              "url": "https://www.youtube.com/watch?v=vlcQV4j2kTo&t=117s",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/vlcQV4j2kTo"
+            }
+          ]
+        },
+        {
+          "id": "ai-prompting",
+          "title": "Advanced Prompting (CoT, ReAct, Few-Shot)",
+          "slug": "ai-prompting",
+          "description": "Sending end-user IDs in your requests can be a useful tool to help OpenAI monitor and detect abuse. This allows OpenAI to provide your team with more actionable feedback in the event that we detect any policy violations in your application.",
+          "stageId": "ai-p3",
+          "stageName": "LLM APIs & Prompt Engineering",
+          "stageColor": "emerald",
+          "order": 2,
+          "tags": [
+            "Prompting"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "Sending End-user IDs - OpenAI",
+              "url": "https://platform.openai.com/docs/guides/safety-best-practices/end-user-ids",
+              "embedUrl": null
+            }
+          ]
+        },
+        {
+          "id": "ai-functions",
+          "title": "Tool Use & Function Calling",
+          "slug": "ai-functions",
+          "description": "Function calling allows Large Language Models (LLMs) to interact with external tools and APIs. Instead of just generating text, the LLM can be instructed to recognize when a specific function should be called based on the user's input, and then output the arguments needed to execute that function. This enables the LLM to perform actions beyond its training data, such as retrieving real-time information or automating tasks.",
+          "stageId": "ai-p3",
+          "stageName": "LLM APIs & Prompt Engineering",
+          "stageColor": "emerald",
+          "order": 3,
+          "tags": [
+            "Capabilities"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "A Comprehensive Guide to Function Calling in LLMs",
+              "url": "https://thenewstack.io/a-comprehensive-guide-to-function-calling-in-llms/",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Function Calling with LLMs | Prompt Engineering Guide",
+              "url": "https://www.promptingguide.ai/applications/function_calling",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "LLM Function Calling - AI Tools Deep Dive",
+              "url": "https://www.youtube.com/watch?v=gMeTK6zzaO4",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/gMeTK6zzaO4"
+            }
+          ]
+        },
+        {
+          "id": "ai-structured",
+          "title": "Structured Outputs & Pydantic Validation",
+          "slug": "ai-structured",
+          "description": "Structured outputs involve prompting LLMs to return responses in specific formats like JSON, XML, or other organized structures rather than free-form text. This approach forces models to organize information systematically, reduces hallucinations by imposing format constraints, enables easy programmatic processing, and facilitates integration with applications. For example, requesting movie classification results as JSON with specified schema ensures consistent, parseable responses. Structured outputs are particularly valuable for data extraction, API integration, and applications requiring reliable data formatting.",
+          "stageId": "ai-p3",
+          "stageName": "LLM APIs & Prompt Engineering",
+          "stageColor": "emerald",
+          "order": 4,
+          "tags": [
+            "Validation"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "Diving Deeper with Structured Outputs",
+              "url": "https://medium.com/data-science/diving-deeper-with-structured-outputs-b4a5d280c208",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Structured model outputs - OpenAI",
+              "url": "https://platform.openai.com/docs/guides/structured-outputs",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Structured outputs - Claude",
+              "url": "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "How to Measure LLM Confidence: Logprobs & Structured Output",
+              "url": "https://www.youtube.com/watch?v=THsGizLHrTs",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/THsGizLHrTs"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ai-p4",
+      "phaseNumber": 4,
+      "title": "RAG & Vector Databases",
+      "subtitle": "Augmenting model knowledge with custom enterprise data",
+      "color": "purple",
+      "topics": [
+        {
+          "id": "ai-vector-db",
+          "title": "Vector Databases (Pinecone, pgvector & Qdrant)",
+          "slug": "ai-vector-db",
+          "description": "Vector databases are systems specialized in storing, indexing, and retrieving high-dimensional vectors, often used as embeddings for data like text, images, or audio. Unlike traditional databases, they excel at managing unstructured data by enabling fast similarity searches, where vectors are compared to find the closest matches. This makes them essential for tasks like semantic search, recommendation systems, and content discovery. Using techniques like approximate nearest neighbor (ANN) search, vector databases handle large datasets efficiently, ensuring quick and accurate retrieval even at scale.",
+          "stageId": "ai-p4",
+          "stageName": "RAG & Vector Databases",
+          "stageColor": "purple",
+          "order": 1,
+          "tags": [
+            "Vector DB"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "Vector Databases",
+              "url": "https://developers.cloudflare.com/vectorize/reference/what-is-a-vector-database/",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "What are Vector Databases?",
+              "url": "https://www.mongodb.com/resources/basics/databases/vector-databases",
+              "embedUrl": null
+            }
+          ]
+        },
+        {
+          "id": "ai-chunking",
+          "title": "Document Ingestion & Chunking Strategies",
+          "slug": "ai-chunking",
+          "description": "The chunking step in Retrieval-Augmented Generation (RAG) involves breaking down large documents or data sources into smaller, manageable chunks. This is done to ensure that the retriever can efficiently search through large volumes of data while staying within the token or input limits of the model. Each chunk, typically a paragraph or section, is converted into an embedding, and these embeddings are stored in a vector database. When a query is made, the retriever searches for the most relevant chunks rather than the entire document, enabling faster and more accurate retrieval.",
+          "stageId": "ai-p4",
+          "stageName": "RAG & Vector Databases",
+          "stageColor": "purple",
+          "order": 2,
+          "tags": [
+            "Ingestion"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "Understanding LangChain's RecursiveCharacterTextSplitter",
+              "url": "https://dev.to/eteimz/understanding-langchains-recursivecharactertextsplitter-2846",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Chunking Strategies for LLM Applications",
+              "url": "https://www.pinecone.io/learn/chunking-strategies/",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "A Guide to Chunking Strategies for Retrieval Augmented Generation",
+              "url": "https://zilliz.com/learn/guide-to-chunking-strategies-for-rag",
+              "embedUrl": null
+            }
+          ]
+        },
+        {
+          "id": "ai-hybrid",
+          "title": "Hybrid Search (Keyword + Dense Vector)",
+          "slug": "ai-hybrid",
+          "description": "Comprehensive technical guide and engineering practices for mastering Hybrid Search (Keyword + Dense Vector). Explore the curated video tutorials, official documentation, and deep-dive references below to build production competency.",
+          "stageId": "ai-p4",
+          "stageName": "RAG & Vector Databases",
+          "stageColor": "purple",
+          "order": 3,
+          "tags": [
+            "Information Retrieval"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "Engineering Guide: Hybrid Search (Keyword + Dense Vector)",
+              "url": "https://developer.mozilla.org/"
+            }
+          ]
+        },
+        {
+          "id": "ai-rag-eval",
+          "title": "RAG Evaluation (Ragas, TruLens & Precision)",
+          "slug": "ai-rag-eval",
+          "description": "Context evaluation measures whether the information delivered to a model actually helps it perform a task well. This includes checking whether retrieved documents are relevant, whether important details are missing, and whether irrelevant or outdated content is crowding out what matters. Teams use a mix of automated metrics, such as retrieval precision and recall, and manual review of model outputs to catch problems. Without this evaluation, a context pipeline can look complete while still giving the model poor material to work with.",
+          "stageId": "ai-p4",
+          "stageName": "RAG & Vector Databases",
+          "stageColor": "purple",
+          "order": 4,
+          "tags": [
+            "Evals"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "AI Agent Evaluation",
+              "url": "https://machinelearningmastery.com/effective-context-engineering-for-ai-agents-a-developers-guide/",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "The agent evaluation revolution",
+              "url": "https://www.youtube.com/watch?v=WZZLtwnZ4w0",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/WZZLtwnZ4w0"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ai-p5",
+      "phaseNumber": 5,
+      "title": "Autonomous Agents & Production AI",
+      "subtitle": "Agent loops, memory, safety guardrails and deployment",
+      "color": "rose",
+      "topics": [
+        {
+          "id": "ai-agents-arch",
+          "title": "Agentic Architectures (LangGraph & LlamaIndex)",
+          "slug": "ai-agents-arch",
+          "description": "In AI engineering, \"agents\" refer to autonomous systems or components that can perceive their environment, make decisions, and take actions to achieve specific goals. Agents often interact with external systems, users, or other agents to carry out complex tasks. They can vary in complexity, from simple rule-based bots to sophisticated AI-powered agents that leverage machine learning models, natural language processing, and reinforcement learning.",
+          "stageId": "ai-p5",
+          "stageName": "Autonomous Agents & Production AI",
+          "stageColor": "rose",
+          "order": 1,
+          "tags": [
+            "Agentic"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "Building an AI Agent Tutorial - LangChain",
+              "url": "https://python.langchain.com/docs/tutorials/agents/",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "How to Design My First AI Agent",
+              "url": "https://towardsdatascience.com/how-to-design-my-first-ai-agent/?utm_source=roadmap&utm_medium=Referral&utm_campaign=TDS+roadmap+integration",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "The Complete Guide to Building AI Agents for Beginners",
+              "url": "https://youtu.be/MOyl58VF2ak?si=-QjRD_5y3iViprJX",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/MOyl58VF2ak"
+            }
+          ]
+        },
+        {
+          "id": "ai-memory",
+          "title": "Agent Memory, State Management & Sessions",
+          "slug": "ai-memory",
+          "description": "External memory, in the context of large language models (LLMs), refers to mechanisms that allow these models to access and utilize information stored outside of their internal parameters. This can involve retrieving relevant data from databases, knowledge graphs, or other external sources during the prompt processing or generation phases to augment the model's knowledge and improve its performance on specific tasks. This enhances the LLM's ability to handle complex queries and generate more accurate and contextually relevant responses.",
+          "stageId": "ai-p5",
+          "stageName": "Autonomous Agents & Production AI",
+          "stageColor": "rose",
+          "order": 2,
+          "tags": [
+            "Persistence"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "How to Maximize Agentic Memory for Continual Learning",
+              "url": "https://towardsdatascience.com/how-to-maximize-agentic-memory-for-continual-learning/?utm_source=roadmap&utm_medium=Referral&utm_campaign=TDS+roadmap+integration",
+              "embedUrl": null
+            }
+          ]
+        },
+        {
+          "id": "ai-guardrails",
+          "title": "AI Safety, Guardrails & Red-Teaming",
+          "slug": "ai-guardrails",
+          "description": "Context security covers the risks that come from feeding external or untrusted content into an AI system. A malicious document, email, or web page can contain hidden instructions designed to manipulate the model, a technique known as prompt injection. Poor access controls can also let a model surface data to a user who should not see it, or let sensitive information leak through tool calls and logs. Building context pipelines securely means validating sources, applying permission checks before data reaches the model, and treating retrieved content as data rather than as trusted instructions.",
+          "stageId": "ai-p5",
+          "stageName": "Autonomous Agents & Production AI",
+          "stageColor": "rose",
+          "order": 3,
+          "tags": [
+            "Safety"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "Context Engineering Is Security Engineering. RSA 2026 Made the Case.",
+              "url": "https://zenity.io/blog/events/context-engineering-security-engineering",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "When Data Becomes Instructions: AI Agents Need a Chain of Custody for Context",
+              "url": "https://blog.checkpoint.com/ai-security/ai-agent-context-chain-of-custody/",
+              "embedUrl": null
+            }
+          ]
+        },
+        {
+          "id": "ai-production",
+          "title": "LLMOps, Tracing (LangSmith) & Latency Optimization",
+          "slug": "ai-production",
+          "description": "Production monitoring is the continuous observation of your AI system once it is live and handling real user traffic. Unlike testing in a controlled environment, production surfaces edge cases, unexpected inputs, and failure modes that never appeared during development. Monitoring in production means tracking quality metrics, error rates, and behavioral changes over time so that regressions and anomalies are caught before they affect a large number of users.",
+          "stageId": "ai-p5",
+          "stageName": "Autonomous Agents & Production AI",
+          "stageColor": "rose",
+          "order": 4,
+          "tags": [
+            "LLMOps"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "LLM Observability: The Complete Guide to Monitoring LLMs in Production",
+              "url": "https://www.swept.ai/post/llm-observability-complete-guide",
+              "embedUrl": null
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

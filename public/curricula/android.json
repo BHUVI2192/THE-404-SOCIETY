@@ -1,0 +1,605 @@
+{
+  "id": "android",
+  "slug": "android",
+  "title": "Android & Mobile Engineering",
+  "category": "Mobile Development",
+  "badge": "Mobile",
+  "description": "Build high-performance, modern Android applications using Kotlin, Jetpack Compose, Coroutines, and clean MVVM/MVI architectures.",
+  "totalTopics": 20,
+  "stages": [
+    {
+      "id": "an-p1",
+      "phaseNumber": 1,
+      "title": "Kotlin & Android Core",
+      "subtitle": "Modern syntax, Activity lifecycle, and Android fundamentals",
+      "color": "amber",
+      "topics": [
+        {
+          "id": "an-kotlin",
+          "title": "Kotlin Language Mastery (Null Safety, Lambdas)",
+          "slug": "an-kotlin",
+          "description": "Kotlin is a concise, multi-platform, and fun language developed by JetBrains. Learn how to use Kotlin for Android, server-side, and cross-platform development, and explore its features, news, and community. Kotlin is a statically-typed programming language that runs on the Java Virtual Machine (JVM) and can be used to develop all types of Android apps. It is Google's preferred language for Android app development.",
+          "stageId": "an-p1",
+          "stageName": "Kotlin & Android Core",
+          "stageColor": "amber",
+          "order": 1,
+          "tags": [
+            "Language"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "Kotlin",
+              "url": "https://kotlinlang.org/",
+              "embedUrl": null
+            },
+            {
+              "type": "official",
+              "title": "Kotlin Docs",
+              "url": "https://kotlinlang.org/docs/getting-started.html",
+              "embedUrl": null
+            }
+          ]
+        },
+        {
+          "id": "an-activity",
+          "title": "Activity Lifecycle & Intent Navigation",
+          "slug": "an-activity",
+          "description": "The Activity lifecycle is a set of states and callbacks that an Activity goes through from creation to destruction. Key callbacks include onCreate, onStart, onResume, onPause, onStop, and onDestroy. Properly implementing these callbacks ensures the app handles interruptions like phone calls or screen rotations without data loss.",
+          "stageId": "an-p1",
+          "stageName": "Kotlin & Android Core",
+          "stageColor": "amber",
+          "order": 2,
+          "tags": [
+            "Android Core"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "Activity Lifecycle",
+              "url": "https://developer.android.com/guide/components/activities/activity-lifecycle",
+              "embedUrl": null
+            }
+          ]
+        },
+        {
+          "id": "an-manifest",
+          "title": "Android Manifest, Permissions & App Sandbox",
+          "slug": "an-manifest",
+          "description": "Comprehensive technical guide and engineering practices for mastering Android Manifest, Permissions & App Sandbox. Explore the curated video tutorials, official documentation, and deep-dive references below to build production competency.",
+          "stageId": "an-p1",
+          "stageName": "Kotlin & Android Core",
+          "stageColor": "amber",
+          "order": 3,
+          "tags": [
+            "Security"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "Engineering Guide: Android Manifest, Permissions & App Sandbox",
+              "url": "https://developer.mozilla.org/"
+            }
+          ]
+        },
+        {
+          "id": "an-git",
+          "title": "Git & Mobile Version Control",
+          "slug": "an-git",
+          "description": "`Git` is a highly efficient and flexible distributed version control system that was created by **Linus Torvalds**, the creator of Linux. It allows multiple developers to work on a project concurrently, providing tools for non-linear development and tracking changes in any set of files. Git has a local repository with a complete history and version-tracking capabilities, allowing offline operations, unlike SVN. It ensures data integrity and provides strong support for non-linear development with features such as branching and merging.",
+          "stageId": "an-p1",
+          "stageName": "Kotlin & Android Core",
+          "stageColor": "amber",
+          "order": 4,
+          "tags": [
+            "VCS"
+          ],
+          "resources": [
+            {
+              "type": "course",
+              "title": "Why use Git? (Interactive Lesson)",
+              "url": "https://inter-git.com/lessons/introduction",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Git by Example - Learn Version Control with Bite-sized Lessons",
+              "url": "https://antonz.org/git-by-example/",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "Git & GitHub Crash Course For Beginners",
+              "url": "https://www.youtube.com/watch?v=vA5TTz6BXhY",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/vA5TTz6BXhY"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "an-p2",
+      "phaseNumber": 2,
+      "title": "Jetpack Compose & Modern UI",
+      "subtitle": "Declarative UI, State hoisting, and Material Design 3",
+      "color": "blue",
+      "topics": [
+        {
+          "id": "an-compose",
+          "title": "Jetpack Compose Fundamentals & Layouts",
+          "slug": "an-compose",
+          "description": "`Jetpack Compose` is a modern toolkit for building native Android UI. It simplifies and accelerates UI development on Android with less code, powerful tools, and intuitive Kotlin APIs. `Jetpack Compose` offers a declarative approach to designing UI, where you can simply describe what your UI should look like at any given point of your app’s state, and `Compose` takes care of updating the view hierarchy, making UI development more efficient. It also integrates well with existing Android apps, letting you adopt its benefits at your own pace.",
+          "stageId": "an-p2",
+          "stageName": "Jetpack Compose & Modern UI",
+          "stageColor": "blue",
+          "order": 1,
+          "tags": [
+            "Declarative UI"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "Jetpack Compose",
+              "url": "https://developer.android.com/jetpack/compose",
+              "embedUrl": null
+            },
+            {
+              "type": "official",
+              "title": "Compose layout basics",
+              "url": "https://developer.android.com/develop/ui/compose/layouts/basics",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "Jetpack Compose Crash Course",
+              "url": "https://www.youtube.com/watch?v=6_wK_Ud8--0",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/6_wK_Ud8--0"
+            }
+          ]
+        },
+        {
+          "id": "an-state",
+          "title": "State Hoisting & Recomposition Optimization",
+          "slug": "an-state",
+          "description": "remember is a Compose function that retains a value across recompositions within a composable. Combined with mutableStateOf, it creates a state holder that triggers recomposition when its value changes. Local state managed with remember is suitable for UI-only state that does not need to survive configuration changes.",
+          "stageId": "an-p2",
+          "stageName": "Jetpack Compose & Modern UI",
+          "stageColor": "blue",
+          "order": 2,
+          "tags": [
+            "State"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "State and Jetpack Compose",
+              "url": "https://developer.android.com/develop/ui/compose/state",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Understanding remember in Jetpack Compose: A Deep Dive from First Principles",
+              "url": "https://medium.com/@sandeepkella23/understanding-remember-in-jetpack-compose-a-deep-dive-from-first-principles-2587b2098323",
+              "embedUrl": null
+            }
+          ]
+        },
+        {
+          "id": "an-material",
+          "title": "Material Design 3 & Dynamic Theming",
+          "slug": "an-material",
+          "description": "Comprehensive technical guide and engineering practices for mastering Material Design 3 & Dynamic Theming. Explore the curated video tutorials, official documentation, and deep-dive references below to build production competency.",
+          "stageId": "an-p2",
+          "stageName": "Jetpack Compose & Modern UI",
+          "stageColor": "blue",
+          "order": 3,
+          "tags": [
+            "Design"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "Engineering Guide: Material Design 3 & Dynamic Theming",
+              "url": "https://developer.mozilla.org/"
+            }
+          ]
+        },
+        {
+          "id": "an-nav",
+          "title": "Navigation Compose & Deep Links",
+          "slug": "an-nav",
+          "description": "In Android development, the concepts of \"Interface\" and \"Navigation\" are crucial. The \"Interface\" often refers to the Graphical User Interface (GUI) that users interact with. This includes buttons, text fields, image views, scroll views and other UI elements that the users can interact with to perform certain tasks. Tools like XML and Material Designs are used for interface design in Android.",
+          "stageId": "an-p2",
+          "stageName": "Jetpack Compose & Modern UI",
+          "stageColor": "blue",
+          "order": 4,
+          "tags": [
+            "Navigation"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "Android Developers: Interface",
+              "url": "https://developer.android.com/guide/topics/ui/declaring-layout.html",
+              "embedUrl": null
+            },
+            {
+              "type": "official",
+              "title": "Android Developers: Navigation",
+              "url": "https://developer.android.com/guide/navigation",
+              "embedUrl": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "an-p3",
+      "phaseNumber": 3,
+      "title": "Architecture, Coroutines & Flow",
+      "subtitle": "Asynchronous streams and scalable layered architecture",
+      "color": "emerald",
+      "topics": [
+        {
+          "id": "an-coroutines",
+          "title": "Kotlin Coroutines & Structured Concurrency",
+          "slug": "an-coroutines",
+          "description": "Kotlin Coroutines are a concurrency framework that allows writing asynchronous code in a sequential, readable style. They are lightweight, support structured concurrency, and integrate with Android Jetpack through lifecycle-aware CoroutineScopes. Coroutines replaced older patterns like AsyncTask and are now the preferred approach for async work in Android.",
+          "stageId": "an-p3",
+          "stageName": "Architecture, Coroutines & Flow",
+          "stageColor": "emerald",
+          "order": 1,
+          "tags": [
+            "Concurrency"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "Coroutines",
+              "url": "https://kotlinlang.org/docs/coroutines-overview.html",
+              "embedUrl": null
+            }
+          ]
+        },
+        {
+          "id": "an-flow",
+          "title": "Kotlin Flow (StateFlow & SharedFlow)",
+          "slug": "an-flow",
+          "description": "`Flow` in Android development is part of the Kotlin Coroutines library. It is a type that can emit multiple values sequentially, making it perfect for working with any data streams or any streams of events that aren't instantaneous. Like Observables, `Flow` is also based on the observer pattern, meaning it can emit values and these emissions can be observed and reacted to. However, `Flow` comes with built-in back pressure handling and the ability to transform, filter, or combine these flows in a sequence. Along with Coroutines, `Flow` encourages a more predictable and simplified concurrency design without callback hell problem.",
+          "stageId": "an-p3",
+          "stageName": "Architecture, Coroutines & Flow",
+          "stageColor": "emerald",
+          "order": 2,
+          "tags": [
+            "Reactive"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "Flow",
+              "url": "https://kotlinlang.org/docs/flow.html",
+              "embedUrl": null
+            }
+          ]
+        },
+        {
+          "id": "an-mvvm",
+          "title": "Clean Architecture & MVVM / MVI",
+          "slug": "an-mvvm",
+          "description": "**Design Architecture** refers to structuring the code in a way that increases its readability, maintainability, and testability. There are several ways to design architecture like Model-View-Controller (MVC), Model-View-Intent (MVI). Each of these define the interaction between the data, the logic, and the UI layers. Google’s recommended architectural pattern is Android Architecture Components which follow the principles of the MVVM pattern. Bear in mind that an architecture is not a rigid structure that fits all solutions. Rather, it serves as a guideline and can be tweaked as necessary.",
+          "stageId": "an-p3",
+          "stageName": "Architecture, Coroutines & Flow",
+          "stageColor": "emerald",
+          "order": 3,
+          "tags": [
+            "Patterns"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "Android Architecture Components",
+              "url": "https://developer.android.com/topic/libraries/architecture",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Model-View-Controller (MVC)",
+              "url": "https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Model-View-Presenter (MVP)",
+              "url": "https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Model-View-ViewModel (MVVM)",
+              "url": "https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Model-View-Intent (MVI)",
+              "url": "https://www.raywenderlich.com/817602-mvi-architecture-for-android-tutorial-getting-started",
+              "embedUrl": null
+            }
+          ]
+        },
+        {
+          "id": "an-di",
+          "title": "Dependency Injection with Hilt / Koin",
+          "slug": "an-di",
+          "description": "Dependency Injection (DI) is a technique where objects receive their dependencies from an external source rather than creating them internally. In Android, DI frameworks manage the creation and lifecycle of dependencies across the app, improving testability and reducing coupling. Common solutions include Dagger, Hilt, and Koin.",
+          "stageId": "an-p3",
+          "stageName": "Architecture, Coroutines & Flow",
+          "stageColor": "emerald",
+          "order": 4,
+          "tags": [
+            "DI"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "Dependency Injection",
+              "url": "https://developer.android.com/training/dependency-injection",
+              "embedUrl": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "an-p4",
+      "phaseNumber": 4,
+      "title": "Networking & Local Persistence",
+      "subtitle": "Retrofit, Room SQLite database, and offline-first syncing",
+      "color": "purple",
+      "topics": [
+        {
+          "id": "an-room",
+          "title": "Room Database & SQLite Migrations",
+          "slug": "an-room",
+          "description": "Room is an Android Jetpack library that provides an abstraction layer over SQLite. It uses annotations to define database entities, Data Access Objects (DAOs), and queries, and it verifies SQL at compile time. Room integrates with coroutines and Flow for reactive, asynchronous database access.",
+          "stageId": "an-p4",
+          "stageName": "Networking & Local Persistence",
+          "stageColor": "purple",
+          "order": 1,
+          "tags": [
+            "Storage"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "Room Database",
+              "url": "https://developer.android.com/training/data-storage/room",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "The Full Beginner's Guide for Room in Android",
+              "url": "https://www.youtube.com/watch?v=bOd3wO0uFr8&t=10s",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/bOd3wO0uFr8"
+            }
+          ]
+        },
+        {
+          "id": "an-retrofit",
+          "title": "Retrofit, OkHttp & JSON Serialization",
+          "slug": "an-retrofit",
+          "description": "Comprehensive technical guide and engineering practices for mastering Retrofit, OkHttp & JSON Serialization. Explore the curated video tutorials, official documentation, and deep-dive references below to build production competency.",
+          "stageId": "an-p4",
+          "stageName": "Networking & Local Persistence",
+          "stageColor": "purple",
+          "order": 2,
+          "tags": [
+            "Network"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "Engineering Guide: Retrofit, OkHttp & JSON Serialization",
+              "url": "https://developer.mozilla.org/"
+            }
+          ]
+        },
+        {
+          "id": "an-datastore",
+          "title": "DataStore Preferences & Key-Value Storage",
+          "slug": "an-datastore",
+          "description": "DataStore is Jetpack's modern replacement for Shared Preferences. It provides two implementations: Preferences DataStore for key-value storage and Proto DataStore for typed, schema-based storage using Protocol Buffers. DataStore uses Kotlin coroutines and Flow, making it asynchronous and safer to use than Shared Preferences.",
+          "stageId": "an-p4",
+          "stageName": "Networking & Local Persistence",
+          "stageColor": "purple",
+          "order": 3,
+          "tags": [
+            "Preferences"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "Documentation",
+              "url": "https://developer.android.com/topic/libraries/architecture/datastore",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "Introduction to DataStore",
+              "url": "https://www.youtube.com/watch?v=9ws-cJzlJkU&list=PLWz5rJ2EKKc8to3Ere-ePuco69yBUmQ9C",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/9ws-cJzlJkU"
+            }
+          ]
+        },
+        {
+          "id": "an-workmanager",
+          "title": "Background Tasks with WorkManager",
+          "slug": "an-workmanager",
+          "description": "WorkManager is a Jetpack library for scheduling deferrable, guaranteed background work. It supports constraints like requiring network connectivity or charging, survives app restarts and device reboots, and allows chaining multiple tasks together. WorkManager is the recommended solution for background work that must run reliably regardless of app lifecycle.",
+          "stageId": "an-p4",
+          "stageName": "Networking & Local Persistence",
+          "stageColor": "purple",
+          "order": 4,
+          "tags": [
+            "Background"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "WorkManager",
+              "url": "https://developer.android.com/topic/libraries/architecture/workmanager",
+              "embedUrl": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "an-p5",
+      "phaseNumber": 5,
+      "title": "Testing, Performance & Play Store",
+      "subtitle": "Unit tests, Compose preview, profiling and publishing",
+      "color": "rose",
+      "topics": [
+        {
+          "id": "an-testing",
+          "title": "Unit Testing & Compose UI Tests",
+          "slug": "an-testing",
+          "description": "Testing in Android ensures that app code behaves correctly and that UI interactions work as expected. JUnit is used for unit testing business logic, while Espresso handles UI testing by simulating user interactions on a device or emulator.",
+          "stageId": "an-p5",
+          "stageName": "Testing, Performance & Play Store",
+          "stageColor": "rose",
+          "order": 1,
+          "tags": [
+            "Testing"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "Testing",
+              "url": "https://developer.android.com/training/testing",
+              "embedUrl": null
+            }
+          ]
+        },
+        {
+          "id": "an-perf",
+          "title": "Memory Leaks & Android Studio Profiler",
+          "slug": "an-perf",
+          "description": "Performance, in the context of web development, refers to how quickly and efficiently a website or web application loads and responds to user interactions. It encompasses various aspects like loading times, rendering speed, and overall responsiveness. Optimizing performance ensures a smooth and enjoyable user experience, leading to increased engagement and satisfaction.",
+          "stageId": "an-p5",
+          "stageName": "Testing, Performance & Play Store",
+          "stageColor": "rose",
+          "order": 2,
+          "tags": [
+            "Profiling"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "Web performance",
+              "url": "https://developer.mozilla.org/en-US/docs/Web/Performance",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "9 Essential Strategies for Web Performance Optimization",
+              "url": "https://www.shopify.com/enterprise/blog/web-performance-optimization",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "The ultimate guide to web performance",
+              "url": "https://www.youtube.com/watch?v=0fONene3OIA",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/0fONene3OIA"
+            },
+            {
+              "type": "video",
+              "title": "Frontend System Design: The 2025 Web Performance Roadmap",
+              "url": "https://www.youtube.com/watch?v=KUdqbIHn8Ic",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/KUdqbIHn8Ic"
+            }
+          ]
+        },
+        {
+          "id": "an-security",
+          "title": "Android Keystore & ProGuard/R8 Obfuscation",
+          "slug": "an-security",
+          "description": "Android security encompasses the strategies and techniques used to protect Android devices and the data they contain from unauthorized access, use, disclosure, disruption, modification, or destruction. It involves various layers of protection, including hardware security features, the Android operating system's security architecture, and application-level security measures, all working together to safeguard user data and device integrity.",
+          "stageId": "an-p5",
+          "stageName": "Testing, Performance & Play Store",
+          "stageColor": "rose",
+          "order": 3,
+          "tags": [
+            "Hardening"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "Security checklist",
+              "url": "https://developer.android.com/privacy-and-security/security-tips",
+              "embedUrl": null
+            },
+            {
+              "type": "official",
+              "title": "Improve your app's security",
+              "url": "https://developer.android.com/privacy-and-security/security-best-practices",
+              "embedUrl": null
+            },
+            {
+              "type": "official",
+              "title": "Cryptography",
+              "url": "https://developer.android.com/privacy-and-security/cryptography",
+              "embedUrl": null
+            },
+            {
+              "type": "official",
+              "title": "Android Keystore system",
+              "url": "https://developer.android.com/privacy-and-security/keystore",
+              "embedUrl": null
+            }
+          ]
+        },
+        {
+          "id": "an-release",
+          "title": "App Bundles (AAB) & Google Play Console",
+          "slug": "an-release",
+          "description": "Deployment is the process of making a website or web application available for users to access on the internet. It involves taking the code, assets (like images and fonts), and configuration files and placing them on a server or hosting platform. This process often includes steps like bundling the code, optimizing assets for performance, and configuring the server to properly serve the application.",
+          "stageId": "an-p5",
+          "stageName": "Testing, Performance & Play Store",
+          "stageColor": "rose",
+          "order": 4,
+          "tags": [
+            "Publishing"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "A Beginner’s Guide To Web Deployment",
+              "url": "https://medium.com/devjavu/a-beginners-guide-to-web-deployment-b4ce704fe097",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Deploying frontend applications — the fun way",
+              "url": "https://hackernoon.com/deploying-frontend-applications-the-fun-way-bc3f69e15331",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Top 5 Platforms to Deploy Your Frontend Projects",
+              "url": "https://strapi.io/blog/top-platforms-for-frontend-projects",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "How To Deploy a Website (to the internet)",
+              "url": "https://www.youtube.com/watch?v=NBrQp6-721c",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/NBrQp6-721c"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

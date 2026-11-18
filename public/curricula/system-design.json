@@ -1,0 +1,600 @@
+{
+  "id": "system-design",
+  "slug": "system-design",
+  "title": "System Design & Architecture",
+  "category": "Architecture",
+  "badge": "Advanced",
+  "description": "Architect planetary-scale distributed systems, master caching layers, database partitioning, event-driven architectures, and high availability.",
+  "totalTopics": 20,
+  "stages": [
+    {
+      "id": "sd-p1",
+      "phaseNumber": 1,
+      "title": "Distributed System Fundamentals",
+      "subtitle": "CAP theorem, PACELC, network latency and throughput",
+      "color": "amber",
+      "topics": [
+        {
+          "id": "sd-cap",
+          "title": "CAP Theorem & PACELC Trade-offs",
+          "slug": "sd-cap",
+          "description": "The CAP theorem states that a distributed system can only guarantee two out of three properties at the same time: consistency, availability, and partition tolerance. Since network partitions are unavoidable in real systems, the practical choice comes down to consistency versus availability during a partition. Designers use CAP as a framework to reason about these trade-offs rather than as a strict rule for every scenario.",
+          "stageId": "sd-p1",
+          "stageName": "Distributed System Fundamentals",
+          "stageColor": "amber",
+          "order": 1,
+          "tags": [
+            "Theory"
+          ],
+          "resources": [
+            {
+              "type": "opensource",
+              "title": "CAP FAQ",
+              "url": "https://github.com/henryr/cap-faq",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "CAP theorem revisited",
+              "url": "http://robertgreiner.com/2014/08/cap-theorem-revisited/",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "A plain english introduction to CAP theorem",
+              "url": "http://ksat.me/a-plain-english-introduction-to-cap-theorem",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "The CAP theorem",
+              "url": "https://www.youtube.com/watch?v=k-Yaq8AHlFA",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/k-Yaq8AHlFA"
+            }
+          ]
+        },
+        {
+          "id": "sd-latency",
+          "title": "Latency vs. Throughput & Bottleneck Analysis",
+          "slug": "sd-latency",
+          "description": "Latency is the time it takes to complete a single operation, such as the time between a request and its response. Throughput is the number of operations a system can process in a given time period. The two are related but not interchangeable: a system can have low latency but limited throughput, or high throughput with noticeable latency per request.",
+          "stageId": "sd-p1",
+          "stageName": "Distributed System Fundamentals",
+          "stageColor": "amber",
+          "order": 2,
+          "tags": [
+            "Metrics"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "System Design: Latency vs Throughput",
+              "url": "https://cs.fyi/guide/latency-vs-throughput/",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Understanding Latency versus Throughput",
+              "url": "https://community.cadence.com/cadence_blogs_8/b/fv/posts/understanding-latency-vs-throughput",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "Latency and Throughput - MIT",
+              "url": "https://www.youtube.com/watch?v=3HIV4MnLGCw",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/3HIV4MnLGCw"
+            }
+          ]
+        },
+        {
+          "id": "sd-lb",
+          "title": "Load Balancing Algorithms (L4 vs. L7)",
+          "slug": "sd-lb",
+          "description": "Layer 4 load balancers look at info at the transport layer to decide how to distribute requests. Generally, this involves the source, destination IP addresses, and ports in the header, but not the contents of the packet. Layer 4 load balancers forward network packets to and from the upstream server, performing Network Address Translation (NAT).",
+          "stageId": "sd-p1",
+          "stageName": "Distributed System Fundamentals",
+          "stageColor": "amber",
+          "order": 3,
+          "tags": [
+            "Routing"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "Layer 4 Load Balancing",
+              "url": "https://www.f5.com/glossary/layer-4-load-balancing",
+              "embedUrl": null
+            }
+          ]
+        },
+        {
+          "id": "sd-dns",
+          "title": "DNS Resolution, Anycast & Global Server Load Balancing",
+          "slug": "sd-dns",
+          "description": "A pull CDN fetches content from the origin server the first time a user requests it, then caches that content for subsequent requests until it expires. This keeps the CDN in sync with the origin automatically, since new or updated content gets pulled in on demand. It works well for sites with content that changes often but is not accessed instantly after publishing.",
+          "stageId": "sd-p1",
+          "stageName": "Distributed System Fundamentals",
+          "stageColor": "amber",
+          "order": 4,
+          "tags": [
+            "DNS"
+          ],
+          "resources": [
+            {
+              "type": "opensource",
+              "title": "Introduction to CDNs",
+              "url": "https://github.com/donnemartin/system-design-primer#content-delivery-network",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "The Differences Between Push And Pull CDNs",
+              "url": "http://www.travelblogadvice.com/technical/the-differences-between-push-and-pull-cdns/",
+              "embedUrl": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sd-p2",
+      "phaseNumber": 2,
+      "title": "Database Scaling & Partitioning",
+      "subtitle": "Sharding, replication, read replicas and consistency",
+      "color": "emerald",
+      "topics": [
+        {
+          "id": "sd-sharding",
+          "title": "Database Sharding & Consistent Hashing",
+          "slug": "sd-sharding",
+          "description": "Sharding splits a database horizontally, distributing rows of the same table across multiple database servers based on a shard key, such as user ID. Each shard holds a subset of the total data, which allows the system to scale beyond what a single server could handle. Choosing a good shard key is critical, since a poor choice can lead to uneven load across shards.",
+          "stageId": "sd-p2",
+          "stageName": "Database Scaling & Partitioning",
+          "stageColor": "emerald",
+          "order": 1,
+          "tags": [
+            "Scaling"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "The coming of the Shard",
+              "url": "http://highscalability.com/blog/2009/8/6/an-unorthodox-approach-to-database-design-the-coming-of-the.html",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Shard (database architecture)",
+              "url": "https://en.wikipedia.org/wiki/Shard_%28database_architecture%29",
+              "embedUrl": null
+            }
+          ]
+        },
+        {
+          "id": "sd-replication",
+          "title": "Leader-Follower Replication & Quorums",
+          "slug": "sd-replication",
+          "description": "Replication means keeping copies of the same data or service on multiple servers. It improves availability, since a failure on one node does not take down the whole system, and it can improve read performance by spreading requests across replicas. Replication introduces its own challenge of keeping the copies consistent with each other.",
+          "stageId": "sd-p2",
+          "stageName": "Database Scaling & Partitioning",
+          "stageColor": "emerald",
+          "order": 2,
+          "tags": [
+            "Consistency"
+          ],
+          "resources": [
+            {
+              "type": "opensource",
+              "title": "Replication: Availability Pattern",
+              "url": "https://github.com/donnemartin/system-design-primer#replication",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Database Replication Introduction: Types and Advantages",
+              "url": "https://www.enjoyalgorithms.com/blog/introduction-to-database-replication-system-design",
+              "embedUrl": null
+            }
+          ]
+        },
+        {
+          "id": "sd-rdbms-nosql",
+          "title": "RDBMS vs. NoSQL (Key-Value, Wide-Column, Graph)",
+          "slug": "sd-rdbms-nosql",
+          "description": "SQL databases store data in structured tables with predefined schemas and relationships, and they support complex queries through SQL. NoSQL databases store data in more flexible formats, such as key-value pairs, documents, or graphs, and generally trade strict consistency and rigid schemas for better horizontal scalability. The choice between them depends on the data structure, consistency needs, and expected scale of the application.",
+          "stageId": "sd-p2",
+          "stageName": "Database Scaling & Partitioning",
+          "stageColor": "emerald",
+          "order": 3,
+          "tags": [
+            "Storage"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "SQL vs NoSQL: The Differences",
+              "url": "https://www.sitepoint.com/sql-vs-nosql-differences/",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "SQL vs. NoSQL Databases: What’s the Difference?",
+              "url": "https://www.ibm.com/blog/sql-vs-nosql/",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "NoSQL vs. SQL Databases",
+              "url": "https://www.mongodb.com/nosql-explained/nosql-vs-sql",
+              "embedUrl": null
+            }
+          ]
+        },
+        {
+          "id": "sd-indexes",
+          "title": "B-Trees, LSM-Trees & Inverted Indexes",
+          "slug": "sd-indexes",
+          "description": "The busy database antipattern occurs when too much processing logic, such as complex computations or business rules, runs inside the database instead of the application layer. This overloads the database with work it is not optimized for and limits how well it can scale. Moving that logic into the application tier frees up the database to focus on data storage and retrieval.",
+          "stageId": "sd-p2",
+          "stageName": "Database Scaling & Partitioning",
+          "stageColor": "emerald",
+          "order": 4,
+          "tags": [
+            "Storage Engines"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "Busy Database antipattern",
+              "url": "https://learn.microsoft.com/en-us/azure/architecture/antipatterns/busy-database/",
+              "embedUrl": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sd-p3",
+      "phaseNumber": 3,
+      "title": "Caching Strategies & Content Delivery",
+      "subtitle": "Eviction policies, Redis clusters, and edge caching",
+      "color": "blue",
+      "topics": [
+        {
+          "id": "sd-cache-strat",
+          "title": "Cache Strategies (Write-Through, Write-Back, Cache-Aside)",
+          "slug": "sd-cache-strat",
+          "description": "Application caching stores computed results or frequently used data directly within the application layer, often in memory, to avoid repeating expensive operations. It can cache anything from database query results to rendered page fragments. Because it lives close to the application code, it typically offers very low latency.",
+          "stageId": "sd-p3",
+          "stageName": "Caching Strategies & Content Delivery",
+          "stageColor": "blue",
+          "order": 1,
+          "tags": [
+            "Caching"
+          ],
+          "resources": [
+            {
+              "type": "opensource",
+              "title": "Intro to Application Caching",
+              "url": "https://github.com/donnemartin/system-design-primer#application-caching",
+              "embedUrl": null
+            }
+          ]
+        },
+        {
+          "id": "sd-redis-cluster",
+          "title": "Redis Clustering & In-Memory Architectures",
+          "slug": "sd-redis-cluster",
+          "description": "Application caching stores computed results or frequently used data directly within the application layer, often in memory, to avoid repeating expensive operations. It can cache anything from database query results to rendered page fragments. Because it lives close to the application code, it typically offers very low latency.",
+          "stageId": "sd-p3",
+          "stageName": "Caching Strategies & Content Delivery",
+          "stageColor": "blue",
+          "order": 2,
+          "tags": [
+            "In-Memory"
+          ],
+          "resources": [
+            {
+              "type": "opensource",
+              "title": "Intro to Application Caching",
+              "url": "https://github.com/donnemartin/system-design-primer#application-caching",
+              "embedUrl": null
+            }
+          ]
+        },
+        {
+          "id": "sd-cdn",
+          "title": "CDN Edge Caching & Cache Invalidation",
+          "slug": "sd-cdn",
+          "description": "CDN caching stores static content, like images, stylesheets, and scripts, on distributed edge servers close to end users. This reduces the distance data has to travel and offloads traffic from the origin server. Content can be cached for a set duration or invalidated when it changes.",
+          "stageId": "sd-p3",
+          "stageName": "Caching Strategies & Content Delivery",
+          "stageColor": "blue",
+          "order": 3,
+          "tags": [
+            "Edge"
+          ],
+          "resources": []
+        },
+        {
+          "id": "sd-stampede",
+          "title": "Thundering Herd & Cache Stampede Mitigation",
+          "slug": "sd-stampede",
+          "description": "Application caching stores computed results or frequently used data directly within the application layer, often in memory, to avoid repeating expensive operations. It can cache anything from database query results to rendered page fragments. Because it lives close to the application code, it typically offers very low latency.",
+          "stageId": "sd-p3",
+          "stageName": "Caching Strategies & Content Delivery",
+          "stageColor": "blue",
+          "order": 4,
+          "tags": [
+            "Resiliency"
+          ],
+          "resources": [
+            {
+              "type": "opensource",
+              "title": "Intro to Application Caching",
+              "url": "https://github.com/donnemartin/system-design-primer#application-caching",
+              "embedUrl": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sd-p4",
+      "phaseNumber": 4,
+      "title": "Asynchronous & Event-Driven Systems",
+      "subtitle": "Message queues, pub/sub, Saga pattern and idempotency",
+      "color": "purple",
+      "topics": [
+        {
+          "id": "sd-queues",
+          "title": "Message Queues (Kafka vs. RabbitMQ vs. SQS)",
+          "slug": "sd-queues",
+          "description": "Apache Kafka is a distributed event streaming platform for high-throughput, fault-tolerant data processing. Acts as message broker with publish/subscribe model. Features topics, partitions for parallel processing, and replication for fault tolerance. Ideal for real-time analytics and data integration.",
+          "stageId": "sd-p4",
+          "stageName": "Asynchronous & Event-Driven Systems",
+          "stageColor": "purple",
+          "order": 1,
+          "tags": [
+            "Messaging"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "Apache Kafka",
+              "url": "https://kafka.apache.org/quickstart",
+              "embedUrl": null
+            },
+            {
+              "type": "official",
+              "title": "Apache Kafka Streams",
+              "url": "https://kafka.apache.org/documentation/streams/",
+              "embedUrl": null
+            },
+            {
+              "type": "official",
+              "title": "Kafka Streams Confluent",
+              "url": "https://docs.confluent.io/platform/current/streams/concepts.html",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "Apache Kafka Fundamentals",
+              "url": "https://www.youtube.com/watch?v=B5j3uNBH8X4",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/B5j3uNBH8X4"
+            }
+          ]
+        },
+        {
+          "id": "sd-idempotency",
+          "title": "Idempotency & Exactly-Once Semantics",
+          "slug": "sd-idempotency",
+          "description": "Comprehensive technical guide and engineering practices for mastering Idempotency & Exactly-Once Semantics. Explore the curated video tutorials, official documentation, and deep-dive references below to build production competency.",
+          "stageId": "sd-p4",
+          "stageName": "Asynchronous & Event-Driven Systems",
+          "stageColor": "purple",
+          "order": 2,
+          "tags": [
+            "Reliability"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "Engineering Guide: Idempotency & Exactly-Once Semantics",
+              "url": "https://developer.mozilla.org/"
+            }
+          ]
+        },
+        {
+          "id": "sd-saga",
+          "title": "Distributed Transactions & Saga Pattern",
+          "slug": "sd-saga",
+          "description": "Microservices is an architectural style where an application is built as a collection of small, independently deployable services, each responsible for a specific piece of functionality. Services communicate with each other over a network, typically through APIs or messaging. This approach makes it easier to scale, deploy, and update parts of a system independently, at the cost of added operational complexity.",
+          "stageId": "sd-p4",
+          "stageName": "Asynchronous & Event-Driven Systems",
+          "stageColor": "purple",
+          "order": 3,
+          "tags": [
+            "Transactions"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "Introduction to Microservices",
+              "url": "https://aws.amazon.com/microservices/",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Microservices - Wikipedia",
+              "url": "https://en.wikipedia.org/wiki/Microservices",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Microservices",
+              "url": "https://martinfowler.com/articles/microservices.html",
+              "embedUrl": null
+            }
+          ]
+        },
+        {
+          "id": "sd-rate-limit",
+          "title": "Rate Limiting Algorithms (Token Bucket, Leaky Bucket)",
+          "slug": "sd-rate-limit",
+          "description": "Security monitoring tracks events related to the security of a system, such as failed login attempts, unusual access patterns, or potential intrusions. It helps detect and respond to threats in real time, rather than discovering a breach after the fact. This often feeds into automated alerting or incident response processes.",
+          "stageId": "sd-p4",
+          "stageName": "Asynchronous & Event-Driven Systems",
+          "stageColor": "purple",
+          "order": 4,
+          "tags": [
+            "Traffic Control"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "Security Monitoring",
+              "url": "https://learn.microsoft.com/en-us/azure/architecture/best-practices/monitoring#security-monitoring",
+              "embedUrl": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sd-p5",
+      "phaseNumber": 5,
+      "title": "Resiliency, Security & Real-World Case Studies",
+      "subtitle": "Circuit breakers, chaos engineering, and planetary architectures",
+      "color": "rose",
+      "topics": [
+        {
+          "id": "sd-circuit-breaker",
+          "title": "Circuit Breaker Pattern & Graceful Degradation",
+          "slug": "sd-circuit-breaker",
+          "description": "Handle faults that might take a variable amount of time to recover from, when connecting to a remote service or resource. This can improve the stability and resiliency of an application.",
+          "stageId": "sd-p5",
+          "stageName": "Resiliency, Security & Real-World Case Studies",
+          "stageColor": "rose",
+          "order": 1,
+          "tags": [
+            "Resiliency"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "Circuit breaker design pattern",
+              "url": "https://en.wikipedia.org/wiki/Circuit_breaker_design_pattern",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Overview of Circuit Breaker",
+              "url": "https://medium.com/geekculture/design-patterns-for-microservices-circuit-breaker-pattern-276249ffab33",
+              "embedUrl": null
+            }
+          ]
+        },
+        {
+          "id": "sd-disaster",
+          "title": "Multi-Region Failover & Disaster Recovery",
+          "slug": "sd-disaster",
+          "description": "Azure infrastructure is composed of geographies, regions, and Availability Zones, which limit the blast radius of a failure and therefore limit potential impact to customer applications and data. The Azure Availability Zones construct was developed to provide a software and networking solution to protect against datacenter failures and to provide increased high availability (HA) to our customers. With HA architecture there is a balance between high resilience, low latency, and cost.",
+          "stageId": "sd-p5",
+          "stageName": "Resiliency, Security & Real-World Case Studies",
+          "stageColor": "rose",
+          "order": 2,
+          "tags": [
+            "Availability"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "High availability Patterns",
+              "url": "https://learn.microsoft.com/en-us/azure/architecture/framework/resiliency/reliability-patterns#high-availability",
+              "embedUrl": null
+            }
+          ]
+        },
+        {
+          "id": "sd-case-url",
+          "title": "Case Study: Designing TinyURL & Pastebin",
+          "slug": "sd-case-url",
+          "description": "Approaching a system design problem starts with clarifying requirements: what the system needs to do, how many users it serves, and what scale it must handle. From there, the design moves through estimating capacity, sketching a high-level architecture, and drilling into individual components like databases, caches, and load balancers. Trade-offs get revisited throughout, since no design fits every constraint at once.",
+          "stageId": "sd-p5",
+          "stageName": "Resiliency, Security & Real-World Case Studies",
+          "stageColor": "rose",
+          "order": 3,
+          "tags": [
+            "Case Study"
+          ],
+          "resources": [
+            {
+              "type": "opensource",
+              "title": "How to approach System Design?",
+              "url": "https://github.com/donnemartin/system-design-primer#how-to-approach-a-system-design-interview-question",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "What are system design questions?",
+              "url": "https://www.hiredintech.com/system-design",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "My System Design Template",
+              "url": "https://leetcode.com/discuss/career/229177/My-System-Design-Template",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "Intro to Architecture and Systems Design Interviews",
+              "url": "https://www.youtube.com/watch?v=ZgdS0EUmn70",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/ZgdS0EUmn70"
+            }
+          ]
+        },
+        {
+          "id": "sd-case-chat",
+          "title": "Case Study: Designing Real-Time Chat & Feed Systems",
+          "slug": "sd-case-chat",
+          "description": "Approaching a system design problem starts with clarifying requirements: what the system needs to do, how many users it serves, and what scale it must handle. From there, the design moves through estimating capacity, sketching a high-level architecture, and drilling into individual components like databases, caches, and load balancers. Trade-offs get revisited throughout, since no design fits every constraint at once.",
+          "stageId": "sd-p5",
+          "stageName": "Resiliency, Security & Real-World Case Studies",
+          "stageColor": "rose",
+          "order": 4,
+          "tags": [
+            "Case Study"
+          ],
+          "resources": [
+            {
+              "type": "opensource",
+              "title": "How to approach System Design?",
+              "url": "https://github.com/donnemartin/system-design-primer#how-to-approach-a-system-design-interview-question",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "What are system design questions?",
+              "url": "https://www.hiredintech.com/system-design",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "My System Design Template",
+              "url": "https://leetcode.com/discuss/career/229177/My-System-Design-Template",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "Intro to Architecture and Systems Design Interviews",
+              "url": "https://www.youtube.com/watch?v=ZgdS0EUmn70",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/ZgdS0EUmn70"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

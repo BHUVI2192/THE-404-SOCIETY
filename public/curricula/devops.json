@@ -1,0 +1,752 @@
+{
+  "id": "devops",
+  "slug": "devops",
+  "title": "DevOps & Cloud Architecture",
+  "category": "Infrastructure",
+  "badge": "Operations",
+  "description": "Learn modern infrastructure as code, container orchestration with Kubernetes, CI/CD pipelines, and cloud reliability engineering.",
+  "totalTopics": 20,
+  "stages": [
+    {
+      "id": "do-p1",
+      "phaseNumber": 1,
+      "title": "Linux, Networking & Shell",
+      "subtitle": "The foundational sysadmin and networking toolkit",
+      "color": "amber",
+      "topics": [
+        {
+          "id": "do-linux",
+          "title": "Linux System Administration & Permissions",
+          "slug": "do-linux",
+          "description": "openSUSE is a Linux-based operating system known for its stability, versatility, and focus on user-friendly system management. It offers two main distributions: openSUSE Leap, a stable, enterprise-grade version with regular point releases, and openSUSE Tumbleweed, a rolling release version with the latest software updates. OpenSUSE is widely used by developers, system administrators, and enterprise environments due to its robust package management via Zypper and YaST (Yet another Setup Tool), which simplifies system configuration. It also supports a wide range of hardware and offers strong community-driven support.",
+          "stageId": "do-p1",
+          "stageName": "Linux, Networking & Shell",
+          "stageColor": "amber",
+          "order": 1,
+          "tags": [
+            "Linux"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "openSUSE Linux Website",
+              "url": "https://www.opensuse.org/",
+              "embedUrl": null
+            },
+            {
+              "type": "official",
+              "title": "openSUSE Documentation",
+              "url": "https://en.opensuse.org/Main_Page",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Unofficial openSUSE Getting Started Guide",
+              "url": "https://opensuse-guide.org/",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "OpenSuSE - You Should Try It",
+              "url": "https://www.youtube.com/watch?v=CZwAgf3f8CM",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/CZwAgf3f8CM"
+            }
+          ]
+        },
+        {
+          "id": "do-bash",
+          "title": "Bash Scripting & Automation",
+          "slug": "do-bash",
+          "description": "Bash is a command language interpreter that allows users to interact with an operating system by executing text-based commands. It serves as the default shell for most Linux distributions and provides a scripting environment for automating repetitive tasks through shell scripts. By using Bash, you can navigate file systems, manage processes, manipulate text files, and chain multiple programs together to perform complex system operations efficiently.",
+          "stageId": "do-p1",
+          "stageName": "Linux, Networking & Shell",
+          "stageColor": "amber",
+          "order": 2,
+          "tags": [
+            "Shell"
+          ],
+          "resources": [
+            {
+              "type": "course",
+              "title": "Bash Scripting Tutorial for Beginners",
+              "url": "https://www.youtube.com/watch?v=tK9Oc6AEnR4",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Interactive Shell Scripting Tutorial",
+              "url": "https://www.learnshell.org/en/Welcome",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "Bash in 100 Seconds",
+              "url": "https://www.youtube.com/watch?v=I4EWvMFj37g",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/I4EWvMFj37g"
+            }
+          ]
+        },
+        {
+          "id": "do-net",
+          "title": "Networking Fundamentals (TCP/IP, DNS, SSL/TLS)",
+          "slug": "do-net",
+          "description": "Networking and protocols refer to the rules and systems that allow computers and servers to communicate with each other over a network. Networking involves the hardware and software used to connect machines, such as routers, switches, and firewalls, while protocols like HTTP, TCP/IP, DNS, and SSH act as standardized languages that define how data is packaged, sent, and received. Understanding these concepts is essential for ensuring that applications can interact reliably, securely, and efficiently within an infrastructure.",
+          "stageId": "do-p1",
+          "stageName": "Linux, Networking & Shell",
+          "stageColor": "amber",
+          "order": 3,
+          "tags": [
+            "Protocols"
+          ],
+          "resources": [
+            {
+              "type": "video",
+              "title": "DNS and How does it Work?",
+              "url": "https://www.youtube.com/watch?v=Wj0od2ag5sk",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/Wj0od2ag5sk"
+            },
+            {
+              "type": "video",
+              "title": "SSH vs SSL vs TLS",
+              "url": "https://www.youtube.com/watch?v=k3rFFLmQCuY",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/k3rFFLmQCuY"
+            }
+          ]
+        },
+        {
+          "id": "do-git",
+          "title": "Git for Infrastructure Workflows",
+          "slug": "do-git",
+          "description": "DigitalOcean is a cloud infrastructure provider that offers simple, affordable, and developer-friendly virtual private servers, known as \"Droplets.\" It focuses on providing straightforward cloud computing services, including virtual machines, managed databases, object storage, and Kubernetes clusters. DigitalOcean is known for its user-friendly interface, transparent pricing, and extensive documentation, making it popular among developers, startups, and small to medium-sized businesses. The platform emphasizes simplicity and performance, offering features like one-click applications, team management, and a robust API for automation. While not as feature-rich as some larger cloud providers, DigitalOcean's streamlined approach and competitive pricing make it an attractive option for those seeking uncomplicated cloud infrastructure solutions.",
+          "stageId": "do-p1",
+          "stageName": "Linux, Networking & Shell",
+          "stageColor": "amber",
+          "order": 4,
+          "tags": [
+            "VCS"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "DigitalOcean",
+              "url": "https://www.digitalocean.com/",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "Getting Started With Kubernetes on DigitalOcean",
+              "url": "https://www.youtube.com/watch?v=cJKdo-glRD0",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/cJKdo-glRD0"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "do-p2",
+      "phaseNumber": 2,
+      "title": "Containers & Docker Mastery",
+      "subtitle": "Immutable environments and multi-stage container builds",
+      "color": "blue",
+      "topics": [
+        {
+          "id": "do-docker",
+          "title": "Docker Architecture, Images & Containers",
+          "slug": "do-docker",
+          "description": "A Docker Swarm is a group of either physical or virtual machines that are running the Docker application and that have been configured to join together in a cluster. Once a group of machines have been clustered together, you can still run the Docker commands that you're used to, but they will now be carried out by the machines in your cluster. The activities of the cluster are controlled by a swarm manager, and machines that have joined the cluster are referred to as nodes.",
+          "stageId": "do-p2",
+          "stageName": "Containers & Docker Mastery",
+          "stageColor": "blue",
+          "order": 1,
+          "tags": [
+            "Containers"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "Docker Swarm Documentation",
+              "url": "https://docs.docker.com/engine/swarm/",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Tutorial: Manage Docker Swarm with Portainer",
+              "url": "https://thenewstack.io/tutorial-manage-docker-swarm-with-portainer/",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Tutorial: Create a Docker Swarm with Persistent Storage Using GlusterFS",
+              "url": "https://thenewstack.io/tutorial-create-a-docker-swarm-with-persistent-storage-using-glusterfs/",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "Docker Swarm | Introduction | Step By Step Examples",
+              "url": "https://www.youtube.com/watch?v=Xaea-XnJTJU",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/Xaea-XnJTJU"
+            }
+          ]
+        },
+        {
+          "id": "do-compose",
+          "title": "Docker Compose for Multi-Container Apps",
+          "slug": "do-compose",
+          "description": "A Docker Swarm is a group of either physical or virtual machines that are running the Docker application and that have been configured to join together in a cluster. Once a group of machines have been clustered together, you can still run the Docker commands that you're used to, but they will now be carried out by the machines in your cluster. The activities of the cluster are controlled by a swarm manager, and machines that have joined the cluster are referred to as nodes.",
+          "stageId": "do-p2",
+          "stageName": "Containers & Docker Mastery",
+          "stageColor": "blue",
+          "order": 2,
+          "tags": [
+            "Local Dev"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "Docker Swarm Documentation",
+              "url": "https://docs.docker.com/engine/swarm/",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Tutorial: Manage Docker Swarm with Portainer",
+              "url": "https://thenewstack.io/tutorial-manage-docker-swarm-with-portainer/",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Tutorial: Create a Docker Swarm with Persistent Storage Using GlusterFS",
+              "url": "https://thenewstack.io/tutorial-create-a-docker-swarm-with-persistent-storage-using-glusterfs/",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "Docker Swarm | Introduction | Step By Step Examples",
+              "url": "https://www.youtube.com/watch?v=Xaea-XnJTJU",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/Xaea-XnJTJU"
+            }
+          ]
+        },
+        {
+          "id": "do-registry",
+          "title": "Container Registries & Image Security Scanning",
+          "slug": "do-registry",
+          "description": "A Docker Swarm is a group of either physical or virtual machines that are running the Docker application and that have been configured to join together in a cluster. Once a group of machines have been clustered together, you can still run the Docker commands that you're used to, but they will now be carried out by the machines in your cluster. The activities of the cluster are controlled by a swarm manager, and machines that have joined the cluster are referred to as nodes.",
+          "stageId": "do-p2",
+          "stageName": "Containers & Docker Mastery",
+          "stageColor": "blue",
+          "order": 3,
+          "tags": [
+            "Security"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "Docker Swarm Documentation",
+              "url": "https://docs.docker.com/engine/swarm/",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Tutorial: Manage Docker Swarm with Portainer",
+              "url": "https://thenewstack.io/tutorial-manage-docker-swarm-with-portainer/",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Tutorial: Create a Docker Swarm with Persistent Storage Using GlusterFS",
+              "url": "https://thenewstack.io/tutorial-create-a-docker-swarm-with-persistent-storage-using-glusterfs/",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "Docker Swarm | Introduction | Step By Step Examples",
+              "url": "https://www.youtube.com/watch?v=Xaea-XnJTJU",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/Xaea-XnJTJU"
+            }
+          ]
+        },
+        {
+          "id": "do-networking",
+          "title": "Container Networking & Volume Persistence",
+          "slug": "do-networking",
+          "description": "A Docker Swarm is a group of either physical or virtual machines that are running the Docker application and that have been configured to join together in a cluster. Once a group of machines have been clustered together, you can still run the Docker commands that you're used to, but they will now be carried out by the machines in your cluster. The activities of the cluster are controlled by a swarm manager, and machines that have joined the cluster are referred to as nodes.",
+          "stageId": "do-p2",
+          "stageName": "Containers & Docker Mastery",
+          "stageColor": "blue",
+          "order": 4,
+          "tags": [
+            "Storage"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "Docker Swarm Documentation",
+              "url": "https://docs.docker.com/engine/swarm/",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Tutorial: Manage Docker Swarm with Portainer",
+              "url": "https://thenewstack.io/tutorial-manage-docker-swarm-with-portainer/",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Tutorial: Create a Docker Swarm with Persistent Storage Using GlusterFS",
+              "url": "https://thenewstack.io/tutorial-create-a-docker-swarm-with-persistent-storage-using-glusterfs/",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "Docker Swarm | Introduction | Step By Step Examples",
+              "url": "https://www.youtube.com/watch?v=Xaea-XnJTJU",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/Xaea-XnJTJU"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "do-p3",
+      "phaseNumber": 3,
+      "title": "Kubernetes & Container Orchestration",
+      "subtitle": "Pods, Deployments, Services, Ingress, and Helm",
+      "color": "emerald",
+      "topics": [
+        {
+          "id": "do-k8s",
+          "title": "Kubernetes Architecture & Core Concepts",
+          "slug": "do-k8s",
+          "description": "Kubernetes is an open-source container orchestration platform originally developed by Google. It automates the deployment, scaling, and management of containerized applications across clusters of nodes, and has become the de facto standard for running containers in production environments.",
+          "stageId": "do-p3",
+          "stageName": "Kubernetes & Container Orchestration",
+          "stageColor": "emerald",
+          "order": 1,
+          "tags": [
+            "Orchestration"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "Kubernetes Website",
+              "url": "https://kubernetes.io/",
+              "embedUrl": null
+            },
+            {
+              "type": "opensource",
+              "title": "kubernetes/kubernetes",
+              "url": "https://github.com/kubernetes/kubernetes",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Kubernetes: An Overview",
+              "url": "https://thenewstack.io/kubernetes-an-overview/",
+              "embedUrl": null
+            }
+          ]
+        },
+        {
+          "id": "do-deployments",
+          "title": "Pods, Deployments & StatefulSets",
+          "slug": "do-deployments",
+          "description": "Kubernetes is an open-source container orchestration platform originally developed by Google. It automates the deployment, scaling, and management of containerized applications across clusters of nodes, and has become the de facto standard for running containers in production environments.",
+          "stageId": "do-p3",
+          "stageName": "Kubernetes & Container Orchestration",
+          "stageColor": "emerald",
+          "order": 2,
+          "tags": [
+            "Workloads"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "Kubernetes Website",
+              "url": "https://kubernetes.io/",
+              "embedUrl": null
+            },
+            {
+              "type": "opensource",
+              "title": "kubernetes/kubernetes",
+              "url": "https://github.com/kubernetes/kubernetes",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Kubernetes: An Overview",
+              "url": "https://thenewstack.io/kubernetes-an-overview/",
+              "embedUrl": null
+            }
+          ]
+        },
+        {
+          "id": "do-ingress",
+          "title": "Services, Ingress Controllers & Cert-Manager",
+          "slug": "do-ingress",
+          "description": "Kubernetes is an open-source container orchestration platform originally developed by Google. It automates the deployment, scaling, and management of containerized applications across clusters of nodes, and has become the de facto standard for running containers in production environments.",
+          "stageId": "do-p3",
+          "stageName": "Kubernetes & Container Orchestration",
+          "stageColor": "emerald",
+          "order": 3,
+          "tags": [
+            "Traffic"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "Kubernetes Website",
+              "url": "https://kubernetes.io/",
+              "embedUrl": null
+            },
+            {
+              "type": "opensource",
+              "title": "kubernetes/kubernetes",
+              "url": "https://github.com/kubernetes/kubernetes",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Kubernetes: An Overview",
+              "url": "https://thenewstack.io/kubernetes-an-overview/",
+              "embedUrl": null
+            }
+          ]
+        },
+        {
+          "id": "do-helm",
+          "title": "Helm Charts & Package Management",
+          "slug": "do-helm",
+          "description": "Kubernetes is an open-source container orchestration platform originally developed by Google. It automates the deployment, scaling, and management of containerized applications across clusters of nodes, and has become the de facto standard for running containers in production environments.",
+          "stageId": "do-p3",
+          "stageName": "Kubernetes & Container Orchestration",
+          "stageColor": "emerald",
+          "order": 4,
+          "tags": [
+            "Packaging"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "Kubernetes Website",
+              "url": "https://kubernetes.io/",
+              "embedUrl": null
+            },
+            {
+              "type": "opensource",
+              "title": "kubernetes/kubernetes",
+              "url": "https://github.com/kubernetes/kubernetes",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Kubernetes: An Overview",
+              "url": "https://thenewstack.io/kubernetes-an-overview/",
+              "embedUrl": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "do-p4",
+      "phaseNumber": 4,
+      "title": "CI/CD & Infrastructure as Code",
+      "subtitle": "Terraform, GitHub Actions, and GitOps workflows",
+      "color": "purple",
+      "topics": [
+        {
+          "id": "do-terraform",
+          "title": "Terraform & Infrastructure as Code (IaC)",
+          "slug": "do-terraform",
+          "description": "Terraform is an open-source infrastructure as code tool that allows you to define and manage your data center infrastructure using a declarative configuration language. By writing infrastructure requirements in human-readable files, you can automate the creation, update, and versioning of cloud resources across various providers. It maintains a state file to track the current configuration of your environment, ensuring that the deployed infrastructure matches the intended design defined in your code.",
+          "stageId": "do-p4",
+          "stageName": "CI/CD & Infrastructure as Code",
+          "stageColor": "purple",
+          "order": 1,
+          "tags": [
+            "IaC"
+          ],
+          "resources": [
+            {
+              "type": "course",
+              "title": "Complete Terraform Course",
+              "url": "https://www.youtube.com/watch?v=7xngnjfIlK4",
+              "embedUrl": null
+            },
+            {
+              "type": "official",
+              "title": "Terraform Documentation",
+              "url": "https://www.terraform.io/docs",
+              "embedUrl": null
+            }
+          ]
+        },
+        {
+          "id": "do-actions",
+          "title": "CI/CD Pipelines (GitHub Actions & GitLab)",
+          "slug": "do-actions",
+          "description": "GitHub Actions is a CI/CD and automation platform built into GitHub. It lets you define workflows in YAML files that trigger on repository events, such as pushes or pull requests, to automatically build, test, and deploy your code without leaving the GitHub ecosystem.",
+          "stageId": "do-p4",
+          "stageName": "CI/CD & Infrastructure as Code",
+          "stageColor": "purple",
+          "order": 2,
+          "tags": [
+            "Pipelines"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "GitHub Actions Documentation",
+              "url": "https://docs.github.com/en/actions",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "GitHub Actions Guide",
+              "url": "https://octopus.com/devops/github-actions/?utm_source=roadmap&utm_medium=link&utm_campaign=devops-ci-cd-github-actions",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "What is GitHub Actions?",
+              "url": "https://www.youtube.com/watch?v=URmeTqglS58",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/URmeTqglS58"
+            },
+            {
+              "type": "video",
+              "title": "Automate your Workflow with GitHub Actions",
+              "url": "https://www.youtube.com/watch?v=nyKZTKQS_EQ",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/nyKZTKQS_EQ"
+            }
+          ]
+        },
+        {
+          "id": "do-gitops",
+          "title": "GitOps (ArgoCD & Flux)",
+          "slug": "do-gitops",
+          "description": "GitOps is a way of managing infrastructure and application deployments by storing the desired state in a Git repository and using automation to apply changes. It treats Git as the single source of truth, so updates are made by committing changes to the repo, and automated tools reconcile the actual system state with what’s in Git.",
+          "stageId": "do-p4",
+          "stageName": "CI/CD & Infrastructure as Code",
+          "stageColor": "purple",
+          "order": 3,
+          "tags": [
+            "Continuous Deploy"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "What is GitOps",
+              "url": "https://octopus.com/devops/gitops/?utm_source=roadmap&utm_medium=link&utm_campaign=devops-gitops",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "GitOps Interactive Benefits Diagram",
+              "url": "https://octopus.com/devops/gitops/interactive-diagrams/?utm_source=roadmap&utm_medium=link&utm_campaign=devops-gitops",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "GitOps Maturity Model",
+              "url": "https://octopus.com/devops/gitops/gitops-maturity-model/?utm_source=roadmap&utm_medium=link&utm_campaign=devops-gitops",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "What is GitOps, How GitOps works and Why it's so useful",
+              "url": "https://www.youtube.com/watch?v=f5EpcWp0THw",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/f5EpcWp0THw"
+            }
+          ]
+        },
+        {
+          "id": "do-ansible",
+          "title": "Configuration Management (Ansible)",
+          "slug": "do-ansible",
+          "description": "Ansible is an open-source automation tool used for configuration management, application deployment, and task orchestration. It operates as an agentless system, connecting to remote servers via SSH or WinRM to execute tasks defined in human-readable YAML files called playbooks. It allows users to describe the desired state of a system, and the tool ensures the infrastructure matches that configuration automatically.",
+          "stageId": "do-p4",
+          "stageName": "CI/CD & Infrastructure as Code",
+          "stageColor": "purple",
+          "order": 4,
+          "tags": [
+            "Automation"
+          ],
+          "resources": [
+            {
+              "type": "course",
+              "title": "Ansible Full Course for Beginners",
+              "url": "https://www.youtube.com/watch?v=9Ua2b06oAr4",
+              "embedUrl": null
+            },
+            {
+              "type": "official",
+              "title": "Ansible Website",
+              "url": "https://www.ansible.com/",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "Ansible in 100 Seconds",
+              "url": "https://www.youtube.com/watch?v=xRMPKQweySE",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/xRMPKQweySE"
+            },
+            {
+              "type": "video",
+              "title": "Ansible Full Course to Zero to Hero",
+              "url": "https://www.youtube.com/watch?v=GROqwFFLl3s",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/GROqwFFLl3s"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "do-p5",
+      "phaseNumber": 5,
+      "title": "Observability & Cloud Scale",
+      "subtitle": "Prometheus, Grafana, logging, and disaster recovery",
+      "color": "rose",
+      "topics": [
+        {
+          "id": "do-prometheus",
+          "title": "Monitoring & Alerting (Prometheus & Grafana)",
+          "slug": "do-prometheus",
+          "description": "Monitoring refers to the practice of making the performance and status of infrastructure visible. This section contains common tools used for monitoring. This is a very vendor-heavy space, use caution when studying materials exclusively from a given product or project, as there are many conflicting opinions and strategies in use. There is no single solution for the most substantially complex internet-facing applications, so understanding the pros and cons of these tools will be useful in helping you plan how to monitor a system for a given goal.",
+          "stageId": "do-p5",
+          "stageName": "Observability & Cloud Scale",
+          "stageColor": "rose",
+          "order": 1,
+          "tags": [
+            "Metrics"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "Best Practices to Optimize Infrastructure Monitoring within DevOps Teams",
+              "url": "https://thenewstack.io/best-practices-to-optimize-infrastructure-monitoring-within-devops-teams/",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Seven Steps to Effective Cloud Native Infrastructure Monitoring",
+              "url": "https://thenewstack.io/seven-steps-to-effective-cloud-native-infrastructure-monitoring/",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "Infrastructure Monitoring Basics with Telegraf, Grafana and InfluxDB",
+              "url": "https://www.youtube.com/watch?v=ESub4SAKouI",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/ESub4SAKouI"
+            }
+          ]
+        },
+        {
+          "id": "do-logging",
+          "title": "Centralized Logging (ELK / Loki)",
+          "slug": "do-logging",
+          "description": "Elasticsearch is a document-oriented search engine and database supporting INSERT, DELETE, RETRIEVE operations and analytics. Unlike general databases, it's optimized for search with powerful features for fast data retrieval based on search criteria.",
+          "stageId": "do-p5",
+          "stageName": "Observability & Cloud Scale",
+          "stageColor": "rose",
+          "order": 2,
+          "tags": [
+            "Logs"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "Elasticsearch Website",
+              "url": "https://www.elastic.co/elasticsearch/",
+              "embedUrl": null
+            },
+            {
+              "type": "official",
+              "title": "Elasticsearch Documentation",
+              "url": "https://www.elastic.co/guide/index.html",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "What is Elasticsearch",
+              "url": "https://www.youtube.com/watch?v=ZP0NmfyfsoM",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/ZP0NmfyfsoM"
+            }
+          ]
+        },
+        {
+          "id": "do-security",
+          "title": "DevSecOps, Secrets Management (Vault) & Zero Trust",
+          "slug": "do-security",
+          "description": "Web security protects websites from cyber threats through HTTPS/TLS, XSS/SQL injection/CSRF prevention, CSP, secure authentication, input validation, and regular updates. Involves understanding OWASP Top Ten vulnerabilities, access controls, secure coding practices, and threat awareness for comprehensive protection.",
+          "stageId": "do-p5",
+          "stageName": "Observability & Cloud Scale",
+          "stageColor": "rose",
+          "order": 3,
+          "tags": [
+            "Security"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "OWASP Website",
+              "url": "https://owasp.org/",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "OWASP Cheatsheets",
+              "url": "https://cheatsheetseries.owasp.org/cheatsheets/AJAX_Security_Cheat_Sheet.html",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Content Security Policy (CSP)",
+              "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "OWASP ZAP Step-by-Step Tutorial",
+              "url": "https://www.youtube.com/playlist?list=PLH8n_ayg-60J9i3nsLybper-DR3zJw6Z5",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/videoseries?list=PLH8n_ayg-60J9i3nsLybper-DR3zJw6Z5"
+            }
+          ]
+        },
+        {
+          "id": "do-cloud",
+          "title": "AWS / Cloud Architecture & Cost Governance",
+          "slug": "do-cloud",
+          "description": "The AWS Cloud Development Kit (AWS CDK) is an open-source software development framework used to provision cloud infrastructure resources in a safe, repeatable manner through AWS CloudFormation. AWS CDK offers the flexibility to write infrastructure as code in popular languages like JavaScript, TypeScript, Python, Java, C#, and Go.",
+          "stageId": "do-p5",
+          "stageName": "Observability & Cloud Scale",
+          "stageColor": "rose",
+          "order": 4,
+          "tags": [
+            "Cloud"
+          ],
+          "resources": [
+            {
+              "type": "course",
+              "title": "AWS CDK Crash Course for Beginners",
+              "url": "https://www.youtube.com/watch?v=D4Asp5g4fp8",
+              "embedUrl": null
+            },
+            {
+              "type": "official",
+              "title": "AWS CDK",
+              "url": "https://aws.amazon.com/cdk/",
+              "embedUrl": null
+            },
+            {
+              "type": "official",
+              "title": "AWS CDK Documentation",
+              "url": "https://docs.aws.amazon.com/cdk/index.html",
+              "embedUrl": null
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

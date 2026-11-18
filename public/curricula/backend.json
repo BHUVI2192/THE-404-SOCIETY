@@ -1,0 +1,670 @@
+{
+  "id": "backend",
+  "slug": "backend",
+  "title": "Backend Engineering",
+  "category": "System Architecture",
+  "badge": "Core Track",
+  "description": "Build robust, scalable distributed backends with SQL/NoSQL databases, microservices, auth, and cloud deployments.",
+  "totalTopics": 20,
+  "stages": [
+    {
+      "id": "be-p1",
+      "phaseNumber": 1,
+      "title": "Programming Core & Architecture",
+      "subtitle": "Language fundamentals, OS concepts, and concurrency",
+      "color": "amber",
+      "topics": [
+        {
+          "id": "be-os",
+          "title": "Operating Systems, Threads & I/O",
+          "slug": "be-os",
+          "description": "Comprehensive technical guide and engineering practices for mastering Operating Systems, Threads & I/O. Explore the curated video tutorials, official documentation, and deep-dive references below to build production competency.",
+          "stageId": "be-p1",
+          "stageName": "Programming Core & Architecture",
+          "stageColor": "amber",
+          "order": 1,
+          "tags": [
+            "Systems"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "Engineering Guide: Operating Systems, Threads & I/O",
+              "url": "https://developer.mozilla.org/"
+            }
+          ]
+        },
+        {
+          "id": "be-lang",
+          "title": "Core Backend Language (Node.js/Go/Python)",
+          "slug": "be-lang",
+          "description": "Python is a high-level, interpreted language known for readability, simplicity, and versatility. Supports multiple paradigms with rich ecosystem including Django/Flask (web), Pandas/NumPy (data), TensorFlow/PyTorch (ML). Used for web development, data science, automation, and scripting.",
+          "stageId": "be-p1",
+          "stageName": "Programming Core & Architecture",
+          "stageColor": "amber",
+          "order": 2,
+          "tags": [
+            "Runtimes"
+          ],
+          "resources": [
+            {
+              "type": "course",
+              "title": "Python Full Course for free",
+              "url": "https://www.youtube.com/watch?v=ix9cRaBkVe0",
+              "embedUrl": null
+            },
+            {
+              "type": "official",
+              "title": "Python Website",
+              "url": "https://www.python.org/",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Automate the Boring Stuff",
+              "url": "https://automatetheboringstuff.com/",
+              "embedUrl": null
+            }
+          ]
+        },
+        {
+          "id": "be-dsa",
+          "title": "Data Structures & Algorithms in Practice",
+          "slug": "be-dsa",
+          "description": "Comprehensive technical guide and engineering practices for mastering Data Structures & Algorithms in Practice. Explore the curated video tutorials, official documentation, and deep-dive references below to build production competency.",
+          "stageId": "be-p1",
+          "stageName": "Programming Core & Architecture",
+          "stageColor": "amber",
+          "order": 3,
+          "tags": [
+            "Efficiency"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "Engineering Guide: Data Structures & Algorithms in Practice",
+              "url": "https://developer.mozilla.org/"
+            }
+          ]
+        },
+        {
+          "id": "be-git",
+          "title": "Git & Version Control Workflows",
+          "slug": "be-git",
+          "description": "Git is a distributed version control system created by Linus Torvalds in 2005. Tracks code changes, enables collaborative development, maintains complete history, and supports branching/merging. Each developer has full repository copy, allowing offline work and robust collaboration.",
+          "stageId": "be-p1",
+          "stageName": "Programming Core & Architecture",
+          "stageColor": "amber",
+          "order": 4,
+          "tags": [
+            "Tooling"
+          ],
+          "resources": [
+            {
+              "type": "course",
+              "title": "Why use Git? (Interactive Lesson)",
+              "url": "https://inter-git.com/lessons/introduction",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Tutorial: Git for Absolutely Everyone",
+              "url": "https://thenewstack.io/tutorial-git-for-absolutely-everyone/",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "Git & GitHub Crash Course For Beginners",
+              "url": "https://www.youtube.com/watch?v=SWYqp7iY_Tc",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/SWYqp7iY_Tc"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "be-p2",
+      "phaseNumber": 2,
+      "title": "Databases & Data Modeling",
+      "subtitle": "ACID transactions, relational schema and document stores",
+      "color": "emerald",
+      "topics": [
+        {
+          "id": "be-pg",
+          "title": "PostgreSQL & Relational Schema Design",
+          "slug": "be-pg",
+          "description": "PostgreSQL is an advanced, open-source RDBMS known for robustness, extensibility, and standards compliance. Supports complex queries, custom data types, full-text search, and ACID properties. Highly extensible with strong concurrency support, suitable for web apps to data warehousing.",
+          "stageId": "be-p2",
+          "stageName": "Databases & Data Modeling",
+          "stageColor": "emerald",
+          "order": 1,
+          "tags": [
+            "RDBMS"
+          ],
+          "resources": [
+            {
+              "type": "course",
+              "title": "PostgreSQL Full Course for Beginners – freeCodeCamp",
+              "url": "https://www.youtube.com/watch?v=qw--VYLpxG4",
+              "embedUrl": null
+            },
+            {
+              "type": "official",
+              "title": "Official Website",
+              "url": "https://www.postgresql.org/",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Learn PostgreSQL - Full Tutorial for Beginners",
+              "url": "https://www.postgresqltutorial.com/",
+              "embedUrl": null
+            }
+          ]
+        },
+        {
+          "id": "be-indexing",
+          "title": "Database Indexing, B-Trees & Query Plans",
+          "slug": "be-indexing",
+          "description": "Database indexes are data structures that speed up data retrieval by creating references to table data without full table scans. Include B-tree, bitmap, and hash types. Enhance query performance but increase storage requirements and slow down writes due to index maintenance.",
+          "stageId": "be-p2",
+          "stageName": "Databases & Data Modeling",
+          "stageColor": "emerald",
+          "order": 2,
+          "tags": [
+            "Performance"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "PostgreSQL - Indexes",
+              "url": "https://www.postgresql.org/docs/current/indexes.html",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "What is a Database Index?",
+              "url": "https://www.codecademy.com/article/sql-indexes",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Use the Index, Luke! - A Guide to Database Performance for Developers",
+              "url": "https://use-the-index-luke.com/",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "Database Indexing Explained",
+              "url": "https://www.youtube.com/watch?v=-qNSXK7s7_w",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/-qNSXK7s7_w"
+            }
+          ]
+        },
+        {
+          "id": "be-nosql",
+          "title": "NoSQL & Document Stores (MongoDB, DynamoDB)",
+          "slug": "be-nosql",
+          "description": "MongoDB is a NoSQL document-oriented database storing data in BSON format without fixed schemas. Supports horizontal scaling via sharding and high availability through replica sets. Ideal for applications with evolving data structures, real-time analytics, and large-scale data handling.",
+          "stageId": "be-p2",
+          "stageName": "Databases & Data Modeling",
+          "stageColor": "emerald",
+          "order": 3,
+          "tags": [
+            "Document DB"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "Learning Path for MongoDB Developers",
+              "url": "https://learn.mongodb.com/catalog",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "MongoDB Online Sandbox",
+              "url": "https://mongoplayground.net/",
+              "embedUrl": null
+            }
+          ]
+        },
+        {
+          "id": "be-redis",
+          "title": "Redis In-Memory Caching & Pub/Sub",
+          "slug": "be-redis",
+          "description": "Redis is an open-source, in-memory data structure store supporting strings, lists, sets, hashes, and sorted sets. Used for caching, session management, real-time analytics, and message brokering. Offers persistence, replication, clustering, and low-latency high-throughput performance.",
+          "stageId": "be-p2",
+          "stageName": "Databases & Data Modeling",
+          "stageColor": "emerald",
+          "order": 4,
+          "tags": [
+            "Cache"
+          ],
+          "resources": [
+            {
+              "type": "course",
+              "title": "Redis Crash Course",
+              "url": "https://www.youtube.com/watch?v=XCsS_NVAa1g",
+              "embedUrl": null
+            },
+            {
+              "type": "official",
+              "title": "Redis Documentation",
+              "url": "https://redis.io/docs/latest/",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "Redis Tutorial for Beginners",
+              "url": "https://www.youtube.com/watch?v=jgpVdJB2sKQ",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/jgpVdJB2sKQ"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "be-p3",
+      "phaseNumber": 3,
+      "title": "APIs, Authentication & Protocols",
+      "subtitle": "Robust interface contracts, session management and JWTs",
+      "color": "blue",
+      "topics": [
+        {
+          "id": "be-rest",
+          "title": "RESTful API Design & OpenAPI/Swagger",
+          "slug": "be-rest",
+          "description": "REST API is an architectural style using standard HTTP methods (GET, POST, PUT, DELETE) to interact with URI-represented resources. It's stateless, requiring complete request information, uses HTTP status codes, and typically communicates via JSON/XML. Popular for simplicity and scalability.",
+          "stageId": "be-p3",
+          "stageName": "APIs, Authentication & Protocols",
+          "stageColor": "blue",
+          "order": 1,
+          "tags": [
+            "APIs"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "What is a REST API?",
+              "url": "https://www.redhat.com/en/topics/api/what-is-a-rest-api",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Best practices for RESTful web API design",
+              "url": "https://learn.microsoft.com/en-us/azure/architecture/best-practices/api-design",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Learn REST: A RESTful Tutorial",
+              "url": "https://restapitutorial.com/",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "REST API Best Practices – REST Endpoint Design",
+              "url": "https://www.youtube.com/watch?v=1Wl-rtew1_E",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/1Wl-rtew1_E"
+            }
+          ]
+        },
+        {
+          "id": "be-auth",
+          "title": "Authentication, OAuth 2.0 & JWT Security",
+          "slug": "be-auth",
+          "description": "API authentication verifies client identity to ensure only authorized access to resources. Common methods include API keys, OAuth 2.0, JWT, and basic auth. It protects data, prevents unauthorized access, enables usage tracking, and provides granular control over API resources.",
+          "stageId": "be-p3",
+          "stageName": "APIs, Authentication & Protocols",
+          "stageColor": "blue",
+          "order": 2,
+          "tags": [
+            "Identity"
+          ],
+          "resources": [
+            {
+              "type": "course",
+              "title": "Broken Authentication: Hands-on Exercise",
+              "url": "https://ransomleak.com/exercises/broken-user-authentication/",
+              "embedUrl": null
+            }
+          ]
+        },
+        {
+          "id": "be-graphql",
+          "title": "GraphQL Schemas, Resolvers & Federation",
+          "slug": "be-graphql",
+          "description": "GraphQL is Facebook's query language for APIs, allowing clients to request exactly the data they need. Uses a single endpoint with schema-defined data structure, reducing over-fetching and under-fetching. More flexible than REST for complex applications with diverse platform needs. Most servers expose it over HTTP, and the GraphQL over HTTP specification now standardizes the methods, media types and status codes for doing so.",
+          "stageId": "be-p3",
+          "stageName": "APIs, Authentication & Protocols",
+          "stageColor": "blue",
+          "order": 3,
+          "tags": [
+            "Query API"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "GraphQL",
+              "url": "https://graphql.org/",
+              "embedUrl": null
+            },
+            {
+              "type": "official",
+              "title": "AServing over HTTP",
+              "url": "https://graphql.org/blog/2026-11-12-announcing-the-graphql-over-http-spec/",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "Tutorial - GraphQL Explained in 100 Seconds",
+              "url": "https://www.youtube.com/watch?v=eIQh02xuVw4",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/eIQh02xuVw4"
+            }
+          ]
+        },
+        {
+          "id": "be-grpc",
+          "title": "gRPC & Protocol Buffers (Protobuf)",
+          "slug": "be-grpc",
+          "description": "gRPC is a high-performance, open-source RPC (Remote Procedure Call) framework. Allows programs to execute procedures on remote computers like local functions. Developers don't need to handle remote interaction details, and client/server can use different programming languages.",
+          "stageId": "be-p3",
+          "stageName": "APIs, Authentication & Protocols",
+          "stageColor": "blue",
+          "order": 4,
+          "tags": [
+            "RPC"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "gRPC Website",
+              "url": "https://grpc.io/",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "What Is GRPC?",
+              "url": "https://www.wallarm.com/what/the-concept-of-grpc",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "What Is GRPC?",
+              "url": "https://www.youtube.com/watch?v=hVrwuMnCtok",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/hVrwuMnCtok"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "be-p4",
+      "phaseNumber": 4,
+      "title": "Microservices & Message Queues",
+      "subtitle": "Asynchronous event streaming and decoupled architectures",
+      "color": "purple",
+      "topics": [
+        {
+          "id": "be-kafka",
+          "title": "Message Brokers (RabbitMQ & Apache Kafka)",
+          "slug": "be-kafka",
+          "description": "Apache Kafka is a distributed event streaming platform for high-throughput, fault-tolerant data processing. Acts as message broker with publish/subscribe model. Features topics, partitions for parallel processing, and replication for fault tolerance. Ideal for real-time analytics and data integration.",
+          "stageId": "be-p4",
+          "stageName": "Microservices & Message Queues",
+          "stageColor": "purple",
+          "order": 1,
+          "tags": [
+            "Event-Driven"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "Apache Kafka",
+              "url": "https://kafka.apache.org/quickstart",
+              "embedUrl": null
+            },
+            {
+              "type": "official",
+              "title": "Apache Kafka Streams",
+              "url": "https://kafka.apache.org/documentation/streams/",
+              "embedUrl": null
+            },
+            {
+              "type": "official",
+              "title": "Kafka Streams Confluent",
+              "url": "https://docs.confluent.io/platform/current/streams/concepts.html",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "Apache Kafka Fundamentals",
+              "url": "https://www.youtube.com/watch?v=B5j3uNBH8X4",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/B5j3uNBH8X4"
+            }
+          ]
+        },
+        {
+          "id": "be-microservices",
+          "title": "Microservices Patterns & Service Mesh",
+          "slug": "be-microservices",
+          "description": "Microservices architecture structures applications as loosely coupled, independently deployable services focused on specific business capabilities. Communicate via HTTP or messaging. Enables scalability, flexibility, diverse technologies, and continuous deployment but adds complexity in communication and orchestration.",
+          "stageId": "be-p4",
+          "stageName": "Microservices & Message Queues",
+          "stageColor": "purple",
+          "order": 2,
+          "tags": [
+            "Distributed"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "Pattern: Microservice Architecture",
+              "url": "https://microservices.io/patterns/microservices.html",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Microservices 101",
+              "url": "https://thenewstack.io/microservices-101/",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "Microservices explained in 5 minutes",
+              "url": "https://www.youtube.com/watch?v=lL_j7ilk7rc",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/lL_j7ilk7rc"
+            }
+          ]
+        },
+        {
+          "id": "be-testing",
+          "title": "Unit, Integration & Contract Testing",
+          "slug": "be-testing",
+          "description": "Functional testing ensures software meets functional requirements through black box testing. Testers provide input and compare expected vs actual output without understanding source code. Contrasts with non-functional testing (performance, load, scalability).",
+          "stageId": "be-p4",
+          "stageName": "Microservices & Message Queues",
+          "stageColor": "purple",
+          "order": 3,
+          "tags": [
+            "Testing"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "Playwright - End-to-End Testing Documentation",
+              "url": "https://playwright.dev/docs/intro",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "What is Functional Testing?",
+              "url": "https://www.guru99.com/functional-testing.html",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "Functional Testing vs Non-Functional Testing",
+              "url": "https://www.youtube.com/watch?v=NgQT7miTP9M",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/NgQT7miTP9M"
+            }
+          ]
+        },
+        {
+          "id": "be-docker",
+          "title": "Containerization with Docker",
+          "slug": "be-docker",
+          "description": "Comprehensive technical guide and engineering practices for mastering Containerization with Docker. Explore the curated video tutorials, official documentation, and deep-dive references below to build production competency.",
+          "stageId": "be-p4",
+          "stageName": "Microservices & Message Queues",
+          "stageColor": "purple",
+          "order": 4,
+          "tags": [
+            "Containers"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "Engineering Guide: Containerization with Docker",
+              "url": "https://developer.mozilla.org/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "be-p5",
+      "phaseNumber": 5,
+      "title": "Scalability, Cloud & Resiliency",
+      "subtitle": "Load balancing, rate limiting, and zero-downtime deploys",
+      "color": "rose",
+      "topics": [
+        {
+          "id": "be-system-design",
+          "title": "High-Availability System Design",
+          "slug": "be-system-design",
+          "description": "Comprehensive technical guide and engineering practices for mastering High-Availability System Design. Explore the curated video tutorials, official documentation, and deep-dive references below to build production competency.",
+          "stageId": "be-p5",
+          "stageName": "Scalability, Cloud & Resiliency",
+          "stageColor": "rose",
+          "order": 1,
+          "tags": [
+            "Architecture"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "Engineering Guide: High-Availability System Design",
+              "url": "https://developer.mozilla.org/"
+            }
+          ]
+        },
+        {
+          "id": "be-load-balancer",
+          "title": "Load Balancing & Reverse Proxies (NGINX/Envoy)",
+          "slug": "be-load-balancer",
+          "description": "Nginx is a high-performance web server and reverse proxy known for efficiency and low resource consumption. Also used as load balancer, HTTP cache, and mail proxy. Excels at concurrent connections via asynchronous, event-driven architecture. Popular for modern web infrastructures.",
+          "stageId": "be-p5",
+          "stageName": "Scalability, Cloud & Resiliency",
+          "stageColor": "rose",
+          "order": 2,
+          "tags": [
+            "Networking"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "Nginx Website",
+              "url": "https://nginx.org/",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "NGINX Explained in 100 Seconds",
+              "url": "https://www.youtube.com/watch?v=JKxlsvZXG7c",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/JKxlsvZXG7c"
+            },
+            {
+              "type": "video",
+              "title": "NGINX Tutorial for Beginners",
+              "url": "https://www.youtube.com/watch?v=9t9Mp0BGnyI",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/9t9Mp0BGnyI"
+            }
+          ]
+        },
+        {
+          "id": "be-monitoring",
+          "title": "Observability, OpenTelemetry & APM",
+          "slug": "be-monitoring",
+          "description": "Monitoring involves continuously collecting, analyzing, and alerting on metrics, logs, and traces from applications and infrastructure. It helps detect issues early, understand performance bottlenecks, and ensure system reliability. Key tools include Prometheus for metrics collection, Grafana for dashboards and visualization, and distributed tracing tools like Jaeger or Zipkin.",
+          "stageId": "be-p5",
+          "stageName": "Scalability, Cloud & Resiliency",
+          "stageColor": "rose",
+          "order": 3,
+          "tags": [
+            "Metrics"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "Prometheus Documentation",
+              "url": "https://prometheus.io/docs/introduction/overview/",
+              "embedUrl": null
+            },
+            {
+              "type": "official",
+              "title": "Grafana Documentation",
+              "url": "https://grafana.com/docs/grafana/latest/",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "Prometheus and Grafana Tutorial for Beginners",
+              "url": "https://www.youtube.com/watch?v=9TJx7QTrTyo",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/9TJx7QTrTyo"
+            },
+            {
+              "type": "video",
+              "title": "Grafana Explained in 5 Minutes",
+              "url": "https://www.youtube.com/watch?v=lILY8eSspEo",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/lILY8eSspEo"
+            }
+          ]
+        },
+        {
+          "id": "be-cloud",
+          "title": "Cloud Deployments (AWS/GCP/Supabase)",
+          "slug": "be-cloud",
+          "description": "AWS Neptune is a fully managed graph database supporting property graph and RDF models. Uses Gremlin and SPARQL query languages for complex relationships in social networks, recommendations, and fraud detection. Offers high availability, multi-AZ replication, and up to 15 read replicas.",
+          "stageId": "be-p5",
+          "stageName": "Scalability, Cloud & Resiliency",
+          "stageColor": "rose",
+          "order": 4,
+          "tags": [
+            "Cloud"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "AWS Neptune",
+              "url": "https://aws.amazon.com/neptune/",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Setting Up Amazon Neptune Graph Database",
+              "url": "https://cliffordedsouza.medium.com/setting-up-amazon-neptune-graph-database-2b73512a7388",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "Getting Started with Neptune Serverless",
+              "url": "https://www.youtube.com/watch?v=b04-jjM9t4g",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/b04-jjM9t4g"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

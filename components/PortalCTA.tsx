@@ -1,7 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Button } from './UI';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Compass } from 'lucide-react';
 import { useCircleTransition } from '../src/hooks/useCircleTransition';
 
 const PortalCTA = () => {
@@ -52,6 +53,17 @@ const PortalCTA = () => {
                         <span>Join the Coding Community</span>
                         <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform text-white/70 group-hover:text-white" />
                     </button>
+
+                    <div className="mt-8">
+                        <Link
+                            to="/builderportal"
+                            className="inline-flex items-center gap-2 text-sm font-semibold text-neutral-600 hover:text-neutral-900 transition-colors group"
+                        >
+                            <Compass size={16} className="text-neutral-900" />
+                            <span>Explore Engineering Tracks & Interactive Flowcharts</span>
+                            <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                        </Link>
+                    </div>
                 </motion.div>
 
             </div>

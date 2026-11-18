@@ -15,6 +15,7 @@ import NotFound from './pages/NotFound';
 import EventRegistration from './pages/EventRegistration';
 import YouDecideStudio from './pages/YouDecideStudio';
 import YouDecideLocal from './pages/YouDecideLocal';
+import BuilderPortal from './pages/BuilderPortal';
 
 // Admin Pages
 import { AdminLayout } from './components/admin/AdminLayout';
@@ -42,7 +43,7 @@ const SmoothScrolling = ({ children }: { children: React.ReactNode }) => {
   const { pathname } = useLocation();
 
   React.useEffect(() => {
-    if (pathname.startsWith('/admin')) {
+    if (pathname.startsWith('/admin') || pathname.startsWith('/builder') || pathname.startsWith('/roadmap')) {
       return;
     }
 
@@ -102,6 +103,10 @@ const App: React.FC = () => {
             {/* Special Pages (No Layout) */}
             <Route path="/youdecide.studio" element={<YouDecideStudio />} />
             <Route path="/youdecide.local" element={<YouDecideLocal />} />
+            <Route path="/builderportal" element={<BuilderPortal />} />
+            <Route path="/builder-portal" element={<BuilderPortal />} />
+            <Route path="/roadmaps" element={<BuilderPortal />} />
+            <Route path="/roadmap" element={<BuilderPortal />} />
 
             {/* 404 Page (No Layout) */}
             <Route path="*" element={<NotFound />} />

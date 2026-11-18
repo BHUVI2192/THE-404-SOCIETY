@@ -1,0 +1,723 @@
+{
+  "id": "frontend",
+  "slug": "frontend",
+  "title": "Frontend Engineering",
+  "category": "Web Development",
+  "badge": "Most Popular",
+  "description": "Master modern client-side engineering from web core and TypeScript to component architectures, Next.js, and AI-enabled interfaces.",
+  "totalTopics": 22,
+  "stages": [
+    {
+      "id": "fe-p1",
+      "phaseNumber": 1,
+      "title": "Web Core & Foundations",
+      "subtitle": "The foundational triad of the modern internet",
+      "color": "amber",
+      "topics": [
+        {
+          "id": "fe-internet",
+          "title": "Internet Protocols & HTTP/3",
+          "slug": "fe-internet",
+          "description": "The internet is a global network connecting computers and devices for information sharing. Enables browsing, email, streaming, and communication through interconnected systems. Acts as worldwide infrastructure facilitating access to online resources and services.",
+          "stageId": "fe-p1",
+          "stageName": "Web Core & Foundations",
+          "stageColor": "amber",
+          "order": 1,
+          "tags": [
+            "Networking",
+            "Web Core"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "How does the Internet Work?",
+              "url": "https://cs.fyi/guide/how-does-internet-work",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "How Does the Internet Work? MDN Docs",
+              "url": "https://developer.mozilla.org/en-US/docs/Learn/Common_questions/How_does_the_Internet_work",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "How the Internet Works in 5 Minutes",
+              "url": "https://www.youtube.com/watch?v=7_LPdttKXPc",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/7_LPdttKXPc"
+            }
+          ]
+        },
+        {
+          "id": "fe-html",
+          "title": "Semantic HTML5 & Accessibility (a11y)",
+          "slug": "fe-html",
+          "description": "Website accessibility ensures sites are usable by everyone, including people with disabilities. Involves alt text for images, keyboard navigation, color contrast, and captions. Benefits all users, supports legal compliance, and expands audience reach.",
+          "stageId": "fe-p1",
+          "stageName": "Web Core & Foundations",
+          "stageColor": "amber",
+          "order": 2,
+          "tags": [
+            "Standards",
+            "DOM"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "Accessibility for Developers by Google",
+              "url": "https://web.dev/accessibility",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "Complete Playlist on Accessibility",
+              "url": "https://youtube.com/playlist?list=PLNYkxOF6rcICWx0C9LVWWVqvHlYJyqw7g",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/videoseries?list=PLNYkxOF6rcICWx0C9LVWWVqvHlYJyqw7g"
+            }
+          ]
+        },
+        {
+          "id": "fe-css",
+          "title": "Modern CSS, Grid & Flexbox",
+          "slug": "fe-css",
+          "description": "Modern CSS creates responsive designs using media queries, flexible typography, CSS-in-JS, and frameworks like Tailwind. Features CSS Logical Properties for internationalization and CSS Houdini for custom styling. Goals: performance, maintainability, and accessible designs across all devices.",
+          "stageId": "fe-p1",
+          "stageName": "Web Core & Foundations",
+          "stageColor": "amber",
+          "order": 3,
+          "tags": [
+            "Styling",
+            "Layout"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "Modern CSS: A Comprehensive Guide",
+              "url": "https://moderncss.dev/",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "CSS-Tricks: Modern CSS",
+              "url": "https://css-tricks.com/modern-css/",
+              "embedUrl": null
+            }
+          ]
+        },
+        {
+          "id": "fe-js",
+          "title": "JavaScript (ES6+, DOM & Async)",
+          "slug": "fe-js",
+          "description": "JavaScript is a versatile programming language that makes websites interactive. Runs in browsers, servers (Node.js), and desktop applications. Features dynamic typing, event-driven programming, and constant evolution. Essential for modern web development across frontend and backend.",
+          "stageId": "fe-p1",
+          "stageName": "Web Core & Foundations",
+          "stageColor": "amber",
+          "order": 4,
+          "tags": [
+            "Core Language"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "The Modern JavaScript Tutorial",
+              "url": "https://javascript.info/",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Build 30 Javascript projects in 30 days",
+              "url": "https://javascript30.com/",
+              "embedUrl": null
+            }
+          ]
+        },
+        {
+          "id": "fe-git",
+          "title": "Git & GitHub Collaboration",
+          "slug": "fe-git",
+          "description": "Git is a distributed version control system tracking code changes and enabling collaborative development. Features branching, merging, and complete project history. Allows offline work with local repositories. Fast, flexible, and the most popular VCS for software projects.",
+          "stageId": "fe-p1",
+          "stageName": "Web Core & Foundations",
+          "stageColor": "amber",
+          "order": 5,
+          "tags": [
+            "Version Control"
+          ],
+          "resources": [
+            {
+              "type": "course",
+              "title": "Why use Git? (Interactive Lesson)",
+              "url": "https://inter-git.com/lessons/introduction",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Tutorial: Git for Absolutely Everyone",
+              "url": "https://thenewstack.io/tutorial-git-for-absolutely-everyone/",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "Git & GitHub Crash Course For Beginners",
+              "url": "https://www.youtube.com/watch?v=SWYqp7iY_Tc",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/SWYqp7iY_Tc"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fe-p2",
+      "phaseNumber": 2,
+      "title": "TypeScript & React UI Architecture",
+      "subtitle": "Enterprise-grade component design and type safety",
+      "color": "blue",
+      "topics": [
+        {
+          "id": "fe-ts",
+          "title": "TypeScript Fundamentals & Generics",
+          "slug": "fe-ts",
+          "description": "Comprehensive technical guide and engineering practices for mastering TypeScript Fundamentals & Generics. Explore the curated video tutorials, official documentation, and deep-dive references below to build production competency.",
+          "stageId": "fe-p2",
+          "stageName": "TypeScript & React UI Architecture",
+          "stageColor": "blue",
+          "order": 1,
+          "tags": [
+            "Type Safety"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "Engineering Guide: TypeScript Fundamentals & Generics",
+              "url": "https://developer.mozilla.org/"
+            }
+          ]
+        },
+        {
+          "id": "fe-react",
+          "title": "React Core, Hooks & Virtual DOM",
+          "slug": "fe-react",
+          "description": "React Native enables building native mobile apps for iOS and Android using JavaScript and React. Compiles to native components for authentic look and performance. Features code sharing, hot reloading, and device API access. Ideal for React developers transitioning to mobile development.",
+          "stageId": "fe-p2",
+          "stageName": "TypeScript & React UI Architecture",
+          "stageColor": "blue",
+          "order": 2,
+          "tags": [
+            "UI Library"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "React Native Website",
+              "url": "https://reactnative.dev/",
+              "embedUrl": null
+            }
+          ]
+        },
+        {
+          "id": "fe-state",
+          "title": "State Management (Zustand & Redux)",
+          "slug": "fe-state",
+          "description": "Comprehensive technical guide and engineering practices for mastering State Management (Zustand & Redux). Explore the curated video tutorials, official documentation, and deep-dive references below to build production competency.",
+          "stageId": "fe-p2",
+          "stageName": "TypeScript & React UI Architecture",
+          "stageColor": "blue",
+          "order": 3,
+          "tags": [
+            "Data Flow"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "Engineering Guide: State Management (Zustand & Redux)",
+              "url": "https://developer.mozilla.org/"
+            }
+          ]
+        },
+        {
+          "id": "fe-tailwind",
+          "title": "Utility CSS & Tailwind CSS",
+          "slug": "fe-tailwind",
+          "description": "Tailwind CSS is a utility-first CSS framework providing small, composable classes for rapid custom design development. Features mobile-first approach, automatic unused style removal (purging), and flexible customization. Enables quick responsive design prototyping without writing custom CSS.",
+          "stageId": "fe-p2",
+          "stageName": "TypeScript & React UI Architecture",
+          "stageColor": "blue",
+          "order": 4,
+          "tags": [
+            "Design System"
+          ],
+          "resources": [
+            {
+              "type": "course",
+              "title": "Tailwind CSS Full Course for Beginners",
+              "url": "https://www.youtube.com/watch?v=lCxcTsOHrjo",
+              "embedUrl": null
+            },
+            {
+              "type": "official",
+              "title": "Tailwind Website",
+              "url": "https://tailwindcss.com",
+              "embedUrl": null
+            },
+            {
+              "type": "official",
+              "title": "Online Playground",
+              "url": "https://play.tailwindcss.com",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "Official Screencasts",
+              "url": "https://www.youtube.com/c/TailwindLabs/videos",
+              "embedUrl": null
+            }
+          ]
+        },
+        {
+          "id": "fe-routing",
+          "title": "Client Routing & Navigation",
+          "slug": "fe-routing",
+          "description": "React Router enables client-side routing in React applications, creating single-page apps with multiple views. Handles URL management, provides route definition components, and supports lazy loading and route guards. The standard navigation solution for React applications.",
+          "stageId": "fe-p2",
+          "stageName": "TypeScript & React UI Architecture",
+          "stageColor": "blue",
+          "order": 5,
+          "tags": [
+            "SPAs"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "React Router Website",
+              "url": "https://reactrouter.com/",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "A Complete Guide to Routing in React",
+              "url": "https://hygraph.com/blog/routing-in-react",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "React Router - Complete tutorial",
+              "url": "https://www.youtube.com/watch?v=oTIJunBa6MA",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/oTIJunBa6MA"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fe-p3",
+      "phaseNumber": 3,
+      "title": "Build Systems & APIs",
+      "subtitle": "Modern bundling, network protocols and client caching",
+      "color": "emerald",
+      "topics": [
+        {
+          "id": "fe-vite",
+          "title": "Build Tooling (Vite, Rollup & Turbopack)",
+          "slug": "fe-vite",
+          "description": "Vite is a modern build tool using native ES modules for instant server starts and fast Hot Module Replacement. Supports Vue, React, Svelte with Rollup for production builds. Features CSS pre-processors and TypeScript integration. Enhances developer experience with faster development cycles.",
+          "stageId": "fe-p3",
+          "stageName": "Build Systems & APIs",
+          "stageColor": "emerald",
+          "order": 1,
+          "tags": [
+            "Dev Tools"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "Vite - The Build Tool for the Web",
+              "url": "https://vite.dev",
+              "embedUrl": null
+            },
+            {
+              "type": "official",
+              "title": "Vite Documentation",
+              "url": "https://vite.dev/guide/",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "Vite Crash Course",
+              "url": "https://youtu.be/LQQ3CR2JTX8",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/LQQ3CR2JTX8"
+            },
+            {
+              "type": "video",
+              "title": "Vite Tutorial Video",
+              "url": "https://www.youtube.com/watch?v=VAeRhmpcWEQ",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/VAeRhmpcWEQ"
+            }
+          ]
+        },
+        {
+          "id": "fe-api",
+          "title": "API Integration (REST, TanStack Query & GraphQL)",
+          "slug": "fe-api",
+          "description": "Web APIs are interfaces provided by web browsers that allow JavaScript code to interact with the browser environment and the wider web. These APIs provide access to functionalities like manipulating the Document Object Model (DOM), handling user input, making network requests, managing browser history, and accessing device hardware like the camera or microphone. They essentially bridge the gap between JavaScript and the capabilities of the browser and the underlying operating system.",
+          "stageId": "fe-p3",
+          "stageName": "Build Systems & APIs",
+          "stageColor": "emerald",
+          "order": 2,
+          "tags": [
+            "Data Fetching"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "Web APIs",
+              "url": "https://developer.mozilla.org/en-US/docs/Web/API",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Web APIs - Introduction",
+              "url": "https://www.w3schools.com/js/js_api_intro.asp",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "What is a Web API?",
+              "url": "https://www.youtube.com/watch?v=_7rT-ixivWU",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/_7rT-ixivWU"
+            }
+          ]
+        },
+        {
+          "id": "fe-testing",
+          "title": "Testing (Vitest, Jest & Playwright)",
+          "slug": "fe-testing",
+          "description": "Testing verifies software functionality and quality through unit, integration, functional, UI/UX, performance, security, accessibility, and compatibility testing. Modern approaches use automated tools, CI/CD pipelines, TDD, and BDD methodologies. Early bug detection improves application reliability.",
+          "stageId": "fe-p3",
+          "stageName": "Build Systems & APIs",
+          "stageColor": "emerald",
+          "order": 3,
+          "tags": [
+            "Quality"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "The Different Types of Software Tests",
+              "url": "https://www.atlassian.com/continuous-delivery/software-testing/types-of-software-testing",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "How to Test Web Applications - dotJS 2024",
+              "url": "https://www.youtube.com/watch?v=l3qjQpYBR8c",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/l3qjQpYBR8c"
+            }
+          ]
+        },
+        {
+          "id": "fe-pwa",
+          "title": "Progressive Web Apps & Service Workers",
+          "slug": "fe-pwa",
+          "description": "Progressive Web Apps (PWAs) are web applications behaving like native apps using HTML, CSS, JavaScript. Feature offline functionality, push notifications, home screen installation, and service workers for caching. Cross-platform, discoverable, and cost-effective alternative to native apps.",
+          "stageId": "fe-p3",
+          "stageName": "Build Systems & APIs",
+          "stageColor": "emerald",
+          "order": 4,
+          "tags": [
+            "Offline First"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "Learn PWA",
+              "url": "https://web.dev/learn/pwa/",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "MDN - Progressive Web Apps",
+              "url": "https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "Progressive Web Apps in 2024",
+              "url": "https://www.youtube.com/watch?v=3ODP6tTpjqA",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/3ODP6tTpjqA"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fe-p4",
+      "phaseNumber": 4,
+      "title": "Performance & Fullstack Web",
+      "subtitle": "Server rendering, streaming and Core Web Vitals",
+      "color": "purple",
+      "topics": [
+        {
+          "id": "fe-nextjs",
+          "title": "Next.js & React Server Components (RSC)",
+          "slug": "fe-nextjs",
+          "description": "Next.js is a React framework supporting server-side rendering and static site generation. Features automatic code splitting, file-based routing, CSS support, API routes, and optimized performance. Includes live updates, smart preloading, and easy deployment. Ideal for SEO-friendly applications.",
+          "stageId": "fe-p4",
+          "stageName": "Performance & Fullstack Web",
+          "stageColor": "purple",
+          "order": 1,
+          "tags": [
+            "SSR/SSG"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "Next.js Website",
+              "url": "https://nextjs.org/",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "Next.js for Beginners - Full Course at freeCodeCamp YouTube Channel",
+              "url": "https://youtu.be/1WmNXEVia8I",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/1WmNXEVia8I"
+            }
+          ]
+        },
+        {
+          "id": "fe-perf",
+          "title": "Core Web Vitals & Web Performance",
+          "slug": "fe-perf",
+          "description": "Performance, in the context of web development, refers to how quickly and efficiently a website or web application loads and responds to user interactions. It encompasses various aspects like loading times, rendering speed, and overall responsiveness. Optimizing performance ensures a smooth and enjoyable user experience, leading to increased engagement and satisfaction.",
+          "stageId": "fe-p4",
+          "stageName": "Performance & Fullstack Web",
+          "stageColor": "purple",
+          "order": 2,
+          "tags": [
+            "LCP / CLS"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "Web performance",
+              "url": "https://developer.mozilla.org/en-US/docs/Web/Performance",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "9 Essential Strategies for Web Performance Optimization",
+              "url": "https://www.shopify.com/enterprise/blog/web-performance-optimization",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "The ultimate guide to web performance",
+              "url": "https://www.youtube.com/watch?v=0fONene3OIA",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/0fONene3OIA"
+            },
+            {
+              "type": "video",
+              "title": "Frontend System Design: The 2025 Web Performance Roadmap",
+              "url": "https://www.youtube.com/watch?v=KUdqbIHn8Ic",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/KUdqbIHn8Ic"
+            }
+          ]
+        },
+        {
+          "id": "fe-sec",
+          "title": "Frontend Security (CORS, CSP & JWT)",
+          "slug": "fe-sec",
+          "description": "CORS (Cross-Origin Resource Sharing) controls web page access to resources from different domains through HTTP headers. Servers specify allowed origins while browsers send preflight requests for permission. Prevents unauthorized access while enabling legitimate cross-origin requests for modern multi-domain applications.",
+          "stageId": "fe-p4",
+          "stageName": "Performance & Fullstack Web",
+          "stageColor": "purple",
+          "order": 3,
+          "tags": [
+            "Security"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "Cross-Origin Resource Sharing (CORS)",
+              "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "Understanding CORS",
+              "url": "https://rbika.com/blog/understanding-cors",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "CORS in 6 minutes",
+              "url": "https://www.youtube.com/watch?v=PNtFSVU-YTI",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/PNtFSVU-YTI"
+            }
+          ]
+        },
+        {
+          "id": "fe-deploy",
+          "title": "Edge Deployment & CDN Caching",
+          "slug": "fe-deploy",
+          "description": "Cloudflare is a service that sits between your website and its visitors, acting as a reverse proxy. It provides a range of features including a content delivery network (CDN) to speed up website loading times by caching content closer to users, DDoS protection to safeguard against malicious attacks, and SSL/TLS encryption to secure data transmission. It essentially helps improve website performance, security, and reliability.",
+          "stageId": "fe-p4",
+          "stageName": "Performance & Fullstack Web",
+          "stageColor": "purple",
+          "order": 4,
+          "tags": [
+            "Cloud Edge"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "Getting started",
+              "url": "https://developers.cloudflare.com/pages/get-started/",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "What is Cloudflare?",
+              "url": "https://www.youtube.com/watch?v=XHvmX3FhTwU",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/XHvmX3FhTwU"
+            },
+            {
+              "type": "video",
+              "title": "Learn Cloudflare Workers 101 - Full Course for Beginners",
+              "url": "https://www.youtube.com/watch?v=H7Qe96fqg1M",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/H7Qe96fqg1M"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fe-p5",
+      "phaseNumber": 5,
+      "title": "Modern AI-Integrated Frontend",
+      "subtitle": "Streaming LLMs, generative UI and intelligent applications",
+      "color": "rose",
+      "topics": [
+        {
+          "id": "fe-ai-sdk",
+          "title": "Vercel AI SDK & Model Interfaces",
+          "slug": "fe-ai-sdk",
+          "description": "AI-assisted coding involves using artificial intelligence tools to help developers write code more efficiently and effectively. These tools can provide real-time suggestions, automate repetitive tasks, identify potential errors, and even generate code snippets based on natural language descriptions, ultimately speeding up development and improving code quality.",
+          "stageId": "fe-p5",
+          "stageName": "Modern AI-Integrated Frontend",
+          "stageColor": "rose",
+          "order": 1,
+          "tags": [
+            "AI Frontend"
+          ],
+          "resources": [
+            {
+              "type": "book",
+              "title": "AI-Assisted Programming",
+              "url": "https://www.hkdca.com/wp-content/uploads/2025/06/ai-assisted-programming-oreilly.pdf",
+              "embedUrl": null
+            },
+            {
+              "type": "article",
+              "title": "How to Become an Expert in AI-Assisted Coding",
+              "url": "https://www.freecodecamp.org/news/how-to-become-an-expert-in-ai-assisted-coding-a-handbook-for-developers/",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "How to elevate software development with AI-assisted coding",
+              "url": "https://www.youtube.com/watch?v=S2GqQ4gJAH0",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/S2GqQ4gJAH0"
+            }
+          ]
+        },
+        {
+          "id": "fe-streaming",
+          "title": "Server-Sent Events & Streaming UIs",
+          "slug": "fe-streaming",
+          "description": "WebSockets enable full-duplex, real-time communication over a single persistent connection between client and server. Unlike HTTP's request-response cycles, allows continuous bidirectional data exchange. Ideal for live chat, gaming, and real-time updates with low-latency communication.",
+          "stageId": "fe-p5",
+          "stageName": "Modern AI-Integrated Frontend",
+          "stageColor": "rose",
+          "order": 2,
+          "tags": [
+            "Real-time"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "Introduction to WebSockets",
+              "url": "https://www.tutorialspoint.com/websockets/index.htm",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "A Beginners Guide to WebSockets",
+              "url": "https://www.youtube.com/watch?v=8ARodQ4Wlf4",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/8ARodQ4Wlf4"
+            }
+          ]
+        },
+        {
+          "id": "fe-vector",
+          "title": "Client-Side Semantic Search & Embeddings",
+          "slug": "fe-vector",
+          "description": "Elasticsearch is a document-oriented search engine and database supporting INSERT, DELETE, RETRIEVE operations and analytics. Unlike general databases, it's optimized for search with powerful features for fast data retrieval based on search criteria.",
+          "stageId": "fe-p5",
+          "stageName": "Modern AI-Integrated Frontend",
+          "stageColor": "rose",
+          "order": 3,
+          "tags": [
+            "AI Retrieval"
+          ],
+          "resources": [
+            {
+              "type": "official",
+              "title": "Elasticsearch Website",
+              "url": "https://www.elastic.co/elasticsearch/",
+              "embedUrl": null
+            },
+            {
+              "type": "official",
+              "title": "Elasticsearch Documentation",
+              "url": "https://www.elastic.co/guide/index.html",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "What is Elasticsearch",
+              "url": "https://www.youtube.com/watch?v=ZP0NmfyfsoM",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/ZP0NmfyfsoM"
+            }
+          ]
+        },
+        {
+          "id": "fe-collab",
+          "title": "Real-time Collaboration & WebSockets",
+          "slug": "fe-collab",
+          "description": "WebSockets enable full-duplex, real-time communication over a single persistent connection between client and server. Unlike HTTP's request-response cycles, allows continuous bidirectional data exchange. Ideal for live chat, gaming, and real-time updates with low-latency communication.",
+          "stageId": "fe-p5",
+          "stageName": "Modern AI-Integrated Frontend",
+          "stageColor": "rose",
+          "order": 4,
+          "tags": [
+            "Multiplayer"
+          ],
+          "resources": [
+            {
+              "type": "article",
+              "title": "Introduction to WebSockets",
+              "url": "https://www.tutorialspoint.com/websockets/index.htm",
+              "embedUrl": null
+            },
+            {
+              "type": "video",
+              "title": "A Beginners Guide to WebSockets",
+              "url": "https://www.youtube.com/watch?v=8ARodQ4Wlf4",
+              "embedUrl": "https://www.youtube-nocookie.com/embed/8ARodQ4Wlf4"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
