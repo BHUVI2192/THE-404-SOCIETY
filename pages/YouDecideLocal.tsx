@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { NavLink } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import GlimmerVale from '../components/GlimmerVale';
 
@@ -121,50 +120,6 @@ const YouDecideLocal: React.FC = () => {
         />
       </Helmet>
 
-      {/* STAGING BANNER */}
-      <div
-        style={{
-          background: '#1920F0',
-          color: '#FFFFFF',
-          padding: '8px 20px',
-          fontFamily: '"Geist Mono", monospace',
-          fontSize: '11px',
-          fontWeight: 500,
-          letterSpacing: '0.08em',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          position: 'sticky',
-          top: 0,
-          zIndex: 9999,
-          borderBottom: '1px solid rgba(255,255,255,0.15)',
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span
-            style={{
-              width: '6px',
-              height: '6px',
-              borderRadius: '50%',
-              backgroundColor: '#FFFFFF',
-              boxShadow: '0 0 8px #FFFFFF',
-              animation: 'pulse 1.8s infinite',
-            }}
-          />
-          <span>GLIMMERVALE PREVIEW · youdecide.local</span>
-        </div>
-        <NavLink
-          to="/youdecide.studio"
-          style={{
-            color: '#FFFFFF',
-            textDecoration: 'underline',
-            fontSize: '11px',
-          }}
-        >
-          View Live Teaser Countdown (25 Nov Deploy) →
-        </NavLink>
-      </div>
-
       <div
         style={{
           backgroundColor: '#040711',
@@ -180,11 +135,11 @@ const YouDecideLocal: React.FC = () => {
         <section
           style={{
             position: 'relative',
-            minHeight: '100vh',
+            height: '100vh',
             width: '100%',
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'space-between',
+            justifyContent: 'flex-start',
             overflow: 'hidden',
           }}
         >
@@ -212,13 +167,13 @@ const YouDecideLocal: React.FC = () => {
               position: 'absolute',
               inset: 0,
               background:
-                'radial-gradient(ellipse at center, transparent 35%, rgba(2, 5, 14, 0.5) 80%, rgba(2, 5, 14, 0.95) 100%)',
+                'radial-gradient(ellipse at center, transparent 40%, rgba(2, 5, 14, 0.4) 80%, rgba(2, 5, 14, 0.95) 100%)',
               pointerEvents: 'none',
               zIndex: 1,
             }}
           />
 
-          {/* ── HEADER / NAVIGATION (Glassmorphic) ── */}
+          {/* ── HEADER (Logo Only) ── */}
           <header
             style={{
               position: 'relative',
@@ -226,328 +181,14 @@ const YouDecideLocal: React.FC = () => {
               maxWidth: '1280px',
               width: '100%',
               margin: '0 auto',
-              padding: '24px 28px',
+              padding: '36px 32px',
               display: 'flex',
-              justifyContent: 'space-between',
               alignItems: 'center',
+              justifyContent: 'flex-start',
             }}
           >
-            {/* Logo */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-              <YouDecideLogo height={28} />
-            </div>
-
-            {/* Nav Links */}
-            <nav
-              style={{
-                display: 'flex',
-                gap: '28px',
-                alignItems: 'center',
-                background: 'rgba(255, 255, 255, 0.05)',
-                backdropFilter: 'blur(16px)',
-                WebkitBackdropFilter: 'blur(16px)',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
-                borderRadius: '999px',
-                padding: '8px 22px',
-              }}
-            >
-              <a
-                href="#overview"
-                style={{
-                  fontSize: '13px',
-                  fontWeight: 500,
-                  color: 'rgba(255, 255, 255, 0.75)',
-                  textDecoration: 'none',
-                  transition: 'color 0.2s',
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = '#FFFFFF')}
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.color = 'rgba(255, 255, 255, 0.75)')
-                }
-              >
-                Overview
-              </a>
-              <a
-                href="#services"
-                style={{
-                  fontSize: '13px',
-                  fontWeight: 500,
-                  color: 'rgba(255, 255, 255, 0.75)',
-                  textDecoration: 'none',
-                  transition: 'color 0.2s',
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = '#FFFFFF')}
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.color = 'rgba(255, 255, 255, 0.75)')
-                }
-              >
-                Services
-              </a>
-              <a
-                href="#process"
-                style={{
-                  fontSize: '13px',
-                  fontWeight: 500,
-                  color: 'rgba(255, 255, 255, 0.75)',
-                  textDecoration: 'none',
-                  transition: 'color 0.2s',
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = '#FFFFFF')}
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.color = 'rgba(255, 255, 255, 0.75)')
-                }
-              >
-                Process
-              </a>
-              <a
-                href="#contact"
-                style={{
-                  fontSize: '13px',
-                  fontWeight: 500,
-                  color: 'rgba(255, 255, 255, 0.75)',
-                  textDecoration: 'none',
-                  transition: 'color 0.2s',
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = '#FFFFFF')}
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.color = 'rgba(255, 255, 255, 0.75)')
-                }
-              >
-                Briefing
-              </a>
-            </nav>
-
-            {/* Right CTA */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-              <a
-                href="#contact"
-                style={{
-                  background: '#1920F0',
-                  color: '#FFFFFF',
-                  padding: '9px 20px',
-                  borderRadius: '999px',
-                  fontSize: '13px',
-                  fontWeight: 600,
-                  textDecoration: 'none',
-                  boxShadow: '0 0 20px rgba(25, 32, 240, 0.5)',
-                  transition: 'all 0.2s',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                }}
-              >
-                <span>Get Started</span>
-                <span>→</span>
-              </a>
-            </div>
+            <YouDecideLogo height={32} />
           </header>
-
-          {/* ── HERO CENTER CONTENT ── */}
-          <div
-            id="overview"
-            style={{
-              position: 'relative',
-              zIndex: 10,
-              maxWidth: '960px',
-              width: '100%',
-              margin: '0 auto',
-              padding: '60px 24px 40px',
-              textAlign: 'center',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-            }}
-          >
-            {/* Eyebrow Pill */}
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '8px',
-                background: 'rgba(255, 255, 255, 0.08)',
-                backdropFilter: 'blur(20px)',
-                WebkitBackdropFilter: 'blur(20px)',
-                border: '1px solid rgba(255, 255, 255, 0.16)',
-                borderRadius: '999px',
-                padding: '7px 20px',
-                fontSize: '11px',
-                fontFamily: '"Geist Mono", monospace',
-                fontWeight: 500,
-                letterSpacing: '0.14em',
-                textTransform: 'uppercase',
-                color: 'rgba(255, 255, 255, 0.9)',
-                marginBottom: '28px',
-                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.25)',
-              }}
-            >
-              <span
-                style={{
-                  width: '6px',
-                  height: '6px',
-                  borderRadius: '50%',
-                  backgroundColor: '#1920F0',
-                  boxShadow: '0 0 10px #1920F0',
-                }}
-              />
-              <span>Digital Growth · On Your Terms</span>
-            </motion.div>
-
-            {/* Michroma Headline from Glimmervale */}
-            <motion.h1
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.1 }}
-              style={{
-                fontFamily: '"Michroma", sans-serif',
-                fontSize: 'clamp(32px, 5.8vw, 68px)',
-                fontWeight: 400,
-                letterSpacing: '-0.04em',
-                lineHeight: 1.15,
-                color: '#FFFFFF',
-                margin: '0 0 24px',
-                textTransform: 'uppercase',
-                textShadow: '0 4px 30px rgba(0, 0, 0, 0.8)',
-              }}
-            >
-              Design Beyond The Surface<span style={{ color: '#1920F0' }}>.</span>
-            </motion.h1>
-
-            {/* Subtitle & Value Proposition */}
-            <motion.p
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.2 }}
-              style={{
-                fontSize: 'clamp(16px, 2.2vw, 20px)',
-                lineHeight: 1.6,
-                color: 'rgba(255, 255, 255, 0.78)',
-                maxWidth: '640px',
-                margin: '0 0 36px',
-                fontWeight: 400,
-                textShadow: '0 2px 10px rgba(0,0,0,0.6)',
-              }}
-            >
-              We engineer high-performance web applications, digital transformation roadmaps, and business automations. Inspect the live delivery, verify its commercial value, and{' '}
-              <strong style={{ color: '#FFFFFF', fontWeight: 600 }}>pay what you believe we're worth</strong>.
-            </motion.p>
-
-            {/* Call To Action Buttons */}
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.3 }}
-              style={{ display: 'flex', gap: '14px', flexWrap: 'wrap', justifyContent: 'center' }}
-            >
-              <a
-                href="#contact"
-                style={{
-                  background: '#FFFFFF',
-                  color: '#040711',
-                  padding: '14px 32px',
-                  borderRadius: '10px',
-                  fontSize: '14px',
-                  fontWeight: 600,
-                  textDecoration: 'none',
-                  letterSpacing: '0.02em',
-                  transition: 'all 0.2s',
-                  boxShadow: '0 4px 24px rgba(255, 255, 255, 0.25)',
-                }}
-              >
-                Initiate Project Brief →
-              </a>
-              <a
-                href="#services"
-                style={{
-                  background: 'rgba(255, 255, 255, 0.08)',
-                  backdropFilter: 'blur(16px)',
-                  border: '1px solid rgba(255, 255, 255, 0.2)',
-                  color: '#FFFFFF',
-                  padding: '14px 28px',
-                  borderRadius: '10px',
-                  fontSize: '14px',
-                  fontWeight: 500,
-                  textDecoration: 'none',
-                  letterSpacing: '0.02em',
-                }}
-              >
-                Explore Capabilities
-              </a>
-            </motion.div>
-          </div>
-
-          {/* ── INTERACTIVE SCENE CONTROLS (Glimmervale Scene Bar) ── */}
-          <div
-            style={{
-              position: 'relative',
-              zIndex: 20,
-              padding: '24px 20px 32px',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: '12px',
-            }}
-          >
-            <div
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '8px',
-                background: 'rgba(10, 15, 30, 0.75)',
-                backdropFilter: 'blur(20px)',
-                WebkitBackdropFilter: 'blur(20px)',
-                border: '1px solid rgba(255, 255, 255, 0.12)',
-                borderRadius: '999px',
-                padding: '6px 10px 6px 16px',
-                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5)',
-              }}
-            >
-              <span
-                style={{
-                  fontFamily: '"Geist Mono", monospace',
-                  fontSize: '11px',
-                  color: 'rgba(255, 255, 255, 0.55)',
-                  letterSpacing: '0.08em',
-                  textTransform: 'uppercase',
-                  marginRight: '6px',
-                }}
-              >
-                WebGL Scene:
-              </span>
-
-              {SCENE_OPTIONS.map((sc) => {
-                const isSelected = activeScene === sc.id;
-                return (
-                  <button
-                    key={sc.id}
-                    onClick={() => setActiveScene(sc.id)}
-                    style={{
-                      background: isSelected ? '#1920F0' : 'transparent',
-                      color: isSelected ? '#FFFFFF' : 'rgba(255, 255, 255, 0.7)',
-                      border: isSelected
-                        ? '1px solid rgba(255,255,255,0.3)'
-                        : '1px solid transparent',
-                      borderRadius: '999px',
-                      padding: '6px 14px',
-                      fontSize: '12px',
-                      fontFamily: 'Geist, sans-serif',
-                      fontWeight: 500,
-                      cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '6px',
-                      transition: 'all 0.2s',
-                    }}
-                  >
-                    <span>{sc.icon}</span>
-                    <span>{sc.label}</span>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
         </section>
 
         {/* ========================================================================= */}
