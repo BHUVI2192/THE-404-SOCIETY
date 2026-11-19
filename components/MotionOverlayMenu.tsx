@@ -134,16 +134,16 @@ export const MotionOverlayMenu: React.FC<MotionOverlayMenuProps> = ({
   const dur = ICON_MS / 1000;
   const phase = { duration: dur, times: [0, 0.5, 1], ease: EASE_SMOOTH };
   const topVariants = {
-    open: { y: [0, 3.5, 3.5], rotate: [0, 0, 45], transition: phase },
-    closed: { y: [3.5, 3.5, 0], rotate: [45, 0, 0], transition: phase },
+    open: { y: [0, 2.75, 2.75], rotate: [0, 0, 45], transition: phase },
+    closed: { y: [2.75, 2.75, 0], rotate: [45, 0, 0], transition: phase },
   };
   const bottomVariants = {
-    open: { y: [0, -3.5, -3.5], rotate: [0, 0, -45], transition: phase },
-    closed: { y: [-3.5, -3.5, 0], rotate: [-45, 0, 0], transition: phase },
+    open: { y: [0, -2.75, -2.75], rotate: [0, 0, -45], transition: phase },
+    closed: { y: [-2.75, -2.75, 0], rotate: [-45, 0, 0], transition: phase },
   };
   const lineStyle: React.CSSProperties = {
     display: 'block',
-    height: 2,
+    height: 1.5,
     borderRadius: 2,
     background: 'currentColor',
     transformOrigin: 'center',
@@ -184,16 +184,16 @@ export const MotionOverlayMenu: React.FC<MotionOverlayMenuProps> = ({
         alignItems: 'center',
         justifyContent: 'space-between',
         width: '100%',
-        maxWidth: '1280px',
+        maxWidth: '1120px',
         margin: '0 auto',
-        padding: '12px 20px',
+        padding: '6px 14px',
         boxSizing: 'border-box',
         color: headerColor,
         background: barBackground,
         border: `1px solid ${barBorder}`,
         borderRadius: '999px',
         boxShadow:
-          '0 12px 32px -14px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.18)',
+          '0 8px 24px -10px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.18)',
         backdropFilter: 'blur(20px) saturate(160%)',
         WebkitBackdropFilter: 'blur(20px) saturate(160%)',
       }}
@@ -204,7 +204,7 @@ export const MotionOverlayMenu: React.FC<MotionOverlayMenuProps> = ({
         style={{
           display: 'inline-flex',
           alignItems: 'center',
-          gap: '12px',
+          gap: '8px',
           textDecoration: 'none',
           color: 'inherit',
           outline: 'none',
@@ -216,7 +216,7 @@ export const MotionOverlayMenu: React.FC<MotionOverlayMenuProps> = ({
             style={{
               fontFamily: '"Geist", sans-serif',
               fontWeight: 600,
-              fontSize: '15px',
+              fontSize: '13px',
               letterSpacing: '-0.02em',
             }}
           >
@@ -226,7 +226,7 @@ export const MotionOverlayMenu: React.FC<MotionOverlayMenuProps> = ({
       </a>
 
       {/* Right controls: Optional Action Button + Menu Morph Button */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
         {rightAction}
 
         <button
@@ -246,7 +246,7 @@ export const MotionOverlayMenu: React.FC<MotionOverlayMenuProps> = ({
             margin: 0,
             display: 'flex',
             alignItems: 'center',
-            gap: '10px',
+            gap: '8px',
             cursor: 'pointer',
             color: 'inherit',
             userSelect: 'none',
@@ -259,7 +259,7 @@ export const MotionOverlayMenu: React.FC<MotionOverlayMenuProps> = ({
             aria-hidden="true"
             style={{
               fontFamily: '"Geist Mono", monospace',
-              fontSize: '11px',
+              fontSize: '10px',
               fontWeight: 500,
               letterSpacing: '0.08em',
               textTransform: 'uppercase',
@@ -273,14 +273,14 @@ export const MotionOverlayMenu: React.FC<MotionOverlayMenuProps> = ({
           >
             <motion.span
               style={{ gridArea: '1 / 1' }}
-              animate={{ y: open ? -14 : 0, opacity: open ? 0 : 1 }}
+              animate={{ y: open ? -12 : 0, opacity: open ? 0 : 1 }}
               transition={{ duration: dur, ease: EASE_SMOOTH }}
             >
               {menuLabel}
             </motion.span>
             <motion.span
               style={{ gridArea: '1 / 1' }}
-              animate={{ y: open ? 0 : 14, opacity: open ? 1 : 0 }}
+              animate={{ y: open ? 0 : 12, opacity: open ? 1 : 0 }}
               transition={{ duration: dur, ease: EASE_SMOOTH }}
             >
               {closeLabel}
@@ -290,8 +290,8 @@ export const MotionOverlayMenu: React.FC<MotionOverlayMenuProps> = ({
           {/* Morphing Burger/X Icon */}
           <span
             style={{
-              width: 38,
-              height: 38,
+              width: 28,
+              height: 28,
               borderRadius: '50%',
               background: btnHover || open ? 'rgba(255, 255, 255, 0.16)' : 'rgba(255, 255, 255, 0.08)',
               border: '1px solid rgba(255, 255, 255, 0.18)',
@@ -299,20 +299,20 @@ export const MotionOverlayMenu: React.FC<MotionOverlayMenuProps> = ({
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: 5,
+              gap: 4,
               transition: 'background 0.3s ease, border-color 0.3s ease',
               flex: 'none',
             }}
           >
             <motion.span
-              style={{ ...lineStyle, width: 17 }}
+              style={{ ...lineStyle, width: 13 }}
               variants={topVariants}
               animate={open && !closing ? 'open' : 'closed'}
             />
             <motion.span
               style={{
                 ...lineStyle,
-                width: open || btnHover ? 17 : 11,
+                width: open || btnHover ? 13 : 8,
                 transition: 'width 0.3s cubic-bezier(0.22, 1, 0.36, 1)',
               }}
               variants={bottomVariants}
@@ -364,7 +364,7 @@ export const MotionOverlayMenu: React.FC<MotionOverlayMenuProps> = ({
           />
 
           {/* Top Bar inside Overlay */}
-          <div style={{ position: 'relative', width: '100%', padding: '24px 32px', zIndex: 2 }}>
+          <div style={{ position: 'relative', width: '100%', padding: '14px 20px', zIndex: 2, boxSizing: 'border-box' }}>
             {TopBarContent}
           </div>
 
@@ -528,3 +528,4 @@ export const MotionOverlayMenu: React.FC<MotionOverlayMenuProps> = ({
 };
 
 export default MotionOverlayMenu;
+

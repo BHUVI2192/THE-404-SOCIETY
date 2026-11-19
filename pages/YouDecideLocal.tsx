@@ -181,22 +181,22 @@ const YouDecideLocal: React.FC = () => {
             style={{
               position: 'relative',
               zIndex: 30,
-              maxWidth: '1280px',
+              maxWidth: '1120px',
               width: '100%',
               margin: '0 auto',
-              padding: '28px 24px',
+              padding: '14px 20px',
               boxSizing: 'border-box',
             }}
           >
             <MotionOverlayMenu
-              brandElement={<YouDecideLogo height={28} />}
+              brandElement={<YouDecideLogo height={20} />}
               brandHref="#overview"
               rightAction={
                 <FluidGlassButton
                   text="Contact"
                   link="#contact"
-                  padding="8px 22px"
-                  fontSize="12px"
+                  padding="5px 15px"
+                  fontSize="11px"
                   baseColor="#071838"
                   glassColor="#60A5FA"
                 />
