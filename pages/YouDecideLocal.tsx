@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import GlimmerVale from '../components/GlimmerVale';
 import FluidGlassButton from '../components/FluidGlassButton';
 import MotionOverlayMenu from '../components/MotionOverlayMenu';
-import LiquidImage from '../components/LiquidImage';
 
 // Official Vector Logo Component (Reversed for dark/night aesthetic)
 const YouDecideLogo: React.FC<{ height?: number; className?: string }> = ({
@@ -705,14 +704,14 @@ const YouDecideLocal: React.FC = () => {
         </footer>
 
         {/* ========================================================================= */}
-        {/* GLIMMERVALE GRASS FLOOR & INTERACTIVE LIQUID SYMBOL AT EXACT BOTTOM */}
+        {/* GLIMMERVALE NIGHT MEADOW WITH YOUDECIDE BEHIND MOUNTAINS AT EXACT BOTTOM */}
         {/* ========================================================================= */}
         <section
-          aria-label="Meadow Landscape and Liquid Symbol"
+          aria-label="Meadow Landscape with YOUDECIDE behind Mountains"
           style={{
             position: 'relative',
             width: '100%',
-            height: '520px',
+            height: '560px',
             overflow: 'hidden',
             display: 'flex',
             flexDirection: 'column',
@@ -735,6 +734,7 @@ const YouDecideLocal: React.FC = () => {
               speed={24}
               density={36}
               sparkle={75}
+              mountainText="YOUDECIDE"
               style={{ width: '100%', height: '100%' }}
             />
           </div>
@@ -753,33 +753,6 @@ const YouDecideLocal: React.FC = () => {
               pointerEvents: 'none',
             }}
           />
-
-          {/* Interactive Liquid Symbol floating seamlessly over the grass floor (NO BOX) */}
-          <div
-            style={{
-              position: 'relative',
-              zIndex: 2,
-              width: '100%',
-              maxWidth: '560px',
-              height: '340px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              pointerEvents: 'auto',
-            }}
-          >
-            <LiquidImage
-              src="/youdecidestudio/symbol_reversed.svg"
-              alt="youdecide.studio reversed symbol"
-              strength={0.08}
-              speed={0.16}
-              colorReveal={false}
-              fit="contain"
-              logoPadding={0.72}
-              background="radial-gradient-soft"
-              style={{ width: '100%', height: '100%' }}
-            />
-          </div>
         </section>
       </div>
 
