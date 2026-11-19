@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import GlimmerVale from '../components/GlimmerVale';
 import FluidGlassButton from '../components/FluidGlassButton';
 import MotionOverlayMenu from '../components/MotionOverlayMenu';
+import AppleHelloIntro from '../components/AppleHelloIntro';
 
 // Official Vector Logo Component (Reversed for dark/night aesthetic)
 const YouDecideLogo: React.FC<{ height?: number; className?: string }> = ({
@@ -39,13 +40,13 @@ const YouDecideLogo: React.FC<{ height?: number; className?: string }> = ({
 
 const SERVICES = [
   {
-    title: 'Websites',
-    desc: 'Fast, clear, responsive sites that turn visitors into partners and enquiries.',
-    tag: 'Design & Code',
+    title: 'Website Design & Development',
+    desc: 'Custom website development and affordable website design for small businesses, crafted to turn visitors into enquiries.',
+    tag: 'Pay As You Wish',
   },
   {
     title: 'Business Automation',
-    desc: 'Remove the manual, repetitive friction from your team’s weekly workflows.',
+    desc: 'Remove the manual, repetitive friction from your team’s weekly workflows with custom trigger pipelines.',
     tag: 'Workflows',
   },
   {
@@ -60,7 +61,7 @@ const SERVICES = [
   },
   {
     title: 'Digital Transformation',
-    desc: 'A practical, grounded roadmap executed sprint by sprint.',
+    desc: 'A practical, grounded roadmap executed sprint by sprint. Pay what you want web development built around your goals.',
     tag: 'Strategy',
   },
   {
@@ -98,20 +99,95 @@ const YouDecideLocal: React.FC = () => {
     return 'Enterprise Transformation';
   };
 
+  useEffect(() => {
+    document.title = 'Affordable Website Design for Small Businesses | youdecide.studio';
+    const updateMeta = (selector: string, attr: string, val: string) => {
+      let el = document.querySelector(selector);
+      if (!el) {
+        el = document.createElement('meta');
+        if (selector.startsWith('meta[')) {
+          const match = selector.match(/meta\[(.*?)="(.*?)"\]/);
+          if (match) el.setAttribute(match[1], match[2]);
+        }
+        document.head.appendChild(el);
+      }
+      el.setAttribute(attr, val);
+    };
+
+    updateMeta('meta[name="description"]', 'content', 'Pay as you wish for professional website design and development. Bring your idea, get your website built, and decide what the work is worth.');
+    updateMeta('meta[property="og:title"]', 'content', 'Affordable Website Design for Small Businesses | youdecide.studio');
+    updateMeta('meta[property="og:description"]', 'content', 'Pay as you wish for professional website design and development. Bring your idea, get your website built, and decide what the work is worth.');
+    updateMeta('meta[name="twitter:title"]', 'content', 'Affordable Website Design for Small Businesses | youdecide.studio');
+    updateMeta('meta[name="twitter:description"]', 'content', 'Pay as you wish for professional website design and development. Bring your idea, get your website built, and decide what the work is worth.');
+  }, []);
+
   return (
     <>
       <Helmet>
-        <title>youdecide.studio · Glimmervale Edition</title>
+        <title>Affordable Website Design for Small Businesses | youdecide.studio</title>
         <meta
           name="description"
-          content="Design Beyond the Surface. youdecide.studio website preview."
+          content="Pay as you wish for professional website design and development. Bring your idea, get your website built, and decide what the work is worth."
         />
-        {/* Load Michroma for the signature wide display headline, plus Geist & Geist Mono */}
+        <meta
+          name="keywords"
+          content="Pay As You Wish, Pay as you wish website design, Pay what you want web development, Affordable website development, Website design for small businesses, Custom website development"
+        />
+        <link rel="canonical" href="https://youdecide.studio/" />
+
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://youdecide.studio/" />
+        <meta
+          property="og:title"
+          content="Affordable Website Design for Small Businesses | youdecide.studio"
+        />
+        <meta
+          property="og:description"
+          content="Pay as you wish for professional website design and development. Bring your idea, get your website built, and decide what the work is worth."
+        />
+
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content="https://youdecide.studio/" />
+        <meta
+          name="twitter:title"
+          content="Affordable Website Design for Small Businesses | youdecide.studio"
+        />
+        <meta
+          name="twitter:description"
+          content="Pay as you wish for professional website design and development. Bring your idea, get your website built, and decide what the work is worth."
+        />
+
+        {/* Structured Data (JSON-LD) */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'ProfessionalService',
+            name: 'youdecide.studio',
+            url: 'https://youdecide.studio/',
+            description:
+              'Pay as you wish for professional website design and development. Bring your idea, get your website built, and decide what the work is worth.',
+            priceRange: 'Pay As You Wish',
+            offers: {
+              '@type': 'Offer',
+              price: '0',
+              priceCurrency: 'USD',
+              description: 'Pay As You Wish model for professional website design and development',
+            },
+          })}
+        </script>
+
+        {/* Optimized font loading with font-display: swap */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Michroma&family=Geist:wght@300;400;500;600;700;800;900&family=Geist+Mono:wght@400;500;600&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&family=Geist:wght@400;500;600;700&display=swap"
           rel="stylesheet"
         />
       </Helmet>
+
+      <AppleHelloIntro />
 
       <div
         style={{
@@ -128,7 +204,7 @@ const YouDecideLocal: React.FC = () => {
         <section
           style={{
             position: 'relative',
-            height: '100vh',
+            minHeight: '100vh',
             width: '100%',
             display: 'flex',
             flexDirection: 'column',
@@ -179,14 +255,14 @@ const YouDecideLocal: React.FC = () => {
             }}
           >
             <MotionOverlayMenu
-              brandElement={<YouDecideLogo height={20} />}
+              brandElement={<YouDecideLogo height={15} />}
               brandHref="#overview"
               rightAction={
                 <FluidGlassButton
                   text="Contact"
                   link="#contact"
                   padding="5px 15px"
-                  fontSize="11px"
+                  fontSize="12px"
                   baseColor="#071838"
                   glassColor="#60A5FA"
                 />
@@ -212,6 +288,89 @@ const YouDecideLocal: React.FC = () => {
               accent="#60A5FA"
             />
           </header>
+
+          {/* ── HERO CENTER CONTENT: POSITIONED IN OPEN SKY CLEARLY ABOVE MOUNTAIN CREST ── */}
+          <div
+            id="overview"
+            style={{
+              position: 'relative',
+              zIndex: 10,
+              maxWidth: '680px',
+              width: '100%',
+              margin: 'clamp(38px, 6.5vh, 76px) auto 0',
+              padding: 'clamp(14px, 2vh, 26px) 24px clamp(18px, 2.5vh, 30px)',
+              textAlign: 'center',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              boxSizing: 'border-box',
+            }}
+          >
+            {/* Eyebrow: PAY AS YOU WISH */}
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              className="hero-eyebrow"
+            >
+              PAY AS YOU WISH
+            </motion.div>
+
+            {/* Main headline (H1): Pay as you wish. in Instrument Serif Italic */}
+            <motion.h1
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+              className="hero-headline"
+            >
+              Pay as you wish.
+            </motion.h1>
+
+            {/* Supporting headline: Your idea deserves a website. Not a price barrier. */}
+            <motion.h2
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.16, ease: [0.22, 1, 0.36, 1] }}
+              className="hero-subhead"
+            >
+              Your idea deserves a website. Not a price barrier.
+            </motion.h2>
+
+            {/* Description: Professional websites and digital experiences. We build. You decide what our work is worth. */}
+            <motion.p
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.24, ease: [0.22, 1, 0.36, 1] }}
+              className="hero-desc"
+            >
+              Professional websites and digital experiences. We build. You decide what our work is worth.
+            </motion.p>
+
+            {/* Call To Action Buttons */}
+            <motion.div
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.32, ease: [0.22, 1, 0.36, 1] }}
+              style={{
+                display: 'flex',
+                gap: '12px',
+                flexWrap: 'wrap',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <a href="#contact" className="hero-cta-btn-primary">
+                <span>Initiate Project Brief</span>
+                <span aria-hidden="true">→</span>
+              </a>
+              <a href="#services" className="hero-cta-btn-secondary">
+                <span>Explore Capabilities</span>
+              </a>
+            </motion.div>
+          </div>
+
+          {/* Bottom spacer so WebGL mountain floor is gracefully visible */}
+          <div style={{ height: '24px' }} />
         </section>
 
         {/* ========================================================================= */}
@@ -704,10 +863,10 @@ const YouDecideLocal: React.FC = () => {
         </footer>
 
         {/* ========================================================================= */}
-        {/* GLIMMERVALE NIGHT MEADOW WITH YOUDECIDE BEHIND MOUNTAINS AT EXACT BOTTOM */}
+        {/* GLIMMERVALE NIGHT MEADOW AT EXACT BOTTOM                                 */}
         {/* ========================================================================= */}
         <section
-          aria-label="Meadow Landscape with YOUDECIDE behind Mountains"
+          aria-label="Meadow Landscape"
           style={{
             position: 'relative',
             width: '100%',
@@ -734,7 +893,6 @@ const YouDecideLocal: React.FC = () => {
               speed={24}
               density={36}
               sparkle={75}
-              mountainText="YOU DECIDE"
               style={{ width: '100%', height: '100%' }}
             />
           </div>
@@ -763,6 +921,174 @@ const YouDecideLocal: React.FC = () => {
         }
         * { box-sizing: border-box; }
         html { scroll-behavior: smooth; }
+
+        /* ══════════════════════════════════════════════════════════════
+           RESPONSIVE TYPOGRAPHY SYSTEM (Instrument Serif & Geist Sans)
+           ══════════════════════════════════════════════════════════════ */
+
+        /* Main Hero Headline — Instrument Serif Italic */
+        .hero-headline {
+          font-family: 'Instrument Serif', Georgia, serif !important;
+          font-style: italic !important;
+          font-weight: 400 !important;
+          line-height: 1.05 !important;
+          color: #FFFFFF !important;
+          margin: 0 0 16px !important;
+          letter-spacing: -0.01em !important;
+          text-align: center !important;
+          white-space: nowrap !important;
+          max-width: 100% !important;
+        }
+
+        /* 320–374px (Small mobile): 36px */
+        @media (max-width: 374px) {
+          .hero-headline {
+            font-size: 36px !important;
+            white-space: normal !important;
+          }
+        }
+        /* 375–479px (Mobile): 40px */
+        @media (min-width: 375px) and (max-width: 479px) {
+          .hero-headline {
+            font-size: 40px !important;
+          }
+        }
+        /* 480–767px (Large mobile): 44px */
+        @media (min-width: 480px) and (max-width: 767px) {
+          .hero-headline {
+            font-size: 44px !important;
+          }
+        }
+        /* 768–1023px (Tablet): 50px */
+        @media (min-width: 768px) and (max-width: 1023px) {
+          .hero-headline {
+            font-size: 50px !important;
+          }
+        }
+        /* 1024–1439px (Small desktop): 56px */
+        @media (min-width: 1024px) and (max-width: 1439px) {
+          .hero-headline {
+            font-size: 56px !important;
+          }
+        }
+        /* 1440px+ (Large desktop): 64px */
+        @media (min-width: 1440px) {
+          .hero-headline {
+            font-size: 64px !important;
+          }
+        }
+
+        /* Eyebrow — Geist Sans (Weight: 500, Letter spacing: ~0.08em) */
+        .hero-eyebrow {
+          font-family: 'Geist', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+          font-weight: 500 !important;
+          letter-spacing: 0.08em !important;
+          text-transform: uppercase !important;
+          color: rgba(255, 255, 255, 0.78) !important;
+          font-size: 10px !important;
+          display: inline-flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          padding: 5px 14px !important;
+          background: rgba(255, 255, 255, 0.06) !important;
+          border: 1px solid rgba(255, 255, 255, 0.14) !important;
+          border-radius: 999px !important;
+          backdrop-filter: blur(12px) !important;
+          -webkit-backdrop-filter: blur(12px) !important;
+          margin-bottom: 16px !important;
+        }
+        @media (min-width: 768px) {
+          .hero-eyebrow {
+            font-size: 11px !important;
+          }
+        }
+
+        /* Supporting Headline — Geist Sans (Weight: 500, Line-height: 1.35) */
+        .hero-subhead {
+          font-family: 'Geist', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+          font-weight: 500 !important;
+          line-height: 1.35 !important;
+          color: #FFFFFF !important;
+          margin: 0 0 14px !important;
+          font-size: 16px !important;
+          letter-spacing: -0.01em !important;
+        }
+        @media (min-width: 768px) and (max-width: 1023px) {
+          .hero-subhead {
+            font-size: 18px !important;
+          }
+        }
+        @media (min-width: 1024px) {
+          .hero-subhead {
+            font-size: 20px !important;
+          }
+        }
+
+        /* Description — Geist Sans (Weight: 400, Line-height: 1.6, Max width: ~520px) */
+        .hero-desc {
+          font-family: 'Geist', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+          font-weight: 400 !important;
+          line-height: 1.6 !important;
+          color: rgba(255, 255, 255, 0.72) !important;
+          font-size: 13px !important;
+          max-width: 520px !important;
+          margin: 0 auto 28px !important;
+          letter-spacing: -0.005em !important;
+        }
+        @media (min-width: 768px) {
+          .hero-desc {
+            font-size: 14px !important;
+          }
+        }
+
+        /* CTA Buttons — Geist Sans (Weight: 500, Font size: 12px mobile & desktop, min 44px touch target) */
+        .hero-cta-btn-primary {
+          font-family: 'Geist', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+          font-size: 12px !important;
+          font-weight: 500 !important;
+          background: #FFFFFF !important;
+          color: #040711 !important;
+          padding: 12px 24px !important;
+          border-radius: 999px !important;
+          text-decoration: none !important;
+          display: inline-flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          gap: 6px !important;
+          min-height: 44px !important;
+          box-shadow: 0 4px 20px rgba(255, 255, 255, 0.2) !important;
+          transition: all 0.2s ease !important;
+          touch-action: manipulation !important;
+        }
+        .hero-cta-btn-primary:hover {
+          transform: translateY(-1px) !important;
+          box-shadow: 0 6px 24px rgba(255, 255, 255, 0.3) !important;
+        }
+
+        .hero-cta-btn-secondary {
+          font-family: 'Geist', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+          font-size: 12px !important;
+          font-weight: 500 !important;
+          background: rgba(255, 255, 255, 0.08) !important;
+          border: 1px solid rgba(255, 255, 255, 0.2) !important;
+          color: #FFFFFF !important;
+          padding: 12px 22px !important;
+          border-radius: 999px !important;
+          text-decoration: none !important;
+          display: inline-flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          min-height: 44px !important;
+          backdrop-filter: blur(16px) !important;
+          -webkit-backdrop-filter: blur(16px) !important;
+          transition: all 0.2s ease !important;
+          touch-action: manipulation !important;
+        }
+        .hero-cta-btn-secondary:hover {
+          background: rgba(255, 255, 255, 0.12) !important;
+          border-color: rgba(255, 255, 255, 0.35) !important;
+          transform: translateY(-1px) !important;
+        }
       `}</style>
     </>
   );

@@ -154,14 +154,21 @@ const YouDecideStudio: React.FC = () => {
   return (
     <>
       <Helmet>
-        <title>youdecide.studio — The Future is Collaborative</title>
+        <title>Affordable Website Design for Small Businesses | youdecide.studio</title>
         <meta
           name="description"
-          content="Something remarkable is in the works. youdecide.studio launch countdown."
+          content="Pay as you wish for professional website design and development. Bring your idea, get your website built, and decide what the work is worth."
         />
-        {/* Google Fonts: Geist & Geist Mono */}
+        <meta
+          name="keywords"
+          content="Pay As You Wish, Pay as you wish website design, Pay what you want web development, Affordable website development, Website design for small businesses, Custom website development"
+        />
+        <link rel="canonical" href="https://youdecide.studio/" />
+        {/* Google Fonts: Instrument Serif (Italic) and Geist */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Geist+Mono:wght@400;500;600;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&family=Geist:wght@400;500;600;700&display=swap"
           rel="stylesheet"
         />
       </Helmet>

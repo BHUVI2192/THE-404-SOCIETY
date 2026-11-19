@@ -258,8 +258,8 @@ export const MotionOverlayMenu: React.FC<MotionOverlayMenuProps> = ({
           <span
             aria-hidden="true"
             style={{
-              fontFamily: '"Geist Mono", monospace',
-              fontSize: '10px',
+              fontFamily: '"Geist", sans-serif',
+              fontSize: 'clamp(11px, 1.2vw, 12px)',
               fontWeight: 500,
               letterSpacing: '0.08em',
               textTransform: 'uppercase',

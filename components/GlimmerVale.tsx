@@ -129,9 +129,9 @@ for(let fi=0;fi<FIREFLY_COUNT;fi++){
   const isBig = fi % 2 === 0;
   const fx = 0.06 + 0.88 * rnd();
   const fy = 0.54 + 0.38 * rnd();
-  const fRadius = isBig ? (0.025 + 0.035 * rnd()) : (0.01 + 0.015 * rnd());
+  const fRadius = isBig ? (0.02 + 0.025 * rnd()) : (0.01 + 0.015 * rnd());
   const fSpeed = (rnd() > 0.5 ? 1 : -1) * (0.8 + 1.2 * rnd());
-  const fSize = isBig ? (0.026 + 0.012 * rnd()) : (0.008 + 0.004 * rnd());
+  const fSize = isBig ? (0.009 + 0.004 * rnd()) : (0.004 + 0.002 * rnd());
   const fCol = parseColor(fColors[Math.floor(rnd() * fColors.length)]);
   items.push(item({
     kind: 4,
@@ -144,7 +144,7 @@ for(let fi=0;fi<FIREFLY_COUNT;fi++){
     d: fSize,
     isBig: isBig ? 1 : 0,
     col: fCol,
-    alpha: isBig ? 2.4 : 1.4,
+    alpha: isBig ? 1.5 : 1.0,
     ph: rnd() * TAU,
     key: fy + 0.05
   }));
@@ -750,44 +750,42 @@ void main(){
   if(uv.x < u_rect.x || uv.x > u_rect.x + u_rect.z || sy < u_rect.y || sy > u_rect.y + u_rect.w) discard;
   vec2 texUv = vec2((uv.x - u_rect.x) / u_rect.z, (sy - u_rect.y) / u_rect.w);
   vec4 c = texture(u_tex, texUv);
-  o = vec4(c.rgb, c.a * u_alpha);
+  if(c.a < 0.02) discard;
+  o = vec4(vec3(1.0), c.a * u_alpha);
 }`;
 
 function makeTextTexture(gl, text) {
   if (typeof document === 'undefined') return null;
   const canvas = document.createElement('canvas');
-  canvas.width = 2560;
-  canvas.height = 640;
+  canvas.width = 3840;
+  canvas.height = 960;
   const ctx = canvas.getContext('2d');
   if (!ctx) return null;
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Strictly ZERO shadow or blur - absolutely no outer pill, cloud, or background artifact
-  ctx.shadowColor = 'transparent';
-  ctx.shadowBlur = 0;
-
-  const fontSize = 220;
-  ctx.font = '900 ' + fontSize + 'px "Geist", "Michroma", system-ui, -apple-system, sans-serif';
+  // Match the reference's monumental, ultra-bold, architectural typography
+  let fontSize = 600;
+  ctx.font = '900 ' + fontSize + 'px "Geist", "Arial Black", "Impact", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif';
+  if ('letterSpacing' in ctx) {
+    ctx.letterSpacing = '-4px';
+  }
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
 
-  if ('letterSpacing' in ctx) {
-    ctx.letterSpacing = '20px';
+  // Scale fontSize so text fills ~94% of canvas width (monumental horizontal span)
+  const measured = ctx.measureText(text);
+  const targetW = canvas.width * 0.94;
+  if (measured.width > 0) {
+    fontSize = Math.floor(fontSize * (targetW / measured.width));
+    ctx.font = '900 ' + fontSize + 'px "Geist", "Arial Black", "Impact", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif';
   }
 
-  const cx = canvas.width / 2;
-  const cy = canvas.height / 2;
-
-  // Complete white in bold with smooth vertical vignette fade towards the bottom so it feels seamlessly blended
-  const grad = ctx.createLinearGradient(0, canvas.height * 0.22, 0, canvas.height * 0.78);
-  grad.addColorStop(0.0, 'rgba(255, 255, 255, 1.0)');
-  grad.addColorStop(0.45, 'rgba(255, 255, 255, 0.92)');
-  grad.addColorStop(0.75, 'rgba(255, 255, 255, 0.60)');
-  grad.addColorStop(1.0, 'rgba(255, 255, 255, 0.15)'); // soft blended vignette at bottom
-
-  ctx.fillStyle = grad;
-  ctx.fillText(text, cx, cy);
+  // Pure solid white (#FFFFFF) with NO shadows, NO outlines, NO gradients, NO glow
+  ctx.shadowColor = 'transparent';
+  ctx.shadowBlur = 0;
+  ctx.fillStyle = '#FFFFFF';
+  ctx.fillText(text, canvas.width / 2, canvas.height / 2);
 
   const tex = gl.createTexture();
   gl.bindTexture(gl.TEXTURE_2D, tex);
@@ -837,12 +835,12 @@ const hy=hx*g*SPIKE_ASP;si=pushSprite(spr,si,W,H,cx+Math.sin(ang)*hy,cy-Math.cos
 // burns hot enough for the bloom to spread it
 const r=hx*m.w*(.6+.6*blurK);si=pushSprite(spr,si,W,H,cx+ox*c-oy*s,cy+ox*s+oy*c,r,r,0,1,0,0,0,m.alpha*(.8+.6*spark),m.col[0],m.col[1],m.col[2],.5);}}else if(m.kind===1){const sw=Math.sin(TAU*tw/(loop/2)+m.ph);const ang=1*Math.PI/180*swayK*sw;const R=m.d*.5*unit*flowerK;const cx=m.x*W+sw*.002*W*swayK-P.x*W*hk*(.012+.015*m.f);const cy=(my+bob*(1-m.f))*H-P.y*.006*hk*H;const hx=R/.8;const bl=m.blur*blurK;const g=grow(bl);const hy=hx*g*SPIKE_ASP;si=pushSprite(spr,si,W,H,cx+Math.sin(ang)*hy,cy-Math.cos(ang)*hy,hx*g,hy,ang,0,bl,m.n+(g-1)*.5,m.rot,packTilt(1,m.alpha),m.tint[0],m.tint[1],m.tint[2],1);}else if(m.kind===2){const s=Math.sin(TAU*tw/loop+m.ph);let breath=.8+.2*s;let dy=-.008*s+.008*Math.sin(m.ph);let rx=0;if(T.mode===1){// sparks rise from the dunes, drift sideways and burn out; loops with the cycle
 const fr=(tw/loop+m.ph/TAU)%1;dy=-.12*fr;rx=Math.sin(fr*TAU*2+m.ph)*.006*W;breath=Math.pow(Math.sin(Math.PI*fr),1.5)*1.15;}else if(T.mode===2){// fireflies wander in slow loops and blink; integer multiples keep the loop seamless
-const w1=TAU*tw/loop;dy=.02*Math.sin(w1+m.ph*2)+.01*Math.sin(2*w1+m.ph);rx=(Math.sin(w1+m.ph)*.012+Math.sin(2*w1+m.ph*3)*.006)*W;breath=Math.pow(Math.max(0,Math.sin(2*w1+m.ph*5)),3)*1.4+.1;}const R=m.d*.5*unit*scaleF*(T.mode===2?1.5:1);const cx=m.x*W-P.x*.025*hk*W+rx;const cy=(my+dy)*H-P.y*.01*hk*H;si=pushSprite(spr,si,W,H,cx,cy,R,R,0,1,0,0,0,m.alpha*breath,m.col[0],m.col[1],m.col[2],0);}else if(m.kind===4){const fw=TAU*tw/loop*m.speed+m.ph;const frx=(Math.cos(fw)*m.radius+Math.sin(fw*2.2)*.007)*W;const fdy=Math.sin(fw)*(m.radius*.7)+Math.cos(fw*1.8)*.012;const fpulse=Math.pow(Math.max(0,Math.sin(fw*3+m.ph)),2.5)*1.8+.35;const fR=m.d*unit*scaleF*(m.isBig?1.6:1.0);const fcx=m.ox*W-P.x*.025*hk*W+frx;const fcy=(my+fdy)*H-P.y*.01*hk*H;si=pushSprite(spr,si,W,H,fcx,fcy,fR,fR,0,1,0,0,0,m.alpha*fpulse,m.col[0],m.col[1],m.col[2],0);}else{const ang=m.ang+Math.sin(TAU*tw/(loop/2)+m.ph)*.03*swayK;const hh=m.h*.5*unit*scaleF;const hw=Math.max(.6,m.w*.5*unit*scaleF);const bx=m.x*W-P.x*W*hk*(.012+.02*m.f);const by=my*H;// a tuft: three blades fanning from one root
+const w1=TAU*tw/loop;dy=.02*Math.sin(w1+m.ph*2)+.01*Math.sin(2*w1+m.ph);rx=(Math.sin(w1+m.ph)*.012+Math.sin(2*w1+m.ph*3)*.006)*W;breath=Math.pow(Math.max(0,Math.sin(2*w1+m.ph*5)),3)*1.4+.1;}const R=m.d*.5*unit*scaleF*(T.mode===2?1.5:1);const cx=m.x*W-P.x*.025*hk*W+rx;const cy=(my+dy)*H-P.y*.01*hk*H;si=pushSprite(spr,si,W,H,cx,cy,R,R,0,1,0,0,0,m.alpha*breath,m.col[0],m.col[1],m.col[2],0);}else if(m.kind===4){const fw=TAU*tw/loop*m.speed+m.ph;const frx=(Math.cos(fw)*m.radius+Math.sin(fw*2.2)*.007)*W;const fdy=Math.sin(fw)*(m.radius*.7)+Math.cos(fw*1.8)*.012;const fpulse=Math.pow(Math.max(0,Math.sin(fw*3+m.ph)),2.5)*1.4+.3;const fR=m.d*unit*scaleF*(m.isBig?1.25:1.0);const fcx=m.ox*W-P.x*.025*hk*W+frx;const fcy=(my+fdy)*H-P.y*.01*hk*H;si=pushSprite(spr,si,W,H,fcx,fcy,fR,fR,0,1,0,0,0,m.alpha*fpulse,m.col[0],m.col[1],m.col[2],0);}else{const ang=m.ang+Math.sin(TAU*tw/(loop/2)+m.ph)*.03*swayK;const hh=m.h*.5*unit*scaleF;const hw=Math.max(.6,m.w*.5*unit*scaleF);const bx=m.x*W-P.x*W*hk*(.012+.02*m.f);const by=my*H;// a tuft: three blades fanning from one root
 for(let b=-1;b<=1;b++){const a2=ang+b*.24;const h2=hh*(1-.18*Math.abs(b)-.1*b);const x2=bx+b*hw*2.5;si=pushSprite(spr,si,W,H,x2+Math.sin(a2)*h2,by-Math.cos(a2)*h2,hw,h2,a2,3,0,0,0,m.alpha,m.col[0],m.col[1],m.col[2],1);}}}// ── draw the scene (HDR) ──
 gl.bindFramebuffer(gl.FRAMEBUFFER,sceneT.fb);gl.viewport(0,0,cw,ch);gl.disable(gl.DEPTH_TEST);gl.disable(gl.BLEND);gl.depthMask(true);gl.clearColor(bg[0],bg[1],bg[2],1);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);const S=gpu.sky;gl.useProgram(S.prog);gl.uniform2f(S.u.u_res,cw,ch);gl.uniform3fv(S.u.u_top,parseColor(themed(L.skyTop,T.colors.skyTop),[.14,.23,.45]));gl.uniform3fv(S.u.u_mid,parseColor(adv.skyMid,[.18,.31,.56]));gl.uniform3fv(S.u.u_hor,skyHor);gl.uniform3fv(S.u.u_gc,parseColor(adv.horizonGlow,[1,.89,.72]));gl.uniform4f(S.u.u_g,hotX+sx*.3,hotY+drop-.02,num(adv.horizonGlowStrength,30)/100,W/H);gl.uniform1f(S.u.u_ph,TAU*tw/loop);gl.uniform1f(S.u.u_drop,drop);gl.uniform1f(S.u.u_theme,T.mode);gl.bindVertexArray(S.vao);gl.drawArrays(gl.TRIANGLES,0,3);
 // ── BIG TEXT BEHIND THE MOUNTAINS ──
 if(L.mountainText!==currentText){if(textTex){gl.deleteTexture(textTex);textTex=null;}if(L.mountainText){textTex=makeTextTexture(gl,L.mountainText);}currentText=L.mountainText;}
-if(textTex&&L.mountainText){const Tx=gpu.text;gl.useProgram(Tx.prog);gl.enable(gl.BLEND);gl.blendFunc(gl.ONE,gl.ONE_MINUS_SRC_ALPHA);gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,textTex);gl.uniform1i(Tx.u.u_tex,0);const rectY=0.425-drop*0.35;gl.uniform4f(Tx.u.u_rect,0.015,rectY,0.95,0.36);gl.uniform1f(Tx.u.u_alpha,0.95);gl.uniform1f(Tx.u.u_shiftX,-camX*0.015);gl.bindVertexArray(Tx.vao);gl.drawArrays(gl.TRIANGLES,0,3);gl.disable(gl.BLEND);}const A=(FAR+NEAR)/(FAR-NEAR),B=-2*FAR*NEAR/(FAR-NEAR);const setWorld=u=>{gl.uniform4f(u.u_cam,camX,camY,cosP,sinP);gl.uniform4f(u.u_proj,TAN_H,TAN_V,A,B);gl.uniform4f(u.u_wave,wave.si,wave.amp,wave.k,wave.ph);gl.uniform1f(u.u_off,drop*2);gl.uniform4f(u.u_th,T.shoulder,T.mode,0,0);gl.uniform4f(u.u_fog,fogC[0],fogC[1],fogC[2],fogDist);gl.uniform4fv(u["u_r[0]"],RIDGES);};// terrain: dark, writes depth so near ridges hide far glitter
+if(textTex&&L.mountainText){const Tx=gpu.text;gl.useProgram(Tx.prog);gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,textTex);gl.uniform1i(Tx.u.u_tex,0);const textAspect=3840.0/960.0;const rectW=0.94;const rectX=0.03;let rectH=Math.max(0.20,(rectW/textAspect)*(W/H));rectH=Math.min(0.66,rectH);const bottomY=0.76-drop*0.35;const rectY=Math.max(0.04,bottomY-rectH);const finalH=bottomY-rectY;gl.uniform4f(Tx.u.u_rect,rectX,rectY,rectW,finalH);gl.uniform1f(Tx.u.u_alpha,0.98);gl.uniform1f(Tx.u.u_shiftX,-camX*0.015);gl.bindVertexArray(Tx.vao);gl.drawArrays(gl.TRIANGLES,0,3);gl.disable(gl.BLEND);}const A=(FAR+NEAR)/(FAR-NEAR),B=-2*FAR*NEAR/(FAR-NEAR);const setWorld=u=>{gl.uniform4f(u.u_cam,camX,camY,cosP,sinP);gl.uniform4f(u.u_proj,TAN_H,TAN_V,A,B);gl.uniform4f(u.u_wave,wave.si,wave.amp,wave.k,wave.ph);gl.uniform1f(u.u_off,drop*2);gl.uniform4f(u.u_th,T.shoulder,T.mode,0,0);gl.uniform4f(u.u_fog,fogC[0],fogC[1],fogC[2],fogDist);gl.uniform4fv(u["u_r[0]"],RIDGES);};// terrain: dark, writes depth so near ridges hide far glitter
 gl.enable(gl.DEPTH_TEST);gl.depthFunc(gl.LEQUAL);const Tr=gpu.terrain;gl.useProgram(Tr.prog);setWorld(Tr.u);gl.uniform3fv(Tr.u.u_shadow,shadow);gl.uniform3fv(Tr.u.u_ground,bg);gl.uniform3fv(Tr.u.u_rim,slopeC);gl.uniform3fv(Tr.u.u_sky,skyHor);// the glow between the dots is a soft teal, not grey
 const sheen=mix3(slopeC,glowC,.25).map((c,i)=>c*T.sheen[i]*(num(adv.crestBright,100)/100));gl.uniform3fv(Tr.u.u_sheen,sheen);gl.bindVertexArray(Tr.vao);gl.drawElements(gl.TRIANGLES,Tr.count,gl.UNSIGNED_INT,0);gl.depthMask(false);gl.enable(gl.BLEND);gl.blendFunc(gl.ONE,gl.ONE_MINUS_SRC_ALPHA);// flower heads on the slopes
 const Fl=gpu.flower;gl.useProgram(Fl.prog);setWorld(Fl.u);gl.uniform4f(Fl.u.u_px,ch/2,flowerK,gpu.maxPt,0);gl.uniform3fv(Fl.u.u_petal,slopeC);gl.uniform3fv(Fl.u.u_tip,petalC);gl.uniform3fv(Fl.u.u_core,coreC);gl.uniform3fv(Fl.u.u_deep,deep);gl.bindVertexArray(Fl.vao);gl.drawArrays(gl.POINTS,0,Math.floor(MAX_HF*dens));// glitter sheet
