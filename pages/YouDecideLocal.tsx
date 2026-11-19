@@ -734,7 +734,7 @@ const YouDecideLocal: React.FC = () => {
               speed={24}
               density={36}
               sparkle={75}
-              mountainText="YOUDECIDE"
+              mountainText="YOU DECIDE"
               style={{ width: '100%', height: '100%' }}
             />
           </div>

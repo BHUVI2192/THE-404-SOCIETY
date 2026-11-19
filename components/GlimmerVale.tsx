@@ -763,34 +763,31 @@ function makeTextTexture(gl, text) {
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  const fontSize = 240;
-  ctx.font = '900 ' + fontSize + 'px "Geist", "Michroma", -apple-system, sans-serif';
+  // Strictly ZERO shadow or blur - absolutely no outer pill, cloud, or background artifact
+  ctx.shadowColor = 'transparent';
+  ctx.shadowBlur = 0;
+
+  const fontSize = 220;
+  ctx.font = '900 ' + fontSize + 'px "Geist", "Michroma", system-ui, -apple-system, sans-serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
 
   if ('letterSpacing' in ctx) {
-    ctx.letterSpacing = '28px';
+    ctx.letterSpacing = '20px';
   }
 
-  // Subtle ambient glow that blooms softly without blobbing
-  ctx.shadowColor = 'rgba(125, 255, 210, 0.35)';
-  ctx.shadowBlur = 20;
+  const cx = canvas.width / 2;
+  const cy = canvas.height / 2;
 
-  // Rich metallic / aurora gradient
-  const grad = ctx.createLinearGradient(0, canvas.height * 0.2, 0, canvas.height * 0.8);
-  grad.addColorStop(0.0, '#FFFFFF');
-  grad.addColorStop(0.4, '#F0FDFA');
-  grad.addColorStop(0.75, '#CCFBF1');
-  grad.addColorStop(1.0, '#99F6E4');
+  // Complete white in bold with smooth vertical vignette fade towards the bottom so it feels seamlessly blended
+  const grad = ctx.createLinearGradient(0, canvas.height * 0.22, 0, canvas.height * 0.78);
+  grad.addColorStop(0.0, 'rgba(255, 255, 255, 1.0)');
+  grad.addColorStop(0.45, 'rgba(255, 255, 255, 0.92)');
+  grad.addColorStop(0.75, 'rgba(255, 255, 255, 0.60)');
+  grad.addColorStop(1.0, 'rgba(255, 255, 255, 0.15)'); // soft blended vignette at bottom
 
   ctx.fillStyle = grad;
-  ctx.fillText(text, canvas.width / 2, canvas.height / 2);
-
-  // Crisp sharp inner core
-  ctx.shadowBlur = 0;
-  ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
-  ctx.lineWidth = 3;
-  ctx.strokeText(text, canvas.width / 2, canvas.height / 2);
+  ctx.fillText(text, cx, cy);
 
   const tex = gl.createTexture();
   gl.bindTexture(gl.TEXTURE_2D, tex);
@@ -845,7 +842,7 @@ for(let b=-1;b<=1;b++){const a2=ang+b*.24;const h2=hh*(1-.18*Math.abs(b)-.1*b);c
 gl.bindFramebuffer(gl.FRAMEBUFFER,sceneT.fb);gl.viewport(0,0,cw,ch);gl.disable(gl.DEPTH_TEST);gl.disable(gl.BLEND);gl.depthMask(true);gl.clearColor(bg[0],bg[1],bg[2],1);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);const S=gpu.sky;gl.useProgram(S.prog);gl.uniform2f(S.u.u_res,cw,ch);gl.uniform3fv(S.u.u_top,parseColor(themed(L.skyTop,T.colors.skyTop),[.14,.23,.45]));gl.uniform3fv(S.u.u_mid,parseColor(adv.skyMid,[.18,.31,.56]));gl.uniform3fv(S.u.u_hor,skyHor);gl.uniform3fv(S.u.u_gc,parseColor(adv.horizonGlow,[1,.89,.72]));gl.uniform4f(S.u.u_g,hotX+sx*.3,hotY+drop-.02,num(adv.horizonGlowStrength,30)/100,W/H);gl.uniform1f(S.u.u_ph,TAU*tw/loop);gl.uniform1f(S.u.u_drop,drop);gl.uniform1f(S.u.u_theme,T.mode);gl.bindVertexArray(S.vao);gl.drawArrays(gl.TRIANGLES,0,3);
 // ── BIG TEXT BEHIND THE MOUNTAINS ──
 if(L.mountainText!==currentText){if(textTex){gl.deleteTexture(textTex);textTex=null;}if(L.mountainText){textTex=makeTextTexture(gl,L.mountainText);}currentText=L.mountainText;}
-if(textTex&&L.mountainText){const Tx=gpu.text;gl.useProgram(Tx.prog);gl.enable(gl.BLEND);gl.blendFunc(gl.ONE,gl.ONE_MINUS_SRC_ALPHA);gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,textTex);gl.uniform1i(Tx.u.u_tex,0);const rectY=0.41-drop*0.35;gl.uniform4f(Tx.u.u_rect,0.03,rectY,0.94,0.36);gl.uniform1f(Tx.u.u_alpha,0.95);gl.uniform1f(Tx.u.u_shiftX,-camX*0.015);gl.bindVertexArray(Tx.vao);gl.drawArrays(gl.TRIANGLES,0,3);gl.disable(gl.BLEND);}const A=(FAR+NEAR)/(FAR-NEAR),B=-2*FAR*NEAR/(FAR-NEAR);const setWorld=u=>{gl.uniform4f(u.u_cam,camX,camY,cosP,sinP);gl.uniform4f(u.u_proj,TAN_H,TAN_V,A,B);gl.uniform4f(u.u_wave,wave.si,wave.amp,wave.k,wave.ph);gl.uniform1f(u.u_off,drop*2);gl.uniform4f(u.u_th,T.shoulder,T.mode,0,0);gl.uniform4f(u.u_fog,fogC[0],fogC[1],fogC[2],fogDist);gl.uniform4fv(u["u_r[0]"],RIDGES);};// terrain: dark, writes depth so near ridges hide far glitter
+if(textTex&&L.mountainText){const Tx=gpu.text;gl.useProgram(Tx.prog);gl.enable(gl.BLEND);gl.blendFunc(gl.ONE,gl.ONE_MINUS_SRC_ALPHA);gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,textTex);gl.uniform1i(Tx.u.u_tex,0);const rectY=0.425-drop*0.35;gl.uniform4f(Tx.u.u_rect,0.015,rectY,0.95,0.36);gl.uniform1f(Tx.u.u_alpha,0.95);gl.uniform1f(Tx.u.u_shiftX,-camX*0.015);gl.bindVertexArray(Tx.vao);gl.drawArrays(gl.TRIANGLES,0,3);gl.disable(gl.BLEND);}const A=(FAR+NEAR)/(FAR-NEAR),B=-2*FAR*NEAR/(FAR-NEAR);const setWorld=u=>{gl.uniform4f(u.u_cam,camX,camY,cosP,sinP);gl.uniform4f(u.u_proj,TAN_H,TAN_V,A,B);gl.uniform4f(u.u_wave,wave.si,wave.amp,wave.k,wave.ph);gl.uniform1f(u.u_off,drop*2);gl.uniform4f(u.u_th,T.shoulder,T.mode,0,0);gl.uniform4f(u.u_fog,fogC[0],fogC[1],fogC[2],fogDist);gl.uniform4fv(u["u_r[0]"],RIDGES);};// terrain: dark, writes depth so near ridges hide far glitter
 gl.enable(gl.DEPTH_TEST);gl.depthFunc(gl.LEQUAL);const Tr=gpu.terrain;gl.useProgram(Tr.prog);setWorld(Tr.u);gl.uniform3fv(Tr.u.u_shadow,shadow);gl.uniform3fv(Tr.u.u_ground,bg);gl.uniform3fv(Tr.u.u_rim,slopeC);gl.uniform3fv(Tr.u.u_sky,skyHor);// the glow between the dots is a soft teal, not grey
 const sheen=mix3(slopeC,glowC,.25).map((c,i)=>c*T.sheen[i]*(num(adv.crestBright,100)/100));gl.uniform3fv(Tr.u.u_sheen,sheen);gl.bindVertexArray(Tr.vao);gl.drawElements(gl.TRIANGLES,Tr.count,gl.UNSIGNED_INT,0);gl.depthMask(false);gl.enable(gl.BLEND);gl.blendFunc(gl.ONE,gl.ONE_MINUS_SRC_ALPHA);// flower heads on the slopes
 const Fl=gpu.flower;gl.useProgram(Fl.prog);setWorld(Fl.u);gl.uniform4f(Fl.u.u_px,ch/2,flowerK,gpu.maxPt,0);gl.uniform3fv(Fl.u.u_petal,slopeC);gl.uniform3fv(Fl.u.u_tip,petalC);gl.uniform3fv(Fl.u.u_core,coreC);gl.uniform3fv(Fl.u.u_deep,deep);gl.bindVertexArray(Fl.vao);gl.drawArrays(gl.POINTS,0,Math.floor(MAX_HF*dens));// glitter sheet
