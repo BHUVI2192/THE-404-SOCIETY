@@ -369,9 +369,23 @@ export const LiquidImage: React.FC<LiquidImageProps> = ({
 
       ctx.clearRect(0, 0, offW, offH);
 
-      // Render custom dark liquid surface backdrop
+      // Render custom liquid surface backdrop
       if (background && background !== 'transparent') {
-        if (background.startsWith('radial-gradient')) {
+        if (background === 'radial-gradient-soft') {
+          const radGrad = ctx.createRadialGradient(
+            offW / 2,
+            offH / 2,
+            0,
+            offW / 2,
+            offH / 2,
+            Math.min(offW, offH) * 0.48
+          );
+          radGrad.addColorStop(0, 'rgba(97, 105, 255, 0.22)');
+          radGrad.addColorStop(0.5, 'rgba(25, 32, 240, 0.08)');
+          radGrad.addColorStop(1, 'rgba(4, 7, 17, 0)');
+          ctx.fillStyle = radGrad;
+          ctx.fillRect(0, 0, offW, offH);
+        } else if (background.startsWith('radial-gradient')) {
           const radGrad = ctx.createRadialGradient(
             offW / 2,
             offH / 2,

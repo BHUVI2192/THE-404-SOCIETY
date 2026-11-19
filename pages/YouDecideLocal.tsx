@@ -705,37 +705,78 @@ const YouDecideLocal: React.FC = () => {
         </footer>
 
         {/* ========================================================================= */}
-        {/* INTERACTIVE LIQUID SYMBOL AT THE EXACT BOTTOM */}
+        {/* GLIMMERVALE GRASS FLOOR & INTERACTIVE LIQUID SYMBOL AT EXACT BOTTOM */}
         {/* ========================================================================= */}
         <section
-          aria-label="Interactive Liquid Symbol"
+          aria-label="Meadow Landscape and Liquid Symbol"
           style={{
-            maxWidth: '1280px',
-            margin: '0 auto',
-            padding: '0 32px 80px',
+            position: 'relative',
+            width: '100%',
+            height: '520px',
+            overflow: 'hidden',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginTop: '24px',
           }}
         >
+          {/* GlimmerVale 3D night meadow with grass floor, lavender flowers, and fireflies */}
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              zIndex: 0,
+              pointerEvents: 'auto',
+            }}
+          >
+            <GlimmerVale
+              scene="aurora"
+              speed={24}
+              density={36}
+              sparkle={75}
+              style={{ width: '100%', height: '100%' }}
+            />
+          </div>
+
+          {/* Smooth top gradient fade so the dark page flows seamlessly into the meadow landscape */}
+          <div
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              height: '140px',
+              background:
+                'linear-gradient(to bottom, #040711 0%, rgba(4, 7, 17, 0.75) 45%, transparent 100%)',
+              zIndex: 1,
+              pointerEvents: 'none',
+            }}
+          />
+
+          {/* Interactive Liquid Symbol floating seamlessly over the grass floor (NO BOX) */}
           <div
             style={{
               position: 'relative',
+              zIndex: 2,
               width: '100%',
-              height: '360px',
-              borderRadius: '28px',
-              overflow: 'hidden',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-              boxShadow: '0 24px 64px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.12)',
-              background: '#040711',
+              maxWidth: '560px',
+              height: '340px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              pointerEvents: 'auto',
             }}
           >
             <LiquidImage
               src="/youdecidestudio/symbol_reversed.svg"
               alt="youdecide.studio reversed symbol"
-              strength={0.07}
+              strength={0.08}
               speed={0.16}
               colorReveal={false}
               fit="contain"
-              logoPadding={0.52}
-              borderRadius={28}
+              logoPadding={0.72}
+              background="radial-gradient-soft"
               style={{ width: '100%', height: '100%' }}
             />
           </div>
