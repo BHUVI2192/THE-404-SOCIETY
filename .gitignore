@@ -27,5 +27,7 @@ dist-ssr
 *.sw?
 
 .vercel
-/builderportal/
 /youdecidestudio/
+# Builder Portal source is now committed; exclude only its local dev artifacts
+/builderportal/bp2/node_modules/
+/builderportal/bp2/dist/
