@@ -57,41 +57,50 @@ function StrokePath({
 
 export const YoudecideIntro: React.FC<YoudecideIntroProps> = ({
   onComplete,
-  duration = 2.4,
+  duration = 4.8,
 }) => {
   const [stage, setStage] = useState<'drawing' | 'drawn' | 'exiting' | 'done'>('drawing');
   const progress = useMotionValue(0);
 
   useEffect(() => {
     progress.set(0);
-    const controls = animate(progress, 1, {
-      duration,
-      ease: 'easeInOut',
-    });
 
+    let controls: any;
     let holdTimer: ReturnType<typeof setTimeout>;
-    let exitTimer: ReturnType<typeof setTimeout>;
     let doneTimer: ReturnType<typeof setTimeout>;
 
-    controls.then(() => {
-      setStage('drawn');
+    // 1. A 320ms breath on initial mount ensures the browser finishes initial layout,
+    //    hydration, and WebGL compilation so the user clearly sees the first pen stroke of "y"
+    //    without any dropped frames or sudden jumps.
+    const startTimer = setTimeout(() => {
+      controls = animate(progress, 1, {
+        duration,
+        // Linear writing velocity ensures every letter ("y", "o", "u", "d", "e", "c", "i", "d", "e")
+        // receives time directly proportional to its drawn length, preventing early letters
+        // like "youd" from rushing past at artificial peak acceleration.
+        ease: 'linear',
+      });
 
-      // Hold complete cursive signature for 0.45s, then initiate curtain lift
-      holdTimer = setTimeout(() => {
-        setStage('exiting');
-      }, 450);
+      controls.then(() => {
+        setStage('drawn');
 
-      // Finish curtain reveal and unmount after 0.85s transition
-      doneTimer = setTimeout(() => {
-        setStage('done');
-        onComplete?.();
-      }, 450 + 850);
-    });
+        // Hold complete glowing cursive signature for 450ms
+        holdTimer = setTimeout(() => {
+          setStage('exiting');
+        }, 450);
+
+        // Complete bottom-to-top curtain lift and unmount
+        doneTimer = setTimeout(() => {
+          setStage('done');
+          onComplete?.();
+        }, 450 + 850);
+      });
+    }, 320);
 
     return () => {
-      controls.stop();
+      clearTimeout(startTimer);
+      if (controls) controls.stop();
       clearTimeout(holdTimer);
-      clearTimeout(exitTimer);
       clearTimeout(doneTimer);
     };
   }, [duration, onComplete, progress]);
@@ -241,3 +250,4 @@ export const YoudecideIntro: React.FC<YoudecideIntroProps> = ({
 };
 
 export default YoudecideIntro;
+

@@ -81,7 +81,7 @@ export default function YoudecideEffect({
       return;
     }
     progress.set(0);
-    const controls = animate(progress, 1, { duration, ease: "easeInOut" });
+    const controls = animate(progress, 1, { duration, ease: "linear" });
     let timer: any;
     controls.then(() => {
       if (loop) timer = setTimeout(() => setKey((k) => k + 1), hold * 1000);
@@ -139,3 +139,4 @@ export default function YoudecideEffect({
     </div>
   );
 }
+
