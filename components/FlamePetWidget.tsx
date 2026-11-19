@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
-import InteractivePet, { CharacterType } from './InteractivePet';
+import React, { useState, useRef } from 'react';
+import InteractivePet from './InteractivePet';
 
 const PIP_PHRASES = [
   'Need any help? 👋',
@@ -11,58 +11,36 @@ const PIP_PHRASES = [
 ];
 
 export const FlamePetWidget: React.FC = () => {
-  const [character, setCharacter] = useState<CharacterType>('pip');
   const [phraseIdx, setPhraseIdx] = useState(0);
   const [isMinimized, setIsMinimized] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-  const [position, setPosition] = useState<{ x: number; y: number } | null>(null);
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
 
   const isDragging = useRef(false);
-  const dragStartPos = useRef({ x: 0, y: 0 });
-  const startWidgetPos = useRef({ x: 0, y: 0 });
+  const dragStart = useRef({ x: 0, y: 0 });
+  const initialOffset = useRef({ x: 0, y: 0 });
   const hasMoved = useRef(false);
-  const widgetRef = useRef<HTMLDivElement>(null);
 
-  // Initialize position to bottom right once window dimensions are known
-  useEffect(() => {
-    const updateDefaultPos = () => {
-      if (!position) {
-        const w = window.innerWidth;
-        const h = window.innerHeight;
-        setPosition({
-          x: Math.max(16, w - 210),
-          y: Math.max(16, h - 230),
-        });
-      }
-    };
-    updateDefaultPos();
-    window.addEventListener('resize', updateDefaultPos);
-    return () => window.removeEventListener('resize', updateDefaultPos);
-  }, [position]);
-
-  // Handle Dragging
   const handlePointerDown = (e: React.PointerEvent) => {
-    // Don't drag if clicking buttons
     if ((e.target as HTMLElement).closest('button')) return;
     isDragging.current = true;
     hasMoved.current = false;
-    dragStartPos.current = { x: e.clientX, y: e.clientY };
-    if (position) {
-      startWidgetPos.current = { x: position.x, y: position.y };
-    }
+    dragStart.current = { x: e.clientX, y: e.clientY };
+    initialOffset.current = { ...dragOffset };
     (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
   };
 
   const handlePointerMove = (e: React.PointerEvent) => {
     if (!isDragging.current) return;
-    const dx = e.clientX - dragStartPos.current.x;
-    const dy = e.clientY - dragStartPos.current.y;
-    if (Math.hypot(dx, dy) > 4) {
+    const dx = e.clientX - dragStart.current.x;
+    const dy = e.clientY - dragStart.current.y;
+    if (Math.hypot(dx, dy) > 5) {
       hasMoved.current = true;
     }
-    const newX = Math.min(Math.max(10, startWidgetPos.current.x + dx), window.innerWidth - 180);
-    const newY = Math.min(Math.max(10, startWidgetPos.current.y + dy), window.innerHeight - 190);
-    setPosition({ x: newX, y: newY });
+    setDragOffset({
+      x: initialOffset.current.x + dx,
+      y: initialOffset.current.y + dy,
+    });
   };
 
   const handlePointerUp = (e: React.PointerEvent) => {
@@ -72,25 +50,15 @@ export const FlamePetWidget: React.FC = () => {
       (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
     } catch (_) {}
 
-    // If it was just a click (not a drag), cycle through phrases
+    // Clicked without dragging: cycle speech phrase
     if (!hasMoved.current) {
       setPhraseIdx((prev) => (prev + 1) % PIP_PHRASES.length);
     }
   };
 
-  const cycleCharacter = useCallback((e: React.MouseEvent) => {
-    e.stopPropagation();
-    const mascots: CharacterType[] = ['pip', 'botty', 'puff', 'spook'];
-    const nextIdx = (mascots.indexOf(character) + 1) % mascots.length;
-    setCharacter(mascots[nextIdx]);
-  }, [character]);
-
-  if (!position) return null;
-
   return (
     <aside
-      aria-label="Interactive Mascot Pet"
-      ref={widgetRef}
+      aria-label="Interactive Flame Pet"
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
@@ -98,27 +66,28 @@ export const FlamePetWidget: React.FC = () => {
       onPointerLeave={() => setIsHovered(false)}
       style={{
         position: 'fixed',
-        left: `${position.x}px`,
-        top: `${position.y}px`,
-        zIndex: 99999,
+        bottom: '24px',
+        right: '24px',
+        zIndex: 999999,
         touchAction: 'none',
         userSelect: 'none',
         cursor: isDragging.current ? 'grabbing' : 'grab',
-        transition: isDragging.current ? 'none' : 'transform 0.15s ease',
+        transform: `translate3d(${dragOffset.x}px, ${dragOffset.y}px, 0)`,
+        transition: isDragging.current ? 'none' : 'transform 0.15s cubic-bezier(0.22, 1, 0.36, 1)',
       }}
     >
       {isMinimized ? (
-        // Minimized floating orb
+        // Minimized floating flame button
         <button
           type="button"
-          aria-label="Expand Mascot"
+          aria-label="Expand Flame Pet"
           onClick={() => setIsMinimized(false)}
           style={{
-            width: '48px',
-            height: '48px',
+            width: '46px',
+            height: '46px',
             borderRadius: '50%',
-            background: 'linear-gradient(135deg, #FF5500, #FF2244)',
-            boxShadow: '0 8px 24px rgba(255, 68, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.4)',
+            background: 'linear-gradient(135deg, #FF6A00, #EE0979)',
+            boxShadow: '0 8px 24px rgba(255, 68, 0, 0.5), inset 0 1px 0 rgba(255,255,255,0.4)',
             border: '2px solid rgba(255, 255, 255, 0.4)',
             display: 'flex',
             alignItems: 'center',
@@ -132,45 +101,27 @@ export const FlamePetWidget: React.FC = () => {
           🔥
         </button>
       ) : (
-        // Full Interactive 3D Pet
-        <div style={{ position: 'relative', width: '190px', height: '210px' }}>
-          {/* Subtle Hover Controls */}
+        // Full Interactive 3D Flame Pet
+        <div style={{ position: 'relative', width: '180px', height: '200px' }}>
+          {/* Minimize button on hover */}
           {isHovered && (
             <div
               style={{
                 position: 'absolute',
-                top: 4,
-                right: 8,
+                top: 0,
+                right: 4,
                 zIndex: 110,
-                display: 'flex',
-                gap: '4px',
                 background: 'rgba(5, 10, 25, 0.75)',
                 backdropFilter: 'blur(10px)',
                 WebkitBackdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255, 255, 255, 0.15)',
+                border: '1px solid rgba(255, 100, 30, 0.3)',
                 borderRadius: '999px',
-                padding: '2px 4px',
+                padding: '2px 6px',
               }}
             >
               <button
                 type="button"
-                title="Switch Mascot"
-                onClick={cycleCharacter}
-                style={{
-                  background: 'none',
-                  border: 0,
-                  color: 'rgba(255, 255, 255, 0.8)',
-                  cursor: 'pointer',
-                  fontSize: '11px',
-                  padding: '2px 4px',
-                  lineHeight: 1,
-                }}
-              >
-                🔄
-              </button>
-              <button
-                type="button"
-                title="Minimize"
+                title="Minimize Pip"
                 onClick={(e) => {
                   e.stopPropagation();
                   setIsMinimized(true);
@@ -178,10 +129,10 @@ export const FlamePetWidget: React.FC = () => {
                 style={{
                   background: 'none',
                   border: 0,
-                  color: 'rgba(255, 255, 255, 0.8)',
+                  color: 'rgba(255, 255, 255, 0.85)',
                   cursor: 'pointer',
                   fontSize: '11px',
-                  padding: '2px 4px',
+                  padding: '2px',
                   lineHeight: 1,
                 }}
               >
@@ -190,17 +141,14 @@ export const FlamePetWidget: React.FC = () => {
             </div>
           )}
 
-          {/* 3D WebGL Pet Canvas */}
+          {/* Pip 3D Canvas */}
           <InteractivePet
-            characterType={character}
-            scale={1.05}
+            scale={1.12}
             bubbleText={PIP_PHRASES[phraseIdx]}
             idleText="Zzz... 💤"
             showBubble={true}
-            bubbleBg="rgba(8, 16, 36, 0.85)"
+            bubbleBg="rgba(8, 14, 30, 0.9)"
             bubbleColor="#FFFFFF"
-            bubbleOffsetX={1.15}
-            bubbleOffsetY={1.45}
             pipColorBottom="#FFD700"
             pipColorMiddle="#FF5500"
             pipColorTop="#FF2244"
