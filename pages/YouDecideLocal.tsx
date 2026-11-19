@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import GlimmerVale from '../components/GlimmerVale';
 import FluidGlassButton from '../components/FluidGlassButton';
 import MotionOverlayMenu from '../components/MotionOverlayMenu';
+import LiquidImage from '../components/LiquidImage';
 
 // Official Vector Logo Component (Reversed for dark/night aesthetic)
 const YouDecideLogo: React.FC<{ height?: number; className?: string }> = ({
@@ -702,6 +703,43 @@ const YouDecideLocal: React.FC = () => {
             <div>© 2026 youdecide.studio</div>
           </div>
         </footer>
+
+        {/* ========================================================================= */}
+        {/* INTERACTIVE LIQUID SYMBOL AT THE EXACT BOTTOM */}
+        {/* ========================================================================= */}
+        <section
+          aria-label="Interactive Liquid Symbol"
+          style={{
+            maxWidth: '1280px',
+            margin: '0 auto',
+            padding: '0 32px 80px',
+          }}
+        >
+          <div
+            style={{
+              position: 'relative',
+              width: '100%',
+              height: '360px',
+              borderRadius: '28px',
+              overflow: 'hidden',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              boxShadow: '0 24px 64px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.12)',
+              background: '#040711',
+            }}
+          >
+            <LiquidImage
+              src="/youdecidestudio/symbol_reversed.svg"
+              alt="youdecide.studio reversed symbol"
+              strength={0.07}
+              speed={0.16}
+              colorReveal={false}
+              fit="contain"
+              logoPadding={0.52}
+              borderRadius={28}
+              style={{ width: '100%', height: '100%' }}
+            />
+          </div>
+        </section>
       </div>
 
       <style>{`

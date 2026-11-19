@@ -337,8 +337,8 @@ export const LiquidImage: React.FC<LiquidImageProps> = ({
       const ctx = off.getContext('2d');
       if (!ctx) return;
 
-      const iw = img.naturalWidth || img.width || 7720;
-      const ih = img.naturalHeight || img.height || 921;
+      const iw = img.naturalWidth || img.width || 721;
+      const ih = img.naturalHeight || img.height || 746;
 
       const fitMode = fitRef.current;
       let sx = 0;
@@ -370,7 +370,7 @@ export const LiquidImage: React.FC<LiquidImageProps> = ({
       ctx.clearRect(0, 0, offW, offH);
 
       // Render custom dark liquid surface backdrop
-      if (background) {
+      if (background && background !== 'transparent') {
         if (background.startsWith('radial-gradient')) {
           const radGrad = ctx.createRadialGradient(
             offW / 2,
@@ -380,9 +380,9 @@ export const LiquidImage: React.FC<LiquidImageProps> = ({
             offH / 2,
             offW * 0.7
           );
-          radGrad.addColorStop(0, '#0F1E4A');
-          radGrad.addColorStop(0.45, '#070F2B');
-          radGrad.addColorStop(1, '#020510');
+          radGrad.addColorStop(0, '#101D48');
+          radGrad.addColorStop(0.45, '#070E26');
+          radGrad.addColorStop(1, '#040711');
           ctx.fillStyle = radGrad;
           ctx.fillRect(0, 0, offW, offH);
         } else {
@@ -391,8 +391,8 @@ export const LiquidImage: React.FC<LiquidImageProps> = ({
         }
       }
 
-      // Draw the crisp white logo onto the liquid canvas
-      if (img.complete && img.naturalWidth !== 0) {
+      // Draw the crisp logo onto the liquid canvas
+      if (img.complete && (img.naturalWidth > 0 || img.width > 0)) {
         ctx.drawImage(img, sx, sy, sw, sh);
       }
 
