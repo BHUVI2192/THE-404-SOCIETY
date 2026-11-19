@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence } from 'framer-motion';
 import GlimmerVale from '../components/GlimmerVale';
+import FluidGlassButton from '../components/FluidGlassButton';
+import MotionOverlayMenu from '../components/MotionOverlayMenu';
 
 // Official Vector Logo Component (Reversed for dark/night aesthetic)
 const YouDecideLogo: React.FC<{ height?: number; className?: string }> = ({
@@ -35,9 +37,10 @@ const YouDecideLogo: React.FC<{ height?: number; className?: string }> = ({
   );
 };
 
-type SceneType = 'aurora' | 'dunes' | 'mountain';
+type SceneType = 'morning' | 'aurora' | 'dunes' | 'mountain';
 
 const SCENE_OPTIONS: { id: SceneType; label: string; icon: string }[] = [
+  { id: 'morning', label: 'Morning Sky', icon: '☀️' },
   { id: 'aurora', label: 'Lavender Aurora', icon: '🌌' },
   { id: 'dunes', label: 'Dusk Dunes', icon: '🌅' },
   { id: 'mountain', label: 'Moonlit Mountains', icon: '🏔️' },
@@ -95,7 +98,7 @@ const STEPS = [
 ];
 
 const YouDecideLocal: React.FC = () => {
-  const [activeScene, setActiveScene] = useState<SceneType>('aurora');
+  const [activeScene, setActiveScene] = useState<SceneType>('morning');
   const [sliderVal, setSliderVal] = useState<number>(65);
 
   const calculatePerceivedValue = (val: number) => {
@@ -173,28 +176,122 @@ const YouDecideLocal: React.FC = () => {
             }}
           />
 
-          {/* ── HEADER (Logo Only) ── */}
+          {/* ── HEADER WITH MOTION OVERLAY MENU & FLUID GLASS CONTACT BUTTON ── */}
           <header
             style={{
               position: 'relative',
-              zIndex: 20,
+              zIndex: 30,
               maxWidth: '1280px',
               width: '100%',
               margin: '0 auto',
-              padding: '36px 32px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'flex-start',
+              padding: '28px 24px',
+              boxSizing: 'border-box',
             }}
           >
-            <YouDecideLogo height={32} />
+            <MotionOverlayMenu
+              brandElement={<YouDecideLogo height={28} />}
+              brandHref="#overview"
+              rightAction={
+                <FluidGlassButton
+                  text="Contact"
+                  link="#contact"
+                  padding="8px 22px"
+                  fontSize="12px"
+                  baseColor="#071838"
+                  glassColor="#60A5FA"
+                />
+              }
+              links={[
+                { label: 'Capabilities', link: '#services' },
+                { label: 'Commercial Model', link: '#model' },
+                { label: '3-Step Process', link: '#process' },
+                { label: 'Project Briefing', link: '#contact' },
+                { label: 'Launch Teaser', link: '#/youdecide.studio' },
+              ]}
+              secondaryLinks={[
+                { label: 'LinkedIn', link: 'https://linkedin.com', newTab: true },
+                { label: 'X (Twitter)', link: 'https://x.com', newTab: true },
+                { label: 'GitHub', link: 'https://github.com', newTab: true },
+                { label: 'hello@youdecide.studio', link: 'mailto:hello@youdecide.studio' },
+              ]}
+              note="© 2026 youdecide.studio · All rights reserved"
+              headerColor="#FFFFFF"
+              barBackground="rgba(8, 18, 42, 0.65)"
+              barBorder="rgba(255, 255, 255, 0.16)"
+              overlayBackground="rgba(4, 9, 24, 0.96)"
+              accent="#60A5FA"
+            />
           </header>
+
+          {/* ── AMBIENT SCENE CONTROLS (Bottom Center Pill) ── */}
+          <div
+            style={{
+              position: 'absolute',
+              bottom: 24,
+              left: 0,
+              right: 0,
+              zIndex: 20,
+              display: 'flex',
+              justifyContent: 'center',
+              pointerEvents: 'none',
+              padding: '0 16px',
+            }}
+          >
+            <div
+              style={{
+                pointerEvents: 'auto',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                background: 'rgba(8, 18, 42, 0.65)',
+                backdropFilter: 'blur(20px)',
+                WebkitBackdropFilter: 'blur(20px)',
+                border: '1px solid rgba(255, 255, 255, 0.14)',
+                borderRadius: '999px',
+                padding: '5px 8px',
+                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.4)',
+              }}
+            >
+              {SCENE_OPTIONS.map((sc) => {
+                const isSelected = activeScene === sc.id;
+                return (
+                  <button
+                    key={sc.id}
+                    onClick={() => setActiveScene(sc.id)}
+                    style={{
+                      background: isSelected ? '#1920F0' : 'transparent',
+                      color: isSelected ? '#FFFFFF' : 'rgba(255, 255, 255, 0.72)',
+                      border: isSelected
+                        ? '1px solid rgba(255,255,255,0.35)'
+                        : '1px solid transparent',
+                      borderRadius: '999px',
+                      padding: '5px 12px',
+                      fontSize: '11px',
+                      fontFamily: '"Geist Mono", monospace',
+                      fontWeight: 500,
+                      letterSpacing: '0.04em',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '5px',
+                      transition: 'all 0.2s ease',
+                      boxShadow: isSelected ? '0 0 12px rgba(25, 32, 240, 0.5)' : 'none',
+                    }}
+                  >
+                    <span>{sc.icon}</span>
+                    <span>{sc.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
         </section>
 
         {/* ========================================================================= */}
         {/* INTERACTIVE VALUE SLIDER SECTION */}
         {/* ========================================================================= */}
         <section
+          id="model"
           style={{
             maxWidth: '1280px',
             margin: '0 auto',
@@ -624,24 +721,16 @@ const YouDecideLocal: React.FC = () => {
                   color: '#171717',
                 }}
               />
-              <button
-                type="submit"
-                style={{
-                  background: '#FFFFFF',
-                  color: '#0A0B38',
-                  padding: '14px 20px',
-                  borderRadius: '10px',
-                  border: 'none',
-                  fontSize: '15px',
-                  fontWeight: 700,
-                  cursor: 'pointer',
-                  fontFamily: 'Geist, sans-serif',
-                  marginTop: '4px',
-                  transition: 'opacity 0.2s',
-                }}
-              >
-                Submit Project Brief →
-              </button>
+              <div style={{ marginTop: '8px' }}>
+                <FluidGlassButton
+                  text="Submit Project Brief →"
+                  padding="16px 36px"
+                  fontSize="15px"
+                  baseColor="#1920F0"
+                  glassColor="#93C5FD"
+                  style={{ width: '100%' }}
+                />
+              </div>
             </form>
           </div>
         </section>
