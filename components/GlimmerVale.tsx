@@ -698,7 +698,185 @@ void main(){
   b.b = texture(u_bloom, v_uv + ca * 2.0).b;
   c += b * u_bl.x * u_tint;
   o = vec4(shoulder(c), 1.0);
-}`;function makeProgram(gl,vs,fs,names){const sh=(type,src)=>{const s=gl.createShader(type);if(!s)throw new Error("createShader failed");gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(s)||"shader compile failed");return s;};const p=gl.createProgram();if(!p)throw new Error("createProgram failed");gl.attachShader(p,sh(gl.VERTEX_SHADER,vs));gl.attachShader(p,sh(gl.FRAGMENT_SHADER,fs));gl.linkProgram(p);if(!gl.getProgramParameter(p,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(p)||"link failed");const u={};for(const n of names)u[n]=gl.getUniformLocation(p,n);return{prog:p,u};}function vaoFor(gl,prog,buf,layout){const vao=gl.createVertexArray();gl.bindVertexArray(vao);gl.bindBuffer(gl.ARRAY_BUFFER,buf);const stride=layout.reduce((a,l)=>a+l[1],0)*4;let off=0;for(const[name,size]of layout){const loc=gl.getAttribLocation(prog,name);if(loc>=0){gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,size,gl.FLOAT,false,stride,off*4);}off+=size;}gl.bindVertexArray(null);return vao;}function makeTarget(gl,w,h,hdr,withDepth){const tex=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,tex);if(hdr)gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA16F,w,h,0,gl.RGBA,gl.HALF_FLOAT,null);else gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA8,w,h,0,gl.RGBA,gl.UNSIGNED_BYTE,null);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);const fb=gl.createFramebuffer();gl.bindFramebuffer(gl.FRAMEBUFFER,fb);gl.framebufferTexture2D(gl.FRAMEBUFFER,gl.COLOR_ATTACHMENT0,gl.TEXTURE_2D,tex,0);let depth=null;if(withDepth){depth=gl.createRenderbuffer();gl.bindRenderbuffer(gl.RENDERBUFFER,depth);gl.renderbufferStorage(gl.RENDERBUFFER,gl.DEPTH_COMPONENT24,w,h);gl.framebufferRenderbuffer(gl.FRAMEBUFFER,gl.DEPTH_ATTACHMENT,gl.RENDERBUFFER,depth);}gl.bindFramebuffer(gl.FRAMEBUFFER,null);return{tex,fb,depth,w,h};}function freeTarget(gl,t){gl.deleteTexture(t.tex);gl.deleteFramebuffer(t.fb);if(t.depth)gl.deleteRenderbuffer(t.depth);}function targetOk(gl,t){gl.bindFramebuffer(gl.FRAMEBUFFER,t.fb);const ok=gl.checkFramebufferStatus(gl.FRAMEBUFFER)===gl.FRAMEBUFFER_COMPLETE;gl.bindFramebuffer(gl.FRAMEBUFFER,null);return ok;}const WORLD_U=["u_cam","u_proj","u_wave","u_off","u_th","u_r[0]"];function setupGpu(gl){const quad=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,quad);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);const fsProg=(fs,names)=>{const p=makeProgram(gl,FS_VS,fs,names);return{...p,vao:vaoFor(gl,p.prog,quad,[["a_p",2]])};};const terrain=makeProgram(gl,TERRAIN_VS,TERRAIN_FS,[...WORLD_U,"u_fog","u_shadow","u_ground","u_rim","u_sky","u_sheen"]);const mesh=buildMesh();const meshBuf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,meshBuf);gl.bufferData(gl.ARRAY_BUFFER,mesh.v,gl.STATIC_DRAW);const meshVao=vaoFor(gl,terrain.prog,meshBuf,[["a_m",2]]);gl.bindVertexArray(meshVao);const idxBuf=gl.createBuffer();gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,idxBuf);gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,mesh.idx,gl.STATIC_DRAW);gl.bindVertexArray(null);const glitter=makeProgram(gl,GLITTER_VS,GLITTER_FS,[...WORLD_U,"u_px","u_light","u_tw","u_hot","u_sun","u_fog","u_crest","u_slope","u_deep"]);const ptBuf=gl.createBuffer();const flower=makeProgram(gl,FLOWER_VS,FLOWER_FS,[...WORLD_U,"u_px","u_fog","u_petal","u_tip","u_core","u_deep"]);const hfBuf=gl.createBuffer();const sprite=makeProgram(gl,SPRITE_VS,SPRITE_FS,["u_petal","u_tip","u_core","u_mpetal","u_mrim","u_mcore","u_fringe","u_theme"]);const sprBuf=gl.createBuffer();const range=gl.getParameter(gl.ALIASED_POINT_SIZE_RANGE);return{sky:fsProg(SKY_FS,["u_res","u_top","u_mid","u_hor","u_gc","u_g","u_ph","u_drop","u_theme"]),down:fsProg(DOWN_FS,["u_src","u_texel","u_pre"]),up:fsProg(UP_FS,["u_src","u_texel"]),comp:fsProg(COMPOSITE_FS,["u_scene","u_bloom","u_tint","u_bl"]),terrain:{...terrain,vao:meshVao,count:mesh.idx.length},glitter:{...glitter,buf:ptBuf,vao:vaoFor(gl,glitter.prog,ptBuf,[["a_d",4]])},flower:{...flower,buf:hfBuf,vao:vaoFor(gl,flower.prog,hfBuf,[["a_d",4]])},sprite:{...sprite,buf:sprBuf,vao:vaoFor(gl,sprite.prog,sprBuf,[["a_p",2],["a_uv",2],["a_type",1],["a_q",4],["a_c",4]])},maxPt:range&&range[1]?range[1]:64};}const ADV_KEYS=Object.keys(DEFAULT_ADVANCED);/** Tuning values arrive as flat Framer props; the object form still works. */function pickAdvanced(p){const out={...p.advanced??{}};for(const k of ADV_KEYS){const v=p[k];if(v!==undefined&&v!==null)out[k]=v;}return out;}const SCENE_CHOICES=[{id:"morning",label:"Morning Sky"},{id:"aurora",label:"Aurora"},{id:"dunes",label:"Dunes"},{id:"mountain",label:"Mountains"}];const CONTROLS_CSS=`
+}`;
+
+const GLASS_VS = `#version 300 es
+precision highp float;
+in vec3 a_p;
+in vec3 a_n;
+
+uniform vec4 u_cam;
+uniform vec4 u_proj;
+uniform float u_off;
+uniform mat4 u_m;
+uniform mat3 u_nm;
+
+out vec3 v_wp;
+out vec3 v_n;
+out vec3 v_vp;
+out vec3 v_cp;
+
+vec3 viewOf(vec3 P){
+  vec3 r = P - vec3(u_cam.x, u_cam.y, 0.0);
+  float depth = -r.y * u_cam.w - r.z * u_cam.z;
+  float yv = r.y * u_cam.z - r.z * u_cam.w;
+  return vec3(r.x, yv, depth);
+}
+vec4 clipOf(vec3 v){
+  return vec4(v.x / u_proj.x, v.y / u_proj.y, u_proj.z * v.z + u_proj.w, v.z);
+}
+
+void main(){
+  vec4 wp = u_m * vec4(a_p, 1.0);
+  v_wp = wp.xyz;
+  v_n = normalize(u_nm * a_n);
+  v_cp = vec3(u_cam.x, u_cam.y, 0.0);
+  
+  vec3 v = viewOf(v_wp);
+  v_vp = v;
+  gl_Position = clipOf(v);
+  gl_Position.y -= u_off * gl_Position.w;
+}
+`;
+
+const GLASS_FS = `#version 300 es
+precision highp float;
+
+in vec3 v_wp;
+in vec3 v_n;
+in vec3 v_vp;
+in vec3 v_cp;
+
+uniform float u_time;
+uniform vec3 u_glow;
+uniform vec3 u_aurora1;
+uniform vec3 u_aurora2;
+
+out vec4 o;
+
+void main(){
+  vec3 V = normalize(v_cp - v_wp);
+  vec3 N = normalize(v_n);
+  if (!gl_FrontFacing) {
+    N = -N;
+  }
+  
+  float NdotV = clamp(dot(N, V), 0.0, 1.0);
+  float fresnel = 0.10 + 0.90 * pow(1.0 - NdotV, 3.8);
+  
+  vec3 R = reflect(-V, N);
+  float aurWave = sin(R.x * 5.0 + u_time * 0.4) * 0.5 + 0.5;
+  vec3 aurCol = mix(u_aurora1, u_aurora2, aurWave);
+  float skyFacing = smoothstep(-0.3, 0.7, R.y);
+  vec3 refl = aurCol * skyFacing * 1.6;
+  
+  vec3 lightDir = normalize(vec3(-0.35, 0.85, 0.4));
+  vec3 H = normalize(V + lightDir);
+  float spec = pow(max(dot(N, H), 0.0), 96.0);
+  float sharpGlint = pow(max(dot(N, H), 0.0), 384.0) * 4.0;
+  
+  vec3 refrG = refract(-V, N, 1.0 / 1.52);
+  vec3 refrR = refract(-V, N, 1.0 / 1.50);
+  vec3 refrB = refract(-V, N, 1.0 / 1.54);
+  
+  float bgWaveG = sin(refrG.x * 4.0 + u_time * 0.3) * 0.5 + 0.5;
+  float bgWaveR = sin(refrR.x * 4.0 + u_time * 0.3) * 0.5 + 0.5;
+  float bgWaveB = sin(refrB.x * 4.0 + u_time * 0.3) * 0.5 + 0.5;
+  
+  vec3 refrCol;
+  refrCol.r = mix(u_aurora1.r, u_aurora2.r, bgWaveR);
+  refrCol.g = mix(u_aurora1.g, u_aurora2.g, bgWaveG);
+  refrCol.b = mix(u_aurora1.b, u_aurora2.b, bgWaveB);
+  
+  vec3 glassCore = vec3(0.04, 0.07, 0.16) + refrCol * 0.22;
+  vec3 rimCol = mix(vec3(0.4, 0.95, 0.85), vec3(0.85, 0.6, 1.0), 0.5 + 0.5 * N.x);
+  
+  vec3 rgb = glassCore + (refl * fresnel) + (rimCol * fresnel * 1.6) + vec3(spec * 1.8 + sharpGlint);
+  float alpha = clamp(0.35 + fresnel * 0.65 + spec * 0.8, 0.0, 1.0);
+  
+  o = vec4(rgb, alpha);
+}
+`;
+
+function mat4TRS(tx, ty, tz, rx, ry, rz, sx, sy, sz) {
+  const m = new Float32Array(16);
+  const cx = Math.cos(rx), sx_ = Math.sin(rx);
+  const cy = Math.cos(ry), sy_ = Math.sin(ry);
+  const cz = Math.cos(rz), sz_ = Math.sin(rz);
+
+  m[0] = (cy * cz + sy_ * sx_ * sz_) * sx;
+  m[1] = (cx * sz_) * sx;
+  m[2] = (-sy_ * cz + cy * sx_ * sz_) * sx;
+  m[3] = 0;
+
+  m[4] = (-cy * sz_ + sy_ * sx_ * cz) * sy;
+  m[5] = (cx * cz) * sy;
+  m[6] = (sy_ * sz_ + cy * sx_ * cz) * sy;
+  m[7] = 0;
+
+  m[8] = (sy_ * cx) * sz;
+  m[9] = (-sx_) * sz;
+  m[10] = (cy * cx) * sz;
+  m[11] = 0;
+
+  m[12] = tx;
+  m[13] = ty;
+  m[14] = tz;
+  m[15] = 1;
+
+  return m;
+}
+
+function mat3Normal(m) {
+  const nm = new Float32Array(9);
+  nm[0] = m[0]; nm[1] = m[1]; nm[2] = m[2];
+  nm[3] = m[4]; nm[4] = m[5]; nm[5] = m[6];
+  nm[6] = m[8]; nm[7] = m[9]; nm[8] = m[10];
+  return nm;
+}
+
+function parseGlb(ab) {
+  try {
+    const dataView = new DataView(ab);
+    const magic = dataView.getUint32(0, true);
+    if (magic !== 0x46546c67) return null;
+    const chunk0Len = dataView.getUint32(12, true);
+    const jsonBytes = new Uint8Array(ab, 20, chunk0Len);
+    const jsonStr = new TextDecoder().decode(jsonBytes);
+    const gltf = JSON.parse(jsonStr);
+
+    const chunk1Start = 20 + chunk0Len;
+    const binOffset = chunk1Start + 8;
+
+    const getArray = (accIdx, ArrayType) => {
+      const acc = gltf.accessors[accIdx];
+      if (!acc) return null;
+      const bv = gltf.bufferViews[acc.bufferView];
+      const offset = binOffset + (bv.byteOffset || 0) + (acc.byteOffset || 0);
+      const count = acc.count * (acc.type === 'VEC3' ? 3 : acc.type === 'VEC2' ? 2 : 1);
+      return new ArrayType(ab, offset, count);
+    };
+
+    const positions = getArray(0, Float32Array);
+    const normals = getArray(2, Float32Array);
+    const indices = getArray(3, Uint16Array);
+    return { positions, normals, indices, count: gltf.accessors[3].count };
+  } catch (e) {
+    console.warn('parseGlb error:', e);
+    return null;
+  }
+}
+
+function makeProgram(gl,vs,fs,names){const sh=(type,src)=>{const s=gl.createShader(type);if(!s)throw new Error("createShader failed");gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(s)||"shader compile failed");return s;};const p=gl.createProgram();if(!p)throw new Error("createProgram failed");gl.attachShader(p,sh(gl.VERTEX_SHADER,vs));gl.attachShader(p,sh(gl.FRAGMENT_SHADER,fs));gl.linkProgram(p);if(!gl.getProgramParameter(p,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(p)||"link failed");const u={};for(const n of names)u[n]=gl.getUniformLocation(p,n);return{prog:p,u};}function vaoFor(gl,prog,buf,layout){const vao=gl.createVertexArray();gl.bindVertexArray(vao);gl.bindBuffer(gl.ARRAY_BUFFER,buf);const stride=layout.reduce((a,l)=>a+l[1],0)*4;let off=0;for(const[name,size]of layout){const loc=gl.getAttribLocation(prog,name);if(loc>=0){gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,size,gl.FLOAT,false,stride,off*4);}off+=size;}gl.bindVertexArray(null);return vao;}function makeTarget(gl,w,h,hdr,withDepth){const tex=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,tex);if(hdr)gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA16F,w,h,0,gl.RGBA,gl.HALF_FLOAT,null);else gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA8,w,h,0,gl.RGBA,gl.UNSIGNED_BYTE,null);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);const fb=gl.createFramebuffer();gl.bindFramebuffer(gl.FRAMEBUFFER,fb);gl.framebufferTexture2D(gl.FRAMEBUFFER,gl.COLOR_ATTACHMENT0,gl.TEXTURE_2D,tex,0);let depth=null;if(withDepth){depth=gl.createRenderbuffer();gl.bindRenderbuffer(gl.RENDERBUFFER,depth);gl.renderbufferStorage(gl.RENDERBUFFER,gl.DEPTH_COMPONENT24,w,h);gl.framebufferRenderbuffer(gl.FRAMEBUFFER,gl.DEPTH_ATTACHMENT,gl.RENDERBUFFER,depth);}gl.bindFramebuffer(gl.FRAMEBUFFER,null);return{tex,fb,depth,w,h};}function freeTarget(gl,t){gl.deleteTexture(t.tex);gl.deleteFramebuffer(t.fb);if(t.depth)gl.deleteRenderbuffer(t.depth);}function targetOk(gl,t){gl.bindFramebuffer(gl.FRAMEBUFFER,t.fb);const ok=gl.checkFramebufferStatus(gl.FRAMEBUFFER)===gl.FRAMEBUFFER_COMPLETE;gl.bindFramebuffer(gl.FRAMEBUFFER,null);return ok;}const WORLD_U=["u_cam","u_proj","u_wave","u_off","u_th","u_r[0]"];function setupGpu(gl){const quad=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,quad);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);const fsProg=(fs,names)=>{const p=makeProgram(gl,FS_VS,fs,names);return{...p,vao:vaoFor(gl,p.prog,quad,[["a_p",2]])};};const terrain=makeProgram(gl,TERRAIN_VS,TERRAIN_FS,[...WORLD_U,"u_fog","u_shadow","u_ground","u_rim","u_sky","u_sheen"]);const mesh=buildMesh();const meshBuf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,meshBuf);gl.bufferData(gl.ARRAY_BUFFER,mesh.v,gl.STATIC_DRAW);const meshVao=vaoFor(gl,terrain.prog,meshBuf,[["a_m",2]]);gl.bindVertexArray(meshVao);const idxBuf=gl.createBuffer();gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,idxBuf);gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,mesh.idx,gl.STATIC_DRAW);gl.bindVertexArray(null);const glitter=makeProgram(gl,GLITTER_VS,GLITTER_FS,[...WORLD_U,"u_px","u_light","u_tw","u_hot","u_sun","u_fog","u_crest","u_slope","u_deep"]);const ptBuf=gl.createBuffer();const flower=makeProgram(gl,FLOWER_VS,FLOWER_FS,[...WORLD_U,"u_px","u_fog","u_petal","u_tip","u_core","u_deep"]);const hfBuf=gl.createBuffer();const sprite=makeProgram(gl,SPRITE_VS,SPRITE_FS,["u_petal","u_tip","u_core","u_mpetal","u_mrim","u_mcore","u_fringe","u_theme"]);const sprBuf=gl.createBuffer();const range=gl.getParameter(gl.ALIASED_POINT_SIZE_RANGE);
+const glassLogo = {
+  prog: makeProgram(gl, GLASS_VS, GLASS_FS, [
+    "u_cam", "u_proj", "u_off", "u_m", "u_nm", "u_time", "u_glow", "u_aurora1", "u_aurora2"
+  ]),
+  ready: false,
+  count: 0,
+  vao: null
+};
+return{sky:fsProg(SKY_FS,["u_res","u_top","u_mid","u_hor","u_gc","u_g","u_ph","u_drop","u_theme"]),down:fsProg(DOWN_FS,["u_src","u_texel","u_pre"]),up:fsProg(UP_FS,["u_src","u_texel"]),comp:fsProg(COMPOSITE_FS,["u_scene","u_bloom","u_tint","u_bl"]),terrain:{...terrain,vao:meshVao,count:mesh.idx.length},glitter:{...glitter,buf:ptBuf,vao:vaoFor(gl,glitter.prog,ptBuf,[["a_d",4]])},flower:{...flower,buf:hfBuf,vao:vaoFor(gl,flower.prog,hfBuf,[["a_d",4]])},sprite:{...sprite,buf:sprBuf,vao:vaoFor(gl,sprite.prog,sprBuf,[["a_p",2],["a_uv",2],["a_type",1],["a_q",4],["a_c",4]])},glassLogo,maxPt:range&&range[1]?range[1]:64};}const ADV_KEYS=Object.keys(DEFAULT_ADVANCED);/** Tuning values arrive as flat Framer props; the object form still works. */function pickAdvanced(p){const out={...p.advanced??{}};for(const k of ADV_KEYS){const v=p[k];if(v!==undefined&&v!==null)out[k]=v;}return out;}const SCENE_CHOICES=[{id:"morning",label:"Morning Sky"},{id:"aurora",label:"Aurora"},{id:"dunes",label:"Dunes"},{id:"mountain",label:"Mountains"}];const CONTROLS_CSS=`
 .gm-group{pointer-events:auto;display:flex;gap:4px;padding:4px;border-radius:999px;background:rgba(6,10,24,.55);border:1px solid rgba(255,255,255,.2);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
 .gm-btn{pointer-events:auto;cursor:pointer;font:500 13px/1 system-ui,-apple-system,"Segoe UI",sans-serif;min-height:36px;padding:0 14px;border-radius:999px;border:0;color:#fff;background:transparent}
 .gm-btn[aria-pressed="true"]{background:rgba(255,255,255,.92);color:#0b1020}
@@ -717,12 +895,63 @@ void main(){
  *
  * @framerSupportedLayoutWidth any
  * @framerSupportedLayoutHeight any
- */export default function GlimmerVale(props){const{speed=50,scale=100,density=60,sparkle=50,scene="morning",decorative=true,altText,showTabs=false,showToggle=false,controlsPosition="bottom",background,skyTop,skyHorizon,animateOnCanvas=false,style}=props;const advIn=pickAdvanced(props);const adv={...DEFAULT_ADVANCED,...advIn};// Static on the Framer canvas and in exports: draw one frame, no loop.
+ */export default function GlimmerVale(props){const{speed=50,scale=100,density=60,sparkle=50,scene="aurora",decorative=true,altText,showTabs=false,showToggle=false,controlsPosition="bottom",background,skyTop,skyHorizon,animateOnCanvas=false,style}=props;const advIn=pickAdvanced(props);const adv={...DEFAULT_ADVANCED,...advIn};// Static on the Framer canvas and in exports: draw one frame, no loop.
 const isStatic=useIsStaticRenderer();const rootRef=useRef(null);const canvasRef=useRef(null);const sizeRef=useRef({w:1200,h:800});const pointerRef=useRef({tx:0,ty:0,over:0,down:0,x:0,y:0,o:0,d:0});const staticRef=useRef(isStatic);const[error,setError]=useState("");// the visitor's pick from the built-in scene buttons; a change to the Scene property resets it
 const[picked,setPicked]=useState(null);const[paused,setPaused]=useState(false);const activeScene=picked??scene;useEffect(()=>setPicked(null),[scene]);const dirtyRef=useRef(true);const visibleRef=useRef(true);const[grainUrl,setGrainUrl]=useState("");const liveRef=useRef({scene:activeScene,speed,scale,density,sparkle,background:background??"",skyTop:skyTop??"",skyHorizon:skyHorizon??""});liveRef.current={scene:activeScene,speed,scale,density,sparkle,background:background??"",skyTop:skyTop??"",skyHorizon:skyHorizon??"",advanced:advIn};staticRef.current=isStatic&&!animateOnCanvas||paused;// any render means a prop may have changed: redraw once if static
 dirtyRef.current=true;// ── WebGL scene ──
 useEffect(()=>{const canvas=canvasRef.current;const root=rootRef.current;if(!canvas||!root)return;const measure=()=>{const w=root.offsetWidth||1200;const h=root.offsetHeight||800;sizeRef.current={w,h};dirtyRef.current=true;};measure();const ro=new ResizeObserver(measure);ro.observe(root);// pause while off screen
-let io=null;if(typeof IntersectionObserver!=="undefined"){io=new IntersectionObserver(entries=>{for(const e of entries)visibleRef.current=e.isIntersecting;});io.observe(root);}const cleanupObservers=()=>{ro.disconnect();if(io)io.disconnect();};const gl=canvas.getContext("webgl2",{alpha:false,antialias:false,premultipliedAlpha:true,preserveDrawingBuffer:true});if(!gl){console.warn("GlimmerVale: WebGL2 is not available");setError("WebGL2 is not available in this browser");return cleanupObservers;}let gpu;try{gpu=setupGpu(gl);}catch(err){console.error("GlimmerVale:",err);setError("Shader error: "+(err instanceof Error?err.message:String(err)).slice(0,400));return cleanupObservers;}let hdr=!!gl.getExtension("EXT_color_buffer_float");const mq=typeof window.matchMedia==="function"?window.matchMedia("(prefers-reduced-motion: reduce)"):null;const spr=new Float32Array(MAX_SPRITES*6*SPR_STRIDE);let scene=null;let bloom=[];let pointSeed=NaN;let meadowKey="";let meadow=[];let last=-1;let tw=0;let raf=0;const allocate=(cw,ch)=>{if(scene)freeTarget(gl,scene);bloom.forEach(t=>freeTarget(gl,t));scene=makeTarget(gl,cw,ch,hdr,true);if(hdr&&!targetOk(gl,scene)){freeTarget(gl,scene);hdr=false;scene=makeTarget(gl,cw,ch,false,true);}bloom=[];let w=cw,h=ch;for(let i=0;i<BLOOM_LEVELS;i++){w=Math.max(1,w>>1);h=Math.max(1,h>>1);bloom.push(makeTarget(gl,w,h,hdr,false));}};const frame=now=>{raf=requestAnimationFrame(frame);// skip work while hidden, or when static and nothing changed
+let io=null;if(typeof IntersectionObserver!=="undefined"){io=new IntersectionObserver(entries=>{for(const e of entries)visibleRef.current=e.isIntersecting;});io.observe(root);}const cleanupObservers=()=>{ro.disconnect();if(io)io.disconnect();};const gl=canvas.getContext("webgl2",{alpha:false,antialias:false,premultipliedAlpha:true,preserveDrawingBuffer:true});if(!gl){console.warn("GlimmerVale: WebGL2 is not available");setError("WebGL2 is not available in this browser");return cleanupObservers;}let gpu;try{gpu=setupGpu(gl);}catch(err){console.error("GlimmerVale:",err);setError("Shader error: "+(err instanceof Error?err.message:String(err)).slice(0,400));return cleanupObservers;}
+
+// Fetch and load 3D glass logo
+fetch('/youdecidestudio/logo.glb')
+  .then(res => {
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    return res.arrayBuffer();
+  })
+  .then(ab => {
+    const data = parseGlb(ab);
+    if (!data || !gpu || !gpu.glassLogo) return;
+
+    const pBuf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, pBuf);
+    gl.bufferData(gl.ARRAY_BUFFER, data.positions, gl.STATIC_DRAW);
+
+    const nBuf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, nBuf);
+    gl.bufferData(gl.ARRAY_BUFFER, data.normals, gl.STATIC_DRAW);
+
+    const iBuf = gl.createBuffer();
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, iBuf);
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, data.indices, gl.STATIC_DRAW);
+
+    const vao = gl.createVertexArray();
+    gl.bindVertexArray(vao);
+
+    const posLoc = gl.getAttribLocation(gpu.glassLogo.prog.prog, 'a_p');
+    if (posLoc >= 0) {
+      gl.enableVertexAttribArray(posLoc);
+      gl.bindBuffer(gl.ARRAY_BUFFER, pBuf);
+      gl.vertexAttribPointer(posLoc, 3, gl.FLOAT, false, 0, 0);
+    }
+
+    const normLoc = gl.getAttribLocation(gpu.glassLogo.prog.prog, 'a_n');
+    if (normLoc >= 0) {
+      gl.enableVertexAttribArray(normLoc);
+      gl.bindBuffer(gl.ARRAY_BUFFER, nBuf);
+      gl.vertexAttribPointer(normLoc, 3, gl.FLOAT, false, 0, 0);
+    }
+
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, iBuf);
+    gl.bindVertexArray(null);
+
+    gpu.glassLogo.vao = vao;
+    gpu.glassLogo.count = data.count;
+    gpu.glassLogo.ready = true;
+    dirtyRef.current = true;
+  })
+  .catch(err => {
+    console.warn('GlimmerVale logo fetch:', err);
+  });let hdr=!!gl.getExtension("EXT_color_buffer_float");const mq=typeof window.matchMedia==="function"?window.matchMedia("(prefers-reduced-motion: reduce)"):null;const spr=new Float32Array(MAX_SPRITES*6*SPR_STRIDE);let scene=null;let bloom=[];let pointSeed=NaN;let meadowKey="";let meadow=[];let last=-1;let tw=0;let raf=0;const allocate=(cw,ch)=>{if(scene)freeTarget(gl,scene);bloom.forEach(t=>freeTarget(gl,t));scene=makeTarget(gl,cw,ch,hdr,true);if(hdr&&!targetOk(gl,scene)){freeTarget(gl,scene);hdr=false;scene=makeTarget(gl,cw,ch,false,true);}bloom=[];let w=cw,h=ch;for(let i=0;i<BLOOM_LEVELS;i++){w=Math.max(1,w>>1);h=Math.max(1,h>>1);bloom.push(makeTarget(gl,w,h,hdr,false));}};const frame=now=>{raf=requestAnimationFrame(frame);// skip work while hidden, or when static and nothing changed
 if(!visibleRef.current){last=-1;return;}const isStaticNow=staticRef.current;if(isStaticNow&&!dirtyRef.current)return;dirtyRef.current=false;const L=liveRef.current;const themeIdx=sceneIndex(L.scene);const T=THEMES[themeIdx];RIDGES=RIDGE_SETS[themeIdx];const adv=resolveAdvanced(L.advanced,T);const midPetal=parseColor(T.mid[0]),midRim=parseColor(T.mid[1]),midCore=parseColor(T.mid[2]);const rdt=last<0?0:Math.min(Math.max(0,(now-last)/1e3),1/20);last=now;const loop=Math.max(2,num(adv.loopSec,8));const spd=isStaticNow||mq&&mq.matches?0:Math.max(0,num(L.speed,50))/50;tw=(tw+rdt*spd)%loop;const{w:W,h:H}=sizeRef.current;if(W<2||H<2)return;const dpr=Math.min(2,window.devicePixelRatio||1);const cw=Math.round(W*dpr),ch=Math.round(H*dpr);if(canvas.width!==cw||canvas.height!==ch||!scene||scene.w!==cw||scene.h!==ch){canvas.width=cw;canvas.height=ch;allocate(cw,ch);}const sceneT=scene;// pointer, eased in and out
 const P=pointerRef.current;const kp=1-Math.exp(-rdt/.4);P.x+=(P.tx-P.x)*kp;P.y+=(P.ty-P.y)*kp;P.o+=(P.over-P.o)*kp;P.d+=(P.down-P.d)*(1-Math.exp(-rdt/.25));const hk=Math.max(0,num(adv.hover,50))/50;const scaleF=clamp(num(L.scale,100),30,200)/100;const spark=clamp(num(L.sparkle,50),0,100)/50;const dens=clamp(num(L.density,60),10,100)/100;const unit=Math.min(W,H*.75);const sx=-P.x*.02*hk;const bob=num(adv.bob,6)/1e3*Math.sin(TAU*tw/loop);// camera: the pointer slides it a little, so near hills cross far ones
 const camX=P.x*.35*hk;const camY=CAM_H+bob*6-P.y*.06*hk;const pitch=PITCH+P.y*.008*hk;const cosP=Math.cos(pitch),sinP=Math.sin(pitch);const worldW=2*TAN_H*12;const wave={si:1/scaleF,amp:num(adv.waveHeight,25)/1e3*3,k:TAU/Math.max(.3,num(adv.waveLength,70)/100*worldW*scaleF),ph:TAU*tw/loop};// Scene Lower: share of the frame height the landscape sits lower by
@@ -736,7 +965,50 @@ const r=hx*m.w*(.6+.6*blurK);si=pushSprite(spr,si,W,H,cx+ox*c-oy*s,cy+ox*s+oy*c,
 const fr=(tw/loop+m.ph/TAU)%1;dy=-.12*fr;rx=Math.sin(fr*TAU*2+m.ph)*.006*W;breath=Math.pow(Math.sin(Math.PI*fr),1.5)*1.15;}else if(T.mode===2){// fireflies wander in slow loops and blink; integer multiples keep the loop seamless
 const w1=TAU*tw/loop;dy=.02*Math.sin(w1+m.ph*2)+.01*Math.sin(2*w1+m.ph);rx=(Math.sin(w1+m.ph)*.012+Math.sin(2*w1+m.ph*3)*.006)*W;breath=Math.pow(Math.max(0,Math.sin(2*w1+m.ph*5)),3)*1.4+.1;}const R=m.d*.5*unit*scaleF*(T.mode===2?1.5:1);const cx=m.x*W-P.x*.025*hk*W+rx;const cy=(my+dy)*H-P.y*.01*hk*H;si=pushSprite(spr,si,W,H,cx,cy,R,R,0,1,0,0,0,m.alpha*breath,m.col[0],m.col[1],m.col[2],0);}else{const ang=m.ang+Math.sin(TAU*tw/(loop/2)+m.ph)*.03*swayK;const hh=m.h*.5*unit*scaleF;const hw=Math.max(.6,m.w*.5*unit*scaleF);const bx=m.x*W-P.x*W*hk*(.012+.02*m.f);const by=my*H;// a tuft: three blades fanning from one root
 for(let b=-1;b<=1;b++){const a2=ang+b*.24;const h2=hh*(1-.18*Math.abs(b)-.1*b);const x2=bx+b*hw*2.5;si=pushSprite(spr,si,W,H,x2+Math.sin(a2)*h2,by-Math.cos(a2)*h2,hw,h2,a2,3,0,0,0,m.alpha,m.col[0],m.col[1],m.col[2],1);}}}// ── draw the scene (HDR) ──
-gl.bindFramebuffer(gl.FRAMEBUFFER,sceneT.fb);gl.viewport(0,0,cw,ch);gl.disable(gl.DEPTH_TEST);gl.disable(gl.BLEND);gl.depthMask(true);gl.clearColor(bg[0],bg[1],bg[2],1);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);const S=gpu.sky;gl.useProgram(S.prog);gl.uniform2f(S.u.u_res,cw,ch);gl.uniform3fv(S.u.u_top,parseColor(themed(L.skyTop,T.colors.skyTop),[.14,.23,.45]));gl.uniform3fv(S.u.u_mid,parseColor(adv.skyMid,[.18,.31,.56]));gl.uniform3fv(S.u.u_hor,skyHor);gl.uniform3fv(S.u.u_gc,parseColor(adv.horizonGlow,[1,.89,.72]));gl.uniform4f(S.u.u_g,hotX+sx*.3,hotY+drop-.02,num(adv.horizonGlowStrength,30)/100,W/H);gl.uniform1f(S.u.u_ph,TAU*tw/loop);gl.uniform1f(S.u.u_drop,drop);gl.uniform1f(S.u.u_theme,T.mode);gl.bindVertexArray(S.vao);gl.drawArrays(gl.TRIANGLES,0,3);const A=(FAR+NEAR)/(FAR-NEAR),B=-2*FAR*NEAR/(FAR-NEAR);const setWorld=u=>{gl.uniform4f(u.u_cam,camX,camY,cosP,sinP);gl.uniform4f(u.u_proj,TAN_H,TAN_V,A,B);gl.uniform4f(u.u_wave,wave.si,wave.amp,wave.k,wave.ph);gl.uniform1f(u.u_off,drop*2);gl.uniform4f(u.u_th,T.shoulder,T.mode,0,0);gl.uniform4f(u.u_fog,fogC[0],fogC[1],fogC[2],fogDist);gl.uniform4fv(u["u_r[0]"],RIDGES);};// terrain: dark, writes depth so near ridges hide far glitter
+gl.bindFramebuffer(gl.FRAMEBUFFER,sceneT.fb);gl.viewport(0,0,cw,ch);gl.disable(gl.DEPTH_TEST);gl.disable(gl.BLEND);gl.depthMask(true);gl.clearColor(bg[0],bg[1],bg[2],1);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);const S=gpu.sky;gl.useProgram(S.prog);gl.uniform2f(S.u.u_res,cw,ch);gl.uniform3fv(S.u.u_top,parseColor(themed(L.skyTop,T.colors.skyTop),[.14,.23,.45]));gl.uniform3fv(S.u.u_mid,parseColor(adv.skyMid,[.18,.31,.56]));gl.uniform3fv(S.u.u_hor,skyHor);gl.uniform3fv(S.u.u_gc,parseColor(adv.horizonGlow,[1,.89,.72]));gl.uniform4f(S.u.u_g,hotX+sx*.3,hotY+drop-.02,num(adv.horizonGlowStrength,30)/100,W/H);gl.uniform1f(S.u.u_ph,TAU*tw/loop);gl.uniform1f(S.u.u_drop,drop);gl.uniform1f(S.u.u_theme,T.mode);gl.bindVertexArray(S.vao);gl.drawArrays(gl.TRIANGLES,0,3);const A=(FAR+NEAR)/(FAR-NEAR),B=-2*FAR*NEAR/(FAR-NEAR);const setWorld=u=>{gl.uniform4f(u.u_cam,camX,camY,cosP,sinP);gl.uniform4f(u.u_proj,TAN_H,TAN_V,A,B);gl.uniform4f(u.u_wave,wave.si,wave.amp,wave.k,wave.ph);gl.uniform1f(u.u_off,drop*2);gl.uniform4f(u.u_th,T.shoulder,T.mode,0,0);gl.uniform4f(u.u_fog,fogC[0],fogC[1],fogC[2],fogDist);gl.uniform4fv(u["u_r[0]"],RIDGES);};
+
+// ── 3D Glass Logo Pass (Behind mountains, in front of aurora sky) ──
+if (gpu.glassLogo && gpu.glassLogo.ready) {
+  gl.enable(gl.DEPTH_TEST);
+  gl.depthFunc(gl.LEQUAL);
+  gl.depthMask(true);
+  gl.enable(gl.BLEND);
+  gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+  gl.disable(gl.CULL_FACE);
+
+  const Gl = gpu.glassLogo;
+  gl.useProgram(Gl.prog);
+  gl.uniform4f(Gl.u.u_cam, camX, camY, cosP, sinP);
+  gl.uniform4f(Gl.u.u_proj, TAN_H, TAN_V, A, B);
+  gl.uniform1f(Gl.u.u_off, drop * 2);
+
+  const logoTime = tw;
+  const hoverY = Math.sin(logoTime * 0.8) * 0.12;
+  const logoY = 2.4 + hoverY;
+  const logoZ = -22.0;
+  const logoX = -P.x * 0.4;
+
+  const rotY = Math.sin(logoTime * 0.35) * 0.22 + P.x * 0.18;
+  const rotX = 0.05 + P.y * 0.08;
+  const rotZ = Math.sin(logoTime * 0.2) * 0.04;
+  const logoScale = 2.4 * scaleF;
+
+  const m = mat4TRS(logoX, logoY, logoZ, rotX, rotY, rotZ, logoScale, logoScale, logoScale);
+  const nm = mat3Normal(m);
+
+  gl.uniformMatrix4fv(Gl.u.u_m, false, m);
+  gl.uniformMatrix3fv(Gl.u.u_nm, false, nm);
+  gl.uniform1f(Gl.u.u_time, logoTime);
+  gl.uniform3fv(Gl.u.u_glow, glowC);
+  gl.uniform3f(Gl.u.u_aurora1, 0.2, 1.0, 0.65);
+  gl.uniform3f(Gl.u.u_aurora2, 0.62, 0.38, 1.0);
+
+  gl.bindVertexArray(Gl.vao);
+  gl.drawElements(gl.TRIANGLES, Gl.count, gl.UNSIGNED_SHORT, 0);
+  gl.bindVertexArray(null);
+}
+
+// terrain: dark, writes depth so near ridges hide far glitter
 gl.enable(gl.DEPTH_TEST);gl.depthFunc(gl.LEQUAL);const Tr=gpu.terrain;gl.useProgram(Tr.prog);setWorld(Tr.u);gl.uniform3fv(Tr.u.u_shadow,shadow);gl.uniform3fv(Tr.u.u_ground,bg);gl.uniform3fv(Tr.u.u_rim,slopeC);gl.uniform3fv(Tr.u.u_sky,skyHor);// the glow between the dots is a soft teal, not grey
 const sheen=mix3(slopeC,glowC,.25).map((c,i)=>c*T.sheen[i]*(num(adv.crestBright,100)/100));gl.uniform3fv(Tr.u.u_sheen,sheen);gl.bindVertexArray(Tr.vao);gl.drawElements(gl.TRIANGLES,Tr.count,gl.UNSIGNED_INT,0);gl.depthMask(false);gl.enable(gl.BLEND);gl.blendFunc(gl.ONE,gl.ONE_MINUS_SRC_ALPHA);// flower heads on the slopes
 const Fl=gpu.flower;gl.useProgram(Fl.prog);setWorld(Fl.u);gl.uniform4f(Fl.u.u_px,ch/2,flowerK,gpu.maxPt,0);gl.uniform3fv(Fl.u.u_petal,slopeC);gl.uniform3fv(Fl.u.u_tip,petalC);gl.uniform3fv(Fl.u.u_core,coreC);gl.uniform3fv(Fl.u.u_deep,deep);gl.bindVertexArray(Fl.vao);gl.drawArrays(gl.POINTS,0,Math.floor(MAX_HF*dens));// glitter sheet

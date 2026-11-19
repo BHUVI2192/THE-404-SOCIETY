@@ -37,15 +37,6 @@ const YouDecideLogo: React.FC<{ height?: number; className?: string }> = ({
   );
 };
 
-type SceneType = 'morning' | 'aurora' | 'dunes' | 'mountain';
-
-const SCENE_OPTIONS: { id: SceneType; label: string; icon: string }[] = [
-  { id: 'morning', label: 'Morning Sky', icon: '☀️' },
-  { id: 'aurora', label: 'Lavender Aurora', icon: '🌌' },
-  { id: 'dunes', label: 'Dusk Dunes', icon: '🌅' },
-  { id: 'mountain', label: 'Moonlit Mountains', icon: '🏔️' },
-];
-
 const SERVICES = [
   {
     title: 'Websites',
@@ -98,7 +89,6 @@ const STEPS = [
 ];
 
 const YouDecideLocal: React.FC = () => {
-  const [activeScene, setActiveScene] = useState<SceneType>('morning');
   const [sliderVal, setSliderVal] = useState<number>(65);
 
   const calculatePerceivedValue = (val: number) => {
@@ -156,7 +146,7 @@ const YouDecideLocal: React.FC = () => {
             }}
           >
             <GlimmerVale
-              scene={activeScene}
+              scene="aurora"
               speed={28}
               density={32}
               sparkle={75}
@@ -222,69 +212,6 @@ const YouDecideLocal: React.FC = () => {
               accent="#60A5FA"
             />
           </header>
-
-          {/* ── AMBIENT SCENE CONTROLS (Bottom Center Pill) ── */}
-          <div
-            style={{
-              position: 'absolute',
-              bottom: 24,
-              left: 0,
-              right: 0,
-              zIndex: 20,
-              display: 'flex',
-              justifyContent: 'center',
-              pointerEvents: 'none',
-              padding: '0 16px',
-            }}
-          >
-            <div
-              style={{
-                pointerEvents: 'auto',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '6px',
-                background: 'rgba(8, 18, 42, 0.65)',
-                backdropFilter: 'blur(20px)',
-                WebkitBackdropFilter: 'blur(20px)',
-                border: '1px solid rgba(255, 255, 255, 0.14)',
-                borderRadius: '999px',
-                padding: '5px 8px',
-                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.4)',
-              }}
-            >
-              {SCENE_OPTIONS.map((sc) => {
-                const isSelected = activeScene === sc.id;
-                return (
-                  <button
-                    key={sc.id}
-                    onClick={() => setActiveScene(sc.id)}
-                    style={{
-                      background: isSelected ? '#1920F0' : 'transparent',
-                      color: isSelected ? '#FFFFFF' : 'rgba(255, 255, 255, 0.72)',
-                      border: isSelected
-                        ? '1px solid rgba(255,255,255,0.35)'
-                        : '1px solid transparent',
-                      borderRadius: '999px',
-                      padding: '5px 12px',
-                      fontSize: '11px',
-                      fontFamily: '"Geist Mono", monospace',
-                      fontWeight: 500,
-                      letterSpacing: '0.04em',
-                      cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '5px',
-                      transition: 'all 0.2s ease',
-                      boxShadow: isSelected ? '0 0 12px rgba(25, 32, 240, 0.5)' : 'none',
-                    }}
-                  >
-                    <span>{sc.icon}</span>
-                    <span>{sc.label}</span>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
         </section>
 
         {/* ========================================================================= */}
