@@ -26,8 +26,6 @@ import { RegistrationManagement } from './pages/admin/RegistrationManagement';
 import { CommunityManagement } from './pages/admin/CommunityManagement';
 import { AdminSettings } from './pages/admin/Settings';
 import { AdminLogin } from './pages/admin/AdminLogin';
-import FlamePetWidget from './components/FlamePetWidget';
-import ButterflyCursor from './components/ButterflyCursor';
 
 import Lenis from 'lenis';
 
@@ -80,8 +78,6 @@ const App: React.FC = () => {
       <Router>
         <SmoothScrolling>
           <ScrollToTop />
-          <ButterflyCursor />
-          <FlamePetWidget />
           <Routes>
             {/* Admin Routes (No standard Layout) */}
             <Route path="/admin/login" element={<AdminLogin />} />
