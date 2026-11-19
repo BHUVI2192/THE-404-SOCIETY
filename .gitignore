@@ -31,3 +31,7 @@ dist-ssr
 # Builder Portal source is now committed; exclude only its local dev artifacts
 /builderportal/bp2/node_modules/
 /builderportal/bp2/dist/
+/builderportal/bp2/public/
+/builderportal/bp2/screenshots/
+/builderportal/developer-roadmap/
+/builderportal/ui/
