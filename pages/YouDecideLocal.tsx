@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import GlimmerVale from '../components/GlimmerVale';
 import FluidGlassButton from '../components/FluidGlassButton';
 import MotionOverlayMenu from '../components/MotionOverlayMenu';
+import LiquidImage from '../components/LiquidImage';
 
 // Official Vector Logo Component (Reversed for dark/night aesthetic)
 const YouDecideLogo: React.FC<{ height?: number; className?: string }> = ({
@@ -663,45 +664,268 @@ const YouDecideLocal: React.FC = () => {
         </section>
 
         {/* ========================================================================= */}
-        {/* FOOTER */}
+        {/* BOTTOM NAVBAR & INTERACTIVE LIQUID LOGO BANNER */}
         {/* ========================================================================= */}
-        <footer
+        <section
+          id="bottom-navbar"
           style={{
-            borderTop: '1px solid rgba(255, 255, 255, 0.08)',
-            padding: '56px 32px 40px',
             maxWidth: '1280px',
             margin: '0 auto',
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-            gap: '40px',
-            fontSize: '14px',
-            color: 'rgba(255, 255, 255, 0.55)',
+            padding: '72px 24px 80px',
           }}
         >
-          <div>
-            <YouDecideLogo height={24} />
-            <div style={{ marginTop: '16px', maxWidth: '300px', lineHeight: 1.5 }}>
-              Digital Growth. On Your Terms. Built with precision and care.
-            </div>
+          <div
+            style={{
+              position: 'relative',
+              borderRadius: '24px',
+              overflow: 'hidden',
+              border: '1px solid rgba(255, 255, 255, 0.12)',
+              boxShadow: '0 24px 64px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.15)',
+              background: '#040714',
+            }}
+          >
+            {/* Interactive Liquid Canvas displaying the 2D white youdecide.studio logo */}
+            <LiquidImage
+              src="/youdecidestudio/horizontal_white.svg"
+              alt="youdecide.studio white logo"
+              strength={0.07}
+              speed={0.16}
+              colorReveal={false}
+              fit="contain"
+              logoPadding={0.7}
+              borderRadius={24}
+              style={{
+                width: '100%',
+                minHeight: '340px',
+                height: '380px',
+              }}
+            >
+              {/* Overlay: The text and navigation of the navbar sits right on top of the liquid logo */}
+              <div
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  padding: '28px 32px',
+                  boxSizing: 'border-box',
+                }}
+              >
+                {/* ── Top Bar of Bottom Navbar ── */}
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    flexWrap: 'wrap',
+                    gap: '16px',
+                    pointerEvents: 'auto',
+                  }}
+                >
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '10px',
+                      background: 'rgba(6, 12, 30, 0.65)',
+                      backdropFilter: 'blur(16px)',
+                      WebkitBackdropFilter: 'blur(16px)',
+                      border: '1px solid rgba(255, 255, 255, 0.14)',
+                      borderRadius: '999px',
+                      padding: '7px 16px',
+                      fontSize: '11px',
+                      fontFamily: '"Geist Mono", monospace',
+                      letterSpacing: '0.08em',
+                      textTransform: 'uppercase',
+                      color: 'rgba(255, 255, 255, 0.88)',
+                    }}
+                  >
+                    <span
+                      style={{
+                        width: '7px',
+                        height: '7px',
+                        borderRadius: '50%',
+                        background: '#4ADE80',
+                        boxShadow: '0 0 10px #4ADE80',
+                        display: 'inline-block',
+                      }}
+                    />
+                    <span>YOUDECIDE.STUDIO // BOTTOM NAV</span>
+                  </div>
+
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+                    <FluidGlassButton
+                      text="Contact Us →"
+                      link="#contact"
+                      padding="7px 18px"
+                      fontSize="12px"
+                      baseColor="#071638"
+                      glassColor="#60A5FA"
+                    />
+                  </div>
+                </div>
+
+                {/* ── Center Prompt Hint ── */}
+                <div
+                  style={{
+                    textAlign: 'center',
+                    pointerEvents: 'none',
+                    userSelect: 'none',
+                    padding: '12px 0',
+                  }}
+                >
+                  <span
+                    style={{
+                      fontSize: '11px',
+                      fontFamily: '"Geist Mono", monospace',
+                      letterSpacing: '0.18em',
+                      textTransform: 'uppercase',
+                      color: 'rgba(255, 255, 255, 0.38)',
+                      background: 'rgba(2, 6, 18, 0.45)',
+                      padding: '4px 12px',
+                      borderRadius: '999px',
+                      border: '1px solid rgba(255, 255, 255, 0.08)',
+                    }}
+                  >
+                    ✦ Hover or drag to displace liquid logo ✦
+                  </span>
+                </div>
+
+                {/* ── Bottom Dock of the Navbar with Links & Actions ── */}
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    flexWrap: 'wrap',
+                    gap: '20px',
+                    pointerEvents: 'auto',
+                    background: 'rgba(5, 10, 24, 0.68)',
+                    backdropFilter: 'blur(20px)',
+                    WebkitBackdropFilter: 'blur(20px)',
+                    border: '1px solid rgba(255, 255, 255, 0.12)',
+                    borderRadius: '16px',
+                    padding: '14px 24px',
+                  }}
+                >
+                  {/* Primary Navbar Links */}
+                  <nav
+                    aria-label="Bottom Navigation Links"
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      flexWrap: 'wrap',
+                      gap: '24px',
+                    }}
+                  >
+                    {[
+                      { label: 'Capabilities', href: '#services' },
+                      { label: 'Commercial Model', href: '#model' },
+                      { label: '3-Step Process', href: '#process' },
+                      { label: 'Project Briefing', href: '#contact' },
+                      { label: 'Launch Teaser', href: '#/youdecide.studio' },
+                    ].map((item) => (
+                      <a
+                        key={item.label}
+                        href={item.href}
+                        style={{
+                          color: 'rgba(255, 255, 255, 0.85)',
+                          textDecoration: 'none',
+                          fontSize: '13px',
+                          fontWeight: 500,
+                          transition: 'color 0.2s ease, text-shadow 0.2s ease',
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.color = '#FFFFFF';
+                          e.currentTarget.style.textShadow = '0 0 14px rgba(96, 165, 250, 0.8)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.color = 'rgba(255, 255, 255, 0.85)';
+                          e.currentTarget.style.textShadow = 'none';
+                        }}
+                      >
+                        {item.label}
+                      </a>
+                    ))}
+                  </nav>
+
+                  {/* Contact & Social Links */}
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      flexWrap: 'wrap',
+                      gap: '16px',
+                      fontSize: '12px',
+                      color: 'rgba(255, 255, 255, 0.65)',
+                    }}
+                  >
+                    <a
+                      href="mailto:hello@youdecide.studio"
+                      style={{
+                        color: '#60A5FA',
+                        textDecoration: 'none',
+                        fontWeight: 500,
+                      }}
+                    >
+                      hello@youdecide.studio
+                    </a>
+                    <span>•</span>
+                    <a
+                      href="https://linkedin.com"
+                      target="_blank"
+                      rel="noreferrer"
+                      style={{ color: 'inherit', textDecoration: 'none' }}
+                      onMouseEnter={(e) => (e.currentTarget.style.color = '#FFFFFF')}
+                      onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255, 255, 255, 0.65)')}
+                    >
+                      LinkedIn
+                    </a>
+                    <a
+                      href="https://x.com"
+                      target="_blank"
+                      rel="noreferrer"
+                      style={{ color: 'inherit', textDecoration: 'none' }}
+                      onMouseEnter={(e) => (e.currentTarget.style.color = '#FFFFFF')}
+                      onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255, 255, 255, 0.65)')}
+                    >
+                      X
+                    </a>
+                    <a
+                      href="https://github.com"
+                      target="_blank"
+                      rel="noreferrer"
+                      style={{ color: 'inherit', textDecoration: 'none' }}
+                      onMouseEnter={(e) => (e.currentTarget.style.color = '#FFFFFF')}
+                      onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255, 255, 255, 0.65)')}
+                    >
+                      GitHub
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </LiquidImage>
           </div>
-          <div>
-            <b style={{ color: '#FFFFFF', display: 'block', marginBottom: '12px' }}>Services</b>
-            <div style={{ marginBottom: '8px' }}>Websites</div>
-            <div style={{ marginBottom: '8px' }}>Automation</div>
-            <div>Analytics</div>
+
+          {/* Sub-footer copyright & status */}
+          <div
+            style={{
+              marginTop: '24px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              flexWrap: 'wrap',
+              gap: '12px',
+              fontSize: '13px',
+              color: 'rgba(255, 255, 255, 0.45)',
+              padding: '0 8px',
+            }}
+          >
+            <div>Digital Growth. On Your Terms. Built with precision and care.</div>
+            <div>Official Launch: 25 Nov 2026 · © 2026 youdecide.studio</div>
           </div>
-          <div>
-            <b style={{ color: '#FFFFFF', display: 'block', marginBottom: '12px' }}>Studio</b>
-            <div style={{ marginBottom: '8px' }}>How It Works</div>
-            <div style={{ marginBottom: '8px' }}>Briefing</div>
-            <div>Contact</div>
-          </div>
-          <div>
-            <b style={{ color: '#FFFFFF', display: 'block', marginBottom: '12px' }}>Deploy</b>
-            <div style={{ marginBottom: '8px' }}>Official Launch: 25 Nov 2026</div>
-            <div>© 2026 youdecide.studio</div>
-          </div>
-        </footer>
+        </section>
       </div>
 
       <style>{`

@@ -122,10 +122,10 @@ export const InteractivePet: React.FC<InteractivePetProps> = ({
     sizeRef.current = { w, h };
 
     const scene = new THREE.Scene();
-    // Camera positioned with center at Y = 0.15 where Pip's face is
-    const camera = new THREE.PerspectiveCamera(40, w / h, 0.1, 100);
-    camera.position.set(0, 0.15, 4.4);
-    camera.lookAt(0, 0.15, 0);
+    // Camera positioned with center at Y = 0.28 where Pip's face is centered
+    const camera = new THREE.PerspectiveCamera(36, w / h, 0.1, 100);
+    camera.position.set(0, 0.28, 4.3);
+    camera.lookAt(0, 0.28, 0);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(w, h);
@@ -327,12 +327,12 @@ export const InteractivePet: React.FC<InteractivePetProps> = ({
 
       // 4. Floating & Physics
       // Keep Pip safely in center of frame with subtle restrained displacement
-      const floatOffset = Math.sin(time * wobbleSpeed * 0.8) * 0.08;
-      const targetX = mousePos.current.x * 0.35;
-      const targetY = mousePos.current.y * 0.2 + floatOffset;
+      const floatOffset = Math.sin(time * wobbleSpeed * 0.8) * 0.06;
+      const targetX = Math.max(-0.25, Math.min(0.25, mousePos.current.x * 0.25));
+      const targetY = Math.max(-0.12, Math.min(0.2, mousePos.current.y * 0.15)) + floatOffset;
 
-      const targetRotY = mousePos.current.x * 0.65;
-      const targetRotX = -mousePos.current.y * 0.45;
+      const targetRotY = mousePos.current.x * 0.55;
+      const targetRotX = -mousePos.current.y * 0.35;
 
       petGroup.position.x += (targetX - petGroup.position.x) * speed;
       petGroup.position.y += (targetY - petGroup.position.y) * speed;
@@ -347,7 +347,7 @@ export const InteractivePet: React.FC<InteractivePetProps> = ({
       // 5. Speech Bubble Anchor
       if (showBubble && bubbleRef.current && sizeRef.current.w > 0) {
         tempV.copy(petGroup.position);
-        tempV.x += 0.8 * scale;
+        tempV.x += 0.35 * scale;
         tempV.y += 1.35 * scale;
         tempV.project(camera);
         const px = (tempV.x * 0.5 + 0.5) * sizeRef.current.w;

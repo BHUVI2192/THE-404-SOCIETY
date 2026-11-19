@@ -66,8 +66,8 @@ export const FlamePetWidget: React.FC = () => {
       onPointerLeave={() => setIsHovered(false)}
       style={{
         position: 'fixed',
-        bottom: '24px',
-        right: '24px',
+        bottom: '32px',
+        right: '32px',
         zIndex: 999999,
         touchAction: 'none',
         userSelect: 'none',
@@ -102,7 +102,7 @@ export const FlamePetWidget: React.FC = () => {
         </button>
       ) : (
         // Full Interactive 3D Flame Pet
-        <div style={{ position: 'relative', width: '180px', height: '200px' }}>
+        <div style={{ position: 'relative', width: '190px', height: '210px' }}>
           {/* Minimize button on hover */}
           {isHovered && (
             <div
@@ -143,7 +143,7 @@ export const FlamePetWidget: React.FC = () => {
 
           {/* Pip 3D Canvas */}
           <InteractivePet
-            scale={1.12}
+            scale={0.92}
             bubbleText={PIP_PHRASES[phraseIdx]}
             idleText="Zzz... 💤"
             showBubble={true}
