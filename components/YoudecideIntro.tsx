@@ -25,8 +25,42 @@ const STROKES = [
 ];
 
 const DOT = "M790.4,104.9 L790.5,105.0";
-const BOUNDS = [0.0, 0.0577, 0.1819, 0.3501, 0.3966, 0.5111, 0.557, 0.6379, 0.7071, 0.7586, 0.8732, 0.9191, 1.0];
-const WORD_END = 0.94; // last 6% pops the 'i' dot
+
+/**
+ * EXACT LETTER RHYTHM BOUNDS:
+ * 1. First 3 letters ("y", "o", "u") take the EXACT SAME amount of time (15.0% each = 45% total).
+ *    - Letter 'y': strokes 0 and 1 -> from 0.0000 to 0.1500 (duration: 15.0%)
+ *    - Letter 'o': stroke 2        -> from 0.1500 to 0.3000 (duration: 15.0%)
+ *    - Letter 'u': stroke 3        -> from 0.3000 to 0.4500 (duration: 15.0%)
+ * 2. Middle letters ("d", "e", "c", "i") are a BIT FAST (25.0% total):
+ *    - Letter 'd': strokes 4 and 5 -> from 0.4500 to 0.5458 (duration: 9.6%)
+ *    - Letter 'e': stroke 6        -> from 0.5458 to 0.6042 (duration: 5.8%)
+ *    - Letter 'c': stroke 7        -> from 0.6042 to 0.6542 (duration: 5.0%)
+ *    - Letter 'i': stroke 8        -> from 0.6542 to 0.7000 (duration: 4.6%)
+ * 3. End letters ("d", "e", dot) are a LITTLE SLOW (30.0% total):
+ *    - Letter 'd': strokes 9 and 10-> from 0.7000 to 0.8292 (duration: 12.9%)
+ *    - Letter 'e': stroke 11       -> from 0.8292 to 0.9250 (duration: 9.6%)
+ *    - Dot on 'i': dot             -> from 0.9250 to 1.0000 (duration: 7.5%)
+ */
+const STROKE_BOUNDS = [
+  0.0,      // 0: start of 'y' (stroke 0)
+  0.04763,  // 1: 'y' branch end -> stroke 1 start
+  0.15000,  // 2: 'y' tail end -> start of 'o' (stroke 2) [0.1500 total for 'y']
+  0.30000,  // 3: 'o' end -> start of 'u' (stroke 3)      [0.1500 total for 'o']
+  0.45000,  // 4: 'u' end -> start of 'd' (stroke 4)      [0.1500 total for 'u']
+  0.51842,  // 5: 'd1' ascender end -> stroke 5 start
+  0.54583,  // 6: 'd1' stem end -> start of 'e' (stroke 6)
+  0.60417,  // 7: 'e1' end -> start of 'c' (stroke 7)
+  0.65417,  // 8: 'c' end -> start of 'i' (stroke 8)
+  0.70000,  // 9: 'i' stem end -> start of second 'd' (stroke 9)
+  0.79221,  // 10: 'd2' ascender end -> stroke 10 start
+  0.82917,  // 11: 'd2' stem end -> start of second 'e' (stroke 11)
+  0.92500,  // 12: 'e2' end -> start of dot
+  1.00000,  // 13: dot end
+];
+
+const DOT_START = 0.92500;
+const DOT_END = 1.00000;
 
 function StrokePath({
   d,
@@ -69,15 +103,14 @@ export const YoudecideIntro: React.FC<YoudecideIntroProps> = ({
     let holdTimer: ReturnType<typeof setTimeout>;
     let doneTimer: ReturnType<typeof setTimeout>;
 
-    // 1. A 320ms breath on initial mount ensures the browser finishes initial layout,
+    // 1. A 300ms breath on initial mount ensures the browser finishes initial layout,
     //    hydration, and WebGL compilation so the user clearly sees the first pen stroke of "y"
     //    without any dropped frames or sudden jumps.
     const startTimer = setTimeout(() => {
       controls = animate(progress, 1, {
         duration,
-        // Linear writing velocity ensures every letter ("y", "o", "u", "d", "e", "c", "i", "d", "e")
-        // receives time directly proportional to its drawn length, preventing early letters
-        // like "youd" from rushing past at artificial peak acceleration.
+        // Linear progress directly routes our calculated letter timings:
+        // first 3 letters equal time, middle letters bit fast, end letters little slow!
         ease: 'linear',
       });
 
@@ -95,7 +128,7 @@ export const YoudecideIntro: React.FC<YoudecideIntroProps> = ({
           onComplete?.();
         }, 450 + 850);
       });
-    }, 320);
+    }, 300);
 
     return () => {
       clearTimeout(startTimer);
@@ -105,8 +138,8 @@ export const YoudecideIntro: React.FC<YoudecideIntroProps> = ({
     };
   }, [duration, onComplete, progress]);
 
-  const dotProgress = useTransform(progress, [WORD_END, 1], [0, 1], { clamp: true });
-  const dotOpacity = useTransform(progress, (v: number) => (v > WORD_END ? 1 : 0));
+  const dotProgress = useTransform(progress, [DOT_START, DOT_END], [0, 1], { clamp: true });
+  const dotOpacity = useTransform(progress, (v: number) => (v > DOT_START ? 1 : 0));
 
   if (stage === 'done') return null;
 
@@ -223,8 +256,8 @@ export const YoudecideIntro: React.FC<YoudecideIntroProps> = ({
                   <StrokePath
                     key={i}
                     d={d}
-                    a={BOUNDS[i] * WORD_END}
-                    b={BOUNDS[i + 1] * WORD_END}
+                    a={STROKE_BOUNDS[i]}
+                    b={STROKE_BOUNDS[i + 1]}
                     progress={progress}
                     width={15}
                   />
@@ -250,4 +283,3 @@ export const YoudecideIntro: React.FC<YoudecideIntroProps> = ({
 };
 
 export default YoudecideIntro;
-
