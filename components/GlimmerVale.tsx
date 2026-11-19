@@ -868,10 +868,11 @@ function parseGlb(ab) {
 }
 
 function makeProgram(gl,vs,fs,names){const sh=(type,src)=>{const s=gl.createShader(type);if(!s)throw new Error("createShader failed");gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(s)||"shader compile failed");return s;};const p=gl.createProgram();if(!p)throw new Error("createProgram failed");gl.attachShader(p,sh(gl.VERTEX_SHADER,vs));gl.attachShader(p,sh(gl.FRAGMENT_SHADER,fs));gl.linkProgram(p);if(!gl.getProgramParameter(p,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(p)||"link failed");const u={};for(const n of names)u[n]=gl.getUniformLocation(p,n);return{prog:p,u};}function vaoFor(gl,prog,buf,layout){const vao=gl.createVertexArray();gl.bindVertexArray(vao);gl.bindBuffer(gl.ARRAY_BUFFER,buf);const stride=layout.reduce((a,l)=>a+l[1],0)*4;let off=0;for(const[name,size]of layout){const loc=gl.getAttribLocation(prog,name);if(loc>=0){gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,size,gl.FLOAT,false,stride,off*4);}off+=size;}gl.bindVertexArray(null);return vao;}function makeTarget(gl,w,h,hdr,withDepth){const tex=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,tex);if(hdr)gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA16F,w,h,0,gl.RGBA,gl.HALF_FLOAT,null);else gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA8,w,h,0,gl.RGBA,gl.UNSIGNED_BYTE,null);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);const fb=gl.createFramebuffer();gl.bindFramebuffer(gl.FRAMEBUFFER,fb);gl.framebufferTexture2D(gl.FRAMEBUFFER,gl.COLOR_ATTACHMENT0,gl.TEXTURE_2D,tex,0);let depth=null;if(withDepth){depth=gl.createRenderbuffer();gl.bindRenderbuffer(gl.RENDERBUFFER,depth);gl.renderbufferStorage(gl.RENDERBUFFER,gl.DEPTH_COMPONENT24,w,h);gl.framebufferRenderbuffer(gl.FRAMEBUFFER,gl.DEPTH_ATTACHMENT,gl.RENDERBUFFER,depth);}gl.bindFramebuffer(gl.FRAMEBUFFER,null);return{tex,fb,depth,w,h};}function freeTarget(gl,t){gl.deleteTexture(t.tex);gl.deleteFramebuffer(t.fb);if(t.depth)gl.deleteRenderbuffer(t.depth);}function targetOk(gl,t){gl.bindFramebuffer(gl.FRAMEBUFFER,t.fb);const ok=gl.checkFramebufferStatus(gl.FRAMEBUFFER)===gl.FRAMEBUFFER_COMPLETE;gl.bindFramebuffer(gl.FRAMEBUFFER,null);return ok;}const WORLD_U=["u_cam","u_proj","u_wave","u_off","u_th","u_r[0]"];function setupGpu(gl){const quad=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,quad);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);const fsProg=(fs,names)=>{const p=makeProgram(gl,FS_VS,fs,names);return{...p,vao:vaoFor(gl,p.prog,quad,[["a_p",2]])};};const terrain=makeProgram(gl,TERRAIN_VS,TERRAIN_FS,[...WORLD_U,"u_fog","u_shadow","u_ground","u_rim","u_sky","u_sheen"]);const mesh=buildMesh();const meshBuf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,meshBuf);gl.bufferData(gl.ARRAY_BUFFER,mesh.v,gl.STATIC_DRAW);const meshVao=vaoFor(gl,terrain.prog,meshBuf,[["a_m",2]]);gl.bindVertexArray(meshVao);const idxBuf=gl.createBuffer();gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,idxBuf);gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,mesh.idx,gl.STATIC_DRAW);gl.bindVertexArray(null);const glitter=makeProgram(gl,GLITTER_VS,GLITTER_FS,[...WORLD_U,"u_px","u_light","u_tw","u_hot","u_sun","u_fog","u_crest","u_slope","u_deep"]);const ptBuf=gl.createBuffer();const flower=makeProgram(gl,FLOWER_VS,FLOWER_FS,[...WORLD_U,"u_px","u_fog","u_petal","u_tip","u_core","u_deep"]);const hfBuf=gl.createBuffer();const sprite=makeProgram(gl,SPRITE_VS,SPRITE_FS,["u_petal","u_tip","u_core","u_mpetal","u_mrim","u_mcore","u_fringe","u_theme"]);const sprBuf=gl.createBuffer();const range=gl.getParameter(gl.ALIASED_POINT_SIZE_RANGE);
+const glassProg = makeProgram(gl, GLASS_VS, GLASS_FS, [
+  "u_cam", "u_proj", "u_off", "u_m", "u_nm", "u_time", "u_glow", "u_aurora1", "u_aurora2"
+]);
 const glassLogo = {
-  prog: makeProgram(gl, GLASS_VS, GLASS_FS, [
-    "u_cam", "u_proj", "u_off", "u_m", "u_nm", "u_time", "u_glow", "u_aurora1", "u_aurora2"
-  ]),
+  ...glassProg,
   ready: false,
   count: 0,
   vao: null
@@ -927,14 +928,14 @@ fetch('/youdecidestudio/logo.glb')
     const vao = gl.createVertexArray();
     gl.bindVertexArray(vao);
 
-    const posLoc = gl.getAttribLocation(gpu.glassLogo.prog.prog, 'a_p');
+    const posLoc = gl.getAttribLocation(gpu.glassLogo.prog, 'a_p');
     if (posLoc >= 0) {
       gl.enableVertexAttribArray(posLoc);
       gl.bindBuffer(gl.ARRAY_BUFFER, pBuf);
       gl.vertexAttribPointer(posLoc, 3, gl.FLOAT, false, 0, 0);
     }
 
-    const normLoc = gl.getAttribLocation(gpu.glassLogo.prog.prog, 'a_n');
+    const normLoc = gl.getAttribLocation(gpu.glassLogo.prog, 'a_n');
     if (normLoc >= 0) {
       gl.enableVertexAttribArray(normLoc);
       gl.bindBuffer(gl.ARRAY_BUFFER, nBuf);
