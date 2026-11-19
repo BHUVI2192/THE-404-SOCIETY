@@ -28,38 +28,38 @@ const DOT = "M790.4,104.9 L790.5,105.0";
 
 /**
  * EXACT LETTER RHYTHM BOUNDS:
- * 1. First 3 letters ("y", "o", "u") take the EXACT SAME amount of time (15.0% each = 45% total).
- *    - Letter 'y': strokes 0 and 1 -> from 0.0000 to 0.1500 (duration: 15.0%)
- *    - Letter 'o': stroke 2        -> from 0.1500 to 0.3000 (duration: 15.0%)
- *    - Letter 'u': stroke 3        -> from 0.3000 to 0.4500 (duration: 15.0%)
- * 2. Middle letters ("d", "e", "c", "i") are a BIT FAST (25.0% total):
- *    - Letter 'd': strokes 4 and 5 -> from 0.4500 to 0.5458 (duration: 9.6%)
- *    - Letter 'e': stroke 6        -> from 0.5458 to 0.6042 (duration: 5.8%)
- *    - Letter 'c': stroke 7        -> from 0.6042 to 0.6542 (duration: 5.0%)
- *    - Letter 'i': stroke 8        -> from 0.6542 to 0.7000 (duration: 4.6%)
- * 3. End letters ("d", "e", dot) are a LITTLE SLOW (30.0% total):
- *    - Letter 'd': strokes 9 and 10-> from 0.7000 to 0.8292 (duration: 12.9%)
- *    - Letter 'e': stroke 11       -> from 0.8292 to 0.9250 (duration: 9.6%)
- *    - Dot on 'i': dot             -> from 0.9250 to 1.0000 (duration: 7.5%)
+ * 1. First 3 letters ("y", "o", "u") are a LITTLE FAST, each taking the EXACT SAME time (11.0% each = 33% total).
+ *    - Letter 'y': strokes 0 and 1 -> from 0.0000 to 0.1100 (duration: 11.0% = ~0.46s)
+ *    - Letter 'o': stroke 2        -> from 0.1100 to 0.2200 (duration: 11.0% = ~0.46s)
+ *    - Letter 'u': stroke 3        -> from 0.2200 to 0.3300 (duration: 11.0% = ~0.46s)
+ * 2. Middle letters ("d", "e", "c", "i") are a BIT FAST (31.0% total):
+ *    - Letter 'd': strokes 4 and 5 -> from 0.3300 to 0.4480 (duration: 11.8%)
+ *    - Letter 'e': stroke 6        -> from 0.4480 to 0.5200 (duration: 7.2%)
+ *    - Letter 'c': stroke 7        -> from 0.5200 to 0.5820 (duration: 6.2%)
+ *    - Letter 'i': stroke 8        -> from 0.5820 to 0.6400 (duration: 5.8%)
+ * 3. End letters ("d", "e", dot) are a LITTLE SLOW (36.0% total):
+ *    - Letter 'd': strokes 9 and 10-> from 0.6400 to 0.7900 (duration: 15.0%)
+ *    - Letter 'e': stroke 11       -> from 0.7900 to 0.9000 (duration: 11.0%)
+ *    - Dot on 'i': dot             -> from 0.9000 to 1.0000 (duration: 10.0%)
  */
 const STROKE_BOUNDS = [
   0.0,      // 0: start of 'y' (stroke 0)
-  0.04763,  // 1: 'y' branch end -> stroke 1 start
-  0.15000,  // 2: 'y' tail end -> start of 'o' (stroke 2) [0.1500 total for 'y']
-  0.30000,  // 3: 'o' end -> start of 'u' (stroke 3)      [0.1500 total for 'o']
-  0.45000,  // 4: 'u' end -> start of 'd' (stroke 4)      [0.1500 total for 'u']
-  0.51842,  // 5: 'd1' ascender end -> stroke 5 start
-  0.54583,  // 6: 'd1' stem end -> start of 'e' (stroke 6)
-  0.60417,  // 7: 'e1' end -> start of 'c' (stroke 7)
-  0.65417,  // 8: 'c' end -> start of 'i' (stroke 8)
-  0.70000,  // 9: 'i' stem end -> start of second 'd' (stroke 9)
-  0.79221,  // 10: 'd2' ascender end -> stroke 10 start
-  0.82917,  // 11: 'd2' stem end -> start of second 'e' (stroke 11)
-  0.92500,  // 12: 'e2' end -> start of dot
+  0.03493,  // 1: 'y' branch end -> stroke 1 start
+  0.11000,  // 2: 'y' tail end -> start of 'o' (stroke 2) [0.1100 total for 'y']
+  0.22000,  // 3: 'o' end -> start of 'u' (stroke 3)      [0.1100 total for 'o']
+  0.33000,  // 4: 'u' end -> start of 'd' (stroke 4)      [0.1100 total for 'u']
+  0.41425,  // 5: 'd1' ascender end -> stroke 5 start
+  0.44800,  // 6: 'd1' stem end -> start of 'e' (stroke 6)
+  0.52000,  // 7: 'e1' end -> start of 'c' (stroke 7)
+  0.58200,  // 8: 'c' end -> start of 'i' (stroke 8)
+  0.64000,  // 9: 'i' stem end -> start of second 'd' (stroke 9)
+  0.74710,  // 10: 'd2' ascender end -> stroke 10 start
+  0.79000,  // 11: 'd2' stem end -> start of second 'e' (stroke 11)
+  0.90000,  // 12: 'e2' end -> start of dot
   1.00000,  // 13: dot end
 ];
 
-const DOT_START = 0.92500;
+const DOT_START = 0.90000;
 const DOT_END = 1.00000;
 
 function StrokePath({
@@ -91,7 +91,7 @@ function StrokePath({
 
 export const YoudecideIntro: React.FC<YoudecideIntroProps> = ({
   onComplete,
-  duration = 4.8,
+  duration = 4.2,
 }) => {
   const [stage, setStage] = useState<'drawing' | 'drawn' | 'exiting' | 'done'>('drawing');
   const progress = useMotionValue(0);
