@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import GlimmerVale from '../components/GlimmerVale';
 import FluidGlassButton from '../components/FluidGlassButton';
 import MotionOverlayMenu from '../components/MotionOverlayMenu';
-import AppleHelloIntro from '../components/AppleHelloIntro';
+import YoudecideIntro from '../components/YoudecideIntro';
 
 // Official Vector Logo Component (Reversed for dark/night aesthetic)
 const YouDecideLogo: React.FC<{ height?: number; className?: string }> = ({
@@ -187,7 +187,7 @@ const YouDecideLocal: React.FC = () => {
         />
       </Helmet>
 
-      <AppleHelloIntro />
+      <YoudecideIntro />
 
       <div
         style={{
