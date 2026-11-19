@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { subscribeToCommunityApps, updateCommunityApp, deleteCommunityApp, CommunityApp } from '../../lib/community_apps';
+import { subscribeToCommunityApps, getCommunityApps, updateCommunityApp, deleteCommunityApp, CommunityApp } from '../../lib/community_apps';
 import { generateMemberId, setMemberId, validateMemberId } from '../../lib/memberIdService';
 import { saveMember } from '../../lib/members';
 import {
@@ -14,6 +14,7 @@ export const CommunityManagement: React.FC = () => {
   const [apps, setApps] = useState<CommunityApp[]>([]);
   const [filteredApps, setFilteredApps] = useState<CommunityApp[]>([]);
   const [loading, setLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<'all' | 'pending' | 'approved' | 'rejected'>('all');
 
@@ -34,6 +35,19 @@ export const CommunityManagement: React.FC = () => {
     return () => unsubscribe();
   }, []);
 
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    try {
+      const data = await getCommunityApps();
+      setApps(data);
+      toast.success('Applications synced');
+    } catch {
+      toast.error('Failed to sync applications');
+    } finally {
+      setRefreshing(false);
+    }
+  };
+
   useEffect(() => {
     filterApps();
   }, [apps, searchTerm, statusFilter]);
@@ -42,12 +56,13 @@ export const CommunityManagement: React.FC = () => {
     let filtered = apps;
 
     if (searchTerm) {
+      const q = searchTerm.toLowerCase();
       filtered = filtered.filter(
         (app) =>
-          app.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          app.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          app.college.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          (app.memberId && app.memberId.toLowerCase().includes(searchTerm.toLowerCase()))
+          (app.name && app.name.toLowerCase().includes(q)) ||
+          (app.email && app.email.toLowerCase().includes(q)) ||
+          (app.college && app.college.toLowerCase().includes(q)) ||
+          (app.memberId && app.memberId.toLowerCase().includes(q))
       );
     }
 
@@ -238,22 +253,45 @@ export const CommunityManagement: React.FC = () => {
       {/* Header */}
       <div className="adm-page__header">
         <div>
-          <h1 className="adm-page__title">Community Applications</h1>
-          <p className="adm-page__subtitle">Review and manage membership applications</p>
+          <h1 className="adm-page__title">Onboarding Applications</h1>
+          <p className="adm-page__subtitle">Review, approve, and manage community onboarding submissions</p>
         </div>
-        <button
-          onClick={exportToCSV}
-          disabled={filteredApps.length === 0}
-          className="adm-btn adm-btn--secondary"
-          style={{ opacity: filteredApps.length === 0 ? 0.5 : 1, cursor: filteredApps.length === 0 ? 'not-allowed' : 'pointer' }}
-        >
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: '16px', height: '16px' }}>
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-            <polyline points="7 10 12 15 17 10" />
-            <line x1="12" y1="15" x2="12" y2="3" />
-          </svg>
-          Export CSV
-        </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <button
+            onClick={handleRefresh}
+            disabled={refreshing}
+            className="adm-btn adm-btn--secondary"
+            title="Sync latest submissions from database"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              style={{
+                width: '15px',
+                height: '15px',
+                animation: refreshing ? 'spin 0.8s linear infinite' : 'none'
+              }}
+            >
+              <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
+            </svg>
+            {refreshing ? 'Syncing...' : 'Sync'}
+          </button>
+          <button
+            onClick={exportToCSV}
+            disabled={filteredApps.length === 0}
+            className="adm-btn adm-btn--secondary"
+            style={{ opacity: filteredApps.length === 0 ? 0.5 : 1, cursor: filteredApps.length === 0 ? 'not-allowed' : 'pointer' }}
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: '16px', height: '16px' }}>
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+            Export CSV
+          </button>
+        </div>
       </div>
 
       {/* Stats Grid */}

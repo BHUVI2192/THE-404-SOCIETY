@@ -1,16 +1,51 @@
 
-// ── SMTP API Helper ──────────────────────────────────────────────────────────
+import emailjs from '@emailjs/browser';
+
+// ── Email Sending Helper with SMTP + EmailJS Fallback ────────────────────────
 
 async function sendEmailSMTP(to: string, subject: string, html: string): Promise<void> {
-    const response = await fetch('/api/send-email', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ to, subject, html }),
-    });
+    try {
+        const response = await fetch('/api/send-email', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ to, subject, html }),
+        });
 
-    if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Failed to send email via SMTP');
+        if (response.ok) {
+            return;
+        }
+
+        const error = await response.json().catch(() => ({}));
+        throw new Error(error.error || `SMTP responded with status ${response.status}`);
+    } catch (err: any) {
+        console.warn('[emailService] Primary SMTP failed, trying EmailJS fallback:', err?.message || err);
+
+        // Fallback to EmailJS if configured in client environment
+        const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+        const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+        const templateId = import.meta.env.VITE_EMAILJS_APPLICATION_RECEIVED_ID;
+
+        if (serviceId && publicKey && templateId) {
+            try {
+                await emailjs.send(
+                    serviceId,
+                    templateId,
+                    {
+                        to_email: to,
+                        to_name: to.split('@')[0],
+                        subject: subject,
+                        message: html,
+                    },
+                    publicKey
+                );
+                console.log('[emailService] Email successfully sent via EmailJS fallback.');
+                return;
+            } catch (ejsErr) {
+                console.error('[emailService] EmailJS fallback also failed:', ejsErr);
+            }
+        }
+
+        throw err;
     }
 }
 

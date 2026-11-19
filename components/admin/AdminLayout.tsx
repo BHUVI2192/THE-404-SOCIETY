@@ -66,7 +66,7 @@ const NAV_ITEMS = [
         <line x1="20" y1="8" x2="20" y2="14" />
       </svg>
     ),
-    label: "Community",
+    label: "Onboarding",
   },
   {
     to: "/admin/settings",
@@ -171,7 +171,7 @@ export const AdminLayout: React.FC = () => {
             >
               <span className="adm-sidebar__icon">{item.icon}</span>
               <span className="adm-sidebar__label">{item.label}</span>
-              {item.label === "Community" && pendingCount > 0 && (
+              {(item.label === "Community" || item.label === "Onboarding") && pendingCount > 0 && (
                 <span className="adm-sidebar__badge">{pendingCount}</span>
               )}
             </NavLink>
@@ -250,10 +250,10 @@ export const AdminLayout: React.FC = () => {
                         <div className="adm-topbar__notif-dot" />
                         <div>
                           <div style={{ fontWeight: 600, fontSize: "12.5px", color: "#000000" }}>
-                            {pendingCount} Pending Community Request{pendingCount > 1 ? "s" : ""}
+                            {pendingCount} Pending Onboarding Request{pendingCount > 1 ? "s" : ""}
                           </div>
                           <div style={{ fontSize: "11.5px", color: "#71717a" }}>
-                            Click to review and approve members
+                            Click to review and approve applicant IDs
                           </div>
                         </div>
                       </div>

@@ -87,6 +87,7 @@ const App: React.FC = () => {
               <Route path="blogs" element={<BlogManagement />} />
               <Route path="registrations" element={<RegistrationManagement />} />
               <Route path="community" element={<CommunityManagement />} />
+              <Route path="onboarding" element={<CommunityManagement />} />
               <Route path="settings" element={<AdminSettings />} />
             </Route>
 

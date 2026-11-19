@@ -155,19 +155,33 @@ export default function Community() {
   };
 
   const handleSubmit = async () => {
+    const name = (formData.name || '').trim();
+    const email = (formData.email || '').trim().toLowerCase();
+    const contact = (formData.contact || '').trim();
+
+    if (!name) {
+      alert('Please enter your full name before submitting.');
+      const nameIndex = questions.findIndex(q => q.id === 'name');
+      if (nameIndex !== -1) setActiveIndex(nameIndex);
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || !emailRegex.test(email)) {
+      alert('Please enter a valid email address so we can send your invitation.');
+      const emailIndex = questions.findIndex(q => q.id === 'email');
+      if (emailIndex !== -1) setActiveIndex(emailIndex);
+      return;
+    }
+
     setFormStatus('submitting');
 
-    // Split full name for emailjs template compatibility
-    const nameParts = (formData.name || "").split(" ");
-    const firstName = nameParts[0] || "";
-    const lastName = nameParts.slice(1).join(" ") || "";
-
     try {
-      // Save to Firestore for admin (fire-and-forget)
-      saveCommunityApp({
-        name: formData.name || '',
-        email: formData.email || '',
-        contact: formData.contact || '',
+      // 1. Save to Supabase (must be awaited)
+      await saveCommunityApp({
+        name,
+        email,
+        contact: contact || '',
         college: formData.external_college_name ? `${formData.college} (${formData.external_college_name})` : (formData.college || ''),
         year: formData.year || '',
         interest: formData.interest || '',
@@ -176,20 +190,20 @@ export default function Community() {
         social: formData.social || '',
       });
 
-      // Auto-send confirmation email to the applicant using SMTP backend
+      // 2. Auto-send confirmation email to applicant
       try {
         await sendApplicationReceivedEmail({
-            name: formData.name,
-            email: formData.email,
+          name,
+          email,
         });
       } catch (emailErr) {
         console.warn("Could not send confirmation email via SMTP:", emailErr);
       }
 
       setFormStatus('success');
-    } catch (error) {
+    } catch (error: any) {
       console.error("Submission Error:", error);
-      alert("Transmission failed. Please try again.");
+      alert(error.message || "Transmission failed. Please check your connection and try again.");
       setFormStatus('idle');
     }
   };

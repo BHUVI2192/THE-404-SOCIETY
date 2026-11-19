@@ -69,20 +69,38 @@ export const getCommunityApps = async (): Promise<CommunityApp[]> => {
 export const subscribeToCommunityApps = (callback: (apps: CommunityApp[]) => void): (() => void) => {
   getCommunityApps().then(callback);
   const channel = supabase
-    .channel('community_apps_changes')
+    .channel('community_apps_changes_' + Math.random().toString(36).substring(7))
     .on('postgres_changes', { event: '*', schema: 'public', table: 'onboarding_applications' }, () => {
       getCommunityApps().then(callback);
     })
     .subscribe();
-  return () => { supabase.removeChannel(channel); };
+
+  // Polling fallback every 15s in case websocket connection drops
+  const pollInterval = setInterval(() => {
+    getCommunityApps().then(callback);
+  }, 15000);
+
+  return () => { 
+    clearInterval(pollInterval);
+    supabase.removeChannel(channel); 
+  };
 };
 
 export const saveCommunityApp = async (app: Omit<CommunityApp, 'id' | 'status'>) => {
   const cleanEmail = app.email?.trim().toLowerCase();
+  const cleanName = app.name?.trim();
+
+  if (!cleanName) {
+    throw new Error('Name is required');
+  }
+  if (!cleanEmail) {
+    throw new Error('Email is required');
+  }
+
   const { data, error } = await supabase
     .from('onboarding_applications')
     .insert([{
-      name: app.name,
+      name: cleanName,
       email: cleanEmail,
       contact: app.contact || '',
       college: app.college || '',
