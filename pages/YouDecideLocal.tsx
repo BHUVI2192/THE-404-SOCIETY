@@ -206,7 +206,7 @@ const YouDecideLocal: React.FC = () => {
             top: '12px',
             left: 0,
             right: 0,
-            zIndex: 90,
+            zIndex: 10005,
             maxWidth: '1120px',
             width: '100%',
             margin: '0 auto',

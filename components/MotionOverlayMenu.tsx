@@ -264,27 +264,27 @@ export const MotionOverlayMenu: React.FC<MotionOverlayMenuProps> = ({
               letterSpacing: '0.08em',
               textTransform: 'uppercase',
               lineHeight: 1,
-              display: 'grid',
+              position: 'relative',
+              height: '14px',
               overflow: 'hidden',
-              padding: '2px 0',
+              display: 'inline-flex',
+              alignItems: 'center',
               opacity: btnHover || open ? 1 : 0.75,
               transition: 'opacity 0.25s ease',
             }}
           >
-            <motion.span
-              style={{ gridArea: '1 / 1' }}
-              animate={{ y: open ? -12 : 0, opacity: open ? 0 : 1 }}
-              transition={{ duration: dur, ease: EASE_SMOOTH }}
-            >
-              {menuLabel}
-            </motion.span>
-            <motion.span
-              style={{ gridArea: '1 / 1' }}
-              animate={{ y: open ? 0 : 12, opacity: open ? 1 : 0 }}
-              transition={{ duration: dur, ease: EASE_SMOOTH }}
-            >
-              {closeLabel}
-            </motion.span>
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.span
+                key={open ? 'close' : 'menu'}
+                initial={{ y: open ? 8 : -8, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: open ? -8 : 8, opacity: 0 }}
+                transition={{ duration: 0.18, ease: EASE_OUT }}
+                style={{ display: 'block', whiteSpace: 'nowrap' }}
+              >
+                {open ? closeLabel : menuLabel}
+              </motion.span>
+            </AnimatePresence>
           </span>
 
           {/* Morphing Burger/X Icon */}
@@ -363,10 +363,17 @@ export const MotionOverlayMenu: React.FC<MotionOverlayMenuProps> = ({
             }}
           />
 
-          {/* Top Bar inside Overlay */}
-          <div style={{ position: 'relative', width: '100%', padding: '14px 20px', zIndex: 2, boxSizing: 'border-box' }}>
-            {TopBarContent}
-          </div>
+          {/* Top Bar Spacer inside Overlay: preserves clean clearance below the fixed top bar */}
+          <div
+            aria-hidden="true"
+            style={{
+              position: 'relative',
+              width: '100%',
+              height: 'clamp(60px, 8vh, 76px)',
+              flexShrink: 0,
+              boxSizing: 'border-box',
+            }}
+          />
 
           {/* Navigation Links Body */}
           <div
