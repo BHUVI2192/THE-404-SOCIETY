@@ -5,6 +5,7 @@ import GlimmerVale from '../components/GlimmerVale';
 import FluidGlassButton from '../components/FluidGlassButton';
 import MotionOverlayMenu from '../components/MotionOverlayMenu';
 import YoudecideIntro from '../components/YoudecideIntro';
+import AudioWave from '../components/AudioWave';
 
 // Official Vector Logo Component (Reversed for dark/night aesthetic)
 const YouDecideLogo: React.FC<{ height?: number; className?: string }> = ({
@@ -198,6 +199,95 @@ const YouDecideLocal: React.FC = () => {
           overflowX: 'hidden',
         }}
       >
+        {/* ── FIXED TOP BAR: ACCESSIBLE ACROSS ALL SCROLL POSITIONS ON THE WEBSITE ── */}
+        <header
+          style={{
+            position: 'fixed',
+            top: '12px',
+            left: 0,
+            right: 0,
+            zIndex: 90,
+            maxWidth: '1120px',
+            width: '100%',
+            margin: '0 auto',
+            padding: '0 20px',
+            boxSizing: 'border-box',
+            pointerEvents: 'none',
+          }}
+        >
+          <div style={{ pointerEvents: 'auto' }}>
+            <MotionOverlayMenu
+              brandElement={<YouDecideLogo height={15} />}
+              brandHref="#overview"
+              rightAction={
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <AudioWave
+                    audioUrl="/audio/backgroundmusic.mp3"
+                    volume={25}
+                    loop={true}
+                    animation="bars"
+                    barCount={14}
+                    svgWidth={34}
+                    svgHeight={16}
+                    strokeWidth={2}
+                    color="#60A5FA"
+                    restingColor="rgba(255, 255, 255, 0.4)"
+                    showLabel={true}
+                    labelOnText="Sound On"
+                    labelOffText="Sound Off"
+                    labelOnColor="#FFFFFF"
+                    labelOffColor="rgba(255, 255, 255, 0.55)"
+                    labelGap={6}
+                    labelFont={{
+                      fontSize: 11,
+                      fontFamily: '"Geist", sans-serif',
+                      fontWeight: 500,
+                      letterSpacing: '0.03em',
+                    }}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      padding: '3px 9px',
+                      borderRadius: '999px',
+                      background: 'rgba(255, 255, 255, 0.05)',
+                      border: '1px solid rgba(255, 255, 255, 0.12)',
+                      cursor: 'pointer',
+                      backdropFilter: 'blur(8px)',
+                    }}
+                  />
+                  <FluidGlassButton
+                    text="Contact"
+                    link="#contact"
+                    padding="5px 15px"
+                    fontSize="12px"
+                    baseColor="#071838"
+                    glassColor="#60A5FA"
+                  />
+                </div>
+              }
+              links={[
+                { label: 'Capabilities', link: '#services' },
+                { label: 'Commercial Model', link: '#model' },
+                { label: '3-Step Process', link: '#process' },
+                { label: 'Project Briefing', link: '#contact' },
+                { label: 'Launch Teaser', link: '#/youdecide.studio' },
+              ]}
+              secondaryLinks={[
+                { label: 'LinkedIn', link: 'https://linkedin.com', newTab: true },
+                { label: 'X (Twitter)', link: 'https://x.com', newTab: true },
+                { label: 'GitHub', link: 'https://github.com', newTab: true },
+                { label: 'hello@youdecide.studio', link: 'mailto:hello@youdecide.studio' },
+              ]}
+              note="© 2026 youdecide.studio · All rights reserved"
+              headerColor="#FFFFFF"
+              barBackground="rgba(8, 18, 42, 0.65)"
+              barBorder="rgba(255, 255, 255, 0.16)"
+              overlayBackground="rgba(4, 9, 24, 0.96)"
+              accent="#60A5FA"
+            />
+          </div>
+        </header>
+
         {/* ========================================================================= */}
         {/* HERO SECTION WITH GLIMMERVALE WEBGL SHADER BACKGROUND */}
         {/* ========================================================================= */}
@@ -242,53 +332,6 @@ const YouDecideLocal: React.FC = () => {
             }}
           />
 
-          {/* ── HEADER WITH MOTION OVERLAY MENU & FLUID GLASS CONTACT BUTTON ── */}
-          <header
-            style={{
-              position: 'relative',
-              zIndex: 30,
-              maxWidth: '1120px',
-              width: '100%',
-              margin: '0 auto',
-              padding: '14px 20px',
-              boxSizing: 'border-box',
-            }}
-          >
-            <MotionOverlayMenu
-              brandElement={<YouDecideLogo height={15} />}
-              brandHref="#overview"
-              rightAction={
-                <FluidGlassButton
-                  text="Contact"
-                  link="#contact"
-                  padding="5px 15px"
-                  fontSize="12px"
-                  baseColor="#071838"
-                  glassColor="#60A5FA"
-                />
-              }
-              links={[
-                { label: 'Capabilities', link: '#services' },
-                { label: 'Commercial Model', link: '#model' },
-                { label: '3-Step Process', link: '#process' },
-                { label: 'Project Briefing', link: '#contact' },
-                { label: 'Launch Teaser', link: '#/youdecide.studio' },
-              ]}
-              secondaryLinks={[
-                { label: 'LinkedIn', link: 'https://linkedin.com', newTab: true },
-                { label: 'X (Twitter)', link: 'https://x.com', newTab: true },
-                { label: 'GitHub', link: 'https://github.com', newTab: true },
-                { label: 'hello@youdecide.studio', link: 'mailto:hello@youdecide.studio' },
-              ]}
-              note="© 2026 youdecide.studio · All rights reserved"
-              headerColor="#FFFFFF"
-              barBackground="rgba(8, 18, 42, 0.65)"
-              barBorder="rgba(255, 255, 255, 0.16)"
-              overlayBackground="rgba(4, 9, 24, 0.96)"
-              accent="#60A5FA"
-            />
-          </header>
-
           {/* ── HERO CENTER CONTENT: POSITIONED IN OPEN SKY CLEARLY ABOVE MOUNTAIN CREST ── */}
           <div
             id="overview"
@@ -297,7 +340,7 @@ const YouDecideLocal: React.FC = () => {
               zIndex: 10,
               maxWidth: '680px',
               width: '100%',
-              margin: 'clamp(38px, 6.5vh, 76px) auto 0',
+              margin: 'clamp(82px, 12vh, 120px) auto 0',
               padding: 'clamp(14px, 2vh, 26px) 24px clamp(18px, 2.5vh, 30px)',
               textAlign: 'center',
               display: 'flex',
