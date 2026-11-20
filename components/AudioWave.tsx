@@ -41,7 +41,7 @@ const FOCUS_STYLE_BASE=`
  * @framerIntrinsicHeight 80
  * @framerSupportedLayoutWidth any-prefer-fixed
  * @framerSupportedLayoutHeight any-prefer-fixed
- */export default function AudioWave(props){const{audioUrl="",volume=80,loop=true,animation="wave",animationSpeed=1,intensity=1,barCount=26,color="#0099FF",restingColor="#CCCCCC",strokeWidth=3,endCap="round",svgWidth=240,svgHeight=80,transitionSpeed=.8,restingLevel=.35,showLabel=true,labelOnText="Sound On",labelOffText="Sound Off",labelFont,labelOnColor="#000000",labelOffColor="#888888",labelPosition="right",labelGap=12,style}=props;const isStatic=useIsStaticRenderer();// Unique class per instance — scopes the focus ring CSS
+ */export default function AudioWave(props){const{audioUrl="",volume=45,loop=true,animation="wave",animationSpeed=1,intensity=1,barCount=26,color="#0099FF",restingColor="#CCCCCC",strokeWidth=3,endCap="round",svgWidth=240,svgHeight=80,transitionSpeed=.8,restingLevel=.35,showLabel=true,labelOnText="Sound On",labelOffText="Sound Off",labelFont,labelOnColor="#000000",labelOffColor="#888888",labelPosition="right",labelGap=12,style}=props;const isStatic=useIsStaticRenderer();// Unique class per instance — scopes the focus ring CSS
 const focusClass=useSafeId();const strokeLinecap=endCap==="round"?"round":"butt";const w=Math.max(16,svgWidth);const h=Math.max(16,svgHeight);// Minimum 44×44px tap target — WCAG 2.5.5
 const tapW=Math.max(w,44);const tapH=Math.max(h,44);// Allow full 0–1 range for restingLevel
 const resting=Math.max(0,Math.min(1,restingLevel));// ── State ────────────────────────────────────────────────────────────────

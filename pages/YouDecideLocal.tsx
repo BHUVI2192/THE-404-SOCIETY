@@ -223,7 +223,7 @@ const YouDecideLocal: React.FC = () => {
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <AudioWave
                     audioUrl="/audio/backgroundmusic.mp3"
-                    volume={25}
+                    volume={45}
                     loop={true}
                     animation="bars"
                     barCount={14}
