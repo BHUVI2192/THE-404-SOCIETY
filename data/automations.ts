@@ -54,7 +54,6 @@ export const AUTOMATIONS: AutomationItem[] = [
       alt: 'Abstract sculptural liquid chrome in electric blue and violet',
     },
     imagePosition: '52% 50%',
-    cta: 'Explore System',
   },
   {
     id: 'finance-accounting',
@@ -90,7 +89,6 @@ export const AUTOMATIONS: AutomationItem[] = [
       alt: 'Sculptural geometric glass with refractive prisms',
     },
     imagePosition: '45% 50%',
-    cta: 'Explore System',
   },
   {
     id: 'document-data-processing',
@@ -125,7 +123,6 @@ export const AUTOMATIONS: AutomationItem[] = [
       alt: 'Iridescent violet fluid sculpture and layered geometry',
     },
     imagePosition: '50% 50%',
-    cta: 'Explore System',
   },
   {
     id: 'ecommerce-order-management',
@@ -161,7 +158,6 @@ export const AUTOMATIONS: AutomationItem[] = [
       alt: 'Sculptural curved staircase in vivid orange architecture',
     },
     imagePosition: '30% 53%',
-    cta: 'Explore System',
   },
   {
     id: 'operations-approval-workflows',
@@ -196,6 +192,5 @@ export const AUTOMATIONS: AutomationItem[] = [
       alt: 'Reflective liquid metal sculpture in hot pink and ruby red',
     },
     imagePosition: '55% 50%',
-    cta: 'Explore System',
   },
 ];

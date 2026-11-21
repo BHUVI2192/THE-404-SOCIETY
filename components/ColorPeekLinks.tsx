@@ -274,7 +274,7 @@ export const ColorPeekLinks: React.FC<ColorPeekLinksProps> = ({
             onKeyDown={isClickable ? handleKeyDown : undefined}
             tabIndex={isClickable ? 0 : undefined}
             role={isClickable && !canNavigate ? 'button' : undefined}
-            aria-label={`${item.title}: ${item.cta || 'Explore Details'}`}
+            aria-label={item.title}
             style={{
               height: Math.max(120, cardHeight),
               width: '100%',
@@ -347,7 +347,7 @@ export const ColorPeekLinks: React.FC<ColorPeekLinksProps> = ({
                   {item.description}
                 </span>
 
-                {isClickable && (
+                {isClickable && Boolean(item.cta) && (
                   <span
                     className="cpl-cta"
                     style={{
@@ -355,7 +355,7 @@ export const ColorPeekLinks: React.FC<ColorPeekLinksProps> = ({
                       color: textColor,
                     }}
                   >
-                    <span>{item.cta || 'View Details'}</span>
+                    <span>{item.cta}</span>
                     <ArrowIcon size={13} />
                   </span>
                 )}

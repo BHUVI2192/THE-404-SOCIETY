@@ -28,7 +28,6 @@ export const AutomationSection: React.FC<AutomationSectionProps> = ({
     imagePosition: auto.imagePosition || '50% 50%',
     background: auto.background,
     textColor: auto.textColor || '#FFFFFF',
-    cta: auto.cta || 'Explore System',
     onClick: () => setSelectedAutomation(auto),
   }));
 
@@ -47,16 +46,16 @@ export const AutomationSection: React.FC<AutomationSectionProps> = ({
         scrollMarginTop: '110px',
       }}
     >
-      {/* ── SECTION HEADER: BIG, CURSIVE & MINIMAL ── */}
+      {/* ── SECTION HEADER: BIG, CURSIVE & IN ONE LINE ── */}
       <div
         style={{
           width: '100%',
-          maxWidth: '1000px',
+          maxWidth: '100%',
           marginBottom: 'clamp(28px, 4.5vh, 44px)',
           paddingLeft: '4px',
         }}
       >
-        {/* Main Title: Big & Cursive (Instrument Serif Italic) */}
+        {/* Main Title: Big & Cursive (Instrument Serif Italic) — In Single Line */}
         <motion.h2
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -65,18 +64,19 @@ export const AutomationSection: React.FC<AutomationSectionProps> = ({
           style={{
             fontFamily: '"Instrument Serif", serif',
             fontStyle: 'italic',
-            fontSize: 'clamp(56px, 7.5vw, 96px)',
+            fontSize: 'clamp(26px, 4.5vw, 76px)',
             fontWeight: 400,
-            lineHeight: 1.04,
+            lineHeight: 1.1,
             letterSpacing: '-0.02em',
             color: '#FFFFFF',
             margin: '0 0 10px',
+            whiteSpace: 'nowrap',
           }}
         >
           Automation, beyond the obvious.
         </motion.h2>
 
-        {/* 2. Automation Subhead */}
+        {/* 2. Automation Subhead — Same size and styling as 1. Websites */}
         <motion.p
           initial={{ opacity: 0, y: 8 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -84,7 +84,7 @@ export const AutomationSection: React.FC<AutomationSectionProps> = ({
           transition={{ duration: 0.5, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
           style={{
             fontFamily: '"Geist Mono", monospace',
-            fontSize: 'clamp(15px, 1.6vw, 20px)',
+            fontSize: 'clamp(16px, 1.8vw, 22px)',
             fontWeight: 500,
             letterSpacing: '0.16em',
             textTransform: 'uppercase',

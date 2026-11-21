@@ -356,7 +356,7 @@ export const BrandLogosSection: React.FC<{
           transition={{ duration: 0.5, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
           style={{
             fontFamily: '"Geist Mono", monospace',
-            fontSize: 'clamp(15px, 1.6vw, 20px)',
+            fontSize: 'clamp(16px, 1.8vw, 22px)',
             fontWeight: 500,
             letterSpacing: '0.16em',
             textTransform: 'uppercase',
