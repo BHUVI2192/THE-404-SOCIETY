@@ -91,14 +91,14 @@ const STYLE = `
 }
 .cpl-content {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   pointer-events: none;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
   height: 100%;
-  max-width: 56%;
+  max-width: 48%;
 }
 .cpl-title {
   font-size: var(--cpl-title-size);
@@ -150,20 +150,20 @@ const STYLE = `
 }
 
 @container (max-width: 750px) {
-  .cpl-title { font-size: clamp(24px, 5.8cqw, 38px); }
-  .cpl-content { max-width: 57%; }
-  .cpl-image { width: 35%; }
-  .cpl-card:hover .cpl-image, .cpl-card:focus-visible .cpl-image { width: 45% !important; }
+  .cpl-title { font-size: clamp(22px, 5.2cqw, 34px); }
+  .cpl-content { max-width: 50%; }
+  .cpl-image { width: 26%; }
+  .cpl-card:hover .cpl-image, .cpl-card:focus-visible .cpl-image { width: 34% !important; }
 }
 
 @container (max-width: 520px) {
   .cpl-card { min-height: 156px !important; padding: 18px 20px !important; }
-  .cpl-image { right: 10px !important; width: 38% !important; top: 9px; bottom: 9px; }
-  .cpl-card:hover .cpl-image, .cpl-card:focus-visible .cpl-image { width: 42% !important; }
+  .cpl-image { right: 10px !important; width: 30% !important; top: 9px; bottom: 9px; }
+  .cpl-card:hover .cpl-image, .cpl-card:focus-visible .cpl-image { width: 33% !important; }
   .cpl-arrow { right: 16px !important; top: 24px; transform: none; width: 32px; height: 32px; }
   .cpl-card:hover .cpl-arrow, .cpl-card:focus-visible .cpl-arrow { transform: rotate(45deg); }
-  .cpl-content { max-width: 58%; }
-  .cpl-title { font-size: clamp(20px, 7.5cqw, 30px); letter-spacing: -.03em; }
+  .cpl-content { max-width: 52%; }
+  .cpl-title { font-size: clamp(19px, 6.8cqw, 26px); letter-spacing: -.03em; }
   .cpl-description { font-size: 11.5px; }
   .cpl-copybottom { display: block; }
   .cpl-cta { margin-top: 6px; font-size: 11px; }
@@ -207,10 +207,10 @@ export const ColorPeekLinks: React.FC<ColorPeekLinksProps> = ({
   radius = 22,
   cardPadding = 28,
   imageInset = 10,
-  imageWidth = 30,
-  hoverWidth = 52,
+  imageWidth = 24,
+  hoverWidth = 35,
   imageRadius = 16,
-  titleSize = 42,
+  titleSize = 36,
   animationSpeed = 0.65,
   background = 'transparent',
   titleFont,
