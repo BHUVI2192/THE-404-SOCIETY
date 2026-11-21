@@ -197,12 +197,12 @@ export const BrandLogoImages: React.FC<BrandLogoImagesProps> = ({
             className="tap-link-btn"
             style={{
               position: 'absolute',
-              bottom: '16px',
-              padding: '8px 16px',
+              bottom: '18px',
+              padding: '9px 18px',
               backgroundColor: '#000000',
               color: '#FFFFFF',
               borderRadius: '999px',
-              fontSize: '11px',
+              fontSize: '12px',
               fontWeight: 600,
               fontFamily: '"Geist Mono", monospace',
               letterSpacing: '0.06em',
@@ -218,7 +218,7 @@ export const BrandLogoImages: React.FC<BrandLogoImagesProps> = ({
             }}
           >
             <span>Tap for link</span>
-            <span style={{ fontSize: '12px', lineHeight: 1 }}>↗</span>
+            <span style={{ fontSize: '13px', lineHeight: 1 }}>↗</span>
           </div>
         )}
       </a>
@@ -237,7 +237,7 @@ export const BrandLogoImages: React.FC<BrandLogoImagesProps> = ({
           style={{
             margin: 0,
             fontFamily: '"Anek Latin", "Inter", -apple-system, sans-serif',
-            fontSize: '12px',
+            fontSize: '14px',
             fontWeight: 600,
             letterSpacing: '0.08em',
             lineHeight: '120%',
@@ -303,21 +303,21 @@ export const BrandLogosSection: React.FC<{
       id="websites-built"
       className={`brand-logos-showcase-section ${className}`}
       style={{
-        maxWidth: '1280px',
+        maxWidth: '1320px',
         width: '100%',
-        margin: 'clamp(56px, 9vh, 96px) auto clamp(64px, 11vh, 112px)',
-        padding: '0 clamp(16px, 4vw, 32px)',
+        margin: 'clamp(64px, 10vh, 112px) auto clamp(72px, 12vh, 128px)',
+        padding: '0 clamp(16px, 4vw, 36px)',
         boxSizing: 'border-box',
         position: 'relative',
         zIndex: 10,
         scrollMarginTop: '110px',
       }}
     >
-      {/* ── Section Header: Italic & Minimal ── */}
+      {/* ── Section Header: Italic & Minimal (Enlarged) ── */}
       <div
         style={{
           width: '100%',
-          marginBottom: 'clamp(20px, 3.5vh, 32px)',
+          marginBottom: 'clamp(24px, 4vh, 38px)',
           paddingLeft: '4px',
         }}
       >
@@ -329,10 +329,10 @@ export const BrandLogosSection: React.FC<{
           style={{
             fontFamily: '"Instrument Serif", serif',
             fontStyle: 'italic',
-            fontSize: 'clamp(44px, 5.5vw, 72px)',
+            fontSize: 'clamp(60px, 7.5vw, 96px)',
             color: '#FFFFFF',
             fontWeight: 400,
-            margin: '0 0 6px',
+            margin: '0 0 10px',
             lineHeight: 1.05,
             letterSpacing: '-0.02em',
           }}
@@ -347,11 +347,11 @@ export const BrandLogosSection: React.FC<{
           transition={{ duration: 0.5, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
           style={{
             fontFamily: '"Geist Mono", monospace',
-            fontSize: '13px',
+            fontSize: 'clamp(15px, 1.6vw, 20px)',
             fontWeight: 500,
-            letterSpacing: '0.14em',
+            letterSpacing: '0.16em',
             textTransform: 'uppercase',
-            color: 'rgba(255, 255, 255, 0.65)',
+            color: 'rgba(255, 255, 255, 0.7)',
             margin: 0,
           }}
         >
@@ -368,12 +368,12 @@ export const BrandLogosSection: React.FC<{
           backgroundColor: '#FFFFFF',
           borderRadius: '24px',
           overflow: 'hidden',
-          padding: 'clamp(60px, 7vw, 96px) clamp(36px, 7vw, 100px)',
+          padding: 'clamp(64px, 7vw, 104px) clamp(36px, 7vw, 104px)',
           display: 'flex',
           flexDirection: 'row',
           justifyContent: 'space-between',
           alignItems: 'center',
-          gap: '48px',
+          gap: 'clamp(36px, 4vw, 56px)',
           boxShadow: '0 24px 64px rgba(0, 0, 0, 0.45)',
           boxSizing: 'border-box',
           position: 'relative',
@@ -385,9 +385,9 @@ export const BrandLogosSection: React.FC<{
           style={{
             display: 'flex',
             flexDirection: 'column',
-            gap: 'clamp(12px, 2vh, 20px)',
+            gap: 'clamp(14px, 2.2vh, 24px)',
             userSelect: 'none',
-            maxWidth: '660px',
+            maxWidth: '720px',
             flex: '1 1 auto',
           }}
         >
@@ -408,7 +408,7 @@ export const BrandLogosSection: React.FC<{
                   textAlign: 'left',
                   cursor: 'pointer',
                   fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-                  fontSize: 'clamp(36px, 4.2vw, 58px)',
+                  fontSize: 'clamp(44px, 5.2vw, 70px)',
                   fontWeight: isActive ? 600 : 500,
                   lineHeight: 1.15,
                   letterSpacing: '-0.025em',
@@ -416,7 +416,7 @@ export const BrandLogosSection: React.FC<{
                   transition:
                     'color 0.22s cubic-bezier(0.22, 1, 0.36, 1), transform 0.22s cubic-bezier(0.22, 1, 0.36, 1)',
                   outline: 'none',
-                  transform: isActive ? 'translateX(6px)' : 'none',
+                  transform: isActive ? 'translateX(8px)' : 'none',
                   whiteSpace: 'nowrap',
                   willChange: 'color, transform',
                 }}
@@ -431,8 +431,8 @@ export const BrandLogosSection: React.FC<{
         <div
           className="brand-interactive-display"
           style={{
-            width: 'clamp(280px, 30vw, 360px)',
-            minHeight: '380px',
+            width: 'clamp(320px, 34vw, 420px)',
+            minHeight: '400px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -488,19 +488,19 @@ export const BrandLogosSection: React.FC<{
           .brand-interactive-list {
             display: flex !important;
             flex-direction: column !important;
-            gap: 12px !important;
+            gap: 14px !important;
             width: 100% !important;
             text-align: center !important;
           }
           .brand-interactive-item {
-            font-size: clamp(24px, 6vw, 34px) !important;
+            font-size: clamp(28px, 6.8vw, 42px) !important;
             text-align: center !important;
             white-space: normal !important;
             transform: none !important;
           }
           .brand-interactive-display {
-            width: clamp(220px, 60vw, 280px) !important;
-            min-height: 280px !important;
+            width: clamp(240px, 70vw, 320px) !important;
+            min-height: 300px !important;
           }
           /* Always show tap for link button on touch/mobile */
           .tap-link-btn {
