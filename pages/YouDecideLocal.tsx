@@ -7,6 +7,7 @@ import MotionOverlayMenu from '../components/MotionOverlayMenu';
 import YoudecideIntro from '../components/YoudecideIntro';
 import AudioWave from '../components/AudioWave';
 import { BrandLogosSection } from '../components/BrandLogoImages';
+import { ManifestoScrollSection } from '../components/TextRevealScroll';
 
 // Official Vector Logo Component (Reversed for dark/night aesthetic)
 const YouDecideLogo: React.FC<{ height?: number; className?: string }> = ({
@@ -416,6 +417,11 @@ const YouDecideLocal: React.FC = () => {
           {/* Bottom spacer so WebGL mountain floor is gracefully visible */}
           <div style={{ height: '24px' }} />
         </section>
+
+        {/* ========================================================================= */}
+        {/* TEXT REVEAL SCROLL MANIFESTO (FRAMER COMPONENT)                           */}
+        {/* ========================================================================= */}
+        <ManifestoScrollSection />
 
         {/* ========================================================================= */}
         {/* BRAND LOGO IMAGES (FRAMER COMPONENT SHOWCASE)                             */}
