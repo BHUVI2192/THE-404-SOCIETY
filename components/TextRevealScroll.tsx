@@ -315,18 +315,32 @@ export default TextRevealScroll;
  * - Final statement: YOU DECIDE. (bold uppercase, centred at the end)
  * - Minimal vertical spacing, elegant, minimal and confident.
  */
-export const ManifestoScrollSection: React.FC<{
+export interface ManifestoScrollSectionProps {
   className?: string;
-}> = ({ className = '' }) => {
+  /**
+   * Font size for the middle supporting text.
+   * Default: 'clamp(15.5px, 1.35vw, 18px)'.
+   * You can pass custom size: e.g. '18px', '20px', 'clamp(16px, 1.4vw, 22px)'
+   */
+  supportingFontSize?: string | number;
+}
+
+export const ManifestoScrollSection: React.FC<ManifestoScrollSectionProps> = ({
+  className = '',
+  supportingFontSize = 'clamp(15.5px, 1.35vw, 18px)',
+}) => {
+  const resolvedSupportingSize =
+    typeof supportingFontSize === 'number' ? `${supportingFontSize}px` : supportingFontSize;
+
   return (
     <section
       id="manifesto"
       className={`studio-intro-section ${className}`}
       style={{
         width: '100%',
-        maxWidth: '760px',
+        maxWidth: '1280px',
         margin: '0 auto',
-        padding: 'clamp(40px, 6vh, 60px) clamp(20px, 4vw, 32px) clamp(32px, 5vh, 48px)',
+        padding: 'clamp(48px, 7vh, 72px) clamp(20px, 4vw, 40px) clamp(44px, 6.5vh, 68px)',
         boxSizing: 'border-box',
         position: 'relative',
         zIndex: 10,
@@ -341,7 +355,7 @@ export const ManifestoScrollSection: React.FC<{
         dimOpacity={0.2}
         style={{
           width: '100%',
-          maxWidth: '680px',
+          maxWidth: '1200px',
           margin: '0 auto',
         }}
       >
@@ -351,51 +365,55 @@ export const ManifestoScrollSection: React.FC<{
             flexDirection: 'column',
             alignItems: 'center',
             textAlign: 'center',
-            gap: 'clamp(14px, 2vh, 18px)',
+            gap: 'clamp(20px, 3vh, 32px)',
             color: '#FFFFFF',
             margin: '0 auto',
           }}
         >
-          {/* First statement in bold, uppercase letters */}
+          {/* First statement: Big, wide, NOT bold (400 weight) */}
           <p
+            className="manifesto-lead-text"
             style={{
               margin: 0,
               fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-              fontSize: 'clamp(19px, 2.3vw, 24px)',
-              fontWeight: 700,
-              letterSpacing: '0.08em',
+              fontSize: 'clamp(28px, 4.3vw, 64px)',
+              fontWeight: 400, // Not bold
+              letterSpacing: '0.05em', // Wider letter-spacing / width
               textTransform: 'uppercase',
-              lineHeight: 1.25,
+              lineHeight: 1.1,
             }}
           >
             NOT A TRADITIONAL AGENCY.
           </p>
 
-          {/* Supporting text in small, clean typography */}
+          {/* Supporting text in clean typography (configurable size) */}
           <p
+            className="manifesto-supporting-text"
             style={{
               margin: 0,
               fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-              fontSize: 'clamp(15px, 1.35vw, 17px)',
+              fontSize: resolvedSupportingSize,
               fontWeight: 400,
-              lineHeight: 1.6,
+              lineHeight: 1.65,
               letterSpacing: '-0.01em',
-              maxWidth: '560px',
+              maxWidth: '680px',
+              color: 'rgba(255, 255, 255, 0.88)',
             }}
           >
             We believe good ideas shouldn&apos;t be limited by budgets. No fixed prices, no unnecessary packages. Just good work and honest value.
           </p>
 
-          {/* "YOU DECIDE." in bold uppercase, centred at the end */}
+          {/* Closing punchline: Big, wide, NOT bold (400 weight), centered */}
           <p
+            className="manifesto-punchline-text"
             style={{
-              margin: 'clamp(6px, 1vh, 10px) 0 0',
+              margin: 'clamp(8px, 1.5vh, 16px) 0 0',
               fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-              fontSize: 'clamp(19px, 2.3vw, 24px)',
-              fontWeight: 700,
-              letterSpacing: '0.12em',
+              fontSize: 'clamp(34px, 5.2vw, 74px)',
+              fontWeight: 400, // Not bold
+              letterSpacing: '0.14em', // Wider letter-spacing / width
               textTransform: 'uppercase',
-              lineHeight: 1.25,
+              lineHeight: 1.1,
               textAlign: 'center',
             }}
           >
@@ -403,6 +421,14 @@ export const ManifestoScrollSection: React.FC<{
           </p>
         </div>
       </TextRevealScroll>
+
+      <style>{`
+        @media (min-width: 821px) {
+          .manifesto-lead-text {
+            white-space: nowrap !important;
+          }
+        }
+      `}</style>
     </section>
   );
 };
