@@ -1,383 +1,514 @@
-/**
- * Brand Logo Images — Framer Component adapted for React 19 & Framer Motion
- * Source: https://framer.com/m/Brand-Logo-Images-D51ZYs.js@nEclhYlpV3JBxdyXre3u
- *
- * Implements the Framer Brand Logo Images component showcasing websites built:
- * 1. Parivarthana School
- * 2. The 404 Society
- * 3. Rayara Mutt Honnali
- * 4. Mikan
- * 5. Helio
- * 6. Momo
- */
+// Brand Logo Images — Framer Marketplace Component Adapted for Portfolio Websites
+// Source: https://framer.com/m/Brand-Logo-Images-D51ZYs.js@nEclhYlpV3JBxdyXre3u
+//
+// Interactive two-column portfolio showcase matching Framer design:
+// - Header: "we build" (Instrument Serif italic) & "1. Websites" (minimal uppercase)
+// - Left: Vertical interactive typography list of websites built (enlarged & minimal)
+// - Right: Framer Brand Logo Images component displaying active website logo & index
+//   with a cute minimal floating "Tap for link ↗" button on hover.
 
-import React, { useRef, useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export interface WebsiteBrand {
   id: string;
-  order: string;
-  variant: string;
   name: string;
-  tagline: string;
+  indexText: string;
   url: string;
-  displayUrl: string;
   logoSrc: string;
-  logoAlt: string;
-  accentColor: string;
-  auroraColor: string;
+  localFallback: string;
+  aspect: string;
 }
 
-export const WEBSITES_BUILT: WebsiteBrand[] = [
+export const WEBSITE_BRANDS: WebsiteBrand[] = [
   {
     id: 'parivarthana',
-    order: '01 / 06',
-    variant: 'Parivarthana',
-    name: 'PARIVARTHANA SCHOOL',
-    tagline: 'Residential School & PU College',
+    name: 'Parivarthana School',
+    indexText: '01 / 06   PARIVARTHANA SCHOOL',
     url: 'https://parivarthanaschool.com/RSchool/',
-    displayUrl: 'parivarthanaschool.com/RSchool',
-    logoSrc: '/brands/parivarthana-logo.png',
-    logoAlt: 'Parivarthana Residential School and PU College Logo',
-    accentColor: '#EAB308',
-    auroraColor: 'rgba(234, 179, 8, 0.22)',
+    logoSrc: '/portfolio/parivarthana.png',
+    localFallback: '/portfolio/parivarthana.png',
+    aspect: '1 / 1',
   },
   {
     id: 'the404society',
-    order: '02 / 06',
-    variant: 'The404Society',
-    name: 'THE 404 SOCIETY',
-    tagline: 'Student Developer Community',
+    name: 'The 404 Society',
+    indexText: '02 / 06   THE 404 SOCIETY',
     url: 'https://www.the404society.in/',
-    displayUrl: 'the404society.in',
-    logoSrc: '/brands/the404society-logo.png',
-    logoAlt: 'The 404 Society Brand Logo',
-    accentColor: '#38BDF8',
-    auroraColor: 'rgba(56, 189, 248, 0.25)',
+    logoSrc: '/portfolio/the404society.png',
+    localFallback: '/portfolio/the404society.png',
+    aspect: '1 / 1',
   },
   {
     id: 'rayaramutt',
-    order: '03 / 06',
-    variant: 'RayaraMutt',
-    name: 'RAYARA MUTT HONNALI',
-    tagline: 'Sacred Heritage & Trust',
+    name: 'Rayaramutthonnali',
+    indexText: '03 / 06   RAYARAMUTTHONNALI',
     url: 'https://www.rayaramutthonnali.org/',
-    displayUrl: 'rayaramutthonnali.org',
-    logoSrc: '/brands/rayaramutt-logo.png',
-    logoAlt: 'Sri Rayara Mutt Honnali Sacred Seal Logo',
-    accentColor: '#F59E0B',
-    auroraColor: 'rgba(245, 158, 11, 0.22)',
+    logoSrc: '/portfolio/rayaramutt.png',
+    localFallback: '/portfolio/rayaramutt.png',
+    aspect: '1 / 1',
   },
   {
     id: 'mikan',
-    order: '04 / 06',
-    variant: 'Mikan',
-    name: 'MIKAN',
-    tagline: 'Sparkling Tangerine Citrus',
+    name: 'Mikan',
+    indexText: '04 / 06   MIKAN',
     url: 'https://mikan-ten.vercel.app/',
-    displayUrl: 'mikan-ten.vercel.app',
-    logoSrc: '/brands/mikan-logo.svg',
-    logoAlt: 'Mikan Sparkling Citrus Japanese Mon Logo',
-    accentColor: '#FF6E14',
-    auroraColor: 'rgba(255, 110, 20, 0.24)',
+    logoSrc: '/portfolio/mikan.svg',
+    localFallback: '/portfolio/mikan.svg',
+    aspect: '1 / 1',
   },
   {
     id: 'helio',
-    order: '05 / 06',
-    variant: 'Helio',
-    name: 'HELIO',
-    tagline: 'Ceramic Atelier & Objects',
+    name: 'Helio',
+    indexText: '05 / 06   HELIO',
     url: 'https://helio-beryl-eta.vercel.app/',
-    displayUrl: 'helio-beryl-eta.vercel.app',
-    logoSrc: '/brands/helio-logo.svg',
-    logoAlt: 'Helio Kiln Ceramic Atelier Mark',
-    accentColor: '#C28E73',
-    auroraColor: 'rgba(194, 142, 115, 0.24)',
+    logoSrc: '/portfolio/helio.svg',
+    localFallback: '/portfolio/helio.svg',
+    aspect: '1 / 1',
   },
   {
     id: 'momo',
-    order: '06 / 06',
-    variant: 'Momo',
-    name: 'MOMO',
-    tagline: 'Small Objects for Good Moods',
+    name: 'Momo',
+    indexText: '06 / 06   MOMO',
     url: 'https://momo-five-liart.vercel.app/',
-    displayUrl: 'momo-five-liart.vercel.app',
-    logoSrc: '/brands/momo-logo.svg',
-    logoAlt: 'Momo Montreal Playful Objects Brand Logo',
-    accentColor: '#A78BFA',
-    auroraColor: 'rgba(167, 139, 250, 0.26)',
+    logoSrc: '/portfolio/momo.svg',
+    localFallback: '/portfolio/momo.svg',
+    aspect: '1 / 1',
   },
 ];
 
-// Framer spring transition specification
-const framerSpring = {
-  type: 'spring',
-  bounce: 0.25,
-  duration: 0.35,
-};
+const BRAND_LOOKUP: Record<string, WebsiteBrand> = {};
+WEBSITE_BRANDS.forEach((b) => {
+  BRAND_LOOKUP[b.id] = b;
+  BRAND_LOOKUP[b.name.toLowerCase()] = b;
+  BRAND_LOOKUP[b.name] = b;
+});
 
-export interface BrandLogoImageProps {
-  brand: WebsiteBrand;
+export interface BrandLogoImagesProps {
+  /** Selected website name or id */
+  variant?: string;
+  /** Width in pixels or CSS string */
   width?: number | string;
+  /** Height in pixels or CSS string */
   height?: number | string;
+  /** How the logo fits inside the container */
+  fit?: 'contain' | 'fill';
+  /** Background color of the card */
+  backgroundColor?: string;
+  /** Custom inline style */
   style?: React.CSSProperties;
+  /** Custom CSS class */
   className?: string;
-  interactive?: boolean;
+  /** Optional click handler */
+  onClick?: () => void;
+  /** Show the cute minimal "Tap for link" button on hover */
+  showLinkButton?: boolean;
 }
 
 /**
- * BrandLogoImages Card — faithful to Framer component specification:
- * - 286px intrinsic width
- * - 1:1 aspect ratio logo container with crisp centered logo
- * - Framer RichText typography: minimal uppercase font, 12px, letter-spacing 0.08em
+ * BrandLogoImages
+ *
+ * Generated Framer component replica displaying active portfolio logo & index.
+ * @framerIntrinsicHeight 360
+ * @framerIntrinsicWidth 320
  */
-export const BrandLogoImages: React.FC<BrandLogoImageProps> = ({
-  brand,
-  width = 286,
+export const BrandLogoImages: React.FC<BrandLogoImagesProps> = ({
+  variant = 'Parivarthana School',
+  width = 320,
   height = 'auto',
+  fit = 'contain',
+  backgroundColor = 'transparent',
   style,
-  className,
-  interactive = true,
+  className = '',
+  onClick,
+  showLinkButton = true,
 }) => {
-  const [isHovered, setIsHovered] = useState(false);
+  const brand = BRAND_LOOKUP[variant] || BRAND_LOOKUP[variant.toLowerCase()] || WEBSITE_BRANDS[0];
+  const [imgSrc, setImgSrc] = useState<string>(brand.logoSrc);
+
+  useEffect(() => {
+    setImgSrc(brand.logoSrc);
+  }, [brand]);
 
   return (
-    <motion.a
-      href={brand.url}
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label={`Visit ${brand.name} website: ${brand.url}`}
-      onHoverStart={() => setIsHovered(true)}
-      onHoverEnd={() => setIsHovered(false)}
-      onFocus={() => setIsHovered(true)}
-      onBlur={() => setIsHovered(false)}
-      whileHover={interactive ? { y: -6, scale: 1.015 } : undefined}
-      transition={framerSpring}
-      className={className}
+    <div
+      className={`brand-logo-card ${className}`}
+      data-framer-name={brand.name}
       style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        gap: '16px',
         width: typeof width === 'number' ? `${width}px` : width,
         height: typeof height === 'number' ? `${height}px` : height,
-        textDecoration: 'none',
-        color: 'inherit',
-        position: 'relative',
-        borderRadius: '20px',
-        padding: '16px 16px 20px',
-        background: isHovered
-          ? 'rgba(255, 255, 255, 0.05)'
-          : 'rgba(255, 255, 255, 0.02)',
-        border: `1px solid ${
-          isHovered ? 'rgba(255, 255, 255, 0.22)' : 'rgba(255, 255, 255, 0.08)'
-        }`,
-        boxShadow: isHovered
-          ? `0 20px 40px -15px rgba(0, 0, 0, 0.7), 0 0 35px -5px ${brand.auroraColor}`
-          : '0 10px 30px -10px rgba(0, 0, 0, 0.5)',
-        backdropFilter: 'blur(12px)',
-        WebkitBackdropFilter: 'blur(12px)',
-        transition:
-          'background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease',
-        cursor: 'pointer',
+        backgroundColor,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
+        gap: '24px',
+        padding: '0',
+        overflow: 'visible',
         boxSizing: 'border-box',
-        overflow: 'hidden',
+        flexShrink: 0,
+        position: 'relative',
         ...style,
       }}
     >
-      {/* Subtle Aurora Ambient Bloom inside Card */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          top: '-20%',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: '180px',
-          height: '180px',
-          borderRadius: '50%',
-          background: brand.auroraColor,
-          filter: 'blur(45px)',
-          opacity: isHovered ? 0.75 : 0.25,
-          transition: 'opacity 0.4s ease',
-          pointerEvents: 'none',
-          zIndex: 0,
-        }}
-      />
-
-      {/* Top right live link indicator */}
-      <div
-        style={{
-          position: 'absolute',
-          top: '20px',
-          right: '20px',
-          zIndex: 2,
-          display: 'flex',
-          alignItems: 'center',
-          gap: '4px',
-          fontFamily: '"Geist Mono", monospace',
-          fontSize: '10px',
-          letterSpacing: '0.08em',
-          textTransform: 'uppercase',
-          color: isHovered ? '#FFFFFF' : 'rgba(255, 255, 255, 0.35)',
-          transition: 'color 0.25s ease',
-        }}
-      >
-        <span
-          style={{
-            display: 'inline-block',
-            width: '6px',
-            height: '6px',
-            borderRadius: '50%',
-            backgroundColor: isHovered ? brand.accentColor : 'rgba(255, 255, 255, 0.3)',
-            boxShadow: isHovered ? `0 0 8px ${brand.accentColor}` : 'none',
-            transition: 'background-color 0.25s ease, box-shadow 0.25s ease',
-          }}
-        />
-        <svg
-          width="11"
-          height="11"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          style={{
-            transform: isHovered ? 'translate(1px, -1px)' : 'none',
-            transition: 'transform 0.25s ease',
-          }}
-        >
-          <line x1="7" y1="17" x2="17" y2="7" />
-          <polyline points="7 7 17 7 17 17" />
-        </svg>
-      </div>
-
-      {/* ── 1:1 Aspect Ratio Logo Box (Exact Framer .framer-1f7gh52) ── */}
-      <div
+      {/* 1:1 Aspect Ratio Logo Graphic with Tap For Link Overlay */}
+      <a
+        href={brand.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`Visit ${brand.name} website`}
+        className="brand-logo-img-wrapper"
         style={{
           width: '100%',
           aspectRatio: '1 / 1',
-          position: 'relative',
-          borderRadius: '14px',
-          background:
-            'radial-gradient(ellipse at 50% 40%, rgba(255, 255, 255, 0.05) 0%, rgba(4, 7, 17, 0.8) 100%)',
-          border: '1px solid rgba(255, 255, 255, 0.05)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          padding: '24px',
-          boxSizing: 'border-box',
           overflow: 'hidden',
-          zIndex: 1,
+          backgroundColor: 'transparent',
+          position: 'relative',
+          cursor: 'pointer',
+          textDecoration: 'none',
         }}
       >
-        {/* Subtle grid pattern inside card viewport */}
-        <div
-          aria-hidden="true"
-          style={{
-            position: 'absolute',
-            inset: 0,
-            opacity: 0.12,
-            backgroundImage:
-              'radial-gradient(rgba(255, 255, 255, 0.4) 1px, transparent 1px)',
-            backgroundSize: '16px 16px',
-            pointerEvents: 'none',
+        <img
+          src={imgSrc}
+          onError={() => {
+            if (imgSrc !== brand.localFallback) {
+              setImgSrc(brand.localFallback);
+            }
           }}
-        />
-
-        {/* Brand Logo Image */}
-        <motion.img
-          src={brand.logoSrc}
-          alt={brand.logoAlt}
+          alt={`${brand.name} Logo`}
           loading="lazy"
-          animate={{
-            scale: isHovered ? 1.06 : 1,
-          }}
-          transition={framerSpring}
+          className="brand-logo-img"
           style={{
-            width: '100%',
-            height: '100%',
-            maxWidth: '180px',
-            maxHeight: '180px',
+            maxWidth: fit === 'fill' ? '100%' : '88%',
+            maxHeight: fit === 'fill' ? '100%' : '88%',
             objectFit: 'contain',
-            filter: 'drop-shadow(0 8px 20px rgba(0, 0, 0, 0.45))',
+            display: 'block',
             userSelect: 'none',
-            pointerEvents: 'none',
+            transition: 'transform 0.35s cubic-bezier(0.22, 1, 0.36, 1)',
           }}
         />
-      </div>
 
-      {/* ── RichText Typography (Exact Framer .framer-1l3sqgk & sharedStyle) ── */}
-      <div
-        style={{
-          width: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'flex-start',
-          gap: '4px',
-          padding: '2px 4px 0',
-          boxSizing: 'border-box',
-          zIndex: 1,
-        }}
-      >
-        {/* Minimal Index & Name: e.g. "01 / 06   PARIVARTHANA SCHOOL" */}
-        <div
-          style={{
-            fontFamily: '"Geist", "Anek Latin", -apple-system, sans-serif',
-            fontSize: '12px',
-            fontWeight: 500,
-            letterSpacing: '0.08em',
-            lineHeight: 1.2,
-            textTransform: 'uppercase',
-            color: isHovered ? '#FFFFFF' : 'rgba(255, 255, 255, 0.9)',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            width: '100%',
-            whiteSpace: 'nowrap',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            transition: 'color 0.25s ease',
-          }}
-        >
-          <span
+        {/* Cute Minimalist "Tap for link" Floating Pill Button */}
+        {showLinkButton && (
+          <div
+            className="tap-link-btn"
             style={{
-              fontFamily: '"Geist Mono", monospace',
+              position: 'absolute',
+              bottom: '16px',
+              padding: '8px 16px',
+              backgroundColor: '#000000',
+              color: '#FFFFFF',
+              borderRadius: '999px',
               fontSize: '11px',
-              color: isHovered ? brand.accentColor : 'rgba(255, 255, 255, 0.45)',
-              letterSpacing: '0.04em',
-              transition: 'color 0.25s ease',
+              fontWeight: 600,
+              fontFamily: '"Geist Mono", monospace',
+              letterSpacing: '0.06em',
+              textTransform: 'uppercase',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              boxShadow: '0 10px 24px rgba(0, 0, 0, 0.4)',
+              border: '1px solid rgba(255, 255, 255, 0.22)',
+              zIndex: 10,
+              pointerEvents: 'none',
+              transition: 'opacity 0.22s cubic-bezier(0.22, 1, 0.36, 1), transform 0.22s cubic-bezier(0.22, 1, 0.36, 1)',
             }}
           >
-            {brand.order}
-          </span>
-          <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
-            {brand.name}
-          </span>
-        </div>
+            <span>Tap for link</span>
+            <span style={{ fontSize: '12px', lineHeight: 1 }}>↗</span>
+          </div>
+        )}
+      </a>
 
-        {/* Minimal Sub-Tagline & Domain */}
-        <div
+      {/* Index & Name Typography */}
+      <div
+        className="brand-logo-label"
+        style={{
+          width: '100%',
+          padding: '0',
+          boxSizing: 'border-box',
+          textAlign: 'left',
+        }}
+      >
+        <p
           style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            width: '100%',
-            fontFamily: '"Geist Mono", monospace',
-            fontSize: '10.5px',
-            color: 'rgba(255, 255, 255, 0.45)',
-            letterSpacing: '0.02em',
+            margin: 0,
+            fontFamily: '"Anek Latin", "Inter", -apple-system, sans-serif',
+            fontSize: '12px',
+            fontWeight: 600,
+            letterSpacing: '0.08em',
+            lineHeight: '120%',
+            color: '#000000',
+            textTransform: 'uppercase',
+            whiteSpace: 'pre',
           }}
         >
-          <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-            {brand.tagline}
-          </span>
-        </div>
+          {brand.indexText}
+        </p>
       </div>
-    </motion.a>
+    </div>
   );
 };
 
 export default BrandLogoImages;
+
+/**
+ * BrandLogosSection
+ *
+ * Interactive portfolio showcase with minimal italic header:
+ * - Header: "we build" (italic serif) & "1. Websites" (minimal monospace)
+ * - Left column: Vertical stack of websites (hover/click to highlight)
+ * - Right column: Framer BrandLogoImages component with "Tap for link" button
+ */
+export const BrandLogosSection: React.FC<{
+  initialVariant?: string;
+  className?: string;
+}> = ({
+  initialVariant = 'Parivarthana School',
+  className = '',
+}) => {
+  const [activeBrand, setActiveBrand] = useState<string>(initialVariant);
+  const [isHovered, setIsHovered] = useState<boolean>(false);
+  const cycleIndexRef = useRef<number>(
+    WEBSITE_BRANDS.findIndex((b) => b.name === initialVariant) || 0
+  );
+
+  // Smooth auto-cycling when the user is not hovering
+  useEffect(() => {
+    if (isHovered) return;
+
+    const timer = setInterval(() => {
+      cycleIndexRef.current = (cycleIndexRef.current + 1) % WEBSITE_BRANDS.length;
+      setActiveBrand(WEBSITE_BRANDS[cycleIndexRef.current].name);
+    }, 3600);
+
+    return () => clearInterval(timer);
+  }, [isHovered]);
+
+  const handleSelectBrand = (name: string, idx: number) => {
+    cycleIndexRef.current = idx;
+    setActiveBrand(name);
+  };
+
+  const currentBrand =
+    BRAND_LOOKUP[activeBrand] ||
+    BRAND_LOOKUP[activeBrand.toLowerCase()] ||
+    WEBSITE_BRANDS[0];
+
+  return (
+    <section
+      id="websites-built"
+      className={`brand-logos-showcase-section ${className}`}
+      style={{
+        maxWidth: '1280px',
+        width: '100%',
+        margin: 'clamp(56px, 9vh, 96px) auto clamp(64px, 11vh, 112px)',
+        padding: '0 clamp(16px, 4vw, 32px)',
+        boxSizing: 'border-box',
+        position: 'relative',
+        zIndex: 10,
+        scrollMarginTop: '110px',
+      }}
+    >
+      {/* ── Section Header: Italic & Minimal ── */}
+      <div
+        style={{
+          width: '100%',
+          marginBottom: 'clamp(20px, 3.5vh, 32px)',
+          paddingLeft: '4px',
+        }}
+      >
+        <motion.h2
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          style={{
+            fontFamily: '"Instrument Serif", serif',
+            fontStyle: 'italic',
+            fontSize: 'clamp(44px, 5.5vw, 72px)',
+            color: '#FFFFFF',
+            fontWeight: 400,
+            margin: '0 0 6px',
+            lineHeight: 1.05,
+            letterSpacing: '-0.02em',
+          }}
+        >
+          we build
+        </motion.h2>
+
+        <motion.p
+          initial={{ opacity: 0, y: 8 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+          style={{
+            fontFamily: '"Geist Mono", monospace',
+            fontSize: '13px',
+            fontWeight: 500,
+            letterSpacing: '0.14em',
+            textTransform: 'uppercase',
+            color: 'rgba(255, 255, 255, 0.65)',
+            margin: 0,
+          }}
+        >
+          1. Websites
+        </motion.p>
+      </div>
+
+      {/* ── Outer White Showcase Canvas (Enlarged) ── */}
+      <div
+        className="brand-interactive-container"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        style={{
+          backgroundColor: '#FFFFFF',
+          borderRadius: '24px',
+          overflow: 'hidden',
+          padding: 'clamp(60px, 7vw, 96px) clamp(36px, 7vw, 100px)',
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          gap: '48px',
+          boxShadow: '0 24px 64px rgba(0, 0, 0, 0.45)',
+          boxSizing: 'border-box',
+          position: 'relative',
+        }}
+      >
+        {/* Left Column: Vertical Brand Typography List (Enlarged) */}
+        <div
+          className="brand-interactive-list"
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 'clamp(12px, 2vh, 20px)',
+            userSelect: 'none',
+            maxWidth: '660px',
+            flex: '1 1 auto',
+          }}
+        >
+          {WEBSITE_BRANDS.map((b, idx) => {
+            const isActive = activeBrand === b.name;
+            return (
+              <button
+                key={b.id}
+                type="button"
+                onClick={() => handleSelectBrand(b.name, idx)}
+                onMouseEnter={() => handleSelectBrand(b.name, idx)}
+                className={`brand-interactive-item ${isActive ? 'active' : ''}`}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  padding: 0,
+                  margin: 0,
+                  textAlign: 'left',
+                  cursor: 'pointer',
+                  fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                  fontSize: 'clamp(36px, 4.2vw, 58px)',
+                  fontWeight: isActive ? 600 : 500,
+                  lineHeight: 1.15,
+                  letterSpacing: '-0.025em',
+                  color: isActive ? '#000000' : 'rgba(0, 0, 0, 0.18)',
+                  transition:
+                    'color 0.22s cubic-bezier(0.22, 1, 0.36, 1), transform 0.22s cubic-bezier(0.22, 1, 0.36, 1)',
+                  outline: 'none',
+                  transform: isActive ? 'translateX(6px)' : 'none',
+                  whiteSpace: 'nowrap',
+                  willChange: 'color, transform',
+                }}
+              >
+                {b.name}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Right Column: Framer BrandLogoImages Component Display (Enlarged) */}
+        <div
+          className="brand-interactive-display"
+          style={{
+            width: 'clamp(280px, 30vw, 360px)',
+            minHeight: '380px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexShrink: 0,
+          }}
+        >
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentBrand.id}
+              initial={{ opacity: 0, y: 14, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -14, scale: 0.98 }}
+              transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+              style={{ width: '100%' }}
+            >
+              <BrandLogoImages
+                variant={currentBrand.name}
+                width="100%"
+                height="auto"
+                fit="contain"
+                backgroundColor="transparent"
+                showLinkButton={true}
+              />
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      </div>
+
+      {/* Scoped CSS for Hover Transitions, Button Visibility & Mobile Layout */}
+      <style>{`
+        .brand-interactive-item:hover:not(.active) {
+          color: rgba(0, 0, 0, 0.5) !important;
+        }
+        /* Tap for link button: appears gracefully on hover */
+        .tap-link-btn {
+          opacity: 0;
+          transform: translateY(8px) scale(0.92);
+        }
+        .brand-logo-img-wrapper:hover .tap-link-btn {
+          opacity: 1 !important;
+          transform: translateY(0) scale(1) !important;
+        }
+        .brand-logo-img-wrapper:hover .brand-logo-img {
+          transform: scale(1.04) !important;
+        }
+        @media (max-width: 920px) {
+          .brand-interactive-container {
+            flex-direction: column-reverse !important;
+            padding: 44px 28px !important;
+            gap: 36px !important;
+            align-items: center !important;
+          }
+          .brand-interactive-list {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 12px !important;
+            width: 100% !important;
+            text-align: center !important;
+          }
+          .brand-interactive-item {
+            font-size: clamp(24px, 6vw, 34px) !important;
+            text-align: center !important;
+            white-space: normal !important;
+            transform: none !important;
+          }
+          .brand-interactive-display {
+            width: clamp(220px, 60vw, 280px) !important;
+            min-height: 280px !important;
+          }
+          /* Always show tap for link button on touch/mobile */
+          .tap-link-btn {
+            opacity: 1 !important;
+            transform: translateY(0) scale(1) !important;
+          }
+        }
+      `}</style>
+    </section>
+  );
+};
