@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bgKiln" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#211E1B"/>
+      <stop offset="100%" stop-color="#141311"/>
+    </linearGradient>
+    <linearGradient id="clayGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E27343"/>
+      <stop offset="50%" stop-color="#B4532A"/>
+      <stop offset="100%" stop-color="#843314"/>
+    </linearGradient>
+  </defs>
+  <!-- Background Card -->
+  <rect width="512" height="512" rx="104" fill="url(#bgKiln)"/>
+  <rect x="16" y="16" width="480" height="480" rx="90" fill="none" stroke="#3A3530" stroke-width="2"/>
+  
+  <!-- Minimalist Ceramic Vase & Flame Silhouette -->
+  <g transform="translate(256, 205)">
+    <!-- Artisan Ceramic Vessel -->
+    <path d="M-55,85 C-75,50 -65,-10 -25,-40 C-20,-44 -15,-52 -15,-65 L15,-65 C15,-52 20,-44 25,-40 C65,-10 75,50 55,85 Z" fill="url(#clayGrad)" />
+    <!-- Vessel Opening / Rim -->
+    <ellipse cx="0" cy="-65" rx="20" ry="7" fill="#F2EFE9" opacity="0.9" />
+    <ellipse cx="0" cy="-65" rx="14" ry="4" fill="#3D1D11" />
+    
+    <!-- Organic glaze drip line -->
+    <path d="M-36,-10 Q-15,10 0,-5 Q15,20 36,-10" fill="none" stroke="#F2EFE9" stroke-width="3" stroke-linecap="round" opacity="0.75"/>
+    
+    <!-- Kiln / Flame Spark Motif Above Rim -->
+    <path d="M0,-86 C-8,-98 0,-115 0,-115 C0,-115 8,-98 0,-86 Z" fill="#FDBA74" opacity="0.9"/>
+    
+    <!-- Stone Base line -->
+    <line x1="-70" y1="92" x2="70" y2="92" stroke="#665E55" stroke-width="3" stroke-linecap="round"/>
+  </g>
+  
+  <!-- KILN Atelier Typography -->
+  <text x="256" y="388" text-anchor="middle" font-family="'Cinzel', 'Playfair Display', serif, -apple-system" font-weight="700" font-size="46" letter-spacing="0.28em" fill="#F2EFE9">KILN</text>
+  <text x="256" y="424" text-anchor="middle" font-family="'DM Mono', monospace" font-weight="400" font-size="14" letter-spacing="0.32em" fill="#B4532A">CERAMIC ATELIER · KYOTO</text>
+</svg>

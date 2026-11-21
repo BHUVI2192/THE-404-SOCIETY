@@ -35,6 +35,7 @@ export interface MotionOverlayMenuProps {
 }
 
 const DEFAULT_MENU_LINKS: MenuLinkItem[] = [
+  { label: 'Portfolio', link: '#portfolio' },
   { label: 'Capabilities', link: '#services' },
   { label: 'Scope Simulator', link: '#model' },
   { label: '3-Step Model', link: '#process' },

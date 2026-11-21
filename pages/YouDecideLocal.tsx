@@ -6,6 +6,7 @@ import FluidGlassButton from '../components/FluidGlassButton';
 import MotionOverlayMenu from '../components/MotionOverlayMenu';
 import YoudecideIntro from '../components/YoudecideIntro';
 import AudioWave from '../components/AudioWave';
+import PortfolioSection from '../components/PortfolioSection';
 
 // Official Vector Logo Component (Reversed for dark/night aesthetic)
 const YouDecideLogo: React.FC<{ height?: number; className?: string }> = ({
@@ -415,6 +416,11 @@ const YouDecideLocal: React.FC = () => {
           {/* Bottom spacer so WebGL mountain floor is gracefully visible */}
           <div style={{ height: '24px' }} />
         </section>
+
+        {/* ========================================================================= */}
+        {/* PORTFOLIO & WORK ARCHIVE (MILK GLASS FOLDER & BRAND LOGO SHOWCASE) */}
+        {/* ========================================================================= */}
+        <PortfolioSection />
 
         {/* ========================================================================= */}
         {/* INTERACTIVE VALUE SLIDER SECTION */}

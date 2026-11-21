@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bgMomo" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFF9EC"/>
+      <stop offset="100%" stop-color="#F6E7CB"/>
+    </linearGradient>
+    <linearGradient id="momoYellow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FCD34D"/>
+      <stop offset="100%" stop-color="#F59E0B"/>
+    </linearGradient>
+  </defs>
+  <!-- Background Card -->
+  <rect width="512" height="512" rx="104" fill="url(#bgMomo)"/>
+  <rect x="16" y="16" width="480" height="480" rx="90" fill="none" stroke="#E6D3B1" stroke-width="2"/>
+  
+  <!-- Happy Blob / Good Mood Icon -->
+  <g transform="translate(256, 205)">
+    <!-- Cheerful Yellow Blob -->
+    <path d="M-80,-20 C-85,-70 -30,-90 0,-90 C40,-90 85,-65 80,-15 C75,45 60,85 0,85 C-60,85 -75,35 -80,-20 Z" fill="url(#momoYellow)" />
+    
+    <!-- Big Friendly Eyes -->
+    <ellipse cx="-26" cy="-22" rx="9" ry="14" fill="#14183A"/>
+    <ellipse cx="26" cy="-22" rx="9" ry="14" fill="#14183A"/>
+    <!-- Catchlights -->
+    <circle cx="-29" cy="-27" r="4" fill="#FFFFFF"/>
+    <circle cx="23" cy="-27" r="4" fill="#FFFFFF"/>
+    
+    <!-- Cheerful Smile -->
+    <path d="M-22,12 Q0,32 22,12" fill="none" stroke="#14183A" stroke-width="6" stroke-linecap="round"/>
+    
+    <!-- Rosy Cheeks -->
+    <ellipse cx="-42" cy="8" rx="8" ry="5" fill="#F43F5E" opacity="0.45"/>
+    <ellipse cx="42" cy="8" rx="8" ry="5" fill="#F43F5E" opacity="0.45"/>
+    
+    <!-- Floating Happy Stars / Confetti -->
+    <circle cx="-75" cy="-60" r="6" fill="#F43F5E"/>
+    <circle cx="75" cy="-55" r="7" fill="#3B82F6"/>
+    <circle cx="70" cy="50" r="5" fill="#10B981"/>
+  </g>
+  
+  <!-- MOMO Typography -->
+  <text x="256" y="385" text-anchor="middle" font-family="'Bricolage Grotesque', 'Comfortaa', -apple-system, sans-serif" font-weight="900" font-size="56" letter-spacing="0.12em" fill="#14183A">MOMO</text>
+  <text x="256" y="420" text-anchor="middle" font-family="'DM Mono', monospace" font-weight="600" font-size="14" letter-spacing="0.22em" fill="#786B5A">SMALL OBJECTS · GOOD MOODS</text>
+</svg>
