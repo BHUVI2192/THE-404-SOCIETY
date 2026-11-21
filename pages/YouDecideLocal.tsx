@@ -6,7 +6,7 @@ import FluidGlassButton from '../components/FluidGlassButton';
 import MotionOverlayMenu from '../components/MotionOverlayMenu';
 import YoudecideIntro from '../components/YoudecideIntro';
 import AudioWave from '../components/AudioWave';
-import PortfolioSection from '../components/PortfolioSection';
+import WebsitesBuiltSection from '../components/WebsitesBuiltSection';
 
 // Official Vector Logo Component (Reversed for dark/night aesthetic)
 const YouDecideLogo: React.FC<{ height?: number; className?: string }> = ({
@@ -267,6 +267,7 @@ const YouDecideLocal: React.FC = () => {
                 </div>
               }
               links={[
+                { label: 'Websites Built', link: '#websites' },
                 { label: 'Capabilities', link: '#services' },
                 { label: 'Commercial Model', link: '#model' },
                 { label: '3-Step Process', link: '#process' },
@@ -418,9 +419,9 @@ const YouDecideLocal: React.FC = () => {
         </section>
 
         {/* ========================================================================= */}
-        {/* PORTFOLIO & WORK ARCHIVE (MILK GLASS FOLDER & BRAND LOGO SHOWCASE) */}
+        {/* WEBSITES BUILT SHOWCASE (FRAMER BRAND LOGO IMAGES + AURORA AMBIENT GLOW) */}
         {/* ========================================================================= */}
-        <PortfolioSection />
+        <WebsitesBuiltSection />
 
         {/* ========================================================================= */}
         {/* INTERACTIVE VALUE SLIDER SECTION */}
