@@ -138,7 +138,7 @@ export const AutomationSection: React.FC<AutomationSectionProps> = ({
           background="transparent"
           titleFont={{
             fontFamily: '"Geist", -apple-system, sans-serif',
-            fontWeight: 700,
+            fontWeight: 400,
           }}
           smallFont={{
             fontFamily: '"Geist", -apple-system, sans-serif',

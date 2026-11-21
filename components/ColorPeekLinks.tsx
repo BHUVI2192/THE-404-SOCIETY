@@ -105,7 +105,7 @@ const STYLE = `
   margin: 0;
   letter-spacing: -.035em;
   line-height: 1.05;
-  font-weight: 700;
+  font-weight: 400;
 }
 .cpl-cta {
   display: flex;
@@ -326,7 +326,7 @@ export const ColorPeekLinks: React.FC<ColorPeekLinksProps> = ({
                 style={{
                   ...titleFont,
                   fontSize: `clamp(22px, ${(titleSize / 11.2).toFixed(2)}cqw, ${titleSize}px)`,
-                  fontWeight: 700,
+                  fontWeight: 400,
                   letterSpacing: '-0.035em',
                   lineHeight: 1.05,
                   margin: 0,
