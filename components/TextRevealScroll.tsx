@@ -319,15 +319,15 @@ export interface ManifestoScrollSectionProps {
   className?: string;
   /**
    * Font size for the middle supporting text.
-   * Default: 'clamp(15.5px, 1.35vw, 18px)'.
-   * You can pass custom size: e.g. '18px', '20px', 'clamp(16px, 1.4vw, 22px)'
+   * Default: 'clamp(18px, 1.8vw, 24px)'.
+   * You can pass custom size: e.g. '22px', 'clamp(18px, 1.8vw, 24px)'
    */
   supportingFontSize?: string | number;
 }
 
 export const ManifestoScrollSection: React.FC<ManifestoScrollSectionProps> = ({
   className = '',
-  supportingFontSize = 'clamp(17px, 1.6vw, 22px)',
+  supportingFontSize = 'clamp(18px, 1.8vw, 24px)',
 }) => {
   const resolvedSupportingSize =
     typeof supportingFontSize === 'number' ? `${supportingFontSize}px` : supportingFontSize;
@@ -335,27 +335,33 @@ export const ManifestoScrollSection: React.FC<ManifestoScrollSectionProps> = ({
   return (
     <section
       id="manifesto"
-      className={`studio-intro-section ${className}`}
+      className={`studio-intro-section single-frame-manifesto ${className}`}
       style={{
         width: '100%',
-        maxWidth: '1280px',
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
         margin: '0 auto',
-        padding: 'clamp(48px, 7vh, 72px) clamp(20px, 4vw, 40px) clamp(44px, 6.5vh, 68px)',
+        padding: 'clamp(60px, 8vh, 100px) clamp(24px, 4.5vw, 48px)',
         boxSizing: 'border-box',
         position: 'relative',
         zIndex: 10,
-        scrollMarginTop: '90px',
+        scrollMarginTop: '0px',
+        background:
+          'radial-gradient(ellipse at 50% 50%, rgba(20, 28, 58, 0.45) 0%, transparent 70%)',
       }}
     >
       {/* Subtle Scroll-based Text Reveal Framer Component */}
       <TextRevealScroll
         revealMode="chars"
-        startOffset={85}
-        endOffset={45}
+        startOffset={80}
+        endOffset={35}
         dimOpacity={0.2}
         style={{
           width: '100%',
-          maxWidth: '1200px',
+          maxWidth: '1280px',
           margin: '0 auto',
         }}
       >
@@ -365,28 +371,28 @@ export const ManifestoScrollSection: React.FC<ManifestoScrollSectionProps> = ({
             flexDirection: 'column',
             alignItems: 'center',
             textAlign: 'center',
-            gap: 'clamp(20px, 3vh, 32px)',
+            gap: 'clamp(30px, 4.8vh, 52px)',
             color: '#FFFFFF',
             margin: '0 auto',
           }}
         >
-          {/* First statement: Big, wide, NOT bold (400 weight) */}
+          {/* First statement: Big, wide, NOT bold (400 weight), fills desktop frame */}
           <p
             className="manifesto-lead-text"
             style={{
               margin: 0,
               fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-              fontSize: 'clamp(28px, 4.3vw, 64px)',
+              fontSize: 'clamp(34px, 5.4vw, 80px)',
               fontWeight: 400, // Not bold
               letterSpacing: '0.05em', // Wider letter-spacing / width
               textTransform: 'uppercase',
-              lineHeight: 1.1,
+              lineHeight: 1.08,
             }}
           >
             NOT A TRADITIONAL AGENCY.
           </p>
 
-          {/* Supporting text in clean typography (22px prominent reading scale) */}
+          {/* Supporting text in clean typography (22px-24px prominent reading scale) */}
           <p
             className="manifesto-supporting-text"
             style={{
@@ -394,9 +400,9 @@ export const ManifestoScrollSection: React.FC<ManifestoScrollSectionProps> = ({
               fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
               fontSize: resolvedSupportingSize,
               fontWeight: 400,
-              lineHeight: 1.65,
+              lineHeight: 1.68,
               letterSpacing: '-0.01em',
-              maxWidth: '740px',
+              maxWidth: '820px',
               color: 'rgba(255, 255, 255, 0.88)',
             }}
           >
@@ -407,13 +413,13 @@ export const ManifestoScrollSection: React.FC<ManifestoScrollSectionProps> = ({
           <p
             className="manifesto-punchline-text"
             style={{
-              margin: 'clamp(8px, 1.5vh, 16px) 0 0',
+              margin: 'clamp(12px, 2vh, 24px) 0 0',
               fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-              fontSize: 'clamp(34px, 5.2vw, 74px)',
+              fontSize: 'clamp(42px, 6.8vw, 96px)',
               fontWeight: 400, // Not bold
               letterSpacing: '0.14em', // Wider letter-spacing / width
               textTransform: 'uppercase',
-              lineHeight: 1.1,
+              lineHeight: 1.05,
               textAlign: 'center',
             }}
           >
@@ -423,7 +429,7 @@ export const ManifestoScrollSection: React.FC<ManifestoScrollSectionProps> = ({
       </TextRevealScroll>
 
       <style>{`
-        @media (min-width: 821px) {
+        @media (min-width: 901px) {
           .manifesto-lead-text {
             white-space: nowrap !important;
           }
