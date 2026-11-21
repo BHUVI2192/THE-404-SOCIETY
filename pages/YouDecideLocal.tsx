@@ -8,6 +8,7 @@ import YoudecideIntro from '../components/YoudecideIntro';
 import AudioWave from '../components/AudioWave';
 import { BrandLogosSection } from '../components/BrandLogoImages';
 import { ManifestoScrollSection } from '../components/TextRevealScroll';
+import { AutomationSection } from '../components/sections/AutomationSection';
 
 // Official Vector Logo Component (Reversed for dark/night aesthetic)
 const YouDecideLogo: React.FC<{ height?: number; className?: string }> = ({
@@ -268,11 +269,12 @@ const YouDecideLocal: React.FC = () => {
                 </div>
               }
               links={[
-                { label: 'Capabilities', link: '#services' },
+                { label: 'Websites', link: '#websites-built' },
+                { label: 'Automations', link: '#automations' },
                 { label: 'Commercial Model', link: '#model' },
+                { label: 'Capabilities', link: '#services' },
                 { label: '3-Step Process', link: '#process' },
                 { label: 'Project Briefing', link: '#contact' },
-                { label: 'Launch Teaser', link: '#/youdecide.studio' },
               ]}
               secondaryLinks={[
                 { label: 'LinkedIn', link: 'https://linkedin.com', newTab: true },
@@ -427,6 +429,11 @@ const YouDecideLocal: React.FC = () => {
         {/* BRAND LOGO IMAGES (FRAMER COMPONENT SHOWCASE)                             */}
         {/* ========================================================================= */}
         <BrandLogosSection />
+
+        {/* ========================================================================= */}
+        {/* AUTOMATION SERVICES (FRAMER MASONRY COMPONENT)                            */}
+        {/* ========================================================================= */}
+        <AutomationSection />
 
         {/* ========================================================================= */}
         {/* INTERACTIVE VALUE SLIDER SECTION */}
