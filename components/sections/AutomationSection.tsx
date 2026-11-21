@@ -47,66 +47,67 @@ export const AutomationSection: React.FC<AutomationSectionProps> = ({
         scrollMarginTop: '110px',
       }}
     >
-      {/* ── SECTION INTRODUCTION ── */}
+      {/* ── SECTION HEADER: BIG, CURSIVE & MINIMAL ── */}
       <div
         style={{
           width: '100%',
-          maxWidth: '720px',
-          marginBottom: 'clamp(32px, 5vh, 48px)',
-          paddingLeft: '2px',
+          maxWidth: '1000px',
+          marginBottom: 'clamp(28px, 4.5vh, 44px)',
+          paddingLeft: '4px',
         }}
       >
-        {/* Eyebrow */}
-        <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          style={{
-            fontFamily: '"Geist Mono", monospace',
-            fontSize: '12px',
-            fontWeight: 500,
-            letterSpacing: '0.14em',
-            textTransform: 'uppercase',
-            color: '#60A5FA',
-            margin: '0 0 12px',
-          }}
-        >
-          WHAT WE AUTOMATE
-        </motion.p>
-
-        {/* Heading */}
+        {/* Main Title: Big & Cursive (Instrument Serif Italic) */}
         <motion.h2
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.06, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           style={{
-            fontFamily: '"Geist", -apple-system, sans-serif',
-            fontSize: 'clamp(28px, 3.6vw, 44px)',
-            fontWeight: 700,
-            letterSpacing: '-0.025em',
-            lineHeight: 1.12,
+            fontFamily: '"Instrument Serif", serif',
+            fontStyle: 'italic',
+            fontSize: 'clamp(56px, 7.5vw, 96px)',
+            fontWeight: 400,
+            lineHeight: 1.04,
+            letterSpacing: '-0.02em',
             color: '#FFFFFF',
-            margin: '0 0 14px',
-            textTransform: 'uppercase',
+            margin: '0 0 10px',
           }}
         >
-          AUTOMATION, BEYOND THE OBVIOUS.
+          Automation, beyond the obvious.
         </motion.h2>
+
+        {/* 2. Automation Subhead */}
+        <motion.p
+          initial={{ opacity: 0, y: 8 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+          style={{
+            fontFamily: '"Geist Mono", monospace',
+            fontSize: 'clamp(15px, 1.6vw, 20px)',
+            fontWeight: 500,
+            letterSpacing: '0.16em',
+            textTransform: 'uppercase',
+            color: 'rgba(255, 255, 255, 0.7)',
+            margin: '0 0 18px',
+          }}
+        >
+          2. Automation
+        </motion.p>
 
         {/* Supporting text */}
         <motion.p
-          initial={{ opacity: 0, y: 10 }}
+          initial={{ opacity: 0, y: 8 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.5, delay: 0.14, ease: [0.22, 1, 0.36, 1] }}
           style={{
             fontFamily: '"Geist", -apple-system, sans-serif',
             fontSize: 'clamp(15px, 1.6vw, 17px)',
             lineHeight: 1.55,
             color: 'rgba(255, 255, 255, 0.65)',
             margin: 0,
+            maxWidth: '680px',
             fontWeight: 400,
           }}
         >
