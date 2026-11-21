@@ -1,3 +1,7 @@
+// Full-Screen Pure Black Page View for Automation Details
+// Displays the automation name in elegant cursive letters (Instrument Serif Italic),
+// complete capability breakdown, example workflow, and a back button to return.
+
 import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -14,6 +18,7 @@ export const AutomationDetail: React.FC<AutomationDetailProps> = ({ item, onClos
   useEffect(() => {
     setMounted(true);
   }, []);
+
   // ESC key listener & body scroll locking
   useEffect(() => {
     if (!item) return;
@@ -37,7 +42,6 @@ export const AutomationDetail: React.FC<AutomationDetailProps> = ({ item, onClos
   const handleCtaClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     onClose();
-    // Allow modal exit animation then scroll cleanly to contact
     setTimeout(() => {
       const el = document.getElementById('contact');
       if (el) {
@@ -45,78 +49,89 @@ export const AutomationDetail: React.FC<AutomationDetailProps> = ({ item, onClos
       } else {
         window.location.hash = 'contact';
       }
-    }, 240);
+    }, 280);
   };
 
-  const modalContent = (
+  const pageContent = (
     <AnimatePresence>
       {item && (
-        <div
+        <motion.div
           role="dialog"
           aria-modal="true"
-          aria-labelledby="automation-detail-title"
+          aria-labelledby="automation-page-title"
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 16 }}
+          transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
           style={{
             position: 'fixed',
             inset: 0,
             zIndex: 999999,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: 'clamp(16px, 4vw, 36px)',
+            backgroundColor: '#000000',
+            color: '#FFFFFF',
+            overflowY: 'auto',
+            overscrollBehavior: 'contain',
             boxSizing: 'border-box',
           }}
         >
-          {/* Frosted Midnight Backdrop */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-            onClick={onClose}
+          {/* Top Floating / Sticky Header Bar */}
+          <div
             style={{
-              position: 'absolute',
-              inset: 0,
-              backgroundColor: 'rgba(2, 6, 18, 0.85)',
+              position: 'sticky',
+              top: 0,
+              zIndex: 20,
+              backgroundColor: 'rgba(0, 0, 0, 0.88)',
               backdropFilter: 'blur(16px)',
               WebkitBackdropFilter: 'blur(16px)',
-            }}
-          />
-
-          {/* Expanded Modal Card */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.96, y: 18 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.96, y: 18 }}
-            transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
-            style={{
-              position: 'relative',
-              zIndex: 1,
-              width: '100%',
-              maxWidth: '820px',
-              maxHeight: '90vh',
-              backgroundColor: '#040711',
-              borderRadius: '24px',
-              border: '1px solid rgba(255, 255, 255, 0.12)',
-              boxShadow: '0 32px 96px rgba(0, 0, 0, 0.75)',
-              overflowY: 'auto',
-              overscrollBehavior: 'contain',
-              padding: 'clamp(28px, 4.5vw, 48px)',
-              boxSizing: 'border-box',
-              color: '#FFFFFF',
-              fontFamily: 'Geist, -apple-system, sans-serif',
+              borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+              padding: '18px clamp(20px, 5vw, 64px)',
             }}
           >
-            {/* Header: Number, Category & Close Button */}
             <div
               style={{
+                maxWidth: '1120px',
+                margin: '0 auto',
                 display: 'flex',
-                justifyContent: 'space-between',
                 alignItems: 'center',
-                marginBottom: '20px',
-                paddingBottom: '16px',
-                borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+                justifyContent: 'space-between',
               }}
             >
+              {/* Back button to come back */}
+              <button
+                type="button"
+                onClick={onClose}
+                aria-label="Back to Automations"
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: '#FFFFFF',
+                  fontFamily: '"Geist Mono", monospace',
+                  fontSize: '13px',
+                  fontWeight: 600,
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                  cursor: 'pointer',
+                  padding: '6px 0',
+                  outline: 'none',
+                  transition: 'opacity 0.2s, transform 0.2s',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.opacity = '0.75';
+                  e.currentTarget.style.transform = 'translateX(-3px)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.opacity = '1';
+                  e.currentTarget.style.transform = 'none';
+                }}
+              >
+                <span style={{ fontSize: '18px', lineHeight: 1 }}>←</span>
+                <span>Back to Automations</span>
+              </button>
+
+              {/* Number and Category indicator */}
               <div
                 style={{
                   fontFamily: '"Geist Mono", monospace',
@@ -129,187 +144,253 @@ export const AutomationDetail: React.FC<AutomationDetailProps> = ({ item, onClos
               >
                 {item.number} / {item.category}
               </div>
-
-              {/* Minimal Accessible Close Button */}
-              <button
-                type="button"
-                onClick={onClose}
-                aria-label="Close detail modal"
-                style={{
-                  background: 'rgba(255, 255, 255, 0.06)',
-                  border: '1px solid rgba(255, 255, 255, 0.12)',
-                  borderRadius: '999px',
-                  width: '36px',
-                  height: '36px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  cursor: 'pointer',
-                  color: '#FFFFFF',
-                  transition: 'background 0.2s, transform 0.2s',
-                  outline: 'none',
-                  flexShrink: 0,
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)';
-                  e.currentTarget.style.transform = 'scale(1.05)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.06)';
-                  e.currentTarget.style.transform = 'none';
-                }}
-              >
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 14 14"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <line x1="1" y1="1" x2="13" y2="13" />
-                  <line x1="13" y1="1" x2="1" y2="13" />
-                </svg>
-              </button>
             </div>
+          </div>
 
-            {/* Main Automation Name in Bold Uppercase */}
-            <h3
-              id="automation-detail-title"
+          {/* Main Black Page Content Container */}
+          <div
+            style={{
+              maxWidth: '1120px',
+              margin: '0 auto',
+              padding: 'clamp(40px, 6vh, 72px) clamp(20px, 5vw, 64px) clamp(64px, 10vh, 120px)',
+              boxSizing: 'border-box',
+            }}
+          >
+            {/* Eyebrow Label */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.45, delay: 0.05 }}
               style={{
-                fontFamily: '"Geist", -apple-system, sans-serif',
-                fontSize: 'clamp(26px, 4vw, 40px)',
-                fontWeight: 700,
-                letterSpacing: '-0.025em',
-                lineHeight: 1.15,
-                margin: '0 0 14px',
-                color: '#FFFFFF',
+                fontFamily: '"Geist Mono", monospace',
+                fontSize: '12px',
+                fontWeight: 600,
+                letterSpacing: '0.16em',
+                textTransform: 'uppercase',
+                color: 'rgba(255, 255, 255, 0.6)',
+                marginBottom: '16px',
               }}
             >
-              {item.name}
-            </h3>
+              Automation System {item.number}
+            </motion.div>
 
-            {/* Short Introduction */}
-            <p
+            {/* Name of Automation in Cursive Letters (Instrument Serif Italic) */}
+            <motion.h1
+              id="automation-page-title"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
               style={{
-                fontSize: 'clamp(16px, 1.8vw, 19px)',
+                fontFamily: '"Instrument Serif", serif',
+                fontStyle: 'italic',
+                fontWeight: 400,
+                fontSize: 'clamp(52px, 7.5vw, 96px)',
+                lineHeight: 1.05,
+                letterSpacing: '-0.02em',
+                color: '#FFFFFF',
+                margin: '0 0 24px',
+              }}
+            >
+              {item.cardTitle}
+            </motion.h1>
+
+            {/* One-Line Introduction */}
+            <motion.p
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.16, ease: [0.22, 1, 0.36, 1] }}
+              style={{
+                fontFamily: '"Geist", -apple-system, sans-serif',
+                fontSize: 'clamp(20px, 2.4vw, 26px)',
+                lineHeight: 1.45,
                 color: 'rgba(255, 255, 255, 0.85)',
-                lineHeight: 1.5,
-                margin: '0 0 28px',
+                margin: '0 0 48px',
+                maxWidth: '840px',
                 fontWeight: 400,
               }}
             >
               {item.introduction}
-            </p>
+            </motion.p>
 
-            {/* Section: What It Solves */}
-            <div style={{ marginBottom: '28px' }}>
-              <div
-                style={{
-                  fontFamily: '"Geist Mono", monospace',
-                  fontSize: '11px',
-                  fontWeight: 600,
-                  letterSpacing: '0.12em',
-                  textTransform: 'uppercase',
-                  color: 'rgba(255, 255, 255, 0.5)',
-                  marginBottom: '10px',
-                }}
-              >
-                What It Solves
-              </div>
-              <p
-                style={{
-                  fontSize: '15px',
-                  lineHeight: 1.6,
-                  color: 'rgba(255, 255, 255, 0.72)',
-                  margin: 0,
-                }}
-              >
-                {item.whatItSolves}
-              </p>
-            </div>
+            <div
+              style={{
+                width: '100%',
+                height: '1px',
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                marginBottom: '48px',
+              }}
+            />
 
-            {/* Section: Key Capabilities */}
-            <div style={{ marginBottom: '32px' }}>
-              <div
-                style={{
-                  fontFamily: '"Geist Mono", monospace',
-                  fontSize: '11px',
-                  fontWeight: 600,
-                  letterSpacing: '0.12em',
-                  textTransform: 'uppercase',
-                  color: 'rgba(255, 255, 255, 0.5)',
-                  marginBottom: '12px',
-                }}
-              >
-                Key Capabilities
-              </div>
-              <ul
-                style={{
-                  listStyle: 'none',
-                  padding: 0,
-                  margin: 0,
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-                  gap: '10px 24px',
-                }}
-              >
-                {item.capabilities.map((cap, i) => (
-                  <li
-                    key={i}
+            {/* Two-Column Information Layout */}
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+                gap: 'clamp(36px, 5vw, 64px)',
+                marginBottom: '56px',
+              }}
+            >
+              {/* Left Column: What It Solves & Technologies */}
+              <div>
+                {/* What It Solves */}
+                <div style={{ marginBottom: '40px' }}>
+                  <div
                     style={{
-                      display: 'flex',
-                      alignItems: 'flex-start',
-                      gap: '10px',
-                      fontSize: '14px',
-                      lineHeight: 1.5,
-                      color: 'rgba(255, 255, 255, 0.82)',
+                      fontFamily: '"Geist Mono", monospace',
+                      fontSize: '11px',
+                      fontWeight: 600,
+                      letterSpacing: '0.14em',
+                      textTransform: 'uppercase',
+                      color: '#60A5FA',
+                      marginBottom: '14px',
                     }}
                   >
-                    <span
+                    What It Solves
+                  </div>
+                  <p
+                    style={{
+                      fontFamily: '"Geist", -apple-system, sans-serif',
+                      fontSize: '16px',
+                      lineHeight: 1.65,
+                      color: 'rgba(255, 255, 255, 0.72)',
+                      margin: 0,
+                    }}
+                  >
+                    {item.whatItSolves}
+                  </p>
+                </div>
+
+                {/* Relevant Technologies & Integrations */}
+                <div>
+                  <div
+                    style={{
+                      fontFamily: '"Geist Mono", monospace',
+                      fontSize: '11px',
+                      fontWeight: 600,
+                      letterSpacing: '0.14em',
+                      textTransform: 'uppercase',
+                      color: 'rgba(255, 255, 255, 0.5)',
+                      marginBottom: '14px',
+                    }}
+                  >
+                    Connected Stack & Ecosystem
+                  </div>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexWrap: 'wrap',
+                      gap: '8px',
+                    }}
+                  >
+                    {item.technologies.map((tech, i) => (
+                      <span
+                        key={i}
+                        style={{
+                          fontFamily: '"Geist Mono", monospace',
+                          fontSize: '12px',
+                          fontWeight: 500,
+                          letterSpacing: '0.04em',
+                          padding: '6px 14px',
+                          borderRadius: '999px',
+                          backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                          border: '1px solid rgba(255, 255, 255, 0.12)',
+                          color: 'rgba(255, 255, 255, 0.85)',
+                        }}
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Column: Key Capabilities */}
+              <div>
+                <div
+                  style={{
+                    fontFamily: '"Geist Mono", monospace',
+                    fontSize: '11px',
+                    fontWeight: 600,
+                    letterSpacing: '0.14em',
+                    textTransform: 'uppercase',
+                    color: '#60A5FA',
+                    marginBottom: '14px',
+                  }}
+                >
+                  Key Capabilities
+                </div>
+                <ul
+                  style={{
+                    listStyle: 'none',
+                    padding: 0,
+                    margin: 0,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '12px',
+                  }}
+                >
+                  {item.capabilities.map((cap, i) => (
+                    <li
+                      key={i}
                       style={{
-                        display: 'inline-block',
-                        width: '5px',
-                        height: '5px',
-                        borderRadius: '50%',
-                        backgroundColor: '#60A5FA',
-                        marginTop: '7px',
-                        flexShrink: 0,
+                        display: 'flex',
+                        alignItems: 'flex-start',
+                        gap: '12px',
+                        fontFamily: '"Geist", -apple-system, sans-serif',
+                        fontSize: '15px',
+                        lineHeight: 1.55,
+                        color: 'rgba(255, 255, 255, 0.85)',
+                        paddingBottom: '10px',
+                        borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
                       }}
-                    />
-                    <span>{cap}</span>
-                  </li>
-                ))}
-              </ul>
+                    >
+                      <span
+                        style={{
+                          display: 'inline-block',
+                          width: '6px',
+                          height: '6px',
+                          borderRadius: '50%',
+                          backgroundColor: '#60A5FA',
+                          marginTop: '8px',
+                          flexShrink: 0,
+                        }}
+                      />
+                      <span>{cap}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
 
-            {/* Section: Example Workflow Sequence */}
-            <div style={{ marginBottom: '32px' }}>
+            {/* Example Workflow Sequence */}
+            <div
+              style={{
+                marginBottom: '56px',
+                padding: '28px 32px',
+                borderRadius: '20px',
+                backgroundColor: 'rgba(255, 255, 255, 0.025)',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+              }}
+            >
               <div
                 style={{
                   fontFamily: '"Geist Mono", monospace',
                   fontSize: '11px',
                   fontWeight: 600,
-                  letterSpacing: '0.12em',
+                  letterSpacing: '0.14em',
                   textTransform: 'uppercase',
-                  color: 'rgba(255, 255, 255, 0.5)',
-                  marginBottom: '14px',
+                  color: 'rgba(255, 255, 255, 0.55)',
+                  marginBottom: '16px',
                 }}
               >
-                Example Workflow Sequence
+                Production Workflow Blueprint
               </div>
               <div
                 style={{
                   display: 'flex',
                   flexWrap: 'wrap',
                   alignItems: 'center',
-                  gap: '8px',
-                  background: 'rgba(255, 255, 255, 0.025)',
-                  border: '1px solid rgba(255, 255, 255, 0.07)',
-                  borderRadius: '16px',
-                  padding: '16px 20px',
+                  gap: '10px',
                 }}
               >
                 {item.workflow.map((step, idx) => (
@@ -319,11 +400,12 @@ export const AutomationDetail: React.FC<AutomationDetailProps> = ({ item, onClos
                         display: 'inline-flex',
                         alignItems: 'center',
                         gap: '8px',
-                        padding: '6px 14px',
+                        padding: '8px 16px',
                         backgroundColor: '#000000',
-                        border: '1px solid rgba(255, 255, 255, 0.12)',
-                        borderRadius: '8px',
-                        fontSize: '13px',
+                        border: '1px solid rgba(255, 255, 255, 0.16)',
+                        borderRadius: '10px',
+                        fontFamily: '"Geist", -apple-system, sans-serif',
+                        fontSize: '14px',
                         fontWeight: 500,
                         color: '#FFFFFF',
                       }}
@@ -331,7 +413,7 @@ export const AutomationDetail: React.FC<AutomationDetailProps> = ({ item, onClos
                       <span
                         style={{
                           fontFamily: '"Geist Mono", monospace',
-                          fontSize: '10px',
+                          fontSize: '11px',
                           color: '#60A5FA',
                           fontWeight: 600,
                         }}
@@ -345,9 +427,9 @@ export const AutomationDetail: React.FC<AutomationDetailProps> = ({ item, onClos
                         aria-hidden="true"
                         style={{
                           fontFamily: '"Geist Mono", monospace',
-                          color: 'rgba(255, 255, 255, 0.35)',
-                          fontSize: '13px',
-                          padding: '0 2px',
+                          color: 'rgba(255, 255, 255, 0.4)',
+                          fontSize: '14px',
+                          padding: '0 4px',
                         }}
                       >
                         →
@@ -358,71 +440,29 @@ export const AutomationDetail: React.FC<AutomationDetailProps> = ({ item, onClos
               </div>
             </div>
 
-            {/* Section: Relevant Technologies & Integrations */}
-            <div style={{ marginBottom: '36px' }}>
-              <div
-                style={{
-                  fontFamily: '"Geist Mono", monospace',
-                  fontSize: '11px',
-                  fontWeight: 600,
-                  letterSpacing: '0.12em',
-                  textTransform: 'uppercase',
-                  color: 'rgba(255, 255, 255, 0.5)',
-                  marginBottom: '12px',
-                }}
-              >
-                Relevant Technologies & Integrations
-              </div>
-              <div
-                style={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  gap: '8px',
-                }}
-              >
-                {item.technologies.map((tech, i) => (
-                  <span
-                    key={i}
-                    style={{
-                      fontFamily: '"Geist Mono", monospace',
-                      fontSize: '11px',
-                      fontWeight: 500,
-                      letterSpacing: '0.04em',
-                      padding: '5px 12px',
-                      borderRadius: '999px',
-                      backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                      border: '1px solid rgba(255, 255, 255, 0.1)',
-                      color: 'rgba(255, 255, 255, 0.75)',
-                    }}
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* Bottom Actions: CTA & Return */}
+            {/* Bottom Actions: CTA & Back Button */}
             <div
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 flexWrap: 'wrap',
-                gap: '16px',
-                paddingTop: '20px',
-                borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+                gap: '20px',
+                paddingTop: '32px',
+                borderTop: '1px solid rgba(255, 255, 255, 0.1)',
               }}
             >
+              {/* Primary CTA */}
               <a
                 href="#contact"
                 onClick={handleCtaClick}
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: '8px',
+                  gap: '10px',
                   backgroundColor: '#FFFFFF',
                   color: '#000000',
-                  padding: '13px 26px',
+                  padding: '14px 30px',
                   borderRadius: '999px',
                   fontSize: '13px',
                   fontWeight: 600,
@@ -443,36 +483,43 @@ export const AutomationDetail: React.FC<AutomationDetailProps> = ({ item, onClos
                 }}
               >
                 <span>DISCUSS YOUR PROJECT</span>
-                <span style={{ fontSize: '14px' }}>→</span>
+                <span style={{ fontSize: '15px' }}>→</span>
               </a>
 
+              {/* Bottom Back Button */}
               <button
                 type="button"
                 onClick={onClose}
                 style={{
                   background: 'none',
                   border: 'none',
-                  color: 'rgba(255, 255, 255, 0.55)',
+                  color: 'rgba(255, 255, 255, 0.65)',
                   fontSize: '13px',
                   fontFamily: '"Geist Mono", monospace',
-                  letterSpacing: '0.06em',
+                  letterSpacing: '0.08em',
                   textTransform: 'uppercase',
                   cursor: 'pointer',
-                  padding: '8px 12px',
-                  transition: 'color 0.2s',
+                  padding: '10px 16px',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  transition: 'color 0.2s, transform 0.2s',
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.color = '#FFFFFF';
+                  e.currentTarget.style.transform = 'translateX(-3px)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.color = 'rgba(255, 255, 255, 0.55)';
+                  e.currentTarget.style.color = 'rgba(255, 255, 255, 0.65)';
+                  e.currentTarget.style.transform = 'none';
                 }}
               >
-                Return to gallery
+                <span>←</span>
+                <span>Back to Automations</span>
               </button>
             </div>
-          </motion.div>
-        </div>
+          </div>
+        </motion.div>
       )}
     </AnimatePresence>
   );
@@ -481,7 +528,7 @@ export const AutomationDetail: React.FC<AutomationDetailProps> = ({ item, onClos
     return null;
   }
 
-  return createPortal(modalContent, document.body);
+  return createPortal(pageContent, document.body);
 };
 
 export default AutomationDetail;
