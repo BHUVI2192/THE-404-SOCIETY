@@ -441,9 +441,9 @@ const YouDecideLocal: React.FC = () => {
         <section
           id="model"
           style={{
-            maxWidth: '1280px',
-            margin: '0 auto',
-            padding: '100px 32px 80px',
+            maxWidth: '1320px',
+            margin: '0',
+            padding: '100px clamp(24px, 5vw, 64px) 80px',
             borderTop: '1px solid rgba(255, 255, 255, 0.08)',
           }}
         >
@@ -576,9 +576,9 @@ const YouDecideLocal: React.FC = () => {
         <section
           id="services"
           style={{
-            maxWidth: '1280px',
-            margin: '0 auto',
-            padding: '96px 32px',
+            maxWidth: '1320px',
+            margin: '0',
+            padding: '96px clamp(24px, 5vw, 64px)',
             borderTop: '1px solid rgba(255, 255, 255, 0.08)',
           }}
         >
@@ -677,9 +677,9 @@ const YouDecideLocal: React.FC = () => {
         <section
           id="process"
           style={{
-            maxWidth: '1280px',
-            margin: '0 auto',
-            padding: '96px 32px',
+            maxWidth: '1320px',
+            margin: '0',
+            padding: '96px clamp(24px, 5vw, 64px)',
             borderTop: '1px solid rgba(255, 255, 255, 0.08)',
           }}
         >
@@ -768,9 +768,9 @@ const YouDecideLocal: React.FC = () => {
         <section
           id="contact"
           style={{
-            maxWidth: '1280px',
-            margin: '0 auto',
-            padding: '96px 32px',
+            maxWidth: '1320px',
+            margin: '0',
+            padding: '96px clamp(24px, 5vw, 64px)',
             borderTop: '1px solid rgba(255, 255, 255, 0.08)',
           }}
         >
@@ -889,9 +889,9 @@ const YouDecideLocal: React.FC = () => {
         <footer
           style={{
             borderTop: '1px solid rgba(255, 255, 255, 0.08)',
-            padding: '56px 32px 40px',
-            maxWidth: '1280px',
-            margin: '0 auto',
+            padding: '56px clamp(24px, 5vw, 64px) 40px',
+            maxWidth: '1320px',
+            margin: '0',
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
             gap: '40px',

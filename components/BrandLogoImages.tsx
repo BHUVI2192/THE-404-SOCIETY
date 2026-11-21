@@ -314,8 +314,8 @@ export const BrandLogosSection: React.FC<{
       style={{
         maxWidth: '1320px',
         width: '100%',
-        margin: 'clamp(64px, 10vh, 112px) auto clamp(72px, 12vh, 128px)',
-        padding: '0 clamp(16px, 4vw, 36px)',
+        margin: 'clamp(64px, 10vh, 112px) 0 clamp(72px, 12vh, 128px)',
+        padding: '0 clamp(24px, 5vw, 64px)',
         boxSizing: 'border-box',
         position: 'relative',
         zIndex: 10,
@@ -327,7 +327,7 @@ export const BrandLogosSection: React.FC<{
         style={{
           width: '100%',
           marginBottom: 'clamp(24px, 4vh, 38px)',
-          paddingLeft: '4px',
+          paddingLeft: '0',
         }}
       >
         <motion.h2
@@ -492,18 +492,19 @@ export const BrandLogosSection: React.FC<{
             flex-direction: column-reverse !important;
             padding: 44px 28px !important;
             gap: 36px !important;
-            align-items: center !important;
+            align-items: flex-start !important;
           }
           .brand-interactive-list {
             display: flex !important;
             flex-direction: column !important;
             gap: 14px !important;
             width: 100% !important;
-            text-align: center !important;
+            text-align: left !important;
+            align-items: flex-start !important;
           }
           .brand-interactive-item {
             font-size: clamp(28px, 6.8vw, 42px) !important;
-            text-align: center !important;
+            text-align: left !important;
             white-space: normal !important;
             transform: none !important;
           }

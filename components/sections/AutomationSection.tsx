@@ -36,10 +36,10 @@ export const AutomationSection: React.FC<AutomationSectionProps> = ({
       id="automations"
       className={`automation-showcase-section ${className}`}
       style={{
-        maxWidth: '1280px',
+        maxWidth: '1320px',
         width: '100%',
-        margin: 'clamp(72px, 11vh, 128px) auto',
-        padding: '0 clamp(16px, 4vw, 36px)',
+        margin: 'clamp(72px, 11vh, 128px) 0',
+        padding: '0 clamp(24px, 5vw, 64px)',
         boxSizing: 'border-box',
         position: 'relative',
         zIndex: 10,
@@ -52,7 +52,7 @@ export const AutomationSection: React.FC<AutomationSectionProps> = ({
           width: '100%',
           maxWidth: '100%',
           marginBottom: 'clamp(28px, 4.5vh, 44px)',
-          paddingLeft: '4px',
+          paddingLeft: '0',
         }}
       >
         {/* Main Title: Big & Cursive (Instrument Serif Italic) — In Single Line */}
