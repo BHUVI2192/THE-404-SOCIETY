@@ -57,6 +57,9 @@ const SmoothScrolling = ({ children }: { children: React.ReactNode }) => {
       touchMultiplier: 2,
     });
 
+    (window as any).__lenis = lenis;
+    (window as any).lenis = lenis;
+
     function raf(time: number) {
       lenis.raf(time);
       requestAnimationFrame(raf);
@@ -65,6 +68,8 @@ const SmoothScrolling = ({ children }: { children: React.ReactNode }) => {
     requestAnimationFrame(raf);
 
     return () => {
+      (window as any).__lenis = null;
+      (window as any).lenis = null;
       lenis.destroy();
     };
   }, [pathname]);

@@ -19,7 +19,7 @@ export const AutomationDetail: React.FC<AutomationDetailProps> = ({ item, onClos
     setMounted(true);
   }, []);
 
-  // ESC key listener & body scroll locking
+  // ESC key listener & body scroll locking with Lenis synchronization
   useEffect(() => {
     if (!item) return;
 
@@ -30,12 +30,25 @@ export const AutomationDetail: React.FC<AutomationDetailProps> = ({ item, onClos
     };
 
     window.addEventListener('keydown', handleKeyDown);
+
+    // Save exact landing page scroll position so return never jumps or glitches
+    const savedScrollY = window.scrollY;
+
+    // Pause Lenis smooth scrolling so wheel events inside modal never scroll the background page
+    const lenis = (window as any).__lenis || (window as any).lenis;
+    lenis?.stop();
+
     const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
 
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
       document.body.style.overflow = originalOverflow;
+      // Restore exact landing page scroll position
+      window.scrollTo({ top: savedScrollY, behavior: 'instant' });
+      // Resume Lenis smooth scrolling cleanly
+      lenis?.start();
+      lenis?.resize?.();
     };
   }, [item, onClose]);
 
@@ -59,6 +72,11 @@ export const AutomationDetail: React.FC<AutomationDetailProps> = ({ item, onClos
           role="dialog"
           aria-modal="true"
           aria-labelledby="automation-page-title"
+          data-lenis-prevent="true"
+          data-lenis-prevent-wheel="true"
+          data-lenis-prevent-touch="true"
+          onWheel={(e) => e.stopPropagation()}
+          onTouchMove={(e) => e.stopPropagation()}
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 16 }}
@@ -70,6 +88,7 @@ export const AutomationDetail: React.FC<AutomationDetailProps> = ({ item, onClos
             backgroundColor: '#000000',
             color: '#FFFFFF',
             overflowY: 'auto',
+            WebkitOverflowScrolling: 'touch',
             overscrollBehavior: 'contain',
             boxSizing: 'border-box',
           }}
@@ -174,21 +193,21 @@ export const AutomationDetail: React.FC<AutomationDetailProps> = ({ item, onClos
               Automation System {item.number}
             </motion.div>
 
-            {/* Name of Automation in Cursive Letters (Instrument Serif Italic) */}
+            {/* Name of Automation — Clean, Minimal Editorial Sans-Serif Typography */}
             <motion.h1
               id="automation-page-title"
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.45, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
               style={{
-                fontFamily: '"Instrument Serif", serif',
-                fontStyle: 'italic',
-                fontWeight: 400,
-                fontSize: 'clamp(52px, 7.5vw, 96px)',
-                lineHeight: 1.05,
-                letterSpacing: '-0.02em',
+                fontFamily: '"Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                fontStyle: 'normal',
+                fontWeight: 500,
+                fontSize: 'clamp(36px, 5.2vw, 68px)',
+                lineHeight: 1.1,
+                letterSpacing: '-0.03em',
                 color: '#FFFFFF',
-                margin: '0 0 24px',
+                margin: '0 0 20px',
               }}
             >
               {item.cardTitle}
