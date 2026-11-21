@@ -49,12 +49,12 @@ export const WEBSITE_BRANDS: WebsiteBrand[] = [
     aspect: '1 / 1',
   },
   {
-    id: 'mikan',
-    name: 'Mikan',
-    indexText: '04 / 06   MIKAN',
-    url: 'https://mikan-ten.vercel.app/',
-    logoSrc: '/portfolio/mikan.svg',
-    localFallback: '/portfolio/mikan.svg',
+    id: 'nike-vision',
+    name: 'Nike Vision Project',
+    indexText: '04 / 06   NIKE VISION PROJECT',
+    url: 'https://nike-vision.vercel.app/',
+    logoSrc: '/portfolio/nike.svg',
+    localFallback: '/portfolio/nike.svg',
     aspect: '1 / 1',
   },
   {
@@ -77,12 +77,21 @@ export const WEBSITE_BRANDS: WebsiteBrand[] = [
   },
 ];
 
+export const WEBSITES_BUILT = WEBSITE_BRANDS;
+
 const BRAND_LOOKUP: Record<string, WebsiteBrand> = {};
 WEBSITE_BRANDS.forEach((b) => {
   BRAND_LOOKUP[b.id] = b;
   BRAND_LOOKUP[b.name.toLowerCase()] = b;
   BRAND_LOOKUP[b.name] = b;
 });
+// Aliases for Nike
+const nikeBrand = BRAND_LOOKUP['nike-vision'];
+if (nikeBrand) {
+  BRAND_LOOKUP['nike vision'] = nikeBrand;
+  BRAND_LOOKUP['nike'] = nikeBrand;
+  BRAND_LOOKUP['Nike Vision'] = nikeBrand;
+}
 
 export interface BrandLogoImagesProps {
   /** Selected website name or id */

@@ -8,7 +8,7 @@
  *    1. https://parivarthanaschool.com/RSchool/
  *    2. https://www.the404society.in/
  *    3. https://www.rayaramutthonnali.org/
- *    4. https://mikan-ten.vercel.app/
+ *    4. https://nike-vision.vercel.app/
  *    5. https://helio-beryl-eta.vercel.app/
  *    6. https://momo-five-liart.vercel.app/
  * 4. Sleek minimal typography and aesthetic
