@@ -307,16 +307,13 @@ export const TextRevealScroll: React.FC<TextRevealScrollProps> = ({
 export default TextRevealScroll;
 
 /**
- * ManifestoScrollSection
+ * ManifestoScrollSection (Studio Introduction Section)
  *
- * Dedicated section mounted directly after the hero section.
- * Illuminates the 5 studio tenets as the visitor scrolls down:
- *
- * 1. A small budget should never mean a small dream.
- * 2. We believe good ideas deserve the chance to exist.
- * 3. We build thoughtful websites, useful automations and meaningful digital experiences.
- * 4. No fixed price. No price barriers.
- * 5. We build. You decide what it's worth
+ * Compact, simple and bold studio introduction section using the Framer Text Reveal Scroll Helper:
+ * - First statement: NOT A TRADITIONAL AGENCY. (bold uppercase)
+ * - Supporting text: We believe good ideas shouldn't be limited by budgets. No fixed prices, no unnecessary packages. Just good work and honest value. (small clean typography)
+ * - Final statement: YOU DECIDE. (bold uppercase, centred at the end)
+ * - Minimal vertical spacing, elegant, minimal and confident.
  */
 export const ManifestoScrollSection: React.FC<{
   className?: string;
@@ -324,90 +321,85 @@ export const ManifestoScrollSection: React.FC<{
   return (
     <section
       id="manifesto"
-      className={`manifesto-scroll-reveal-section ${className}`}
+      className={`studio-intro-section ${className}`}
       style={{
         width: '100%',
-        maxWidth: '1280px',
+        maxWidth: '760px',
         margin: '0 auto',
-        padding: 'clamp(90px, 14vh, 160px) clamp(24px, 5vw, 64px) clamp(70px, 11vh, 120px)',
+        padding: 'clamp(40px, 6vh, 60px) clamp(20px, 4vw, 32px) clamp(32px, 5vh, 48px)',
         boxSizing: 'border-box',
         position: 'relative',
         zIndex: 10,
-        scrollMarginTop: '100px',
+        scrollMarginTop: '90px',
       }}
     >
-      {/* Subtle Section Badge / Eyebrow */}
-      <div
-        style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: '8px',
-          marginBottom: 'clamp(28px, 4.5vh, 44px)',
-          fontFamily: '"Geist Mono", monospace',
-          fontSize: '12px',
-          fontWeight: 500,
-          letterSpacing: '0.14em',
-          textTransform: 'uppercase',
-          color: 'rgba(255, 255, 255, 0.55)',
-        }}
-      >
-        <span
-          style={{
-            width: '6px',
-            height: '6px',
-            borderRadius: '50%',
-            backgroundColor: '#6169FF',
-            boxShadow: '0 0 10px rgba(97, 105, 255, 0.7)',
-            display: 'inline-block',
-          }}
-        />
-        <span>The Studio Manifesto</span>
-      </div>
-
-      {/* Text Reveal Scroll Framer Component */}
+      {/* Subtle Scroll-based Text Reveal Framer Component */}
       <TextRevealScroll
         revealMode="chars"
         startOffset={85}
-        endOffset={50}
-        dimOpacity={0.18}
+        endOffset={45}
+        dimOpacity={0.2}
         style={{
           width: '100%',
-          maxWidth: '1180px',
+          maxWidth: '680px',
+          margin: '0 auto',
         }}
       >
         <div
           style={{
             display: 'flex',
             flexDirection: 'column',
-            gap: 'clamp(20px, 3vh, 36px)',
-            fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-            fontSize: 'clamp(30px, 4.2vw, 56px)',
-            fontWeight: 500,
-            lineHeight: 1.28,
-            letterSpacing: '-0.028em',
+            alignItems: 'center',
+            textAlign: 'center',
+            gap: 'clamp(14px, 2vh, 18px)',
             color: '#FFFFFF',
+            margin: '0 auto',
           }}
         >
-          <p style={{ margin: 0 }}>
-            A small budget should never mean a small dream.
-          </p>
-          <p style={{ margin: 0 }}>
-            We believe good ideas deserve the chance to exist.
-          </p>
-          <p style={{ margin: 0 }}>
-            We build thoughtful websites, useful automations and meaningful digital experiences.
-          </p>
-          <p style={{ margin: 0 }}>
-            No fixed price. No price barriers.
-          </p>
+          {/* First statement in bold, uppercase letters */}
           <p
             style={{
               margin: 0,
-              color: '#FFFFFF',
-              fontWeight: 600,
+              fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+              fontSize: 'clamp(19px, 2.3vw, 24px)',
+              fontWeight: 700,
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+              lineHeight: 1.25,
             }}
           >
-            We build. You decide what it&apos;s worth
+            NOT A TRADITIONAL AGENCY.
+          </p>
+
+          {/* Supporting text in small, clean typography */}
+          <p
+            style={{
+              margin: 0,
+              fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+              fontSize: 'clamp(15px, 1.35vw, 17px)',
+              fontWeight: 400,
+              lineHeight: 1.6,
+              letterSpacing: '-0.01em',
+              maxWidth: '560px',
+            }}
+          >
+            We believe good ideas shouldn&apos;t be limited by budgets. No fixed prices, no unnecessary packages. Just good work and honest value.
+          </p>
+
+          {/* "YOU DECIDE." in bold uppercase, centred at the end */}
+          <p
+            style={{
+              margin: 'clamp(6px, 1vh, 10px) 0 0',
+              fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+              fontSize: 'clamp(19px, 2.3vw, 24px)',
+              fontWeight: 700,
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
+              lineHeight: 1.25,
+              textAlign: 'center',
+            }}
+          >
+            YOU DECIDE.
           </p>
         </div>
       </TextRevealScroll>
