@@ -327,7 +327,7 @@ export interface ManifestoScrollSectionProps {
 
 export const ManifestoScrollSection: React.FC<ManifestoScrollSectionProps> = ({
   className = '',
-  supportingFontSize = 'clamp(15.5px, 1.35vw, 18px)',
+  supportingFontSize = 'clamp(17px, 1.6vw, 22px)',
 }) => {
   const resolvedSupportingSize =
     typeof supportingFontSize === 'number' ? `${supportingFontSize}px` : supportingFontSize;
@@ -386,7 +386,7 @@ export const ManifestoScrollSection: React.FC<ManifestoScrollSectionProps> = ({
             NOT A TRADITIONAL AGENCY.
           </p>
 
-          {/* Supporting text in clean typography (configurable size) */}
+          {/* Supporting text in clean typography (22px prominent reading scale) */}
           <p
             className="manifesto-supporting-text"
             style={{
@@ -396,7 +396,7 @@ export const ManifestoScrollSection: React.FC<ManifestoScrollSectionProps> = ({
               fontWeight: 400,
               lineHeight: 1.65,
               letterSpacing: '-0.01em',
-              maxWidth: '680px',
+              maxWidth: '740px',
               color: 'rgba(255, 255, 255, 0.88)',
             }}
           >
