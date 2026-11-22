@@ -921,3 +921,4 @@ export const BrowserWindow: React.FC<BrowserWindowProps> = ({
 };
 
 export default BrowserWindow;
+

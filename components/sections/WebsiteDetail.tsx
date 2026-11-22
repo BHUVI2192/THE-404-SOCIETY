@@ -302,3 +302,4 @@ export const WebsiteDetail: React.FC<WebsiteDetailProps> = ({ item, onClose }) =
 };
 
 export default WebsiteDetail;
+
