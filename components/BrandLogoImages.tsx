@@ -150,9 +150,9 @@ export const BrandLogoImages: React.FC<BrandLogoImagesProps> = ({
         backgroundColor,
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'flex-start',
-        justifyContent: 'flex-start',
-        gap: '24px',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '20px',
         padding: '0',
         overflow: 'visible',
         boxSizing: 'border-box',
@@ -170,6 +170,7 @@ export const BrandLogoImages: React.FC<BrandLogoImagesProps> = ({
         className="brand-logo-img-wrapper"
         style={{
           width: '100%',
+          maxWidth: '380px',
           aspectRatio: '1 / 1',
           display: 'flex',
           alignItems: 'center',
@@ -192,8 +193,8 @@ export const BrandLogoImages: React.FC<BrandLogoImagesProps> = ({
           loading="lazy"
           className="brand-logo-img"
           style={{
-            maxWidth: fit === 'fill' ? '100%' : '88%',
-            maxHeight: fit === 'fill' ? '100%' : '88%',
+            maxWidth: fit === 'fill' ? '100%' : '86%',
+            maxHeight: fit === 'fill' ? '100%' : '86%',
             objectFit: 'contain',
             display: 'block',
             userSelect: 'none',
@@ -240,7 +241,7 @@ export const BrandLogoImages: React.FC<BrandLogoImagesProps> = ({
           width: '100%',
           padding: '0',
           boxSizing: 'border-box',
-          textAlign: 'left',
+          textAlign: 'center',
         }}
       >
         <p
@@ -314,7 +315,7 @@ export const BrandLogosSection: React.FC<{
       id="websites-built"
       className={`brand-logos-showcase-section ${className}`}
       style={{
-        maxWidth: '1320px',
+        maxWidth: '100%',
         width: '100%',
         margin: 'clamp(64px, 10vh, 112px) 0 clamp(72px, 12vh, 128px)',
         padding: '0 clamp(24px, 5vw, 64px)',
@@ -370,24 +371,26 @@ export const BrandLogosSection: React.FC<{
         </motion.p>
       </div>
 
-      {/* ── Outer White Showcase Canvas (Enlarged) ── */}
+      {/* ── Outer White Showcase Canvas (Enlarged & Full-Screen) ── */}
       <div
         className="brand-interactive-container"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         style={{
           backgroundColor: '#FFFFFF',
-          borderRadius: '24px',
+          borderRadius: '28px',
           overflow: 'hidden',
-          padding: 'clamp(64px, 7vw, 104px) clamp(36px, 7vw, 104px)',
+          padding: 'clamp(56px, 6.5vh, 92px) clamp(36px, 5vw, 84px)',
           display: 'flex',
           flexDirection: 'row',
           justifyContent: 'space-between',
           alignItems: 'center',
-          gap: 'clamp(36px, 4vw, 56px)',
+          gap: 'clamp(32px, 4vw, 64px)',
           boxShadow: '0 24px 64px rgba(0, 0, 0, 0.45)',
           boxSizing: 'border-box',
           position: 'relative',
+          width: '100%',
+          minHeight: 'clamp(540px, 68vh, 720px)',
         }}
       >
         {/* Left Column: Vertical Brand Typography List (Enlarged) */}
@@ -398,7 +401,7 @@ export const BrandLogosSection: React.FC<{
             flexDirection: 'column',
             gap: 'clamp(14px, 2.2vh, 24px)',
             userSelect: 'none',
-            maxWidth: '720px',
+            maxWidth: '680px',
             flex: '1 1 auto',
           }}
         >
@@ -423,7 +426,7 @@ export const BrandLogosSection: React.FC<{
                   textAlign: 'left',
                   cursor: 'pointer',
                   fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-                  fontSize: 'clamp(44px, 5.2vw, 70px)',
+                  fontSize: 'clamp(34px, 4.2vw, 58px)',
                   fontWeight: isActive ? 600 : 500,
                   lineHeight: 1.15,
                   letterSpacing: '-0.025em',
@@ -446,8 +449,8 @@ export const BrandLogosSection: React.FC<{
         <div
           className="brand-interactive-display"
           style={{
-            width: 'clamp(320px, 34vw, 420px)',
-            minHeight: '400px',
+            width: 'clamp(300px, 30vw, 420px)',
+            minHeight: '420px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -461,7 +464,7 @@ export const BrandLogosSection: React.FC<{
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -14, scale: 0.98 }}
               transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
-              style={{ width: '100%' }}
+              style={{ width: '100%', display: 'flex', justifyContent: 'center' }}
             >
               <BrandLogoImages
                 variant={currentBrand.name}
