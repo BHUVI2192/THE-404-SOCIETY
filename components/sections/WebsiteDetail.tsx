@@ -94,12 +94,12 @@ export const WebsiteDetail: React.FC<WebsiteDetailProps> = ({ item, onClose }) =
               backdropFilter: 'blur(20px)',
               WebkitBackdropFilter: 'blur(20px)',
               borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
-              padding: '18px clamp(20px, 5vw, 64px)',
+              padding: '18px clamp(20px, 4vw, 56px)',
             }}
           >
             <div
               style={{
-                maxWidth: '1280px',
+                maxWidth: '1480px',
                 margin: '0 auto',
                 display: 'flex',
                 alignItems: 'center',
@@ -157,13 +157,14 @@ export const WebsiteDetail: React.FC<WebsiteDetailProps> = ({ item, onClose }) =
             </div>
           </div>
 
-          {/* ── MAIN CONTENT CONTAINER ── */}
+          {/* ── MAIN CONTENT CONTAINER (Expanded Width) ── */}
           <div
             style={{
-              maxWidth: '1280px',
+              maxWidth: '1480px',
+              width: '100%',
               margin: '0 auto',
               padding:
-                'clamp(32px, 5vh, 64px) clamp(20px, 5vw, 64px) clamp(64px, 10vh, 120px)',
+                'clamp(28px, 4vh, 52px) clamp(20px, 4vw, 56px) clamp(64px, 8vh, 100px)',
               boxSizing: 'border-box',
               display: 'flex',
               flexDirection: 'column',

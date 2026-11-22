@@ -109,7 +109,7 @@ export const BrowserWindow: React.FC<BrowserWindowProps> = ({
             alignItems: 'center',
             justifyContent: 'space-between',
             width: '100%',
-            maxWidth: activeMode === 'mobile' ? '390px' : '1240px',
+            maxWidth: activeMode === 'mobile' ? '440px' : '1440px',
             marginBottom: '16px',
             transition: 'max-width 0.35s cubic-bezier(0.22, 1, 0.36, 1)',
           }}
@@ -219,28 +219,28 @@ export const BrowserWindow: React.FC<BrowserWindowProps> = ({
         <div
           style={{
             width: '100%',
-            maxWidth: '1240px',
-            height: 'clamp(560px, 76vh, 840px)',
+            maxWidth: '1440px',
+            height: 'clamp(640px, 82vh, 920px)',
             backgroundColor: '#1E1E22',
-            borderRadius: '16px',
+            borderRadius: '18px',
             overflow: 'hidden',
             display: 'flex',
             flexDirection: 'column',
             border: '1px solid rgba(255, 255, 255, 0.12)',
             boxShadow:
-              '0 32px 80px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.06)',
+              '0 36px 90px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.06)',
             position: 'relative',
           }}
         >
           {/* macOS Title & Controls Bar */}
           <div
             style={{
-              height: '48px',
+              height: '52px',
               backgroundColor: '#18181B',
               borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
               display: 'flex',
               alignItems: 'center',
-              padding: '0 18px',
+              padding: '0 20px',
               gap: '16px',
               userSelect: 'none',
               flexShrink: 0,
@@ -361,9 +361,9 @@ export const BrowserWindow: React.FC<BrowserWindowProps> = ({
                 onClick={handleOpenExternal}
                 title="Open website in new tab"
                 style={{
-                  maxWidth: '560px',
+                  maxWidth: '660px',
                   width: '100%',
-                  height: '30px',
+                  height: '34px',
                   backgroundColor: 'rgba(255, 255, 255, 0.06)',
                   border: '1px solid rgba(255, 255, 255, 0.08)',
                   borderRadius: '8px',
@@ -571,14 +571,14 @@ export const BrowserWindow: React.FC<BrowserWindowProps> = ({
         <div
           style={{
             width: '100%',
-            maxWidth: '380px',
-            height: 'clamp(620px, 78vh, 760px)',
+            maxWidth: '430px',
+            height: 'clamp(720px, 86vh, 880px)',
             backgroundColor: '#1E1E22',
-            borderRadius: '48px',
-            padding: '10px',
-            border: '3px solid rgba(255, 255, 255, 0.18)',
+            borderRadius: '52px',
+            padding: '12px',
+            border: '3.5px solid rgba(255, 255, 255, 0.22)',
             boxShadow:
-              '0 32px 80px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(0, 0, 0, 0.8) inset, 0 12px 24px rgba(0, 0, 0, 0.4)',
+              '0 36px 90px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(0, 0, 0, 0.8) inset, 0 16px 32px rgba(0, 0, 0, 0.45)',
             display: 'flex',
             flexDirection: 'column',
             boxSizing: 'border-box',
@@ -591,7 +591,7 @@ export const BrowserWindow: React.FC<BrowserWindowProps> = ({
               width: '100%',
               height: '100%',
               backgroundColor: '#000000',
-              borderRadius: '38px',
+              borderRadius: '42px',
               overflow: 'hidden',
               display: 'flex',
               flexDirection: 'column',
@@ -601,12 +601,12 @@ export const BrowserWindow: React.FC<BrowserWindowProps> = ({
             {/* iOS Status Bar with Dynamic Island */}
             <div
               style={{
-                height: '40px',
+                height: '44px',
                 backgroundColor: '#18181B',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                padding: '0 20px',
+                padding: '0 22px',
                 userSelect: 'none',
                 flexShrink: 0,
                 position: 'relative',
@@ -617,7 +617,7 @@ export const BrowserWindow: React.FC<BrowserWindowProps> = ({
               <span
                 style={{
                   fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro", sans-serif',
-                  fontSize: '13px',
+                  fontSize: '14px',
                   fontWeight: 600,
                   color: '#FFFFFF',
                 }}
@@ -629,17 +629,17 @@ export const BrowserWindow: React.FC<BrowserWindowProps> = ({
               <div
                 style={{
                   position: 'absolute',
-                  top: '7px',
+                  top: '8px',
                   left: '50%',
                   transform: 'translateX(-50%)',
-                  width: '96px',
-                  height: '24px',
+                  width: '112px',
+                  height: '26px',
                   backgroundColor: '#000000',
                   borderRadius: '16px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'flex-end',
-                  paddingRight: '8px',
+                  paddingRight: '10px',
                   gap: '6px',
                   boxShadow: '0 0 0 1px rgba(255, 255, 255, 0.08)',
                 }}
@@ -692,12 +692,12 @@ export const BrowserWindow: React.FC<BrowserWindowProps> = ({
             {/* Mobile Safari Top URL Bar */}
             <div
               style={{
-                height: '42px',
+                height: '46px',
                 backgroundColor: '#18181B',
                 borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
                 display: 'flex',
                 alignItems: 'center',
-                padding: '0 14px',
+                padding: '0 16px',
                 gap: '8px',
                 flexShrink: 0,
                 zIndex: 10,
@@ -707,33 +707,33 @@ export const BrowserWindow: React.FC<BrowserWindowProps> = ({
                 onClick={handleOpenExternal}
                 style={{
                   flex: 1,
-                  height: '28px',
+                  height: '32px',
                   backgroundColor: 'rgba(255, 255, 255, 0.08)',
                   borderRadius: '8px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  padding: '0 10px',
+                  padding: '0 12px',
                   gap: '6px',
                   cursor: 'pointer',
                 }}
               >
-                <Lock size={11} style={{ color: '#10B981', flexShrink: 0 }} />
+                <Lock size={12} style={{ color: '#10B981', flexShrink: 0 }} />
                 <span
                   style={{
                     fontFamily: '"Geist Mono", monospace',
-                    fontSize: '11px',
+                    fontSize: '12px',
                     color: '#FFFFFF',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
                     whiteSpace: 'nowrap',
-                    maxWidth: '180px',
+                    maxWidth: '220px',
                   }}
                 >
                   {displayDomain}
                 </span>
                 <ExternalLink
-                  size={10}
+                  size={11}
                   style={{ color: 'rgba(255, 255, 255, 0.4)', flexShrink: 0 }}
                 />
               </div>
@@ -751,7 +751,7 @@ export const BrowserWindow: React.FC<BrowserWindowProps> = ({
                   alignItems: 'center',
                 }}
               >
-                <RotateCw size={13} />
+                <RotateCw size={14} />
               </button>
             </div>
 
@@ -882,7 +882,7 @@ export const BrowserWindow: React.FC<BrowserWindowProps> = ({
             {/* iOS Bottom Home Bar */}
             <div
               style={{
-                height: '24px',
+                height: '28px',
                 backgroundColor: '#18181B',
                 display: 'flex',
                 alignItems: 'center',
@@ -892,10 +892,10 @@ export const BrowserWindow: React.FC<BrowserWindowProps> = ({
             >
               <div
                 style={{
-                  width: '120px',
-                  height: '4px',
+                  width: '136px',
+                  height: '4.5px',
                   backgroundColor: 'rgba(255, 255, 255, 0.45)',
-                  borderRadius: '2px',
+                  borderRadius: '2.5px',
                 }}
               />
             </div>
