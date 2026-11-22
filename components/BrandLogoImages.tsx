@@ -9,6 +9,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { WebsiteDetail } from './sections/WebsiteDetail';
 
 export interface WebsiteBrand {
   id: string;
@@ -281,6 +282,7 @@ export const BrandLogosSection: React.FC<{
 }) => {
   const [activeBrand, setActiveBrand] = useState<string>(initialVariant);
   const [isHovered, setIsHovered] = useState<boolean>(false);
+  const [selectedWebsite, setSelectedWebsite] = useState<WebsiteBrand | null>(null);
   const cycleIndexRef = useRef<number>(
     WEBSITE_BRANDS.findIndex((b) => b.name === initialVariant) || 0
   );
@@ -406,9 +408,13 @@ export const BrandLogosSection: React.FC<{
               <button
                 key={b.id}
                 type="button"
-                onClick={() => handleSelectBrand(b.name, idx)}
+                onClick={() => {
+                  handleSelectBrand(b.name, idx);
+                  setSelectedWebsite(b);
+                }}
                 onMouseEnter={() => handleSelectBrand(b.name, idx)}
                 className={`brand-interactive-item ${isActive ? 'active' : ''}`}
+                title={`Open interactive browser preview of ${b.name}`}
                 style={{
                   background: 'none',
                   border: 'none',
@@ -519,6 +525,12 @@ export const BrandLogosSection: React.FC<{
           }
         }
       `}</style>
+
+      {/* ── FULL-SCREEN INTERACTIVE WEBSITEDETAIL MODAL WITH BROWSERWINDOW ── */}
+      <WebsiteDetail
+        item={selectedWebsite}
+        onClose={() => setSelectedWebsite(null)}
+      />
     </section>
   );
 };
