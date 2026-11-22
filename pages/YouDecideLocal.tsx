@@ -9,6 +9,7 @@ import AudioWave from '../components/AudioWave';
 import { BrandLogosSection } from '../components/BrandLogoImages';
 import { ManifestoScrollSection } from '../components/TextRevealScroll';
 import { AutomationSection } from '../components/sections/AutomationSection';
+import { AnalyticsSection } from '../components/sections/AnalyticsSection';
 
 // Official Vector Logo Component (Reversed for dark/night aesthetic)
 const YouDecideLogo: React.FC<{ height?: number; className?: string }> = ({
@@ -271,6 +272,7 @@ const YouDecideLocal: React.FC = () => {
               links={[
                 { label: 'Websites', link: '#websites-built' },
                 { label: 'Automations', link: '#automations' },
+                { label: 'Analytics', link: '#analytics' },
                 { label: 'Commercial Model', link: '#model' },
                 { label: 'Capabilities', link: '#services' },
                 { label: '3-Step Process', link: '#process' },
@@ -434,6 +436,11 @@ const YouDecideLocal: React.FC = () => {
         {/* AUTOMATION SERVICES (FRAMER MASONRY COMPONENT)                            */}
         {/* ========================================================================= */}
         <AutomationSection />
+
+        {/* ========================================================================= */}
+        {/* ANALYTICS & BI SERVICES (FRAMER PRISMFLOW GALLERY COMPONENT)              */}
+        {/* ========================================================================= */}
+        <AnalyticsSection />
 
         {/* ========================================================================= */}
         {/* INTERACTIVE VALUE SLIDER SECTION */}
