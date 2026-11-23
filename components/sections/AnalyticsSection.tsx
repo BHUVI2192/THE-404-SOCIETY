@@ -1,6 +1,6 @@
-// Analytics Section — Bento Gallery Showcase
-// Clean, symbol-free, emoji-free bento gallery explaining social media analytics
-// for companies, website insights, and market data in simple words.
+// Analytics Section — Sharp Bento Gallery Showcase
+// 100% Sharp corners (no rounded boxes or corners), white subtitles with black text,
+// zero symbols, zero emojis, editorial bento gallery matching the site's aesthetic.
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
@@ -28,7 +28,7 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ className = 
         textAlign: 'left',
       }}
     >
-      {/* ── SECTION HEADER: COMPLETELY LEFT ALIGNED WITHOUT SYMBOLS OR EMOJIS ── */}
+      {/* ── SECTION HEADER: SHARP & EDITORIAL ── */}
       <div
         style={{
           width: '100%',
@@ -51,29 +51,37 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ className = 
             lineHeight: 1.1,
             letterSpacing: '-0.02em',
             color: '#FFFFFF',
-            margin: '0 0 10px',
+            margin: '0 0 14px',
           }}
         >
           Analytics in simple words.
         </motion.h2>
 
-        <motion.p
+        {/* Section Subtitle: White Box With Name Written In Black */}
+        <motion.div
           initial={{ opacity: 0, y: 8 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
-          style={{
-            fontFamily: '"Geist Mono", monospace',
-            fontSize: 'clamp(16px, 1.8vw, 22px)',
-            fontWeight: 500,
-            letterSpacing: '0.16em',
-            textTransform: 'uppercase',
-            color: 'rgba(255, 255, 255, 0.7)',
-            margin: '0 0 18px',
-          }}
+          style={{ marginBottom: '16px' }}
         >
-          3. Analytics
-        </motion.p>
+          <span
+            style={{
+              backgroundColor: '#FFFFFF',
+              color: '#000000',
+              fontFamily: '"Geist Mono", monospace',
+              fontSize: '12px',
+              fontWeight: 700,
+              letterSpacing: '0.14em',
+              textTransform: 'uppercase',
+              padding: '4px 10px',
+              display: 'inline-block',
+              borderRadius: 0,
+            }}
+          >
+            3. Analytics
+          </span>
+        </motion.div>
 
         <motion.p
           initial={{ opacity: 0, y: 8 }}
@@ -95,9 +103,9 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ className = 
         </motion.p>
       </div>
 
-      {/* ── BENTO GALLERY GRID ── */}
+      {/* ── BENTO GALLERY GRID (ZERO ROUNDED CORNERS) ── */}
       <div className="analytics-bento-grid">
-        {/* ── BENTO TILE 1: FEATURED HERO (SOCIAL MEDIA ANALYTICS FOR COMPANIES) ── */}
+        {/* ── BENTO TILE 1: FEATURED HERO (SOCIAL MEDIA FOR COMPANIES) ── */}
         <motion.div
           className="bento-tile bento-hero"
           initial={{ opacity: 0, y: 16 }}
@@ -109,41 +117,37 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ className = 
           style={{
             backgroundColor:
               hoveredCard === 'social'
-                ? 'rgba(255, 255, 255, 0.045)'
-                : 'rgba(255, 255, 255, 0.02)',
+                ? 'rgba(255, 255, 255, 0.04)'
+                : 'rgba(255, 255, 255, 0.015)',
             border:
               hoveredCard === 'social'
-                ? '1px solid rgba(255, 255, 255, 0.18)'
-                : '1px solid rgba(255, 255, 255, 0.08)',
-            borderRadius: '24px',
+                ? '1px solid rgba(255, 255, 255, 0.28)'
+                : '1px solid rgba(255, 255, 255, 0.12)',
+            borderRadius: 0,
             padding: 'clamp(26px, 3.8vh, 36px)',
             boxSizing: 'border-box',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
-            transition: 'background-color 0.25s, border-color 0.25s, transform 0.25s, box-shadow 0.25s',
+            transition: 'background-color 0.25s, border-color 0.25s, transform 0.25s',
             transform: hoveredCard === 'social' ? 'translateY(-3px)' : 'none',
-            boxShadow:
-              hoveredCard === 'social'
-                ? '0 20px 40px -15px rgba(0, 0, 0, 0.6)'
-                : '0 8px 24px -12px rgba(0, 0, 0, 0.3)',
           }}
         >
           <div>
+            {/* Subtitle: White Box With Name Written In Black */}
             <div style={{ marginBottom: '18px' }}>
               <span
                 style={{
+                  backgroundColor: '#FFFFFF',
+                  color: '#000000',
                   fontFamily: '"Geist Mono", monospace',
                   fontSize: '11px',
-                  fontWeight: 600,
-                  letterSpacing: '0.1em',
+                  fontWeight: 700,
+                  letterSpacing: '0.12em',
                   textTransform: 'uppercase',
-                  color: '#60A5FA',
-                  padding: '5px 12px',
-                  borderRadius: '999px',
-                  backgroundColor: 'rgba(96, 165, 250, 0.08)',
-                  border: '1px solid rgba(96, 165, 250, 0.2)',
+                  padding: '4px 10px',
                   display: 'inline-block',
+                  borderRadius: 0,
                 }}
               >
                 Social Media for Companies
@@ -157,7 +161,7 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ className = 
                 fontWeight: 600,
                 lineHeight: 1.25,
                 color: '#FFFFFF',
-                margin: '0 0 12px',
+                margin: '0 0 14px',
                 letterSpacing: '-0.01em',
               }}
             >
@@ -179,7 +183,7 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ className = 
               instead of empty likes.
             </p>
 
-            {/* Sub-Bento Mini Grid */}
+            {/* Sub-Bento Mini Grid with Sharp Rectangles */}
             <div className="bento-subgrid">
               <div className="bento-subitem">
                 <div className="bento-subitem-title">Content Reach</div>
@@ -222,41 +226,37 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ className = 
           style={{
             backgroundColor:
               hoveredCard === 'reports'
-                ? 'rgba(255, 255, 255, 0.045)'
-                : 'rgba(255, 255, 255, 0.02)',
+                ? 'rgba(255, 255, 255, 0.04)'
+                : 'rgba(255, 255, 255, 0.015)',
             border:
               hoveredCard === 'reports'
-                ? '1px solid rgba(255, 255, 255, 0.18)'
-                : '1px solid rgba(255, 255, 255, 0.08)',
-            borderRadius: '24px',
+                ? '1px solid rgba(255, 255, 255, 0.28)'
+                : '1px solid rgba(255, 255, 255, 0.12)',
+            borderRadius: 0,
             padding: 'clamp(26px, 3.8vh, 36px)',
             boxSizing: 'border-box',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
-            transition: 'background-color 0.25s, border-color 0.25s, transform 0.25s, box-shadow 0.25s',
+            transition: 'background-color 0.25s, border-color 0.25s, transform 0.25s',
             transform: hoveredCard === 'reports' ? 'translateY(-3px)' : 'none',
-            boxShadow:
-              hoveredCard === 'reports'
-                ? '0 20px 40px -15px rgba(0, 0, 0, 0.6)'
-                : '0 8px 24px -12px rgba(0, 0, 0, 0.3)',
           }}
         >
           <div>
+            {/* Subtitle: White Box With Name Written In Black */}
             <div style={{ marginBottom: '18px' }}>
               <span
                 style={{
+                  backgroundColor: '#FFFFFF',
+                  color: '#000000',
                   fontFamily: '"Geist Mono", monospace',
                   fontSize: '11px',
-                  fontWeight: 600,
-                  letterSpacing: '0.1em',
+                  fontWeight: 700,
+                  letterSpacing: '0.12em',
                   textTransform: 'uppercase',
-                  color: '#A78BFA',
-                  padding: '5px 12px',
-                  borderRadius: '999px',
-                  backgroundColor: 'rgba(167, 139, 250, 0.08)',
-                  border: '1px solid rgba(167, 139, 250, 0.2)',
+                  padding: '4px 10px',
                   display: 'inline-block',
+                  borderRadius: 0,
                 }}
               >
                 Monthly Briefs
@@ -322,41 +322,37 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ className = 
           style={{
             backgroundColor:
               hoveredCard === 'website'
-                ? 'rgba(255, 255, 255, 0.045)'
-                : 'rgba(255, 255, 255, 0.02)',
+                ? 'rgba(255, 255, 255, 0.04)'
+                : 'rgba(255, 255, 255, 0.015)',
             border:
               hoveredCard === 'website'
-                ? '1px solid rgba(255, 255, 255, 0.18)'
-                : '1px solid rgba(255, 255, 255, 0.08)',
-            borderRadius: '24px',
+                ? '1px solid rgba(255, 255, 255, 0.28)'
+                : '1px solid rgba(255, 255, 255, 0.12)',
+            borderRadius: 0,
             padding: 'clamp(26px, 3.8vh, 36px)',
             boxSizing: 'border-box',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
-            transition: 'background-color 0.25s, border-color 0.25s, transform 0.25s, box-shadow 0.25s',
+            transition: 'background-color 0.25s, border-color 0.25s, transform 0.25s',
             transform: hoveredCard === 'website' ? 'translateY(-3px)' : 'none',
-            boxShadow:
-              hoveredCard === 'website'
-                ? '0 20px 40px -15px rgba(0, 0, 0, 0.6)'
-                : '0 8px 24px -12px rgba(0, 0, 0, 0.3)',
           }}
         >
           <div>
+            {/* Subtitle: White Box With Name Written In Black */}
             <div style={{ marginBottom: '18px' }}>
               <span
                 style={{
+                  backgroundColor: '#FFFFFF',
+                  color: '#000000',
                   fontFamily: '"Geist Mono", monospace',
                   fontSize: '11px',
-                  fontWeight: 600,
-                  letterSpacing: '0.1em',
+                  fontWeight: 700,
+                  letterSpacing: '0.12em',
                   textTransform: 'uppercase',
-                  color: '#34D399',
-                  padding: '5px 12px',
-                  borderRadius: '999px',
-                  backgroundColor: 'rgba(52, 211, 153, 0.08)',
-                  border: '1px solid rgba(52, 211, 153, 0.2)',
+                  padding: '4px 10px',
                   display: 'inline-block',
+                  borderRadius: 0,
                 }}
               >
                 Website Visitor Flow
@@ -423,41 +419,37 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ className = 
           style={{
             backgroundColor:
               hoveredCard === 'market'
-                ? 'rgba(255, 255, 255, 0.045)'
-                : 'rgba(255, 255, 255, 0.02)',
+                ? 'rgba(255, 255, 255, 0.04)'
+                : 'rgba(255, 255, 255, 0.015)',
             border:
               hoveredCard === 'market'
-                ? '1px solid rgba(255, 255, 255, 0.18)'
-                : '1px solid rgba(255, 255, 255, 0.08)',
-            borderRadius: '24px',
+                ? '1px solid rgba(255, 255, 255, 0.28)'
+                : '1px solid rgba(255, 255, 255, 0.12)',
+            borderRadius: 0,
             padding: 'clamp(26px, 3.8vh, 36px)',
             boxSizing: 'border-box',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
-            transition: 'background-color 0.25s, border-color 0.25s, transform 0.25s, box-shadow 0.25s',
+            transition: 'background-color 0.25s, border-color 0.25s, transform 0.25s',
             transform: hoveredCard === 'market' ? 'translateY(-3px)' : 'none',
-            boxShadow:
-              hoveredCard === 'market'
-                ? '0 20px 40px -15px rgba(0, 0, 0, 0.6)'
-                : '0 8px 24px -12px rgba(0, 0, 0, 0.3)',
           }}
         >
           <div>
+            {/* Subtitle: White Box With Name Written In Black */}
             <div style={{ marginBottom: '18px' }}>
               <span
                 style={{
+                  backgroundColor: '#FFFFFF',
+                  color: '#000000',
                   fontFamily: '"Geist Mono", monospace',
                   fontSize: '11px',
-                  fontWeight: 600,
-                  letterSpacing: '0.1em',
+                  fontWeight: 700,
+                  letterSpacing: '0.12em',
                   textTransform: 'uppercase',
-                  color: '#F59E0B',
-                  padding: '5px 12px',
-                  borderRadius: '999px',
-                  backgroundColor: 'rgba(245, 158, 11, 0.08)',
-                  border: '1px solid rgba(245, 158, 11, 0.2)',
+                  padding: '4px 10px',
                   display: 'inline-block',
+                  borderRadius: 0,
                 }}
               >
                 Competitor Benchmarks
@@ -512,7 +504,7 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ className = 
           </div>
         </motion.div>
 
-        {/* ── BENTO TILE 5: WIDE BOTTOM CALLOUT ── */}
+        {/* ── BENTO TILE 5: WIDE BOTTOM CALLOUT (ZERO ROUNDED CORNERS) ── */}
         <motion.div
           className="bento-tile bento-full"
           initial={{ opacity: 0, y: 16 }}
@@ -520,9 +512,9 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ className = 
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.24, ease: [0.22, 1, 0.36, 1] }}
           style={{
-            backgroundColor: 'rgba(255, 255, 255, 0.02)',
-            border: '1px solid rgba(255, 255, 255, 0.08)',
-            borderRadius: '24px',
+            backgroundColor: 'rgba(255, 255, 255, 0.015)',
+            border: '1px solid rgba(255, 255, 255, 0.12)',
+            borderRadius: 0,
             padding: '24px 32px',
             boxSizing: 'border-box',
             display: 'flex',
@@ -533,6 +525,24 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ className = 
           }}
         >
           <div style={{ maxWidth: '680px' }}>
+            <div style={{ marginBottom: '8px' }}>
+              <span
+                style={{
+                  backgroundColor: '#FFFFFF',
+                  color: '#000000',
+                  fontFamily: '"Geist Mono", monospace',
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                  padding: '3px 8px',
+                  display: 'inline-block',
+                  borderRadius: 0,
+                }}
+              >
+                Free Review
+              </span>
+            </div>
             <div
               style={{
                 fontFamily: '"Geist", sans-serif',
@@ -562,18 +572,20 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ className = 
             style={{
               display: 'inline-block',
               backgroundColor: '#FFFFFF',
-              color: '#040711',
+              color: '#000000',
               fontFamily: '"Geist Mono", monospace',
               fontSize: '12px',
-              fontWeight: 600,
-              padding: '12px 22px',
-              borderRadius: '999px',
+              fontWeight: 700,
+              letterSpacing: '0.06em',
+              textTransform: 'uppercase',
+              padding: '12px 24px',
+              borderRadius: 0,
               textDecoration: 'none',
               whiteSpace: 'nowrap',
               transition: 'opacity 0.2s, transform 0.2s',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.opacity = '0.9';
+              e.currentTarget.style.opacity = '0.85';
               e.currentTarget.style.transform = 'translateY(-1px)';
             }}
             onMouseLeave={(e) => {
@@ -586,7 +598,7 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ className = 
         </motion.div>
       </div>
 
-      {/* ── BENTO GALLERY RESPONSIVE STYLES ── */}
+      {/* ── BENTO GALLERY RESPONSIVE STYLES (STRICT 0PX BORDER RADIUS) ── */}
       <style>{`
         .analytics-bento-grid {
           display: grid;
@@ -614,9 +626,9 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ className = 
         }
         .bento-subitem {
           padding: 14px 16px;
-          border-radius: 14px;
-          background-color: rgba(255, 255, 255, 0.03);
-          border: 1px solid rgba(255, 255, 255, 0.06);
+          border-radius: 0 !important;
+          background-color: rgba(255, 255, 255, 0.02);
+          border: 1px solid rgba(255, 255, 255, 0.08);
           box-sizing: border-box;
         }
         .bento-subitem-title {
@@ -638,9 +650,9 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ className = 
           font-size: 12px;
           color: rgba(255, 255, 255, 0.8);
           padding: 7px 14px;
-          border-radius: 10px;
-          background-color: rgba(255, 255, 255, 0.03);
-          border: 1px solid rgba(255, 255, 255, 0.06);
+          border-radius: 0 !important;
+          background-color: rgba(255, 255, 255, 0.02);
+          border: 1px solid rgba(255, 255, 255, 0.08);
           box-sizing: border-box;
         }
         @media (max-width: 960px) {
