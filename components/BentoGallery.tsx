@@ -306,3 +306,4 @@ export const BentoGallery: React.FC<BentoGalleryProps> = ({
 };
 
 export default BentoGallery;
+
