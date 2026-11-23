@@ -438,7 +438,7 @@ const YouDecideLocal: React.FC = () => {
         <AutomationSection />
 
         {/* ========================================================================= */}
-        {/* ANALYTICS & BI SERVICES (FRAMER PRISMFLOW GALLERY COMPONENT)              */}
+        {/* ANALYTICS SERVICES (COMPACT & SIMPLE WORDS)                               */}
         {/* ========================================================================= */}
         <AnalyticsSection />
 
