@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AutomationItem } from '../../data/automations';
+import { smoothScrollToSection } from '../../lib/scrollUtils';
 
 interface AutomationDetailProps {
   item: AutomationItem | null;
@@ -56,12 +57,7 @@ export const AutomationDetail: React.FC<AutomationDetailProps> = ({ item, onClos
     e.preventDefault();
     onClose();
     setTimeout(() => {
-      const el = document.getElementById('contact');
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      } else {
-        window.location.hash = 'contact';
-      }
+      smoothScrollToSection('contact');
     }, 280);
   };
 

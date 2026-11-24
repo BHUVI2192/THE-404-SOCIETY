@@ -5,6 +5,7 @@
 import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { smoothScrollToSection } from '../../lib/scrollUtils';
 
 export interface AnalyticsDetailItem {
   id: string;
@@ -169,12 +170,7 @@ export const AnalyticsDetail: React.FC<AnalyticsDetailProps> = ({ item, onClose 
     e.preventDefault();
     onClose();
     setTimeout(() => {
-      const el = document.getElementById('contact');
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      } else {
-        window.location.hash = 'contact';
-      }
+      smoothScrollToSection('contact');
     }, 280);
   };
 

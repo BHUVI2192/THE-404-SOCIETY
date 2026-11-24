@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { smoothScrollToSection } from '../lib/scrollUtils';
 
 const EASE_OUT = [0.22, 1, 0.36, 1];
 const EASE_IN = [0.4, 0, 1, 1];
@@ -198,6 +199,12 @@ export const MotionOverlayMenu: React.FC<MotionOverlayMenuProps> = ({
       {/* Brand / Logo */}
       <a
         href={brandHref}
+        onClick={(e) => {
+          if (brandHref && brandHref.startsWith('#')) {
+            e.preventDefault();
+            smoothScrollToSection(brandHref);
+          }
+        }}
         style={{
           display: 'inline-flex',
           alignItems: 'center',
@@ -422,7 +429,17 @@ export const MotionOverlayMenu: React.FC<MotionOverlayMenuProps> = ({
                         rel={item.newTab ? 'noopener noreferrer' : undefined}
                         onPointerEnter={() => setHovered(i)}
                         onPointerLeave={() => setHovered(null)}
-                        onClick={() => closeMenu()}
+                        onClick={(e) => {
+                          if (item.link && item.link.startsWith('#')) {
+                            e.preventDefault();
+                            closeMenu();
+                            setTimeout(() => {
+                              smoothScrollToSection(item.link);
+                            }, 320);
+                          } else {
+                            closeMenu();
+                          }
+                        }}
                         animate={{
                           x: isHovered ? 20 : 0,
                           opacity: isDimmed ? 0.35 : 1,
@@ -495,7 +512,17 @@ export const MotionOverlayMenu: React.FC<MotionOverlayMenuProps> = ({
                       href={sec.link}
                       target={sec.newTab ? '_blank' : undefined}
                       rel={sec.newTab ? 'noopener noreferrer' : undefined}
-                      onClick={() => closeMenu()}
+                      onClick={(e) => {
+                        if (sec.link && sec.link.startsWith('#')) {
+                          e.preventDefault();
+                          closeMenu();
+                          setTimeout(() => {
+                            smoothScrollToSection(sec.link);
+                          }, 320);
+                        } else {
+                          closeMenu();
+                        }
+                      }}
                       style={{
                         color: 'rgba(255, 255, 255, 0.8)',
                         textDecoration: 'none',

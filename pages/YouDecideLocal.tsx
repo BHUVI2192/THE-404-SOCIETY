@@ -10,6 +10,7 @@ import { BrandLogosSection } from '../components/BrandLogoImages';
 import { ManifestoScrollSection } from '../components/TextRevealScroll';
 import { AutomationSection } from '../components/sections/AutomationSection';
 import { AnalyticsSection } from '../components/sections/AnalyticsSection';
+import { smoothScrollToSection } from '../lib/scrollUtils';
 
 // Official Vector Logo Component (Reversed for dark/night aesthetic)
 const YouDecideLogo: React.FC<{ height?: number; className?: string }> = ({
@@ -43,7 +44,26 @@ const YouDecideLogo: React.FC<{ height?: number; className?: string }> = ({
   );
 };
 
-const YouDecideLocal: React.FC = () => {
+export interface YouDecideLocalProps {
+  scrollTo?: string;
+}
+
+const YouDecideLocal: React.FC<YouDecideLocalProps> = ({ scrollTo }) => {
+  // Auto-scroll on mount if a target section was passed via route or initial hash
+  useEffect(() => {
+    if (scrollTo) {
+      setTimeout(() => {
+        smoothScrollToSection(scrollTo);
+      }, 400);
+    } else if (typeof window !== 'undefined' && window.location.hash) {
+      const target = window.location.hash.replace(/^#\/?/, '');
+      if (['contact', 'websites-built', 'automations', 'analytics', 'overview'].includes(target)) {
+        setTimeout(() => {
+          smoothScrollToSection(target);
+        }, 400);
+      }
+    }
+  }, [scrollTo]);
 
   useEffect(() => {
     document.title = 'Affordable Website Design for Small Businesses | youdecide.studio';
@@ -217,6 +237,7 @@ const YouDecideLocal: React.FC = () => {
                 { label: 'Websites', link: '#websites-built' },
                 { label: 'Automations', link: '#automations' },
                 { label: 'Analytics', link: '#analytics' },
+                { label: 'Project Brief', link: '#contact' },
                 { label: 'Book a Call', link: 'https://calendly.com/youdecide-std/30min', newTab: true },
               ]}
               secondaryLinks={[
@@ -356,7 +377,14 @@ const YouDecideLocal: React.FC = () => {
                 <span>Book a 30-Min Call</span>
                 <span aria-hidden="true">→</span>
               </a>
-              <a href="#websites-built" className="hero-cta-btn-secondary">
+              <a
+                href="#websites-built"
+                onClick={(e) => {
+                  e.preventDefault();
+                  smoothScrollToSection('websites-built');
+                }}
+                className="hero-cta-btn-secondary"
+              >
                 <span>Explore Our Work</span>
               </a>
             </motion.div>
@@ -610,7 +638,14 @@ const YouDecideLocal: React.FC = () => {
         >
           {/* Col 1: Studio Identity */}
           <div>
-            <a href="#overview" style={{ display: 'inline-block', textDecoration: 'none' }}>
+            <a
+              href="#overview"
+              onClick={(e) => {
+                e.preventDefault();
+                smoothScrollToSection('overview');
+              }}
+              style={{ display: 'inline-block', textDecoration: 'none' }}
+            >
               <YouDecideLogo height={24} />
             </a>
             <div style={{ marginTop: '16px', maxWidth: '300px', lineHeight: 1.6, color: 'rgba(255, 255, 255, 0.65)' }}>
@@ -649,6 +684,10 @@ const YouDecideLocal: React.FC = () => {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               <a
                 href="#websites-built"
+                onClick={(e) => {
+                  e.preventDefault();
+                  smoothScrollToSection('websites-built');
+                }}
                 style={{
                   color: 'rgba(255, 255, 255, 0.7)',
                   textDecoration: 'none',
@@ -661,6 +700,10 @@ const YouDecideLocal: React.FC = () => {
               </a>
               <a
                 href="#automations"
+                onClick={(e) => {
+                  e.preventDefault();
+                  smoothScrollToSection('automations');
+                }}
                 style={{
                   color: 'rgba(255, 255, 255, 0.7)',
                   textDecoration: 'none',
@@ -673,6 +716,10 @@ const YouDecideLocal: React.FC = () => {
               </a>
               <a
                 href="#analytics"
+                onClick={(e) => {
+                  e.preventDefault();
+                  smoothScrollToSection('analytics');
+                }}
                 style={{
                   color: 'rgba(255, 255, 255, 0.7)',
                   textDecoration: 'none',
@@ -719,6 +766,10 @@ const YouDecideLocal: React.FC = () => {
               </a>
               <a
                 href="#contact"
+                onClick={(e) => {
+                  e.preventDefault();
+                  smoothScrollToSection('contact');
+                }}
                 style={{
                   color: 'rgba(255, 255, 255, 0.7)',
                   textDecoration: 'none',
@@ -731,6 +782,10 @@ const YouDecideLocal: React.FC = () => {
               </a>
               <a
                 href="#overview"
+                onClick={(e) => {
+                  e.preventDefault();
+                  smoothScrollToSection('overview');
+                }}
                 style={{
                   color: 'rgba(255, 255, 255, 0.7)',
                   textDecoration: 'none',
