@@ -33,18 +33,6 @@ const FAQS: FAQItemData[] = [
     answer:
       'Most custom websites and business automation pipelines are delivered within 5 to 14 business days. For urgent venture launches or event portals, we can expedite sprints with dedicated engineering focus.',
   },
-  {
-    number: '05',
-    question: 'Do you offer ongoing hosting, security patches, and post-launch maintenance?',
-    answer:
-      'Yes. We configure seamless modern deployments (Vercel, Cloudflare, Supabase, Firebase) that require near-zero maintenance. We also offer monthly retainer-free check-ins for content updates, analytics reporting, and scaling automations as your venture grows.',
-  },
-  {
-    number: '06',
-    question: 'Can you integrate with our existing APIs, CRMs, and payment gateways?',
-    answer:
-      'Absolutely. We routinely integrate with existing backend REST/GraphQL APIs, CRM platforms (HubSpot, Salesforce), payment providers (PhonePe, Razorpay, Stripe), authentication services (Supabase, Firebase, Auth0), and analytics systems without disrupting active operations.',
-  },
 ];
 
 export const FAQSection: React.FC<{ className?: string }> = ({ className = '' }) => {
