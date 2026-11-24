@@ -1,50 +1,218 @@
-// Analytics Section — Pure White Bento Grid
-// Clean complete white background bento grid with single title text.
-// When clicked, smoothly opens a dedicated full page with complete detailed information.
-// Zero rounded corners, zero symbols, zero emojis.
+// Analytics Section — Framer Flexible Accordion Component
+// Adapted from https://framer.com/m/Flexible-Accordion-lm9xDr.js@OPKl6Cog03hgj9gMegkD
+// Asymmetric overlapping cards with tabbed content, animated image zoom, and deep dive modal
 
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowRight, ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
 import { AnalyticsDetail, AnalyticsDetailItem, ANALYTICS_ITEMS } from './AnalyticsDetail';
 
 export interface AnalyticsSectionProps {
   className?: string;
 }
 
-export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ className = '' }) => {
-  const [selectedItem, setSelectedItem] = useState<AnalyticsDetailItem | null>(null);
-  const [hoveredId, setHoveredId] = useState<string | null>(null);
+interface AccordionTabItem {
+  id: string;
+  tab: string;
+  eyebrow: string;
+  title: string;
+  description: string;
+  image: string;
+  analyticsItem: AnalyticsDetailItem;
+}
 
-  // Bento layout mapping
-  const bentoGridConfig: { [key: string]: { colSpan: number; minHeight: string } } = {
-    'social-media': { colSpan: 8, minHeight: 'clamp(240px, 28vh, 320px)' },
-    'monthly-briefs': { colSpan: 4, minHeight: 'clamp(240px, 28vh, 320px)' },
-    'visitor-flow': { colSpan: 6, minHeight: 'clamp(220px, 24vh, 280px)' },
-    'competitor-watch': { colSpan: 6, minHeight: 'clamp(220px, 24vh, 280px)' },
+const ACCORDION_ITEMS: AccordionTabItem[] = [
+  {
+    id: 'social-media',
+    tab: 'Social Reach',
+    eyebrow: '01 · SOCIAL MEDIA ANALYTICS',
+    title: 'Content that turns into customer conversations.',
+    description:
+      'We track what content actually turns into customer conversations, sales enquiries, and brand authority instead of empty likes and vanity numbers.',
+    image:
+      'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1800&q=90',
+    analyticsItem: ANALYTICS_ITEMS[0],
+  },
+  {
+    id: 'monthly-briefs',
+    tab: 'Monthly Briefs',
+    eyebrow: '02 · PERFORMANCE BRIEFS',
+    title: 'Reports you can read in two minutes.',
+    description:
+      'A clean one-page summary of what worked, what did not, and three simple action steps for next month in plain words without marketing jargon.',
+    image:
+      'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1800&q=90',
+    analyticsItem: ANALYTICS_ITEMS[1],
+  },
+  {
+    id: 'visitor-flow',
+    tab: 'Visitor Flow',
+    eyebrow: '03 · WEBSITE & VISITOR FLOW',
+    title: 'Where visitors come from and why they stay.',
+    description:
+      'See traffic sources, pages that hold attention the longest, and drop-off bottlenecks where casual visitors leave or convert into clients.',
+    image:
+      'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?auto=format&fit=crop&w=1800&q=90',
+    analyticsItem: ANALYTICS_ITEMS[2],
+  },
+  {
+    id: 'competitor-watch',
+    tab: 'Competitor Watch',
+    eyebrow: '04 · MARKET BENCHMARKS',
+    title: 'Know what others in your field are doing.',
+    description:
+      'Learn what competitors in your field are doing well and what falls flat so your brand can capture buyer attention and fill untapped content gaps.',
+    image:
+      'https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?auto=format&fit=crop&w=1800&q=90',
+    analyticsItem: ANALYTICS_ITEMS[3],
+  },
+];
+
+export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ className = '' }) => {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [selectedDetail, setSelectedDetail] = useState<AnalyticsDetailItem | null>(null);
+
+  const total = ACCORDION_ITEMS.length;
+
+  const goTo = useCallback((idx: number) => {
+    setActiveIndex(Math.max(0, Math.min(idx, total - 1)));
+  }, [total]);
+
+  const next = useCallback(() => {
+    setActiveIndex((prev) => (prev >= total - 1 ? 0 : prev + 1));
+  }, [total]);
+
+  const prev = useCallback(() => {
+    setActiveIndex((prev) => (prev <= 0 ? total - 1 : prev - 1));
+  }, [total]);
+
+  // Keyboard navigation
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'ArrowRight') next();
+    if (e.key === 'ArrowLeft') prev();
   };
+
+  const activeItem = ACCORDION_ITEMS[activeIndex];
 
   return (
     <section
       id="analytics"
       className={`analytics-section ${className}`}
+      onKeyDown={handleKeyDown}
+      tabIndex={0}
       style={{
         maxWidth: '1320px',
         width: '100%',
         margin: 'clamp(40px, 5.5vh, 64px) auto',
-        padding: '0 clamp(24px, 5vw, 64px)',
+        padding: '0 clamp(20px, 4vw, 48px)',
         boxSizing: 'border-box',
         position: 'relative',
         zIndex: 10,
         scrollMarginTop: '84px',
         textAlign: 'left',
+        outline: 'none',
       }}
     >
-      {/* ── SECTION HEADER: SHARP, EDITORIAL & LEFT-ALIGNED (OF CENTERED CONTENT) ── */}
+      <style>{`
+        .framer-accordion-container {
+          position: relative;
+          width: 100%;
+          min-height: 600px;
+          height: clamp(560px, 68vh, 660px);
+          box-sizing: border-box;
+        }
+        .framer-accordion-image-panel {
+          position: absolute;
+          right: 0;
+          top: 6%;
+          width: 66%;
+          height: 86%;
+          border-radius: 24px;
+          overflow: hidden;
+          background-color: #0b152e;
+          box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45);
+        }
+        .framer-accordion-card {
+          position: absolute;
+          left: 0;
+          top: 14%;
+          width: 50%;
+          height: 72%;
+          padding: clamp(28px, 3.2vw, 42px);
+          box-sizing: border-box;
+          border-radius: 24px;
+          background-color: #FFFFFF;
+          color: #111827;
+          border: 1px solid #E5E7EB;
+          box-shadow: 0 24px 56px rgba(0, 0, 0, 0.35);
+          z-index: 3;
+          display: flex;
+          flex-direction: column;
+          justifyContent: space-between;
+          overflow: hidden;
+        }
+        .framer-accordion-nav {
+          position: absolute;
+          left: 0;
+          bottom: 4px;
+          display: flex;
+          align-items: center;
+          gap: 20px;
+          z-index: 5;
+        }
+        @media (max-width: 960px) {
+          .framer-accordion-container {
+            height: auto;
+            min-height: unset;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+          }
+          .framer-accordion-image-panel {
+            position: relative;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 260px;
+            border-radius: 20px;
+          }
+          .framer-accordion-card {
+            position: relative;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: auto;
+            border-radius: 20px;
+            padding: 24px 22px;
+          }
+          .framer-accordion-nav {
+            position: relative;
+            left: 0;
+            bottom: 0;
+            margin-top: 8px;
+          }
+        }
+        .framer-accordion-tab-btn {
+          appearance: none;
+          border: none;
+          outline: none;
+          background: transparent;
+          cursor: pointer;
+          font-family: "Geist", -apple-system, sans-serif;
+          font-size: 14px;
+          padding: 0 0 10px;
+          flex-shrink: 0;
+          white-space: nowrap;
+          transition: color 0.25s ease, border-color 0.25s ease;
+        }
+      `}</style>
+
+      {/* ── SECTION HEADER: CONSISTENT EDITORIAL TITLE ── */}
       <div
         style={{
           width: '100%',
           maxWidth: '100%',
-          marginBottom: 'clamp(32px, 5vh, 48px)',
+          marginBottom: 'clamp(28px, 4.5vh, 42px)',
           textAlign: 'left',
           paddingLeft: '0',
         }}
@@ -69,7 +237,6 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ className = 
           Analytics in simple words.
         </motion.h2>
 
-        {/* 3. Analytics Subhead — Consistent with 1. Websites & 2. Automation */}
         <motion.p
           initial={{ opacity: 0, y: 8 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -100,138 +267,276 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ className = 
             lineHeight: 1.55,
             color: 'rgba(255, 255, 255, 0.65)',
             margin: 0,
-            maxWidth: '720px',
+            maxWidth: '680px',
             fontWeight: 400,
             textAlign: 'left',
           }}
         >
-          We do social media analytics for companies, track website growth, and break down what your
-          audience actually cares about in simple everyday words.
+          What we track, why it matters, and how we turn complex digital traffic into straightforward business decisions.
         </motion.p>
       </div>
 
-      {/* ── BENTO GRID: CLEAN COMPLETE WHITE BACKGROUND WITH SLIGHTLY CURVED CORNERS ── */}
-      <div
-        className="analytics-white-bento-grid"
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(12, 1fr)',
-          gap: '16px',
-          width: '100%',
-          boxSizing: 'border-box',
-        }}
-      >
-        {ANALYTICS_ITEMS.map((item, index) => {
-          const isHovered = hoveredId === item.id;
-          const config = bentoGridConfig[item.id] || { colSpan: 6, minHeight: '260px' };
-
-          return (
-            <motion.div
-              key={item.id}
-              role="button"
-              tabIndex={0}
-              onClick={() => setSelectedItem(item)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  setSelectedItem(item);
-                }
-              }}
-              onMouseEnter={() => setHoveredId(item.id)}
-              onMouseLeave={() => setHoveredId(null)}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.45, delay: index * 0.06, ease: [0.22, 1, 0.36, 1] }}
+      {/* ── FRAMER FLEXIBLE ACCORDION (ASYMMETRIC TABS COMPONENT) ── */}
+      <div className="framer-accordion-container">
+        {/* RIGHT PANEL: VISUAL / IMAGE WITH ANIMATED ZOOM & OVERLAY */}
+        <div className="framer-accordion-image-panel">
+          <AnimatePresence initial={false} mode="sync">
+            <motion.img
+              key={`${activeIndex}-${activeItem.image}`}
+              src={activeItem.image}
+              alt={activeItem.title}
+              draggable={false}
+              initial={{ opacity: 0, scale: 1.04 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 1.01 }}
+              transition={{ duration: 0.55, ease: [0.4, 0, 0.2, 1] }}
               style={{
-                gridColumn: `span ${config.colSpan}`,
-                minHeight: config.minHeight,
-                backgroundColor: '#FFFFFF',
-                color: '#000000',
-                borderRadius: '16px',
-                border: '1px solid #E5E7EB',
-                padding: 'clamp(28px, 4vh, 44px)',
-                boxSizing: 'border-box',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                cursor: 'pointer',
-                textAlign: 'left',
-                position: 'relative',
-                overflow: 'hidden',
-                transition: 'transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease',
-                transform: isHovered ? 'translateY(-3px)' : 'none',
-                boxShadow: isHovered
-                  ? '0 20px 48px rgba(0, 0, 0, 0.35)'
-                  : '0 4px 16px rgba(0, 0, 0, 0.12)',
+                position: 'absolute',
+                inset: 0,
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                objectPosition: 'center',
+                display: 'block',
+                userSelect: 'none',
               }}
-            >
-              {/* Minimal Top Index */}
-              <div
-                style={{
-                  fontFamily: '"Geist Mono", monospace',
-                  fontSize: '12px',
-                  fontWeight: 700,
-                  letterSpacing: '0.12em',
-                  textTransform: 'uppercase',
-                  color: isHovered ? '#000000' : '#888888',
-                  transition: 'color 0.2s ease',
-                }}
-              >
-                {item.number} / Analytics
-              </div>
+            />
+          </AnimatePresence>
 
-              {/* Just A Single Clean Bold Text of That Analytics Area */}
-              <div style={{ margin: 'auto 0' }}>
-                <h3
+          {/* Dark Glass Scrim Gradient */}
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              background:
+                'linear-gradient(180deg, rgba(4, 7, 17, 0.2) 0%, rgba(4, 7, 17, 0.65) 100%)',
+              pointerEvents: 'none',
+            }}
+          />
+        </div>
+
+        {/* LEFT PANEL: OVERLAPPING WHITE ASYMMETRIC CARD */}
+        <div className="framer-accordion-card">
+          {/* Top Row: Horizontal Tabs */}
+          <div
+            style={{
+              width: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '22px',
+              overflowX: 'auto',
+              scrollbarWidth: 'none',
+              borderBottom: '1px solid #F3F4F6',
+              paddingBottom: '2px',
+            }}
+          >
+            {ACCORDION_ITEMS.map((item, index) => {
+              const isActive = index === activeIndex;
+              return (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => goTo(index)}
+                  className="framer-accordion-tab-btn"
                   style={{
-                    fontFamily: '"Geist", sans-serif',
-                    fontSize:
-                      config.colSpan >= 8
-                        ? 'clamp(28px, 3.4vw, 46px)'
-                        : 'clamp(22px, 2.5vw, 34px)',
-                    fontWeight: 600,
-                    lineHeight: 1.15,
-                    letterSpacing: '-0.02em',
-                    color: '#000000',
-                    margin: 0,
+                    color: isActive ? '#111827' : '#6B7280',
+                    borderBottom: isActive ? '2px solid #111827' : '2px solid transparent',
+                    fontWeight: isActive ? 600 : 500,
                   }}
                 >
-                  {item.cardTitle}
-                </h3>
-              </div>
+                  {item.tab}
+                </button>
+              );
+            })}
+          </div>
 
-              {/* Minimal Bottom Prompt */}
-              <div
-                style={{
-                  fontFamily: '"Geist Mono", monospace',
-                  fontSize: '11px',
-                  fontWeight: 600,
-                  letterSpacing: '0.08em',
-                  textTransform: 'uppercase',
-                  color: isHovered ? '#000000' : '#999999',
-                  transition: 'color 0.2s ease',
-                }}
+          {/* Middle Row: Animated Copy via Framer Motion AnimatePresence */}
+          <div style={{ padding: '24px 0 16px', minHeight: 0, flex: 1, overflow: 'hidden' }}>
+            <AnimatePresence initial={false} mode="wait">
+              <motion.div
+                key={activeIndex}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -6 }}
+                transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
+                style={{ width: '100%' }}
               >
-                Tap for complete detailed information
-              </div>
-            </motion.div>
-          );
-        })}
+                {/* Eyebrow */}
+                <div
+                  style={{
+                    fontFamily: '"Geist Mono", monospace',
+                    fontSize: '11px',
+                    fontWeight: 600,
+                    letterSpacing: '0.12em',
+                    textTransform: 'uppercase',
+                    color: '#2563EB',
+                    marginBottom: '10px',
+                  }}
+                >
+                  {activeItem.eyebrow}
+                </div>
+
+                {/* Title */}
+                <h3
+                  style={{
+                    fontFamily: '"Geist", -apple-system, sans-serif',
+                    fontSize: 'clamp(20px, 2.2vw, 30px)',
+                    fontWeight: 700,
+                    lineHeight: 1.25,
+                    letterSpacing: '-0.02em',
+                    color: '#111827',
+                    margin: '0 0 14px',
+                  }}
+                >
+                  {activeItem.title}
+                </h3>
+
+                {/* Description */}
+                <p
+                  style={{
+                    fontFamily: '"Geist", -apple-system, sans-serif',
+                    fontSize: '14.5px',
+                    lineHeight: 1.6,
+                    color: '#4B5563',
+                    margin: 0,
+                    fontWeight: 400,
+                    maxWidth: '440px',
+                  }}
+                >
+                  {activeItem.description}
+                </p>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          {/* Bottom Row: Call-to-action Buttons */}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              gap: '16px',
+              paddingTop: '16px',
+              borderTop: '1px solid #F3F4F6',
+            }}
+          >
+            {/* Primary Action: View Deep Breakdown Modal */}
+            <button
+              type="button"
+              onClick={() => setSelectedDetail(activeItem.analyticsItem)}
+              style={{
+                appearance: 'none',
+                border: 'none',
+                outline: 'none',
+                height: '42px',
+                padding: '0 20px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '10px',
+                borderRadius: '999px',
+                backgroundColor: '#111827',
+                color: '#FFFFFF',
+                fontSize: '13.5px',
+                fontWeight: 600,
+                cursor: 'pointer',
+                transition: 'background 0.2s ease',
+              }}
+              className="hover:bg-black"
+            >
+              <span>Explore Breakdown</span>
+              <ArrowRight size={14} />
+            </button>
+
+            {/* Secondary Action: Book a Call on Calendly */}
+            <a
+              href="https://calendly.com/youdecide-std/30min"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                fontSize: '13.5px',
+                fontWeight: 600,
+                color: '#111827',
+                textDecoration: 'none',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                padding: '4px 0',
+                borderBottom: '1px solid #111827',
+                transition: 'opacity 0.2s ease',
+              }}
+              className="hover:opacity-75"
+            >
+              <span>Book a 30-min Call</span>
+              <ExternalLink size={12} />
+            </a>
+          </div>
+        </div>
+
+        {/* BOTTOM NAVIGATION: COUNTER & ARROWS */}
+        <div className="framer-accordion-nav">
+          <div
+            style={{
+              fontFamily: '"Geist Mono", monospace',
+              fontSize: '13px',
+              fontWeight: 600,
+              color: 'rgba(255, 255, 255, 0.65)',
+              letterSpacing: '0.08em',
+              minWidth: '50px',
+            }}
+          >
+            {String(activeIndex + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}
+          </div>
+
+          <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+            <button
+              type="button"
+              onClick={prev}
+              aria-label="Previous tab"
+              style={{
+                width: '38px',
+                height: '38px',
+                borderRadius: '50%',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                color: '#FFFFFF',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                transition: 'background 0.2s ease, border-color 0.2s ease',
+              }}
+              className="hover:bg-white/15"
+            >
+              <ChevronLeft size={16} />
+            </button>
+
+            <button
+              type="button"
+              onClick={next}
+              aria-label="Next tab"
+              style={{
+                width: '38px',
+                height: '38px',
+                borderRadius: '50%',
+                border: 'none',
+                backgroundColor: '#FFFFFF',
+                color: '#111827',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                transition: 'opacity 0.2s ease',
+              }}
+              className="hover:opacity-90"
+            >
+              <ChevronRight size={16} />
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* ── FULL SCREEN DETAILED VIEW MODAL ── */}
-      <AnalyticsDetail item={selectedItem} onClose={() => setSelectedItem(null)} />
-
-      {/* ── RESPONSIVE GRID STYLES (STRICT 0PX BORDER RADIUS) ── */}
-      <style>{`
-        @media (max-width: 960px) {
-          .analytics-white-bento-grid > div {
-            grid-column: span 12 !important;
-            min-height: 200px !important;
-          }
-        }
-      `}</style>
+      <AnalyticsDetail item={selectedDetail} onClose={() => setSelectedDetail(null)} />
     </section>
   );
 };
