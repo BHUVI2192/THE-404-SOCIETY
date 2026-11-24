@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, ArrowUpRight, Calendar, Mail } from 'lucide-react';
+import { ChevronDown, Phone, Mail } from 'lucide-react';
 
 interface FAQItemData {
   number: string;
@@ -62,7 +62,7 @@ export const FAQSection: React.FC<{ className?: string }> = ({ className = '' })
         maxWidth: '1320px',
         width: '100%',
         margin: 'clamp(72px, 11vh, 128px) auto',
-        padding: '0 clamp(24px, 5vw, 64px)',
+        padding: '0 clamp(20px, 4vw, 48px)',
         boxSizing: 'border-box',
         position: 'relative',
         zIndex: 10,
@@ -71,330 +71,316 @@ export const FAQSection: React.FC<{ className?: string }> = ({ className = '' })
       }}
     >
       <style>{`
-        .framer-faq-grid {
-          display: grid;
-          grid-template-columns: minmax(320px, 420px) 1fr;
-          gap: clamp(32px, 5vw, 64px);
-          align-items: start;
+        .framer-faq-whitebox {
+          background: #F4F5F7;
+          border: 1px solid #E5E7EB;
+          border-radius: 28px;
+          padding: clamp(32px, 4vw, 56px);
+          position: relative;
+          overflow: hidden;
+          width: 100%;
+          box-sizing: border-box;
+          box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.25);
         }
-        .framer-faq-sticky {
-          position: sticky;
-          top: 120px;
+        .framer-faq-inner-grid {
+          display: grid;
+          grid-template-columns: minmax(300px, 420px) 1fr;
+          gap: clamp(32px, 5vw, 56px);
+          align-items: start;
+          position: relative;
+          z-index: 1;
         }
         @media (max-width: 960px) {
-          .framer-faq-grid {
+          .framer-faq-inner-grid {
             grid-template-columns: 1fr;
-            gap: 40px;
+            gap: 36px;
           }
-          .framer-faq-sticky {
-            position: static;
+          .framer-faq-whitebox {
+            border-radius: 20px;
+            padding: 24px;
           }
         }
-        .framer-faq-card:hover {
-          border-color: rgba(255, 255, 255, 0.16) !important;
-          background: rgba(255, 255, 255, 0.03) !important;
+        .framer-faq-item-card {
+          background: #FFFFFF;
+          border: 1px solid #E5E7EB;
+          border-radius: 16px;
+          overflow: hidden;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+          transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
-        .framer-faq-btn:hover {
-          background: rgba(255, 255, 255, 0.12) !important;
-          border-color: rgba(255, 255, 255, 0.25) !important;
+        .framer-faq-item-card:hover {
+          border-color: #D1D5DB;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        .framer-faq-contact-link:hover {
+          opacity: 0.8;
         }
       `}</style>
 
-      <div className="framer-faq-grid">
-        {/* ── LEFT COLUMN: CATEGORY, TITLE, SUBTITLE & CONTACT LINK ── */}
-        <div className="framer-faq-sticky">
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          >
-            {/* Category / Badge Pill */}
-            <div
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '6px 14px',
-                borderRadius: '999px',
-                background: 'rgba(96, 165, 250, 0.1)',
-                border: '1px solid rgba(96, 165, 250, 0.25)',
-                marginBottom: '18px',
-              }}
-            >
-              <span
-                style={{
-                  fontFamily: '"Geist Mono", monospace',
-                  fontSize: '12px',
-                  fontWeight: 600,
-                  letterSpacing: '0.12em',
-                  textTransform: 'uppercase',
-                  color: '#60A5FA',
-                }}
-              >
-                FAQ
-              </span>
-            </div>
+      {/* ── THE WHITE / LIGHT FRAMER BOX CONTAINER ── */}
+      <div className="framer-faq-whitebox">
+        {/* Giant Watermark "FAQ" Text behind the left column */}
+        <div
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            bottom: '20px',
+            left: '32px',
+            fontSize: 'clamp(140px, 20vw, 240px)',
+            fontWeight: 800,
+            fontFamily: '"Geist", -apple-system, sans-serif',
+            lineHeight: 0.85,
+            letterSpacing: '-0.04em',
+            background: 'linear-gradient(0deg, rgba(228, 230, 235, 0) 0%, rgba(209, 213, 219, 0.75) 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            opacity: 0.7,
+            pointerEvents: 'none',
+            userSelect: 'none',
+            zIndex: 0,
+          }}
+        >
+          FAQ
+        </div>
 
-            {/* Heading */}
+        <div className="framer-faq-inner-grid">
+          {/* ── LEFT COLUMN: TITLE, SUBTITLE & CONTACT ACTIONS ── */}
+          <div style={{ position: 'relative', zIndex: 1 }}>
             <h2
               style={{
-                fontFamily: '"Instrument Serif", serif',
-                fontStyle: 'italic',
-                fontSize: 'clamp(38px, 4.6vw, 64px)',
-                fontWeight: 400,
-                lineHeight: 1.1,
+                fontFamily: '"Geist", -apple-system, sans-serif',
+                fontSize: 'clamp(30px, 3.4vw, 38px)',
+                fontWeight: 700,
+                color: '#111827',
+                margin: '0 0 14px',
+                lineHeight: 1.2,
                 letterSpacing: '-0.02em',
-                color: '#FFFFFF',
-                margin: '0 0 16px',
                 textAlign: 'left',
               }}
             >
-              Frequently asked questions.
+              Questions &amp; Answers
             </h2>
 
-            {/* Subtitle */}
             <p
               style={{
                 fontFamily: '"Geist", -apple-system, sans-serif',
-                fontSize: 'clamp(15px, 1.5vw, 17px)',
-                lineHeight: 1.6,
-                color: 'rgba(255, 255, 255, 0.65)',
+                fontSize: '15px',
+                lineHeight: 1.55,
+                color: '#4B5563',
                 margin: '0 0 32px',
                 fontWeight: 400,
                 textAlign: 'left',
               }}
             >
-              Everything you need to know about our Pay As You Wish model, delivery timelines, and full code ownership.
+              Have more questions? Don't hesitate to email us:
             </p>
 
-            {/* Direct Contact Card (ButtonIconLink component adaptation) */}
+            {/* Contact links with circular icon buttons */}
             <div
               style={{
-                padding: '24px',
-                borderRadius: '20px',
-                background: 'rgba(255, 255, 255, 0.02)',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
-                backdropFilter: 'blur(12px)',
                 display: 'flex',
                 flexDirection: 'column',
                 gap: '16px',
+                alignItems: 'flex-start',
               }}
             >
-              <div>
-                <div
-                  style={{
-                    fontFamily: '"Geist", -apple-system, sans-serif',
-                    fontSize: '15px',
-                    fontWeight: 600,
-                    color: '#FFFFFF',
-                    marginBottom: '4px',
-                  }}
-                >
-                  Have more questions?
-                </div>
-                <div
-                  style={{
-                    fontFamily: '"Geist", -apple-system, sans-serif',
-                    fontSize: '13px',
-                    lineHeight: 1.5,
-                    color: 'rgba(255, 255, 255, 0.55)',
-                  }}
-                >
-                  Don't hesitate to email us or schedule a discovery call with our founding team.
-                </div>
-              </div>
-
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                <a
-                  href="https://calendly.com/youdecide-std/30min"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="framer-faq-btn"
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    padding: '12px 18px',
-                    borderRadius: '12px',
-                    background: 'rgba(255, 255, 255, 0.06)',
-                    border: '1px solid rgba(255, 255, 255, 0.12)',
-                    color: '#FFFFFF',
-                    fontSize: '14px',
-                    fontWeight: 500,
-                    textDecoration: 'none',
-                    transition: 'all 0.2s ease',
-                  }}
-                >
-                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '10px' }}>
-                    <Calendar size={16} color="#60A5FA" />
-                    Book a 30-min Call
-                  </span>
-                  <ArrowUpRight size={16} color="rgba(255, 255, 255, 0.6)" />
-                </a>
-
-                <a
-                  href="mailto:youdecide.std@gmail.com"
-                  className="framer-faq-btn"
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    padding: '12px 18px',
-                    borderRadius: '12px',
-                    background: 'transparent',
-                    border: '1px solid rgba(255, 255, 255, 0.06)',
-                    color: 'rgba(255, 255, 255, 0.8)',
-                    fontSize: '13px',
-                    fontFamily: '"Geist Mono", monospace',
-                    textDecoration: 'none',
-                    transition: 'all 0.2s ease',
-                  }}
-                >
-                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '10px' }}>
-                    <Mail size={15} color="#93C5FD" />
-                    youdecide.std@gmail.com
-                  </span>
-                  <ArrowUpRight size={14} color="rgba(255, 255, 255, 0.4)" />
-                </a>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-
-        {/* ── RIGHT COLUMN: NUMBERED ACCORDION CARDS ── */}
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '12px',
-            width: '100%',
-          }}
-        >
-          {FAQS.map((faq, index) => {
-            const isOpen = openIndex === index;
-            return (
-              <motion.div
-                key={faq.number}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.05, ease: [0.22, 1, 0.36, 1] }}
-                className="framer-faq-card"
+              {/* Phone / Call */}
+              <a
+                href="https://calendly.com/youdecide-std/30min"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="framer-faq-contact-link"
                 style={{
-                  background: isOpen ? 'rgba(255, 255, 255, 0.035)' : 'rgba(255, 255, 255, 0.015)',
-                  border: isOpen
-                    ? '1px solid rgba(96, 165, 250, 0.35)'
-                    : '1px solid rgba(255, 255, 255, 0.08)',
-                  borderRadius: '16px',
-                  overflow: 'hidden',
-                  transition: 'background 0.25s ease, border-color 0.25s ease',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '14px',
+                  textDecoration: 'none',
+                  color: '#111827',
+                  transition: 'opacity 0.2s ease',
                 }}
               >
-                <button
-                  onClick={() => toggle(index)}
-                  aria-expanded={isOpen}
+                <span
                   style={{
-                    width: '100%',
-                    padding: '22px 24px',
+                    width: '38px',
+                    height: '38px',
+                    borderRadius: '50%',
+                    background: '#E5E7EB',
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'space-between',
-                    background: 'transparent',
-                    border: 'none',
-                    textAlign: 'left',
-                    cursor: 'pointer',
-                    outline: 'none',
-                    gap: '16px',
+                    justifyContent: 'center',
+                    color: '#374151',
+                    flexShrink: 0,
                   }}
                 >
-                  <div
+                  <Phone size={17} />
+                </span>
+                <span
+                  style={{
+                    fontSize: '15px',
+                    fontWeight: 500,
+                    fontFamily: '"Geist", -apple-system, sans-serif',
+                    color: '#111827',
+                  }}
+                >
+                  Book a 30-min Call
+                </span>
+              </a>
+
+              {/* Email */}
+              <a
+                href="mailto:youdecide.std@gmail.com"
+                className="framer-faq-contact-link"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '14px',
+                  textDecoration: 'none',
+                  color: '#111827',
+                  transition: 'opacity 0.2s ease',
+                }}
+              >
+                <span
+                  style={{
+                    width: '38px',
+                    height: '38px',
+                    borderRadius: '50%',
+                    background: '#E5E7EB',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: '#374151',
+                    flexShrink: 0,
+                  }}
+                >
+                  <Mail size={17} />
+                </span>
+                <span
+                  style={{
+                    fontSize: '15px',
+                    fontWeight: 500,
+                    fontFamily: '"Geist", -apple-system, sans-serif',
+                    color: '#111827',
+                  }}
+                >
+                  youdecide.std@gmail.com
+                </span>
+              </a>
+            </div>
+          </div>
+
+          {/* ── RIGHT COLUMN: WHITE ACCORDION CARDS ── */}
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '12px',
+              width: '100%',
+              position: 'relative',
+              zIndex: 1,
+            }}
+          >
+            {FAQS.map((faq, index) => {
+              const isOpen = openIndex === index;
+              return (
+                <div key={faq.number} className="framer-faq-item-card">
+                  <button
+                    onClick={() => toggle(index)}
+                    aria-expanded={isOpen}
                     style={{
+                      width: '100%',
+                      padding: '18px 24px',
                       display: 'flex',
                       alignItems: 'center',
+                      justifyContent: 'space-between',
+                      background: 'transparent',
+                      border: 'none',
+                      textAlign: 'left',
+                      cursor: 'pointer',
+                      outline: 'none',
                       gap: '16px',
-                      flex: 1,
                     }}
                   >
-                    {/* Number Badge */}
-                    <span
+                    <div
                       style={{
-                        fontFamily: '"Geist Mono", monospace',
-                        fontSize: '13px',
-                        fontWeight: 600,
-                        color: isOpen ? '#60A5FA' : 'rgba(255, 255, 255, 0.45)',
-                        minWidth: '24px',
-                        flexShrink: 0,
-                        transition: 'color 0.25s ease',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '14px',
+                        flex: 1,
                       }}
                     >
-                      {faq.number}
-                    </span>
-
-                    {/* Question text */}
-                    <span
-                      style={{
-                        fontFamily: '"Geist", -apple-system, sans-serif',
-                        fontSize: 'clamp(15px, 1.4vw, 17px)',
-                        fontWeight: 500,
-                        lineHeight: 1.45,
-                        color: isOpen ? '#FFFFFF' : 'rgba(255, 255, 255, 0.88)',
-                        transition: 'color 0.25s ease',
-                      }}
-                    >
-                      {faq.question}
-                    </span>
-                  </div>
-
-                  {/* Rotating Chevron Icon */}
-                  <motion.div
-                    animate={{ rotate: isOpen ? 180 : 0 }}
-                    transition={{ duration: 0.3, ease: [0.44, 0, 0.56, 1] }}
-                    style={{
-                      width: '32px',
-                      height: '32px',
-                      borderRadius: '50%',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      background: isOpen ? 'rgba(96, 165, 250, 0.15)' : 'rgba(255, 255, 255, 0.04)',
-                      color: isOpen ? '#60A5FA' : 'rgba(255, 255, 255, 0.5)',
-                      flexShrink: 0,
-                      transition: 'background 0.25s ease, color 0.25s ease',
-                    }}
-                  >
-                    <ChevronDown size={18} />
-                  </motion.div>
-                </button>
-
-                <AnimatePresence initial={false}>
-                  {isOpen && (
-                    <motion.div
-                      key="content"
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3, ease: [0.44, 0, 0.56, 1] }}
-                      style={{ overflow: 'hidden' }}
-                    >
-                      <div
+                      {/* Number Badge */}
+                      <span
                         style={{
-                          padding: '0 24px 22px 56px',
-                          fontSize: '15px',
-                          lineHeight: 1.65,
-                          color: 'rgba(255, 255, 255, 0.68)',
-                          fontWeight: 400,
                           fontFamily: '"Geist", -apple-system, sans-serif',
+                          fontSize: '15px',
+                          fontWeight: 500,
+                          color: '#6B7280',
+                          minWidth: '28px',
+                          flexShrink: 0,
                         }}
                       >
-                        {faq.answer}
-                      </div>
+                        {faq.number}
+                      </span>
+
+                      {/* Question Text */}
+                      <span
+                        style={{
+                          fontFamily: '"Geist", -apple-system, sans-serif',
+                          fontSize: '15px',
+                          fontWeight: 600,
+                          lineHeight: 1.4,
+                          color: '#111827',
+                        }}
+                      >
+                        {faq.question}
+                      </span>
+                    </div>
+
+                    {/* Chevron Icon (rotates 180deg when open) */}
+                    <motion.div
+                      animate={{ rotate: isOpen ? 180 : 0 }}
+                      transition={{ duration: 0.25, ease: [0.44, 0, 0.56, 1] }}
+                      style={{
+                        color: '#6B7280',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexShrink: 0,
+                      }}
+                    >
+                      <ChevronDown size={18} />
                     </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
-            );
-          })}
+                  </button>
+
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        key="content"
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.25, ease: [0.44, 0, 0.56, 1] }}
+                        style={{ overflow: 'hidden' }}
+                      >
+                        <div
+                          style={{
+                            padding: '0 24px 20px clamp(48px, 4vw, 66px)',
+                            fontSize: '14px',
+                            lineHeight: 1.65,
+                            color: '#4B5563',
+                            fontWeight: 400,
+                            fontFamily: '"Geist", -apple-system, sans-serif',
+                          }}
+                        >
+                          {faq.answer}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>
