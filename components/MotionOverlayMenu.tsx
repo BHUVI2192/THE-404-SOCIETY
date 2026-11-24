@@ -13,6 +13,7 @@ export interface MenuLinkItem {
   label: string;
   link: string;
   newTab?: boolean;
+  onClick?: (e: React.MouseEvent) => void;
 }
 
 export interface MotionOverlayMenuProps {
@@ -430,7 +431,11 @@ export const MotionOverlayMenu: React.FC<MotionOverlayMenuProps> = ({
                         onPointerEnter={() => setHovered(i)}
                         onPointerLeave={() => setHovered(null)}
                         onClick={(e) => {
-                          if (item.link && item.link.startsWith('#')) {
+                          if (item.onClick) {
+                            e.preventDefault();
+                            closeMenu();
+                            item.onClick(e);
+                          } else if (item.link && item.link.startsWith('#')) {
                             e.preventDefault();
                             closeMenu();
                             setTimeout(() => {

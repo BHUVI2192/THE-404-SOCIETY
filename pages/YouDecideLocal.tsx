@@ -11,6 +11,10 @@ import { ManifestoScrollSection } from '../components/TextRevealScroll';
 import { AutomationSection } from '../components/sections/AutomationSection';
 import { AnalyticsSection } from '../components/sections/AnalyticsSection';
 import { TestimonialSection } from '../components/sections/TestimonialSection';
+import { FAQSection } from '../components/sections/FAQSection';
+import { ProjectBriefModal } from '../components/ProjectBriefModal';
+import { LegalModal } from '../components/LegalModal';
+import { WebGLErrorBoundary } from '../components/WebGLErrorBoundary';
 import { smoothScrollToSection } from '../lib/scrollUtils';
 
 // Official Vector Logo Component (Reversed for dark/night aesthetic)
@@ -50,15 +54,29 @@ export interface YouDecideLocalProps {
 }
 
 const YouDecideLocal: React.FC<YouDecideLocalProps> = ({ scrollTo }) => {
-  // Auto-scroll on mount if a target section was passed via route or initial hash
+  const [isBriefModalOpen, setIsBriefModalOpen] = useState(false);
+  const [legalModalType, setLegalModalType] = useState<'terms' | 'privacy' | null>(null);
+
+  // Global event listener to open brief modal from anywhere in the app
   useEffect(() => {
-    if (scrollTo) {
+    const handleOpenBrief = () => setIsBriefModalOpen(true);
+    window.addEventListener('open-project-brief', handleOpenBrief);
+    return () => window.removeEventListener('open-project-brief', handleOpenBrief);
+  }, []);
+
+  // Auto-scroll or open modal on mount if a target section was passed via route or initial hash
+  useEffect(() => {
+    if (scrollTo === 'terms') {
+      setLegalModalType('terms');
+    } else if (scrollTo === 'privacy') {
+      setLegalModalType('privacy');
+    } else if (scrollTo) {
       setTimeout(() => {
         smoothScrollToSection(scrollTo);
       }, 400);
     } else if (typeof window !== 'undefined' && window.location.hash) {
       const target = window.location.hash.replace(/^#\/?/, '');
-      if (['contact', 'websites-built', 'automations', 'analytics', 'overview'].includes(target)) {
+      if (['contact', 'websites-built', 'automations', 'analytics', 'testimonials', 'faq', 'overview'].includes(target)) {
         setTimeout(() => {
           smoothScrollToSection(target);
         }, 400);
@@ -239,7 +257,12 @@ const YouDecideLocal: React.FC<YouDecideLocalProps> = ({ scrollTo }) => {
                 { label: 'Automations', link: '#automations' },
                 { label: 'Analytics', link: '#analytics' },
                 { label: 'Testimonials', link: '#testimonials' },
-                { label: 'Project Brief', link: '#contact' },
+                { label: 'FAQ', link: '#faq' },
+                {
+                  label: 'Project Brief',
+                  link: '#contact',
+                  onClick: () => setIsBriefModalOpen(true),
+                },
                 { label: 'Book a Call', link: 'https://calendly.com/youdecide-std/30min', newTab: true },
               ]}
               secondaryLinks={[
@@ -279,13 +302,15 @@ const YouDecideLocal: React.FC<YouDecideLocalProps> = ({ scrollTo }) => {
               pointerEvents: 'auto',
             }}
           >
-            <GlimmerVale
-              scene="aurora"
-              speed={28}
-              density={32}
-              sparkle={75}
-              style={{ width: '100%', height: '100%' }}
-            />
+            <WebGLErrorBoundary>
+              <GlimmerVale
+                scene="aurora"
+                speed={28}
+                density={32}
+                sparkle={75}
+                style={{ width: '100%', height: '100%' }}
+              />
+            </WebGLErrorBoundary>
           </div>
 
           {/* Vignette & subtle ambient gradient overlays */}
@@ -370,14 +395,22 @@ const YouDecideLocal: React.FC<YouDecideLocalProps> = ({ scrollTo }) => {
                 alignItems: 'center',
               }}
             >
+              <button
+                type="button"
+                onClick={() => setIsBriefModalOpen(true)}
+                className="hero-cta-btn-primary"
+                style={{ cursor: 'pointer', border: 'none' }}
+              >
+                <span>Start a Project Brief</span>
+                <span aria-hidden="true">→</span>
+              </button>
               <a
                 href="https://calendly.com/youdecide-std/30min"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hero-cta-btn-primary"
+                className="hero-cta-btn-secondary"
               >
-                <span>Book a 30-Min Call</span>
-                <span aria-hidden="true">→</span>
+                <span>Book a Discovery Call</span>
               </a>
               <a
                 href="#websites-built"
@@ -420,6 +453,11 @@ const YouDecideLocal: React.FC<YouDecideLocalProps> = ({ scrollTo }) => {
         {/* CLIENT TESTIMONIALS (FRAMER TESTIMONIAL SHOW COMPONENT)                    */}
         {/* ========================================================================= */}
         <TestimonialSection />
+
+        {/* ========================================================================= */}
+        {/* FAQ & MILESTONE PHILOSOPHY COMPONENT                                      */}
+        {/* ========================================================================= */}
+        <FAQSection />
 
         {/* ========================================================================= */}
         {/* PROJECT SUBMISSION & DISCOVERY CALL BOOKING                                */}
@@ -546,10 +584,9 @@ const YouDecideLocal: React.FC<YouDecideLocalProps> = ({ scrollTo }) => {
                 zIndex: 1,
               }}
             >
-              <a
-                href="https://calendly.com/youdecide-std/30min"
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                type="button"
+                onClick={() => setIsBriefModalOpen(true)}
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -560,7 +597,8 @@ const YouDecideLocal: React.FC<YouDecideLocalProps> = ({ scrollTo }) => {
                   borderRadius: '12px',
                   fontSize: '16px',
                   fontWeight: 600,
-                  textDecoration: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
                   boxShadow: '0 12px 32px rgba(25, 32, 240, 0.4)',
                   transition: 'transform 0.2s ease, background-color 0.2s ease',
                 }}
@@ -573,8 +611,37 @@ const YouDecideLocal: React.FC<YouDecideLocalProps> = ({ scrollTo }) => {
                   e.currentTarget.style.backgroundColor = '#1920F0';
                 }}
               >
-                <span>Book a 30-Min Discovery Call</span>
+                <span>Start a Project Brief</span>
                 <span aria-hidden="true">→</span>
+              </button>
+
+              <a
+                href="https://calendly.com/youdecide-std/30min"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                  padding: '16px 32px',
+                  background: 'rgba(255, 255, 255, 0.08)',
+                  color: '#FFFFFF',
+                  border: '1px solid rgba(255, 255, 255, 0.2)',
+                  borderRadius: '12px',
+                  fontSize: '16px',
+                  fontWeight: 600,
+                  textDecoration: 'none',
+                  transition: 'background 0.2s ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.16)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)';
+                }}
+              >
+                <span>Book a 30-Min Call</span>
+                <span aria-hidden="true">↗</span>
               </a>
 
               <a
@@ -753,6 +820,22 @@ const YouDecideLocal: React.FC<YouDecideLocalProps> = ({ scrollTo }) => {
               >
                 4. Testimonials
               </a>
+              <a
+                href="#faq"
+                onClick={(e) => {
+                  e.preventDefault();
+                  smoothScrollToSection('faq');
+                }}
+                style={{
+                  color: 'rgba(255, 255, 255, 0.7)',
+                  textDecoration: 'none',
+                  transition: 'color 0.2s',
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = '#FFFFFF')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255, 255, 255, 0.7)')}
+              >
+                5. FAQs
+              </a>
             </div>
           </div>
 
@@ -787,22 +870,24 @@ const YouDecideLocal: React.FC<YouDecideLocalProps> = ({ scrollTo }) => {
               >
                 Book a 30-Min Call ↗
               </a>
-              <a
-                href="#contact"
-                onClick={(e) => {
-                  e.preventDefault();
-                  smoothScrollToSection('contact');
-                }}
+              <button
+                type="button"
+                onClick={() => setIsBriefModalOpen(true)}
                 style={{
+                  background: 'none',
+                  border: 'none',
+                  padding: 0,
                   color: 'rgba(255, 255, 255, 0.7)',
-                  textDecoration: 'none',
+                  fontSize: '14px',
+                  cursor: 'pointer',
+                  textAlign: 'left',
                   transition: 'color 0.2s',
                 }}
                 onMouseEnter={(e) => (e.currentTarget.style.color = '#FFFFFF')}
                 onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255, 255, 255, 0.7)')}
               >
                 Start a Project Brief
-              </a>
+              </button>
               <a
                 href="#overview"
                 onClick={(e) => {
@@ -840,6 +925,46 @@ const YouDecideLocal: React.FC<YouDecideLocalProps> = ({ scrollTo }) => {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', lineHeight: 1.5 }}>
               <div>Pay As You Wish Model</div>
               <div>Zero Upfront Speculative Risk</div>
+              <div style={{ marginTop: '4px' }}>
+                <button
+                  type="button"
+                  onClick={() => setLegalModalType('terms')}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    padding: 0,
+                    color: 'rgba(255, 255, 255, 0.65)',
+                    fontSize: '13px',
+                    cursor: 'pointer',
+                    textAlign: 'left',
+                    textDecoration: 'underline',
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = '#60A5FA')}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255, 255, 255, 0.65)')}
+                >
+                  Terms of Engagement
+                </button>
+              </div>
+              <div>
+                <button
+                  type="button"
+                  onClick={() => setLegalModalType('privacy')}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    padding: 0,
+                    color: 'rgba(255, 255, 255, 0.65)',
+                    fontSize: '13px',
+                    cursor: 'pointer',
+                    textAlign: 'left',
+                    textDecoration: 'underline',
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = '#60A5FA')}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255, 255, 255, 0.65)')}
+                >
+                  Privacy Policy
+                </button>
+              </div>
               <div style={{ marginTop: '12px', fontFamily: '"Geist Mono", monospace', fontSize: '12px', color: 'rgba(255, 255, 255, 0.4)' }}>
                 © 2026 youdecide.studio
               </div>
@@ -873,13 +998,15 @@ const YouDecideLocal: React.FC<YouDecideLocalProps> = ({ scrollTo }) => {
               pointerEvents: 'auto',
             }}
           >
-            <GlimmerVale
-              scene="aurora"
-              speed={24}
-              density={36}
-              sparkle={75}
-              style={{ width: '100%', height: '100%' }}
-            />
+            <WebGLErrorBoundary>
+              <GlimmerVale
+                scene="aurora"
+                speed={24}
+                density={36}
+                sparkle={75}
+                style={{ width: '100%', height: '100%' }}
+              />
+            </WebGLErrorBoundary>
           </div>
 
           {/* Smooth top gradient fade so the dark page flows seamlessly into the meadow landscape */}
@@ -1076,6 +1203,16 @@ const YouDecideLocal: React.FC<YouDecideLocalProps> = ({ scrollTo }) => {
           transform: translateY(-2px) !important;
         }
       `}</style>
+
+      {/* Interactive Project Brief & Legal Modals */}
+      <ProjectBriefModal
+        isOpen={isBriefModalOpen}
+        onClose={() => setIsBriefModalOpen(false)}
+      />
+      <LegalModal
+        type={legalModalType}
+        onClose={() => setLegalModalType(null)}
+      />
     </>
   );
 };
