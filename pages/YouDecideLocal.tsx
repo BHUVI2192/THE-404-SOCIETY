@@ -205,10 +205,11 @@ const YouDecideLocal: React.FC = () => {
                     link="https://calendly.com/youdecide-std/30min"
                     target="_blank"
                     rel="noopener noreferrer"
-                    padding="5px 15px"
+                    padding="6px 14px"
                     fontSize="12px"
                     baseColor="#071838"
                     glassColor="#60A5FA"
+                    style={{ whiteSpace: 'nowrap', flexShrink: 0 }}
                   />
                 </div>
               }
@@ -220,7 +221,7 @@ const YouDecideLocal: React.FC = () => {
               ]}
               secondaryLinks={[
                 { label: 'Book on Calendly', link: 'https://calendly.com/youdecide-std/30min', newTab: true },
-                { label: 'hello@youdecide.studio', link: 'mailto:hello@youdecide.studio' },
+                { label: 'youdecide.std@gmail.com', link: 'mailto:youdecide.std@gmail.com' },
               ]}
               note="© 2026 youdecide.studio · All rights reserved"
               headerColor="#FFFFFF"
@@ -431,31 +432,26 @@ const YouDecideLocal: React.FC = () => {
               }}
             />
 
-            {/* Subtitle Badge: White Box With Name Written In Black */}
-            <motion.div
+            {/* Eyebrow Label */}
+            <motion.p
               initial={{ opacity: 0, y: 8 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              style={{ marginBottom: '20px', position: 'relative', zIndex: 1 }}
+              style={{
+                fontFamily: '"Geist Mono", monospace',
+                fontSize: 'clamp(13px, 1.4vw, 15px)',
+                fontWeight: 600,
+                letterSpacing: '0.14em',
+                textTransform: 'uppercase',
+                color: 'rgba(255, 255, 255, 0.7)',
+                margin: '0 0 16px',
+                position: 'relative',
+                zIndex: 1,
+              }}
             >
-              <span
-                style={{
-                  backgroundColor: '#FFFFFF',
-                  color: '#000000',
-                  fontFamily: '"Geist Mono", monospace',
-                  fontSize: '12px',
-                  fontWeight: 700,
-                  letterSpacing: '0.14em',
-                  textTransform: 'uppercase',
-                  padding: '4px 10px',
-                  display: 'inline-block',
-                  borderRadius: 0,
-                }}
-              >
-                START A PROJECT
-              </span>
-            </motion.div>
+              Start a Project
+            </motion.p>
 
             {/* Main Headline */}
             <motion.h2
@@ -547,7 +543,7 @@ const YouDecideLocal: React.FC = () => {
               </a>
 
               <a
-                href="mailto:hello@youdecide.studio"
+                href="mailto:youdecide.std@gmail.com"
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -571,7 +567,7 @@ const YouDecideLocal: React.FC = () => {
                   e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.16)';
                 }}
               >
-                <span>hello@youdecide.studio</span>
+                <span>youdecide.std@gmail.com</span>
               </a>
             </motion.div>
 
@@ -622,7 +618,7 @@ const YouDecideLocal: React.FC = () => {
             </div>
             <div style={{ marginTop: '16px' }}>
               <a
-                href="mailto:hello@youdecide.studio"
+                href="mailto:youdecide.std@gmail.com"
                 style={{
                   fontFamily: '"Geist Mono", monospace',
                   fontSize: '12px',
@@ -630,7 +626,7 @@ const YouDecideLocal: React.FC = () => {
                   textDecoration: 'none',
                 }}
               >
-                hello@youdecide.studio
+                youdecide.std@gmail.com
               </a>
             </div>
           </div>

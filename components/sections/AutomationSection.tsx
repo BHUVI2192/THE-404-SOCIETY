@@ -46,13 +46,14 @@ export const AutomationSection: React.FC<AutomationSectionProps> = ({
         scrollMarginTop: '110px',
       }}
     >
-      {/* ── SECTION HEADER: BIG, CURSIVE & CENTERED ── */}
+      {/* ── SECTION HEADER: BIG, CURSIVE & LEFT-ALIGNED (OF CENTERED CONTENT) ── */}
       <div
         style={{
           width: '100%',
-          maxWidth: '840px',
-          margin: '0 auto clamp(28px, 4.5vh, 44px)',
-          textAlign: 'center',
+          maxWidth: '100%',
+          marginBottom: 'clamp(28px, 4.5vh, 44px)',
+          textAlign: 'left',
+          paddingLeft: '0',
         }}
       >
         {/* Main Title: Big & Cursive (Instrument Serif Italic) */}
@@ -70,6 +71,7 @@ export const AutomationSection: React.FC<AutomationSectionProps> = ({
             letterSpacing: '-0.02em',
             color: '#FFFFFF',
             margin: '0 0 10px',
+            textAlign: 'left',
           }}
         >
           Automation, beyond the obvious.
@@ -89,6 +91,7 @@ export const AutomationSection: React.FC<AutomationSectionProps> = ({
             textTransform: 'uppercase',
             color: 'rgba(255, 255, 255, 0.7)',
             margin: '0 0 18px',
+            textAlign: 'left',
           }}
         >
           2. Automation
@@ -105,9 +108,10 @@ export const AutomationSection: React.FC<AutomationSectionProps> = ({
             fontSize: 'clamp(15px, 1.6vw, 17px)',
             lineHeight: 1.55,
             color: 'rgba(255, 255, 255, 0.65)',
-            margin: '0 auto',
+            margin: 0,
             maxWidth: '680px',
             fontWeight: 400,
+            textAlign: 'left',
           }}
         >
           We build systems that eliminate repetitive work, connect disconnected tools and make

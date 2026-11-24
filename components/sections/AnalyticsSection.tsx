@@ -36,16 +36,17 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ className = 
         position: 'relative',
         zIndex: 10,
         scrollMarginTop: '110px',
-        textAlign: 'center',
+        textAlign: 'left',
       }}
     >
-      {/* ── SECTION HEADER: SHARP, EDITORIAL & CENTERED ── */}
+      {/* ── SECTION HEADER: SHARP, EDITORIAL & LEFT-ALIGNED (OF CENTERED CONTENT) ── */}
       <div
         style={{
           width: '100%',
-          maxWidth: '840px',
-          margin: '0 auto clamp(32px, 5vh, 48px)',
-          textAlign: 'center',
+          maxWidth: '100%',
+          marginBottom: 'clamp(32px, 5vh, 48px)',
+          textAlign: 'left',
+          paddingLeft: '0',
         }}
       >
         <motion.h2
@@ -62,36 +63,31 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ className = 
             letterSpacing: '-0.02em',
             color: '#FFFFFF',
             margin: '0 0 14px',
+            textAlign: 'left',
           }}
         >
           Analytics in simple words.
         </motion.h2>
 
-        {/* Section Subtitle: White Box With Name Written In Black (Centered) */}
-        <motion.div
+        {/* 3. Analytics Subhead — Consistent with 1. Websites & 2. Automation */}
+        <motion.p
           initial={{ opacity: 0, y: 8 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
-          style={{ marginBottom: '16px' }}
+          style={{
+            fontFamily: '"Geist Mono", monospace',
+            fontSize: 'clamp(16px, 1.8vw, 22px)',
+            fontWeight: 500,
+            letterSpacing: '0.16em',
+            textTransform: 'uppercase',
+            color: 'rgba(255, 255, 255, 0.7)',
+            margin: '0 0 18px',
+            textAlign: 'left',
+          }}
         >
-          <span
-            style={{
-              backgroundColor: '#FFFFFF',
-              color: '#000000',
-              fontFamily: '"Geist Mono", monospace',
-              fontSize: '12px',
-              fontWeight: 700,
-              letterSpacing: '0.14em',
-              textTransform: 'uppercase',
-              padding: '4px 10px',
-              display: 'inline-block',
-              borderRadius: 0,
-            }}
-          >
-            3. Analytics
-          </span>
-        </motion.div>
+          3. Analytics
+        </motion.p>
 
         <motion.p
           initial={{ opacity: 0, y: 8 }}
@@ -103,9 +99,10 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ className = 
             fontSize: 'clamp(15px, 1.6vw, 17px)',
             lineHeight: 1.55,
             color: 'rgba(255, 255, 255, 0.65)',
-            margin: '0 auto',
+            margin: 0,
             maxWidth: '720px',
             fontWeight: 400,
+            textAlign: 'left',
           }}
         >
           We do social media analytics for companies, track website growth, and break down what your
@@ -113,7 +110,7 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ className = 
         </motion.p>
       </div>
 
-      {/* ── BENTO GRID: CLEAN COMPLETE WHITE BACKGROUND WITH SINGLE TEXT ── */}
+      {/* ── BENTO GRID: CLEAN COMPLETE WHITE BACKGROUND WITH SLIGHTLY CURVED CORNERS ── */}
       <div
         className="analytics-white-bento-grid"
         style={{
@@ -151,7 +148,7 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ className = 
                 minHeight: config.minHeight,
                 backgroundColor: '#FFFFFF',
                 color: '#000000',
-                borderRadius: 0,
+                borderRadius: '16px',
                 border: '1px solid #E5E7EB',
                 padding: 'clamp(28px, 4vh, 44px)',
                 boxSizing: 'border-box',

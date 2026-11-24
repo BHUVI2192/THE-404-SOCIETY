@@ -325,12 +325,13 @@ export const BrandLogosSection: React.FC<{
         scrollMarginTop: '110px',
       }}
     >
-      {/* ── Section Header: Italic & Minimal (Enlarged & Centered) ── */}
+      {/* ── Section Header: Italic & Minimal (Enlarged & Left of Center) ── */}
       <div
         style={{
           width: '100%',
           marginBottom: 'clamp(24px, 4vh, 38px)',
-          textAlign: 'center',
+          textAlign: 'left',
+          paddingLeft: '0',
         }}
       >
         <motion.h2

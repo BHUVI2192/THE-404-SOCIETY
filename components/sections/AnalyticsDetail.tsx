@@ -294,20 +294,17 @@ export const AnalyticsDetail: React.FC<AnalyticsDetailProps> = ({ item, onClose 
               textAlign: 'left',
             }}
           >
-            {/* Subtitle Badge: White Box With Black Text */}
+            {/* Subtitle Badge */}
             <div style={{ marginBottom: '20px' }}>
               <span
                 style={{
-                  backgroundColor: '#FFFFFF',
-                  color: '#000000',
+                  color: 'rgba(255, 255, 255, 0.7)',
                   fontFamily: '"Geist Mono", monospace',
-                  fontSize: '12px',
-                  fontWeight: 700,
+                  fontSize: '13px',
+                  fontWeight: 600,
                   letterSpacing: '0.14em',
                   textTransform: 'uppercase',
-                  padding: '5px 12px',
                   display: 'inline-block',
-                  borderRadius: 0,
                 }}
               >
                 Analytics Service {item.number}
@@ -563,17 +560,18 @@ export const AnalyticsDetail: React.FC<AnalyticsDetailProps> = ({ item, onClose 
                   onClick={handleCtaClick}
                   style={{
                     display: 'inline-block',
-                    backgroundColor: '#FFFFFF',
-                    color: '#000000',
+                    backgroundColor: '#1920F0',
+                    color: '#FFFFFF',
                     fontFamily: '"Geist Mono", monospace',
                     fontSize: '12px',
                     fontWeight: 700,
                     letterSpacing: '0.08em',
                     textTransform: 'uppercase',
                     padding: '14px 24px',
-                    borderRadius: 0,
+                    borderRadius: '12px',
                     textDecoration: 'none',
-                    transition: 'opacity 0.2s',
+                    transition: 'opacity 0.2s, transform 0.2s',
+                    boxShadow: '0 8px 24px rgba(25, 32, 240, 0.4)',
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.opacity = '0.85';

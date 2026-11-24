@@ -479,8 +479,8 @@ export const AutomationDetail: React.FC<AutomationDetailProps> = ({ item, onClos
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '10px',
-                  backgroundColor: '#FFFFFF',
-                  color: '#000000',
+                  backgroundColor: '#1920F0',
+                  color: '#FFFFFF',
                   padding: '14px 30px',
                   borderRadius: '999px',
                   fontSize: '13px',
@@ -491,6 +491,7 @@ export const AutomationDetail: React.FC<AutomationDetailProps> = ({ item, onClos
                   textDecoration: 'none',
                   transition: 'background 0.2s, transform 0.2s',
                   cursor: 'pointer',
+                  boxShadow: '0 8px 24px rgba(25, 32, 240, 0.4)',
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.backgroundColor = '#E5E7EB';

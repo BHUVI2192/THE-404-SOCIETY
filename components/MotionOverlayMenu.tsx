@@ -47,7 +47,7 @@ const DEFAULT_SECONDARY: MenuLinkItem[] = [
   { label: 'LinkedIn', link: 'https://linkedin.com', newTab: true },
   { label: 'X (Twitter)', link: 'https://x.com', newTab: true },
   { label: 'GitHub', link: 'https://github.com', newTab: true },
-  { label: 'hello@youdecide.studio', link: 'mailto:hello@youdecide.studio' },
+  { label: 'youdecide.std@gmail.com', link: 'mailto:youdecide.std@gmail.com' },
 ];
 
 export const MotionOverlayMenu: React.FC<MotionOverlayMenuProps> = ({

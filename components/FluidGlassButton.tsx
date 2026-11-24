@@ -336,6 +336,9 @@ export const FluidGlassButton: React.FC<FluidGlassButtonProps> = ({
     margin: 0,
     fontFamily: '"Geist", -apple-system, sans-serif',
     overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    flexShrink: 0,
+    lineHeight: 1,
     ...style,
   };
 
@@ -368,9 +371,11 @@ export const FluidGlassButton: React.FC<FluidGlassButtonProps> = ({
           alignItems: 'center',
           gap: '8px',
           textShadow: '0 2px 10px rgba(0, 0, 0, 0.4)',
+          whiteSpace: 'nowrap',
+          lineHeight: 1,
         }}
       >
-        <span>{text}</span>
+        <span style={{ whiteSpace: 'nowrap' }}>{text}</span>
         {icon && <span style={{ display: 'inline-flex', alignItems: 'center' }}>{icon}</span>}
       </div>
     </>
