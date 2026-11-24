@@ -49,12 +49,12 @@ export const FAQSection: React.FC<{ className?: string }> = ({ className = '' })
       style={{
         maxWidth: '1320px',
         width: '100%',
-        margin: 'clamp(40px, 5.5vh, 64px) auto',
+        margin: 'clamp(84px, 12vh, 140px) auto',
         padding: '0 clamp(20px, 4vw, 48px)',
         boxSizing: 'border-box',
         position: 'relative',
         zIndex: 10,
-        scrollMarginTop: '84px',
+        scrollMarginTop: '100px',
         textAlign: 'left',
       }}
     >
