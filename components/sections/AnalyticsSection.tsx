@@ -60,33 +60,7 @@ const ACCORDION_ITEMS: AccordionTabItem[] = [
   },
 ];
 
-/* ── VIBRANT GRAPHIC DESIGN POSTER VISUALIZERS (100% CUSTOM, ZERO AI) ── */
-
-const BarcodeSvg: React.FC<{ color?: string }> = ({ color = '#FFFFFF' }) => (
-  <svg width="88" height="28" viewBox="0 0 88 28" fill={color} style={{ opacity: 0.85 }}>
-    <rect x="0" y="0" width="2.5" height="20" />
-    <rect x="4" y="0" width="1.2" height="20" />
-    <rect x="7" y="0" width="3.5" height="20" />
-    <rect x="12" y="0" width="1.2" height="20" />
-    <rect x="15" y="0" width="4" height="20" />
-    <rect x="21" y="0" width="2" height="20" />
-    <rect x="25" y="0" width="1.5" height="20" />
-    <rect x="28" y="0" width="3" height="20" />
-    <rect x="33" y="0" width="2.5" height="20" />
-    <rect x="38" y="0" width="4.5" height="20" />
-    <rect x="44" y="0" width="1.5" height="20" />
-    <rect x="48" y="0" width="2.5" height="20" />
-    <rect x="52" y="0" width="3.5" height="20" />
-    <rect x="57" y="0" width="1.5" height="20" />
-    <rect x="60" y="0" width="4" height="20" />
-    <rect x="66" y="0" width="2" height="20" />
-    <rect x="70" y="0" width="1.5" height="20" />
-    <rect x="73" y="0" width="3.5" height="20" />
-    <rect x="78" y="0" width="2" height="20" />
-    <rect x="82" y="0" width="4" height="20" />
-    <text x="0" y="27" fontSize="6" fontFamily="monospace" letterSpacing="1.5" fill={color}>YD-2026-ANL</text>
-  </svg>
-);
+/* ── VIBRANT GRAPHIC DESIGN POSTER VISUALIZERS (CLEAN & MINIMAL, ZERO CLUTTER) ── */
 
 // POSTER 1: SOCIAL MEDIA ANALYTICS (Vivid Electric Ultramarine & Neon Lime)
 const SocialReachVisual: React.FC = () => (
@@ -100,10 +74,11 @@ const SocialReachVisual: React.FC = () => (
       color: '#FFFFFF',
       fontFamily: '"Geist", -apple-system, sans-serif',
       boxSizing: 'border-box',
-      padding: 'clamp(20px, 3.2vw, 32px)',
+      padding: 'clamp(28px, 4vw, 48px)',
       display: 'flex',
       flexDirection: 'column',
-      justifyContent: 'space-between',
+      justifyContent: 'center',
+      alignItems: 'flex-end',
     }}
   >
     {/* Fine Geometric Grid Accent */}
@@ -124,58 +99,19 @@ const SocialReachVisual: React.FC = () => (
     <div
       style={{
         position: 'absolute',
-        left: '2%',
-        bottom: '-10%',
+        left: '4%',
+        bottom: '-8%',
         fontFamily: '"Geist", sans-serif',
         fontSize: 'clamp(140px, 18vw, 240px)',
         fontWeight: 900,
         lineHeight: 1,
-        color: 'rgba(255, 255, 255, 0.07)',
+        color: 'rgba(255, 255, 255, 0.08)',
         userSelect: 'none',
         pointerEvents: 'none',
         letterSpacing: '-0.06em',
       }}
     >
       01
-    </div>
-
-    {/* Top Meta Strip */}
-    <div
-      style={{
-        position: 'relative',
-        zIndex: 2,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.18)',
-        paddingBottom: '12px',
-      }}
-    >
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-        <span
-          style={{
-            background: '#D8FF00',
-            color: '#060C38',
-            fontSize: '10px',
-            fontWeight: 800,
-            letterSpacing: '0.14em',
-            padding: '3px 8px',
-            borderRadius: '4px',
-            textTransform: 'uppercase',
-            fontFamily: '"Geist Mono", monospace',
-          }}
-        >
-          POSTER // 01
-        </span>
-        <span style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.75)', letterSpacing: '0.08em', fontFamily: '"Geist Mono", monospace' }}>
-          YOUDECIDE STUDIO ARCHIVE
-        </span>
-      </div>
-
-      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', color: '#D8FF00', fontFamily: '"Geist Mono", monospace' }}>
-        <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#D8FF00', boxShadow: '0 0 10px #D8FF00' }} />
-        <span>LIVE PIPELINE ACTIVE</span>
-      </div>
     </div>
 
     {/* Center Right Graphic Typography Block */}
@@ -187,8 +123,7 @@ const SocialReachVisual: React.FC = () => (
         flexDirection: 'column',
         alignItems: 'flex-end',
         textAlign: 'right',
-        margin: 'auto 0 auto auto',
-        maxWidth: '70%',
+        maxWidth: '72%',
       }}
     >
       {/* Subhead / Concept in Italic Serif */}
@@ -196,10 +131,10 @@ const SocialReachVisual: React.FC = () => (
         style={{
           fontFamily: '"Instrument Serif", serif',
           fontStyle: 'italic',
-          fontSize: 'clamp(20px, 2.4vw, 30px)',
+          fontSize: 'clamp(22px, 2.6vw, 32px)',
           color: '#D8FF00',
           lineHeight: 1.15,
-          marginBottom: '6px',
+          marginBottom: '8px',
         }}
       >
         High-intent conversations over empty clicks.
@@ -210,12 +145,12 @@ const SocialReachVisual: React.FC = () => (
         style={{
           fontFamily: '"Geist", -apple-system, sans-serif',
           fontWeight: 900,
-          fontSize: 'clamp(34px, 4.4vw, 58px)',
+          fontSize: 'clamp(36px, 4.6vw, 62px)',
           lineHeight: 0.92,
           letterSpacing: '-0.04em',
           textTransform: 'uppercase',
           color: '#FFFFFF',
-          margin: '0 0 16px',
+          margin: '0 0 18px',
           textShadow: '0 12px 32px rgba(0,0,0,0.4)',
         }}
       >
@@ -232,9 +167,9 @@ const SocialReachVisual: React.FC = () => (
             color: '#060C38',
             fontFamily: '"Geist Mono", monospace',
             fontWeight: 800,
-            fontSize: '11.5px',
+            fontSize: '12px',
             letterSpacing: '0.04em',
-            padding: '6px 14px',
+            padding: '7px 16px',
             borderRadius: '6px',
             transform: 'rotate(-2.5deg)',
             boxShadow: '0 8px 20px rgba(0, 0, 0, 0.35)',
@@ -251,39 +186,13 @@ const SocialReachVisual: React.FC = () => (
             border: '1px solid rgba(255, 255, 255, 0.24)',
             color: '#FFFFFF',
             fontFamily: '"Geist Mono", monospace',
-            fontSize: '11px',
+            fontSize: '11.5px',
             fontWeight: 500,
-            padding: '6px 12px',
+            padding: '7px 14px',
             borderRadius: '6px',
           }}
         >
           9.2% CONVERSION RATE
-        </div>
-      </div>
-    </div>
-
-    {/* Bottom Stamp & Barcode Strip */}
-    <div
-      style={{
-        position: 'relative',
-        zIndex: 2,
-        display: 'flex',
-        alignItems: 'flex-end',
-        justifyContent: 'space-between',
-        borderTop: '1px solid rgba(255, 255, 255, 0.18)',
-        paddingTop: '12px',
-      }}
-    >
-      <div>
-        <BarcodeSvg color="#FFFFFF" />
-      </div>
-
-      <div style={{ textAlign: 'right' }}>
-        <div style={{ fontFamily: '"Geist Mono", monospace', fontSize: '10px', color: 'rgba(255, 255, 255, 0.7)', letterSpacing: '0.1em' }}>
-          LAT 13.9299° N · LON 75.5681° E
-        </div>
-        <div style={{ fontFamily: '"Geist Mono", monospace', fontSize: '11px', fontWeight: 600, color: '#D8FF00', letterSpacing: '0.06em' }}>
-          INDEX NO. 404-SMA-2026
         </div>
       </div>
     </div>
@@ -302,17 +211,18 @@ const MonthlyBriefVisual: React.FC = () => (
       color: '#FFFFFF',
       fontFamily: '"Geist", -apple-system, sans-serif',
       boxSizing: 'border-box',
-      padding: 'clamp(20px, 3.2vw, 32px)',
+      padding: 'clamp(28px, 4vw, 48px)',
       display: 'flex',
       flexDirection: 'column',
-      justifyContent: 'space-between',
+      justifyContent: 'center',
+      alignItems: 'flex-end',
     }}
   >
     {/* Diagonal Graphic Accent */}
     <div
       style={{
         position: 'absolute',
-        top: '-20%',
+        top: '-15%',
         right: '-10%',
         width: '320px',
         height: '320px',
@@ -326,8 +236,8 @@ const MonthlyBriefVisual: React.FC = () => (
     <div
       style={{
         position: 'absolute',
-        left: '2%',
-        bottom: '-10%',
+        left: '4%',
+        bottom: '-8%',
         fontFamily: '"Geist", sans-serif',
         fontSize: 'clamp(140px, 18vw, 240px)',
         fontWeight: 900,
@@ -341,45 +251,6 @@ const MonthlyBriefVisual: React.FC = () => (
       02
     </div>
 
-    {/* Top Meta Strip */}
-    <div
-      style={{
-        position: 'relative',
-        zIndex: 2,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.22)',
-        paddingBottom: '12px',
-      }}
-    >
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-        <span
-          style={{
-            background: '#FFE600',
-            color: '#1A0500',
-            fontSize: '10px',
-            fontWeight: 800,
-            letterSpacing: '0.14em',
-            padding: '3px 8px',
-            borderRadius: '4px',
-            textTransform: 'uppercase',
-            fontFamily: '"Geist Mono", monospace',
-          }}
-        >
-          POSTER // 02
-        </span>
-        <span style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.8)', letterSpacing: '0.08em', fontFamily: '"Geist Mono", monospace' }}>
-          DIRECTOR'S INTELLIGENCE MEMO
-        </span>
-      </div>
-
-      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', color: '#FFE600', fontFamily: '"Geist Mono", monospace' }}>
-        <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#FFE600', boxShadow: '0 0 10px #FFE600' }} />
-        <span>2-MIN READ FORMAT</span>
-      </div>
-    </div>
-
     {/* Center Right Graphic Typography Block */}
     <div
       style={{
@@ -389,18 +260,17 @@ const MonthlyBriefVisual: React.FC = () => (
         flexDirection: 'column',
         alignItems: 'flex-end',
         textAlign: 'right',
-        margin: 'auto 0 auto auto',
-        maxWidth: '70%',
+        maxWidth: '72%',
       }}
     >
       <div
         style={{
           fontFamily: '"Instrument Serif", serif',
           fontStyle: 'italic',
-          fontSize: 'clamp(20px, 2.4vw, 30px)',
+          fontSize: 'clamp(22px, 2.6vw, 32px)',
           color: '#FFE600',
           lineHeight: 1.15,
-          marginBottom: '6px',
+          marginBottom: '8px',
         }}
       >
         Plain English. Zero marketing jargon.
@@ -410,12 +280,12 @@ const MonthlyBriefVisual: React.FC = () => (
         style={{
           fontFamily: '"Geist", -apple-system, sans-serif',
           fontWeight: 900,
-          fontSize: 'clamp(34px, 4.4vw, 58px)',
+          fontSize: 'clamp(36px, 4.6vw, 62px)',
           lineHeight: 0.92,
           letterSpacing: '-0.04em',
           textTransform: 'uppercase',
           color: '#FFFFFF',
-          margin: '0 0 16px',
+          margin: '0 0 18px',
           textShadow: '0 12px 32px rgba(0,0,0,0.35)',
         }}
       >
@@ -431,9 +301,9 @@ const MonthlyBriefVisual: React.FC = () => (
             color: '#1A0500',
             fontFamily: '"Geist Mono", monospace',
             fontWeight: 800,
-            fontSize: '11.5px',
+            fontSize: '12px',
             letterSpacing: '0.04em',
-            padding: '6px 14px',
+            padding: '7px 16px',
             borderRadius: '6px',
             transform: 'rotate(2.5deg)',
             boxShadow: '0 8px 20px rgba(0, 0, 0, 0.35)',
@@ -449,9 +319,9 @@ const MonthlyBriefVisual: React.FC = () => (
             border: '1px solid rgba(255, 255, 255, 0.28)',
             color: '#FFFFFF',
             fontFamily: '"Geist Mono", monospace',
-            fontSize: '11px',
+            fontSize: '11.5px',
             fontWeight: 500,
-            padding: '6px 12px',
+            padding: '7px 14px',
             borderRadius: '6px',
           }}
         >
@@ -459,36 +329,10 @@ const MonthlyBriefVisual: React.FC = () => (
         </div>
       </div>
     </div>
-
-    {/* Bottom Strip */}
-    <div
-      style={{
-        position: 'relative',
-        zIndex: 2,
-        display: 'flex',
-        alignItems: 'flex-end',
-        justifyContent: 'space-between',
-        borderTop: '1px solid rgba(255, 255, 255, 0.22)',
-        paddingTop: '12px',
-      }}
-    >
-      <div>
-        <BarcodeSvg color="#FFFFFF" />
-      </div>
-
-      <div style={{ textAlign: 'right' }}>
-        <div style={{ fontFamily: '"Geist Mono", monospace', fontSize: '10px', color: 'rgba(255, 255, 255, 0.8)', letterSpacing: '0.1em' }}>
-          CONFIDENTIAL STRATEGY BRIEF
-        </div>
-        <div style={{ fontFamily: '"Geist Mono", monospace', fontSize: '11px', fontWeight: 600, color: '#FFE600', letterSpacing: '0.06em' }}>
-          EDITION NO. 404-MEB-2026
-        </div>
-      </div>
-    </div>
   </div>
 );
 
-// POSTER 3: VISITOR FLOW (Vibrant Emerald & Hyper Cyan)
+// POSTER 3: VISITOR FLOW (New Color: Electric Hyper Cyan & Cerulean Aqua)
 const VisitorFlowVisual: React.FC = () => (
   <div
     style={{
@@ -496,14 +340,15 @@ const VisitorFlowVisual: React.FC = () => (
       height: '100%',
       position: 'relative',
       overflow: 'hidden',
-      background: 'linear-gradient(135deg, #00B377 0%, #008257 50%, #032E1F 100%)',
+      background: 'linear-gradient(135deg, #00C6FF 0%, #0072FF 50%, #021B4A 100%)',
       color: '#FFFFFF',
       fontFamily: '"Geist", -apple-system, sans-serif',
       boxSizing: 'border-box',
-      padding: 'clamp(20px, 3.2vw, 32px)',
+      padding: 'clamp(28px, 4vw, 48px)',
       display: 'flex',
       flexDirection: 'column',
-      justifyContent: 'space-between',
+      justifyContent: 'center',
+      alignItems: 'flex-end',
     }}
   >
     {/* Geometric Vector Radar Rings */}
@@ -524,8 +369,8 @@ const VisitorFlowVisual: React.FC = () => (
     <div
       style={{
         position: 'absolute',
-        left: '2%',
-        bottom: '-10%',
+        left: '4%',
+        bottom: '-8%',
         fontFamily: '"Geist", sans-serif',
         fontSize: 'clamp(140px, 18vw, 240px)',
         fontWeight: 900,
@@ -539,45 +384,6 @@ const VisitorFlowVisual: React.FC = () => (
       03
     </div>
 
-    {/* Top Meta Strip */}
-    <div
-      style={{
-        position: 'relative',
-        zIndex: 2,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.2)',
-        paddingBottom: '12px',
-      }}
-    >
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-        <span
-          style={{
-            background: '#00F5FF',
-            color: '#01261B',
-            fontSize: '10px',
-            fontWeight: 800,
-            letterSpacing: '0.14em',
-            padding: '3px 8px',
-            borderRadius: '4px',
-            textTransform: 'uppercase',
-            fontFamily: '"Geist Mono", monospace',
-          }}
-        >
-          POSTER // 03
-        </span>
-        <span style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.8)', letterSpacing: '0.08em', fontFamily: '"Geist Mono", monospace' }}>
-          TRAFFIC ARCHITECTURE
-        </span>
-      </div>
-
-      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', color: '#00F5FF', fontFamily: '"Geist Mono", monospace' }}>
-        <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#00F5FF', boxShadow: '0 0 10px #00F5FF' }} />
-        <span>CONVERSION RADAR</span>
-      </div>
-    </div>
-
     {/* Center Right Graphic Typography Block */}
     <div
       style={{
@@ -587,18 +393,17 @@ const VisitorFlowVisual: React.FC = () => (
         flexDirection: 'column',
         alignItems: 'flex-end',
         textAlign: 'right',
-        margin: 'auto 0 auto auto',
-        maxWidth: '70%',
+        maxWidth: '72%',
       }}
     >
       <div
         style={{
           fontFamily: '"Instrument Serif", serif',
           fontStyle: 'italic',
-          fontSize: 'clamp(20px, 2.4vw, 30px)',
+          fontSize: 'clamp(22px, 2.6vw, 32px)',
           color: '#00F5FF',
           lineHeight: 1.15,
-          marginBottom: '6px',
+          marginBottom: '8px',
         }}
       >
         Where visitors arrive and why they stay.
@@ -608,12 +413,12 @@ const VisitorFlowVisual: React.FC = () => (
         style={{
           fontFamily: '"Geist", -apple-system, sans-serif',
           fontWeight: 900,
-          fontSize: 'clamp(34px, 4.4vw, 58px)',
+          fontSize: 'clamp(36px, 4.6vw, 62px)',
           lineHeight: 0.92,
           letterSpacing: '-0.04em',
           textTransform: 'uppercase',
           color: '#FFFFFF',
-          margin: '0 0 16px',
+          margin: '0 0 18px',
           textShadow: '0 12px 32px rgba(0,0,0,0.35)',
         }}
       >
@@ -626,12 +431,12 @@ const VisitorFlowVisual: React.FC = () => (
         <div
           style={{
             background: '#00F5FF',
-            color: '#01261B',
+            color: '#021B38',
             fontFamily: '"Geist Mono", monospace',
             fontWeight: 800,
-            fontSize: '11.5px',
+            fontSize: '12px',
             letterSpacing: '0.04em',
-            padding: '6px 14px',
+            padding: '7px 16px',
             borderRadius: '6px',
             transform: 'rotate(-2deg)',
             boxShadow: '0 8px 20px rgba(0, 0, 0, 0.35)',
@@ -647,9 +452,9 @@ const VisitorFlowVisual: React.FC = () => (
             border: '1px solid rgba(255, 255, 255, 0.28)',
             color: '#FFFFFF',
             fontFamily: '"Geist Mono", monospace',
-            fontSize: '11px',
+            fontSize: '11.5px',
             fontWeight: 500,
-            padding: '6px 12px',
+            padding: '7px 14px',
             borderRadius: '6px',
           }}
         >
@@ -657,36 +462,10 @@ const VisitorFlowVisual: React.FC = () => (
         </div>
       </div>
     </div>
-
-    {/* Bottom Strip */}
-    <div
-      style={{
-        position: 'relative',
-        zIndex: 2,
-        display: 'flex',
-        alignItems: 'flex-end',
-        justifyContent: 'space-between',
-        borderTop: '1px solid rgba(255, 255, 255, 0.2)',
-        paddingTop: '12px',
-      }}
-    >
-      <div>
-        <BarcodeSvg color="#FFFFFF" />
-      </div>
-
-      <div style={{ textAlign: 'right' }}>
-        <div style={{ fontFamily: '"Geist Mono", monospace', fontSize: '10px', color: 'rgba(255, 255, 255, 0.8)', letterSpacing: '0.1em' }}>
-          USER FLOW METRICS // 2026
-        </div>
-        <div style={{ fontFamily: '"Geist Mono", monospace', fontSize: '11px', fontWeight: 600, color: '#00F5FF', letterSpacing: '0.06em' }}>
-          INDEX NO. 404-VJF-2026
-        </div>
-      </div>
-    </div>
   </div>
 );
 
-// POSTER 4: COMPETITOR WATCH (Hyper Violet & Hot Magenta)
+// POSTER 4: COMPETITOR WATCH (New Color: Hot Neon Crimson & Solar Gold)
 const CompetitorWatchVisual: React.FC = () => (
   <div
     style={{
@@ -694,14 +473,15 @@ const CompetitorWatchVisual: React.FC = () => (
       height: '100%',
       position: 'relative',
       overflow: 'hidden',
-      background: 'linear-gradient(135deg, #7A00FF 0%, #C40082 50%, #4D0040 100%)',
+      background: 'linear-gradient(135deg, #FF0055 0%, #E6004C 50%, #4D0017 100%)',
       color: '#FFFFFF',
       fontFamily: '"Geist", -apple-system, sans-serif',
       boxSizing: 'border-box',
-      padding: 'clamp(20px, 3.2vw, 32px)',
+      padding: 'clamp(28px, 4vw, 48px)',
       display: 'flex',
       flexDirection: 'column',
-      justifyContent: 'space-between',
+      justifyContent: 'center',
+      alignItems: 'flex-end',
     }}
   >
     {/* Geometric Crosshair Accents */}
@@ -723,8 +503,8 @@ const CompetitorWatchVisual: React.FC = () => (
     <div
       style={{
         position: 'absolute',
-        left: '2%',
-        bottom: '-10%',
+        left: '4%',
+        bottom: '-8%',
         fontFamily: '"Geist", sans-serif',
         fontSize: 'clamp(140px, 18vw, 240px)',
         fontWeight: 900,
@@ -738,45 +518,6 @@ const CompetitorWatchVisual: React.FC = () => (
       04
     </div>
 
-    {/* Top Meta Strip */}
-    <div
-      style={{
-        position: 'relative',
-        zIndex: 2,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.22)',
-        paddingBottom: '12px',
-      }}
-    >
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-        <span
-          style={{
-            background: '#FF6BF0',
-            color: '#280026',
-            fontSize: '10px',
-            fontWeight: 800,
-            letterSpacing: '0.14em',
-            padding: '3px 8px',
-            borderRadius: '4px',
-            textTransform: 'uppercase',
-            fontFamily: '"Geist Mono", monospace',
-          }}
-        >
-          POSTER // 04
-        </span>
-        <span style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.8)', letterSpacing: '0.08em', fontFamily: '"Geist Mono", monospace' }}>
-          MARKET INTELLIGENCE
-        </span>
-      </div>
-
-      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', color: '#FF6BF0', fontFamily: '"Geist Mono", monospace' }}>
-        <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#FF6BF0', boxShadow: '0 0 10px #FF6BF0' }} />
-        <span>SURVEILLANCE MODE</span>
-      </div>
-    </div>
-
     {/* Center Right Graphic Typography Block */}
     <div
       style={{
@@ -786,18 +527,17 @@ const CompetitorWatchVisual: React.FC = () => (
         flexDirection: 'column',
         alignItems: 'flex-end',
         textAlign: 'right',
-        margin: 'auto 0 auto auto',
-        maxWidth: '70%',
+        maxWidth: '72%',
       }}
     >
       <div
         style={{
           fontFamily: '"Instrument Serif", serif',
           fontStyle: 'italic',
-          fontSize: 'clamp(20px, 2.4vw, 30px)',
-          color: '#FF6BF0',
+          fontSize: 'clamp(22px, 2.6vw, 32px)',
+          color: '#FFD600',
           lineHeight: 1.15,
-          marginBottom: '6px',
+          marginBottom: '8px',
         }}
       >
         Untapped gaps competitors miss.
@@ -807,30 +547,30 @@ const CompetitorWatchVisual: React.FC = () => (
         style={{
           fontFamily: '"Geist", -apple-system, sans-serif',
           fontWeight: 900,
-          fontSize: 'clamp(34px, 4.4vw, 58px)',
+          fontSize: 'clamp(36px, 4.6vw, 62px)',
           lineHeight: 0.92,
           letterSpacing: '-0.04em',
           textTransform: 'uppercase',
           color: '#FFFFFF',
-          margin: '0 0 16px',
+          margin: '0 0 18px',
           textShadow: '0 12px 32px rgba(0,0,0,0.35)',
         }}
       >
         MARKET<br />WATCH &amp;<br />
-        <span style={{ color: '#FF6BF0' }}>BENCHMARKS</span>
+        <span style={{ color: '#FFD600' }}>BENCHMARKS</span>
       </h2>
 
       {/* Badges */}
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', justifyContent: 'flex-end', alignItems: 'center' }}>
         <div
           style={{
-            background: '#FF6BF0',
-            color: '#280026',
+            background: '#FFD600',
+            color: '#33000E',
             fontFamily: '"Geist Mono", monospace',
             fontWeight: 800,
-            fontSize: '11.5px',
+            fontSize: '12px',
             letterSpacing: '0.04em',
-            padding: '6px 14px',
+            padding: '7px 16px',
             borderRadius: '6px',
             transform: 'rotate(2.5deg)',
             boxShadow: '0 8px 20px rgba(0, 0, 0, 0.35)',
@@ -846,39 +586,13 @@ const CompetitorWatchVisual: React.FC = () => (
             border: '1px solid rgba(255, 255, 255, 0.28)',
             color: '#FFFFFF',
             fontFamily: '"Geist Mono", monospace',
-            fontSize: '11px',
+            fontSize: '11.5px',
             fontWeight: 500,
-            padding: '6px 12px',
+            padding: '7px 14px',
             borderRadius: '6px',
           }}
         >
           FOUNDER BENCHMARKS
-        </div>
-      </div>
-    </div>
-
-    {/* Bottom Strip */}
-    <div
-      style={{
-        position: 'relative',
-        zIndex: 2,
-        display: 'flex',
-        alignItems: 'flex-end',
-        justifyContent: 'space-between',
-        borderTop: '1px solid rgba(255, 255, 255, 0.22)',
-        paddingTop: '12px',
-      }}
-    >
-      <div>
-        <BarcodeSvg color="#FFFFFF" />
-      </div>
-
-      <div style={{ textAlign: 'right' }}>
-        <div style={{ fontFamily: '"Geist Mono", monospace', fontSize: '10px', color: 'rgba(255, 255, 255, 0.8)', letterSpacing: '0.1em' }}>
-          STRATEGIC ADVANTAGE AUDIT
-        </div>
-        <div style={{ fontFamily: '"Geist Mono", monospace', fontSize: '11px', fontWeight: 600, color: '#FF6BF0', letterSpacing: '0.06em' }}>
-          INDEX NO. 404-MWB-2026
         </div>
       </div>
     </div>
