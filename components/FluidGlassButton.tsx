@@ -154,6 +154,8 @@ void main() {
 export interface FluidGlassButtonProps {
   text?: string;
   link?: string;
+  target?: string;
+  rel?: string;
   onClick?: (e: React.MouseEvent) => void;
   baseColor?: string;
   glassColor?: string;
@@ -169,6 +171,8 @@ export interface FluidGlassButtonProps {
 export const FluidGlassButton: React.FC<FluidGlassButtonProps> = ({
   text = 'Contact Us',
   link,
+  target,
+  rel,
   onClick,
   baseColor = '#050B1E',
   glassColor = '#60A5FA',
@@ -376,6 +380,8 @@ export const FluidGlassButton: React.FC<FluidGlassButtonProps> = ({
     return (
       <a
         href={link}
+        target={target}
+        rel={rel}
         ref={outerRef}
         className={className}
         style={containerStyle}

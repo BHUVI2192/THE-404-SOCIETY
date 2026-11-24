@@ -38,7 +38,7 @@ export const AutomationSection: React.FC<AutomationSectionProps> = ({
       style={{
         maxWidth: '1320px',
         width: '100%',
-        margin: 'clamp(72px, 11vh, 128px) 0',
+        margin: 'clamp(72px, 11vh, 128px) auto',
         padding: '0 clamp(24px, 5vw, 64px)',
         boxSizing: 'border-box',
         position: 'relative',
@@ -46,16 +46,16 @@ export const AutomationSection: React.FC<AutomationSectionProps> = ({
         scrollMarginTop: '110px',
       }}
     >
-      {/* ── SECTION HEADER: BIG, CURSIVE & IN ONE LINE ── */}
+      {/* ── SECTION HEADER: BIG, CURSIVE & CENTERED ── */}
       <div
         style={{
           width: '100%',
-          maxWidth: '100%',
-          marginBottom: 'clamp(28px, 4.5vh, 44px)',
-          paddingLeft: '0',
+          maxWidth: '840px',
+          margin: '0 auto clamp(28px, 4.5vh, 44px)',
+          textAlign: 'center',
         }}
       >
-        {/* Main Title: Big & Cursive (Instrument Serif Italic) — In Single Line */}
+        {/* Main Title: Big & Cursive (Instrument Serif Italic) */}
         <motion.h2
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -64,13 +64,12 @@ export const AutomationSection: React.FC<AutomationSectionProps> = ({
           style={{
             fontFamily: '"Instrument Serif", serif',
             fontStyle: 'italic',
-            fontSize: 'clamp(26px, 4.5vw, 76px)',
+            fontSize: 'clamp(32px, 5vw, 76px)',
             fontWeight: 400,
             lineHeight: 1.1,
             letterSpacing: '-0.02em',
             color: '#FFFFFF',
             margin: '0 0 10px',
-            whiteSpace: 'nowrap',
           }}
         >
           Automation, beyond the obvious.
@@ -106,7 +105,7 @@ export const AutomationSection: React.FC<AutomationSectionProps> = ({
             fontSize: 'clamp(15px, 1.6vw, 17px)',
             lineHeight: 1.55,
             color: 'rgba(255, 255, 255, 0.65)',
-            margin: 0,
+            margin: '0 auto',
             maxWidth: '680px',
             fontWeight: 400,
           }}

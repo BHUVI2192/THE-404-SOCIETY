@@ -43,66 +43,7 @@ const YouDecideLogo: React.FC<{ height?: number; className?: string }> = ({
   );
 };
 
-const SERVICES = [
-  {
-    title: 'Website Design & Development',
-    desc: 'Custom website development and affordable website design for small businesses, crafted to turn visitors into enquiries.',
-    tag: 'Pay As You Wish',
-  },
-  {
-    title: 'Business Automation',
-    desc: 'Remove the manual, repetitive friction from your team’s weekly workflows with custom trigger pipelines.',
-    tag: 'Workflows',
-  },
-  {
-    title: 'BI & Analytics',
-    desc: 'Dashboards that actually answer the commercial questions you care about.',
-    tag: 'Data',
-  },
-  {
-    title: 'Workflow Optimisation',
-    desc: 'Cleaner processes, fewer hand-offs, and automated trigger pipelines.',
-    tag: 'Systems',
-  },
-  {
-    title: 'Digital Transformation',
-    desc: 'A practical, grounded roadmap executed sprint by sprint. Pay what you want web development built around your goals.',
-    tag: 'Strategy',
-  },
-  {
-    title: 'Custom Engineering',
-    desc: 'Have a bespoke technical bottleneck? We will tell you honestly if we can build it.',
-    tag: 'Special Projects',
-  },
-];
-
-const STEPS = [
-  {
-    num: '01',
-    title: 'Brief',
-    desc: 'Tell us what your business or project needs. We scope it together in plain language.',
-  },
-  {
-    num: '02',
-    title: 'Build',
-    desc: 'We design and engineer the solution. You inspect progress live as it happens, not at the end.',
-  },
-  {
-    num: '03',
-    title: 'Decide',
-    desc: 'You review the finished delivery, verify its commercial value, and tell us what it was worth.',
-  },
-];
-
 const YouDecideLocal: React.FC = () => {
-  const [sliderVal, setSliderVal] = useState<number>(65);
-
-  const calculatePerceivedValue = (val: number) => {
-    if (val < 25) return 'Sprint Prototype';
-    if (val < 50) return 'Custom MVP & Launch';
-    if (val < 75) return 'Full Stack Automation & Web';
-    return 'Enterprise Transformation';
-  };
 
   useEffect(() => {
     document.title = 'Affordable Website Design for Small Businesses | youdecide.studio';
@@ -260,8 +201,10 @@ const YouDecideLocal: React.FC = () => {
                     }}
                   />
                   <FluidGlassButton
-                    text="Contact"
-                    link="#contact"
+                    text="Book a Call"
+                    link="https://calendly.com/youdecide-std/30min"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     padding="5px 15px"
                     fontSize="12px"
                     baseColor="#071838"
@@ -273,15 +216,10 @@ const YouDecideLocal: React.FC = () => {
                 { label: 'Websites', link: '#websites-built' },
                 { label: 'Automations', link: '#automations' },
                 { label: 'Analytics', link: '#analytics' },
-                { label: 'Commercial Model', link: '#model' },
-                { label: 'Capabilities', link: '#services' },
-                { label: '3-Step Process', link: '#process' },
-                { label: 'Project Briefing', link: '#contact' },
+                { label: 'Book a Call', link: 'https://calendly.com/youdecide-std/30min', newTab: true },
               ]}
               secondaryLinks={[
-                { label: 'LinkedIn', link: 'https://linkedin.com', newTab: true },
-                { label: 'X (Twitter)', link: 'https://x.com', newTab: true },
-                { label: 'GitHub', link: 'https://github.com', newTab: true },
+                { label: 'Book on Calendly', link: 'https://calendly.com/youdecide-std/30min', newTab: true },
                 { label: 'hello@youdecide.studio', link: 'mailto:hello@youdecide.studio' },
               ]}
               note="© 2026 youdecide.studio · All rights reserved"
@@ -408,12 +346,17 @@ const YouDecideLocal: React.FC = () => {
                 alignItems: 'center',
               }}
             >
-              <a href="#contact" className="hero-cta-btn-primary">
-                <span>Initiate Project Brief</span>
+              <a
+                href="https://calendly.com/youdecide-std/30min"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hero-cta-btn-primary"
+              >
+                <span>Book a 30-Min Call</span>
                 <span aria-hidden="true">→</span>
               </a>
-              <a href="#services" className="hero-cta-btn-secondary">
-                <span>Explore Capabilities</span>
+              <a href="#websites-built" className="hero-cta-btn-secondary">
+                <span>Explore Our Work</span>
               </a>
             </motion.div>
           </div>
@@ -443,491 +386,390 @@ const YouDecideLocal: React.FC = () => {
         <AnalyticsSection />
 
         {/* ========================================================================= */}
-        {/* INTERACTIVE VALUE SLIDER SECTION */}
-        {/* ========================================================================= */}
-        <section
-          id="model"
-          style={{
-            maxWidth: '1320px',
-            margin: '0',
-            padding: '100px clamp(24px, 5vw, 64px) 80px',
-            borderTop: '1px solid rgba(255, 255, 255, 0.08)',
-          }}
-        >
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-              gap: '64px',
-              alignItems: 'center',
-            }}
-          >
-            <div>
-              <div
-                style={{
-                  fontFamily: '"Geist Mono", monospace',
-                  fontSize: '12px',
-                  fontWeight: 500,
-                  letterSpacing: '0.12em',
-                  textTransform: 'uppercase',
-                  color: '#6169FF',
-                  marginBottom: '16px',
-                }}
-              >
-                The Commercial Paradigm
-              </div>
-              <h2
-                style={{
-                  fontSize: 'clamp(36px, 4vw, 54px)',
-                  fontWeight: 700,
-                  letterSpacing: '-0.03em',
-                  lineHeight: 1.1,
-                  margin: '0 0 20px',
-                }}
-              >
-                No speculative retainers. Pay for outcomes<span style={{ color: '#1920F0' }}>.</span>
-              </h2>
-              <p
-                style={{
-                  fontSize: '17px',
-                  lineHeight: 1.6,
-                  color: 'rgba(255, 255, 255, 0.65)',
-                  margin: '0 0 28px',
-                }}
-              >
-                Traditional agencies ask for 50% upfront before writing a single line of code. We invert the dynamic: we build the sprint, you inspect the product live, and you decide what it's worth.
-              </p>
-            </div>
-
-            {/* Interactive Slider Card */}
-            <div
-              style={{
-                background: 'rgba(255, 255, 255, 0.03)',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
-                borderRadius: '24px',
-                padding: '40px',
-                backdropFilter: 'blur(20px)',
-                boxShadow: '0 20px 60px rgba(0, 0, 0, 0.4)',
-              }}
-            >
-              <div
-                style={{
-                  fontFamily: '"Geist Mono", monospace',
-                  fontSize: '11px',
-                  fontWeight: 600,
-                  letterSpacing: '0.1em',
-                  textTransform: 'uppercase',
-                  color: '#A1A1AA',
-                  marginBottom: '12px',
-                }}
-              >
-                Scope Simulator
-              </div>
-
-              <div
-                style={{
-                  fontSize: '28px',
-                  fontWeight: 700,
-                  color: '#FFFFFF',
-                  marginBottom: '6px',
-                }}
-              >
-                {calculatePerceivedValue(sliderVal)}
-              </div>
-              <div
-                style={{
-                  fontSize: '14px',
-                  color: 'rgba(255, 255, 255, 0.5)',
-                  marginBottom: '28px',
-                }}
-              >
-                Adjust scope tier to simulate delivery complexity:
-              </div>
-
-              <input
-                type="range"
-                min="0"
-                max="100"
-                value={sliderVal}
-                onChange={(e) => setSliderVal(parseInt(e.target.value, 10))}
-                style={{
-                  width: '100%',
-                  height: '8px',
-                  accentColor: '#1920F0',
-                  cursor: 'pointer',
-                  marginBottom: '20px',
-                }}
-              />
-
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  fontFamily: '"Geist Mono", monospace',
-                  fontSize: '12px',
-                  borderTop: '1px solid rgba(255, 255, 255, 0.08)',
-                  paddingTop: '16px',
-                  color: 'rgba(255, 255, 255, 0.6)',
-                }}
-              >
-                <span>Estimated Band: {sliderVal}%</span>
-                <span style={{ color: '#6169FF', fontWeight: 600 }}>0% Advance Risk</span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ========================================================================= */}
-        {/* STUDIO CAPABILITIES */}
-        {/* ========================================================================= */}
-        <section
-          id="services"
-          style={{
-            maxWidth: '1320px',
-            margin: '0',
-            padding: '96px clamp(24px, 5vw, 64px)',
-            borderTop: '1px solid rgba(255, 255, 255, 0.08)',
-          }}
-        >
-          <div style={{ maxWidth: '640px', marginBottom: '56px' }}>
-            <div
-              style={{
-                fontFamily: '"Geist Mono", monospace',
-                fontSize: '12px',
-                fontWeight: 500,
-                letterSpacing: '0.1em',
-                textTransform: 'uppercase',
-                color: '#6169FF',
-                marginBottom: '12px',
-              }}
-            >
-              Full-Stack Capabilities
-            </div>
-            <h2
-              style={{
-                fontSize: '44px',
-                fontWeight: 700,
-                letterSpacing: '-0.03em',
-                lineHeight: 1.1,
-                margin: '0 0 16px',
-              }}
-            >
-              Everything digital, one studio<span style={{ color: '#1920F0' }}>.</span>
-            </h2>
-            <p style={{ fontSize: '17px', color: 'rgba(255, 255, 255, 0.65)', lineHeight: 1.55 }}>
-              From high-conversion web frontends to autonomous backend workflows.
-            </p>
-          </div>
-
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-              gap: '24px',
-            }}
-          >
-            {SERVICES.map((srv, idx) => (
-              <motion.div
-                key={idx}
-                whileHover={{ y: -4 }}
-                transition={{ duration: 0.2 }}
-                style={{
-                  background: 'rgba(255, 255, 255, 0.03)',
-                  border: '1px solid rgba(255, 255, 255, 0.08)',
-                  borderRadius: '18px',
-                  padding: '32px',
-                  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.2)',
-                }}
-              >
-                <div
-                  style={{
-                    fontFamily: '"Geist Mono", monospace',
-                    fontSize: '11px',
-                    fontWeight: 600,
-                    color: '#6169FF',
-                    letterSpacing: '0.08em',
-                    marginBottom: '16px',
-                    textTransform: 'uppercase',
-                  }}
-                >
-                  {srv.tag}
-                </div>
-                <h3
-                  style={{
-                    fontSize: '22px',
-                    fontWeight: 600,
-                    letterSpacing: '-0.02em',
-                    margin: '0 0 10px',
-                    color: '#FFFFFF',
-                  }}
-                >
-                  {srv.title}
-                </h3>
-                <p
-                  style={{
-                    fontSize: '15px',
-                    color: 'rgba(255, 255, 255, 0.65)',
-                    lineHeight: 1.55,
-                    margin: 0,
-                  }}
-                >
-                  {srv.desc}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </section>
-
-        {/* ========================================================================= */}
-        {/* THE 3-STEP PROCESS */}
-        {/* ========================================================================= */}
-        <section
-          id="process"
-          style={{
-            maxWidth: '1320px',
-            margin: '0',
-            padding: '96px clamp(24px, 5vw, 64px)',
-            borderTop: '1px solid rgba(255, 255, 255, 0.08)',
-          }}
-        >
-          <div style={{ maxWidth: '640px', marginBottom: '56px' }}>
-            <div
-              style={{
-                fontFamily: '"Geist Mono", monospace',
-                fontSize: '12px',
-                fontWeight: 500,
-                letterSpacing: '0.1em',
-                textTransform: 'uppercase',
-                color: '#6169FF',
-                marginBottom: '12px',
-              }}
-            >
-              The Operating Model
-            </div>
-            <h2
-              style={{
-                fontSize: '44px',
-                fontWeight: 700,
-                letterSpacing: '-0.03em',
-                lineHeight: 1.1,
-                margin: '0 0 16px',
-              }}
-            >
-              See the work. Then decide<span style={{ color: '#1920F0' }}>.</span>
-            </h2>
-          </div>
-
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-              gap: '32px',
-            }}
-          >
-            {STEPS.map((step, idx) => (
-              <div
-                key={idx}
-                style={{
-                  borderTop: '2px solid rgba(255, 255, 255, 0.25)',
-                  paddingTop: '24px',
-                }}
-              >
-                <div
-                  style={{
-                    fontFamily: '"Geist Mono", monospace',
-                    fontSize: '13px',
-                    fontWeight: 600,
-                    color: '#6169FF',
-                    marginBottom: '12px',
-                  }}
-                >
-                  {step.num}
-                </div>
-                <h3
-                  style={{
-                    fontSize: '24px',
-                    fontWeight: 600,
-                    letterSpacing: '-0.02em',
-                    margin: '0 0 10px',
-                    color: '#FFFFFF',
-                  }}
-                >
-                  {step.title}
-                </h3>
-                <p
-                  style={{
-                    fontSize: '15px',
-                    color: 'rgba(255, 255, 255, 0.65)',
-                    lineHeight: 1.6,
-                    margin: 0,
-                  }}
-                >
-                  {step.desc}
-                </p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* ========================================================================= */}
-        {/* BRIEFING / CONTACT */}
+        {/* PROJECT SUBMISSION & DISCOVERY CALL BOOKING                                */}
         {/* ========================================================================= */}
         <section
           id="contact"
           style={{
-            maxWidth: '1320px',
-            margin: '0',
-            padding: '96px clamp(24px, 5vw, 64px)',
-            borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+            maxWidth: '1240px',
+            width: '100%',
+            margin: 'clamp(72px, 11vh, 128px) auto',
+            padding: '0 clamp(24px, 5vw, 64px)',
+            boxSizing: 'border-box',
+            position: 'relative',
+            zIndex: 10,
+            scrollMarginTop: '110px',
           }}
         >
           <div
             style={{
-              background: 'linear-gradient(135deg, #1920F0 0%, #0D116D 100%)',
-              color: '#FFFFFF',
-              borderRadius: '28px',
-              padding: '64px',
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-              gap: '48px',
+              background: 'linear-gradient(135deg, rgba(25, 32, 240, 0.18) 0%, rgba(97, 105, 255, 0.08) 100%)',
+              border: '1px solid rgba(255, 255, 255, 0.14)',
+              borderRadius: '24px',
+              padding: 'clamp(48px, 7vh, 80px) clamp(24px, 5vw, 64px)',
+              textAlign: 'center',
+              display: 'flex',
+              flexDirection: 'column',
               alignItems: 'center',
-              boxShadow: '0 24px 64px rgba(25, 32, 240, 0.25)',
+              boxShadow: '0 24px 64px rgba(0, 0, 0, 0.45)',
+              position: 'relative',
+              overflow: 'hidden',
             }}
           >
-            <div>
-              <h2
-                style={{
-                  fontSize: '48px',
-                  fontWeight: 700,
-                  letterSpacing: '-0.03em',
-                  lineHeight: 1.05,
-                  margin: '0 0 16px',
-                }}
-              >
-                Ready when you are.
-              </h2>
-              <p
-                style={{
-                  fontSize: '18px',
-                  color: 'rgba(255, 255, 255, 0.85)',
-                  lineHeight: 1.55,
-                  margin: 0,
-                  maxWidth: '460px',
-                }}
-              >
-                Tell us about your venture, product, or workflow roadblock. We begin with a zero-risk prototype sprint.
-              </p>
-            </div>
-
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                alert('Project brief received. The studio will reach out within 24 hours.');
-              }}
+            {/* Ambient Background Glow */}
+            <div
               style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '12px',
+                position: 'absolute',
+                top: '-50%',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                width: '600px',
+                height: '400px',
+                background: 'radial-gradient(circle, rgba(97, 105, 255, 0.25) 0%, transparent 70%)',
+                filter: 'blur(50px)',
+                pointerEvents: 'none',
+              }}
+            />
+
+            {/* Subtitle Badge: White Box With Name Written In Black */}
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              style={{ marginBottom: '20px', position: 'relative', zIndex: 1 }}
+            >
+              <span
+                style={{
+                  backgroundColor: '#FFFFFF',
+                  color: '#000000',
+                  fontFamily: '"Geist Mono", monospace',
+                  fontSize: '12px',
+                  fontWeight: 700,
+                  letterSpacing: '0.14em',
+                  textTransform: 'uppercase',
+                  padding: '4px 10px',
+                  display: 'inline-block',
+                  borderRadius: 0,
+                }}
+              >
+                START A PROJECT
+              </span>
+            </motion.div>
+
+            {/* Main Headline */}
+            <motion.h2
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+              style={{
+                fontFamily: '"Instrument Serif", serif',
+                fontStyle: 'italic',
+                fontSize: 'clamp(38px, 5.5vw, 76px)',
+                fontWeight: 400,
+                lineHeight: 1.1,
+                letterSpacing: '-0.02em',
+                color: '#FFFFFF',
+                margin: '0 0 16px',
+                position: 'relative',
+                zIndex: 1,
               }}
             >
-              <input
-                type="text"
-                placeholder="Your Name"
-                required
+              Ready when you are.
+            </motion.h2>
+
+            {/* Description */}
+            <motion.p
+              initial={{ opacity: 0, y: 8 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.16, ease: [0.22, 1, 0.36, 1] }}
+              style={{
+                fontFamily: '"Geist", -apple-system, sans-serif',
+                fontSize: 'clamp(16px, 1.8vw, 19px)',
+                color: 'rgba(255, 255, 255, 0.75)',
+                lineHeight: 1.6,
+                maxWidth: '640px',
+                margin: '0 auto clamp(28px, 4vh, 40px)',
+                position: 'relative',
+                zIndex: 1,
+              }}
+            >
+              Tell us about your venture, product, or workflow roadblock. Schedule a 30-minute discovery call to discuss your project, scope, and vision. We build first — you decide what it&apos;s worth.
+            </motion.p>
+
+            {/* CTA Buttons (Center-Aligned) */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.24, ease: [0.22, 1, 0.36, 1] }}
+              style={{
+                display: 'flex',
+                gap: '16px',
+                flexWrap: 'wrap',
+                justifyContent: 'center',
+                alignItems: 'center',
+                position: 'relative',
+                zIndex: 1,
+              }}
+            >
+              <a
+                href="https://calendly.com/youdecide-std/30min"
+                target="_blank"
+                rel="noopener noreferrer"
                 style={{
-                  padding: '14px 18px',
-                  borderRadius: '10px',
-                  border: 'none',
-                  fontSize: '15px',
-                  outline: 'none',
-                  fontFamily: 'Geist, sans-serif',
-                  background: 'rgba(255, 255, 255, 0.95)',
-                  color: '#171717',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                  padding: '16px 36px',
+                  background: '#1920F0',
+                  color: '#FFFFFF',
+                  borderRadius: '12px',
+                  fontSize: '16px',
+                  fontWeight: 600,
+                  textDecoration: 'none',
+                  boxShadow: '0 12px 32px rgba(25, 32, 240, 0.4)',
+                  transition: 'transform 0.2s ease, background-color 0.2s ease',
                 }}
-              />
-              <input
-                type="email"
-                placeholder="Email Address"
-                required
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'scale(1.02)';
+                  e.currentTarget.style.backgroundColor = '#2932FF';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'scale(1)';
+                  e.currentTarget.style.backgroundColor = '#1920F0';
+                }}
+              >
+                <span>Book a 30-Min Discovery Call</span>
+                <span aria-hidden="true">→</span>
+              </a>
+
+              <a
+                href="mailto:hello@youdecide.studio"
                 style={{
-                  padding: '14px 18px',
-                  borderRadius: '10px',
-                  border: 'none',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  padding: '16px 28px',
+                  background: 'rgba(255, 255, 255, 0.06)',
+                  color: 'rgba(255, 255, 255, 0.9)',
+                  border: '1px solid rgba(255, 255, 255, 0.16)',
+                  borderRadius: '12px',
                   fontSize: '15px',
-                  outline: 'none',
-                  fontFamily: 'Geist, sans-serif',
-                  background: 'rgba(255, 255, 255, 0.95)',
-                  color: '#171717',
+                  fontWeight: 500,
+                  textDecoration: 'none',
+                  transition: 'background 0.2s ease, border-color 0.2s ease',
                 }}
-              />
-              <textarea
-                placeholder="Describe what we are building together..."
-                rows={3}
-                required
-                style={{
-                  padding: '14px 18px',
-                  borderRadius: '10px',
-                  border: 'none',
-                  fontSize: '15px',
-                  outline: 'none',
-                  fontFamily: 'Geist, sans-serif',
-                  resize: 'none',
-                  background: 'rgba(255, 255, 255, 0.95)',
-                  color: '#171717',
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.12)';
+                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.3)';
                 }}
-              />
-              <div style={{ marginTop: '8px' }}>
-                <FluidGlassButton
-                  text="Submit Project Brief →"
-                  padding="16px 36px"
-                  fontSize="15px"
-                  baseColor="#1920F0"
-                  glassColor="#93C5FD"
-                  style={{ width: '100%' }}
-                />
-              </div>
-            </form>
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.06)';
+                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.16)';
+                }}
+              >
+                <span>hello@youdecide.studio</span>
+              </a>
+            </motion.div>
+
+            {/* Reassurance text */}
+            <div
+              style={{
+                fontFamily: '"Geist Mono", monospace',
+                fontSize: '12px',
+                color: 'rgba(255, 255, 255, 0.45)',
+                marginTop: '28px',
+                letterSpacing: '0.06em',
+                position: 'relative',
+                zIndex: 1,
+              }}
+            >
+              No advance retainer · Live milestone review · 100% pay as you wish
+            </div>
           </div>
         </section>
 
         {/* ========================================================================= */}
-        {/* FOOTER */}
+        {/* WORKING BOTTOM NAVIGATION & FOOTER                                        */}
         {/* ========================================================================= */}
         <footer
           style={{
             borderTop: '1px solid rgba(255, 255, 255, 0.08)',
-            padding: '56px clamp(24px, 5vw, 64px) 40px',
+            padding: '64px clamp(24px, 5vw, 64px) 44px',
             maxWidth: '1320px',
-            margin: '0',
+            margin: '0 auto',
+            width: '100%',
+            boxSizing: 'border-box',
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
             gap: '40px',
             fontSize: '14px',
             color: 'rgba(255, 255, 255, 0.55)',
+            position: 'relative',
+            zIndex: 10,
           }}
         >
+          {/* Col 1: Studio Identity */}
           <div>
-            <YouDecideLogo height={24} />
-            <div style={{ marginTop: '16px', maxWidth: '300px', lineHeight: 1.5 }}>
-              Digital Growth. On Your Terms. Built with precision and care.
+            <a href="#overview" style={{ display: 'inline-block', textDecoration: 'none' }}>
+              <YouDecideLogo height={24} />
+            </a>
+            <div style={{ marginTop: '16px', maxWidth: '300px', lineHeight: 1.6, color: 'rgba(255, 255, 255, 0.65)' }}>
+              Digital experiences &amp; autonomous workflows. We build. You decide what our work is worth.
+            </div>
+            <div style={{ marginTop: '16px' }}>
+              <a
+                href="mailto:hello@youdecide.studio"
+                style={{
+                  fontFamily: '"Geist Mono", monospace',
+                  fontSize: '12px',
+                  color: '#60A5FA',
+                  textDecoration: 'none',
+                }}
+              >
+                hello@youdecide.studio
+              </a>
             </div>
           </div>
+
+          {/* Col 2: Navigation to Active Sections */}
           <div>
-            <b style={{ color: '#FFFFFF', display: 'block', marginBottom: '12px' }}>Services</b>
-            <div style={{ marginBottom: '8px' }}>Websites</div>
-            <div style={{ marginBottom: '8px' }}>Automation</div>
-            <div>Analytics</div>
+            <b
+              style={{
+                color: '#FFFFFF',
+                display: 'block',
+                marginBottom: '14px',
+                fontFamily: '"Geist Mono", monospace',
+                fontSize: '11px',
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+              }}
+            >
+              Work
+            </b>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              <a
+                href="#websites-built"
+                style={{
+                  color: 'rgba(255, 255, 255, 0.7)',
+                  textDecoration: 'none',
+                  transition: 'color 0.2s',
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = '#FFFFFF')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255, 255, 255, 0.7)')}
+              >
+                1. Websites
+              </a>
+              <a
+                href="#automations"
+                style={{
+                  color: 'rgba(255, 255, 255, 0.7)',
+                  textDecoration: 'none',
+                  transition: 'color 0.2s',
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = '#FFFFFF')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255, 255, 255, 0.7)')}
+              >
+                2. Automation
+              </a>
+              <a
+                href="#analytics"
+                style={{
+                  color: 'rgba(255, 255, 255, 0.7)',
+                  textDecoration: 'none',
+                  transition: 'color 0.2s',
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = '#FFFFFF')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255, 255, 255, 0.7)')}
+              >
+                3. Analytics
+              </a>
+            </div>
           </div>
+
+          {/* Col 3: Action / Booking Links */}
           <div>
-            <b style={{ color: '#FFFFFF', display: 'block', marginBottom: '12px' }}>Studio</b>
-            <div style={{ marginBottom: '8px' }}>How It Works</div>
-            <div style={{ marginBottom: '8px' }}>Briefing</div>
-            <div>Contact</div>
+            <b
+              style={{
+                color: '#FFFFFF',
+                display: 'block',
+                marginBottom: '14px',
+                fontFamily: '"Geist Mono", monospace',
+                fontSize: '11px',
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+              }}
+            >
+              Connect
+            </b>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              <a
+                href="https://calendly.com/youdecide-std/30min"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  color: '#60A5FA',
+                  textDecoration: 'none',
+                  fontWeight: 500,
+                  transition: 'color 0.2s',
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = '#93C5FD')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = '#60A5FA')}
+              >
+                Book a 30-Min Call ↗
+              </a>
+              <a
+                href="#contact"
+                style={{
+                  color: 'rgba(255, 255, 255, 0.7)',
+                  textDecoration: 'none',
+                  transition: 'color 0.2s',
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = '#FFFFFF')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255, 255, 255, 0.7)')}
+              >
+                Start a Project Brief
+              </a>
+              <a
+                href="#overview"
+                style={{
+                  color: 'rgba(255, 255, 255, 0.7)',
+                  textDecoration: 'none',
+                  transition: 'color 0.2s',
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = '#FFFFFF')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255, 255, 255, 0.7)')}
+              >
+                Back to Top ↑
+              </a>
+            </div>
           </div>
+
+          {/* Col 4: Commercial Framework & Copyright */}
           <div>
-            <b style={{ color: '#FFFFFF', display: 'block', marginBottom: '12px' }}>Deploy</b>
-            <div style={{ marginBottom: '8px' }}>Official Launch: 25 Nov 2026</div>
-            <div>© 2026 youdecide.studio</div>
+            <b
+              style={{
+                color: '#FFFFFF',
+                display: 'block',
+                marginBottom: '14px',
+                fontFamily: '"Geist Mono", monospace',
+                fontSize: '11px',
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+              }}
+            >
+              Philosophy
+            </b>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', lineHeight: 1.5 }}>
+              <div>Pay As You Wish Model</div>
+              <div>Zero Upfront Speculative Risk</div>
+              <div style={{ marginTop: '12px', fontFamily: '"Geist Mono", monospace', fontSize: '12px', color: 'rgba(255, 255, 255, 0.4)' }}>
+                © 2026 youdecide.studio
+              </div>
+            </div>
           </div>
         </footer>
 

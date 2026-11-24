@@ -30,23 +30,22 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ className = 
       style={{
         maxWidth: '1320px',
         width: '100%',
-        margin: 'clamp(72px, 11vh, 128px) 0',
+        margin: 'clamp(72px, 11vh, 128px) auto',
         padding: '0 clamp(24px, 5vw, 64px)',
         boxSizing: 'border-box',
         position: 'relative',
         zIndex: 10,
         scrollMarginTop: '110px',
-        textAlign: 'left',
+        textAlign: 'center',
       }}
     >
-      {/* ── SECTION HEADER: SHARP & EDITORIAL ── */}
+      {/* ── SECTION HEADER: SHARP, EDITORIAL & CENTERED ── */}
       <div
         style={{
           width: '100%',
-          maxWidth: '100%',
-          marginBottom: 'clamp(32px, 5vh, 48px)',
-          paddingLeft: '0',
-          textAlign: 'left',
+          maxWidth: '840px',
+          margin: '0 auto clamp(32px, 5vh, 48px)',
+          textAlign: 'center',
         }}
       >
         <motion.h2
@@ -68,7 +67,7 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ className = 
           Analytics in simple words.
         </motion.h2>
 
-        {/* Section Subtitle: White Box With Name Written In Black */}
+        {/* Section Subtitle: White Box With Name Written In Black (Centered) */}
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -104,7 +103,7 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ className = 
             fontSize: 'clamp(15px, 1.6vw, 17px)',
             lineHeight: 1.55,
             color: 'rgba(255, 255, 255, 0.65)',
-            margin: 0,
+            margin: '0 auto',
             maxWidth: '720px',
             fontWeight: 400,
           }}

@@ -342,7 +342,7 @@ export const ManifestoScrollSection: React.FC<ManifestoScrollSectionProps> = ({
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        alignItems: 'flex-start',
+        alignItems: 'center',
         margin: '0 auto',
         padding: 'clamp(60px, 8vh, 100px) clamp(24px, 5vw, 64px)',
         boxSizing: 'border-box',
@@ -350,7 +350,7 @@ export const ManifestoScrollSection: React.FC<ManifestoScrollSectionProps> = ({
         zIndex: 10,
         scrollMarginTop: '0px',
         background:
-          'radial-gradient(ellipse at 25% 50%, rgba(20, 28, 58, 0.45) 0%, transparent 70%)',
+          'radial-gradient(ellipse at 50% 50%, rgba(20, 28, 58, 0.45) 0%, transparent 70%)',
       }}
     >
       {/* Subtle Scroll-based Text Reveal Framer Component */}
@@ -362,22 +362,22 @@ export const ManifestoScrollSection: React.FC<ManifestoScrollSectionProps> = ({
         style={{
           width: '100%',
           maxWidth: '1280px',
-          margin: '0',
+          margin: '0 auto',
         }}
       >
         <div
           style={{
             display: 'flex',
             flexDirection: 'column',
-            alignItems: 'flex-start',
-            textAlign: 'left',
+            alignItems: 'center',
+            textAlign: 'center',
             gap: 'clamp(28px, 4.5vh, 48px)',
             color: '#FFFFFF',
             width: '100%',
-            margin: '0',
+            margin: '0 auto',
           }}
         >
-          {/* First statement: Big, wide, NOT bold, aligned extreme left */}
+          {/* First statement: Big, wide, NOT bold, centered */}
           <p
             className="manifesto-lead-text"
             style={{
@@ -388,13 +388,13 @@ export const ManifestoScrollSection: React.FC<ManifestoScrollSectionProps> = ({
               letterSpacing: '0.04em',
               textTransform: 'uppercase',
               lineHeight: 1.05,
-              textAlign: 'left',
+              textAlign: 'center',
             }}
           >
             NOT A TRADITIONAL AGENCY.
           </p>
 
-          {/* Supporting text in ~44px size, aligned extreme left */}
+          {/* Supporting text in ~44px size, centered */}
           <p
             className="manifesto-supporting-text"
             style={{
@@ -406,13 +406,13 @@ export const ManifestoScrollSection: React.FC<ManifestoScrollSectionProps> = ({
               letterSpacing: '-0.015em',
               maxWidth: '1180px',
               color: 'rgba(255, 255, 255, 0.88)',
-              textAlign: 'left',
+              textAlign: 'center',
             }}
           >
             We believe good ideas shouldn&apos;t be limited by budgets. No fixed prices, no unnecessary packages. Just good work and honest value.
           </p>
 
-          {/* Closing punchline: Big, wide, NOT bold, aligned extreme left */}
+          {/* Closing punchline: Big, wide, NOT bold, centered */}
           <p
             className="manifesto-punchline-text"
             style={{
@@ -423,7 +423,7 @@ export const ManifestoScrollSection: React.FC<ManifestoScrollSectionProps> = ({
               letterSpacing: '0.12em',
               textTransform: 'uppercase',
               lineHeight: 1.05,
-              textAlign: 'left',
+              textAlign: 'center',
             }}
           >
             YOU DECIDE.

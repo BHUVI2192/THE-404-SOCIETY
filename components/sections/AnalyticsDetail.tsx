@@ -624,3 +624,4 @@ export const AnalyticsDetail: React.FC<AnalyticsDetailProps> = ({ item, onClose 
 };
 
 export default AnalyticsDetail;
+
