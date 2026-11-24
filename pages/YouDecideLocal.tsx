@@ -205,11 +205,11 @@ const YouDecideLocal: React.FC = () => {
                     link="https://calendly.com/youdecide-std/30min"
                     target="_blank"
                     rel="noopener noreferrer"
-                    padding="6px 14px"
-                    fontSize="12px"
+                    padding="10px 24px"
+                    fontSize="14px"
                     baseColor="#071838"
                     glassColor="#60A5FA"
-                    style={{ whiteSpace: 'nowrap', flexShrink: 0 }}
+                    style={{ whiteSpace: 'nowrap', flexShrink: 0, minHeight: '40px' }}
                   />
                 </div>
               }
@@ -948,53 +948,54 @@ const YouDecideLocal: React.FC = () => {
           }
         }
 
-        /* CTA Buttons — Geist Sans (Weight: 500, Font size: 12px mobile & desktop, min 44px touch target) */
+        /* CTA Buttons — Slightly bigger, comfortable touch target, no white background on buttons */
         .hero-cta-btn-primary {
           font-family: 'Geist', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-          font-size: 12px !important;
-          font-weight: 500 !important;
-          background: #FFFFFF !important;
-          color: #040711 !important;
-          padding: 12px 24px !important;
+          font-size: 15px !important;
+          font-weight: 600 !important;
+          background: #1920F0 !important;
+          color: #FFFFFF !important;
+          padding: 14px 28px !important;
           border-radius: 999px !important;
           text-decoration: none !important;
           display: inline-flex !important;
           align-items: center !important;
           justify-content: center !important;
-          gap: 6px !important;
-          min-height: 44px !important;
-          box-shadow: 0 4px 20px rgba(255, 255, 255, 0.2) !important;
+          gap: 8px !important;
+          min-height: 50px !important;
+          box-shadow: 0 8px 28px rgba(25, 32, 240, 0.4) !important;
           transition: all 0.2s ease !important;
           touch-action: manipulation !important;
         }
         .hero-cta-btn-primary:hover {
-          transform: translateY(-1px) !important;
-          box-shadow: 0 6px 24px rgba(255, 255, 255, 0.3) !important;
+          transform: translateY(-2px) !important;
+          background: #2932FF !important;
+          box-shadow: 0 12px 36px rgba(25, 32, 240, 0.55) !important;
         }
 
         .hero-cta-btn-secondary {
           font-family: 'Geist', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-          font-size: 12px !important;
+          font-size: 15px !important;
           font-weight: 500 !important;
           background: rgba(255, 255, 255, 0.08) !important;
           border: 1px solid rgba(255, 255, 255, 0.2) !important;
           color: #FFFFFF !important;
-          padding: 12px 22px !important;
+          padding: 14px 26px !important;
           border-radius: 999px !important;
           text-decoration: none !important;
           display: inline-flex !important;
           align-items: center !important;
           justify-content: center !important;
-          min-height: 44px !important;
+          min-height: 50px !important;
           backdrop-filter: blur(16px) !important;
           -webkit-backdrop-filter: blur(16px) !important;
           transition: all 0.2s ease !important;
           touch-action: manipulation !important;
         }
         .hero-cta-btn-secondary:hover {
-          background: rgba(255, 255, 255, 0.12) !important;
+          background: rgba(255, 255, 255, 0.14) !important;
           border-color: rgba(255, 255, 255, 0.35) !important;
-          transform: translateY(-1px) !important;
+          transform: translateY(-2px) !important;
         }
       `}</style>
     </>

@@ -494,11 +494,11 @@ export const AutomationDetail: React.FC<AutomationDetailProps> = ({ item, onClos
                   boxShadow: '0 8px 24px rgba(25, 32, 240, 0.4)',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = '#E5E7EB';
+                  e.currentTarget.style.backgroundColor = '#2932FF';
                   e.currentTarget.style.transform = 'translateY(-2px)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = '#FFFFFF';
+                  e.currentTarget.style.backgroundColor = '#1920F0';
                   e.currentTarget.style.transform = 'none';
                 }}
               >

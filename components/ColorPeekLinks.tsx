@@ -81,13 +81,16 @@ const STYLE = `
   width: 44px;
   height: 44px;
   border-radius: 999px;
-  background: white;
-  color: #171717;
+  background: rgba(255, 255, 255, 0.14);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: transform .45s cubic-bezier(.22,1,.36,1), background .25s ease;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+  transition: transform .45s cubic-bezier(.22,1,.36,1), background .25s ease, border-color .25s ease;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
 }
 .cpl-content {
   position: relative;
@@ -142,7 +145,8 @@ const STYLE = `
 .cpl-card:hover .cpl-arrow,
 .cpl-card:focus-visible .cpl-arrow {
   transform: translateY(-50%) rotate(45deg);
-  background: #FFFFFF;
+  background: rgba(255, 255, 255, 0.28);
+  border-color: rgba(255, 255, 255, 0.5);
 }
 .cpl-card:focus-visible {
   outline: 3px solid rgba(255, 255, 255, 0.6);

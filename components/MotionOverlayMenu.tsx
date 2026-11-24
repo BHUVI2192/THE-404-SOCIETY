@@ -35,18 +35,14 @@ export interface MotionOverlayMenuProps {
 }
 
 const DEFAULT_MENU_LINKS: MenuLinkItem[] = [
-  { label: 'Websites Built', link: '#websites' },
-  { label: 'Capabilities', link: '#services' },
-  { label: 'Scope Simulator', link: '#model' },
-  { label: '3-Step Model', link: '#process' },
-  { label: 'Project Briefing', link: '#contact' },
-  { label: 'Launch Teaser', link: '#/youdecide.studio' },
+  { label: 'Websites', link: '#websites-built' },
+  { label: 'Automations', link: '#automations' },
+  { label: 'Analytics', link: '#analytics' },
+  { label: 'Book a Call', link: 'https://calendly.com/youdecide-std/30min', newTab: true },
 ];
 
 const DEFAULT_SECONDARY: MenuLinkItem[] = [
-  { label: 'LinkedIn', link: 'https://linkedin.com', newTab: true },
-  { label: 'X (Twitter)', link: 'https://x.com', newTab: true },
-  { label: 'GitHub', link: 'https://github.com', newTab: true },
+  { label: 'Book on Calendly', link: 'https://calendly.com/youdecide-std/30min', newTab: true },
   { label: 'youdecide.std@gmail.com', link: 'mailto:youdecide.std@gmail.com' },
 ];
 

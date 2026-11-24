@@ -521,22 +521,23 @@ export const BrowserWindow: React.FC<BrowserWindowProps> = ({
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '8px',
-                    backgroundColor: '#FFFFFF',
-                    color: '#000000',
+                    backgroundColor: '#1920F0',
+                    color: '#FFFFFF',
                     fontFamily: '"Geist Mono", monospace',
                     fontSize: '13px',
                     fontWeight: 600,
                     padding: '12px 24px',
                     borderRadius: '10px',
                     textDecoration: 'none',
-                    transition: 'transform 0.2s, opacity 0.2s',
+                    boxShadow: '0 8px 24px rgba(25, 32, 240, 0.4)',
+                    transition: 'transform 0.2s, background-color 0.2s',
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.opacity = '0.9';
+                    e.currentTarget.style.backgroundColor = '#2932FF';
                     e.currentTarget.style.transform = 'translateY(-2px)';
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.opacity = '1';
+                    e.currentTarget.style.backgroundColor = '#1920F0';
                     e.currentTarget.style.transform = 'none';
                   }}
                 >
@@ -845,14 +846,15 @@ export const BrowserWindow: React.FC<BrowserWindowProps> = ({
                       display: 'inline-flex',
                       alignItems: 'center',
                       gap: '6px',
-                      backgroundColor: '#FFFFFF',
-                      color: '#000000',
+                      backgroundColor: '#1920F0',
+                      color: '#FFFFFF',
                       fontFamily: '"Geist Mono", monospace',
                       fontSize: '12px',
                       fontWeight: 600,
                       padding: '10px 18px',
                       borderRadius: '8px',
                       textDecoration: 'none',
+                      boxShadow: '0 6px 18px rgba(25, 32, 240, 0.4)',
                     }}
                   >
                     <span>Open website</span>
