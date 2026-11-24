@@ -60,274 +60,827 @@ const ACCORDION_ITEMS: AccordionTabItem[] = [
   },
 ];
 
-/* ── BESPOKE CODE-DRIVEN ANALYTICAL VISUALIZERS (100% NON-AI) ── */
+/* ── VIBRANT GRAPHIC DESIGN POSTER VISUALIZERS (100% CUSTOM, ZERO AI) ── */
 
+const BarcodeSvg: React.FC<{ color?: string }> = ({ color = '#FFFFFF' }) => (
+  <svg width="88" height="28" viewBox="0 0 88 28" fill={color} style={{ opacity: 0.85 }}>
+    <rect x="0" y="0" width="2.5" height="20" />
+    <rect x="4" y="0" width="1.2" height="20" />
+    <rect x="7" y="0" width="3.5" height="20" />
+    <rect x="12" y="0" width="1.2" height="20" />
+    <rect x="15" y="0" width="4" height="20" />
+    <rect x="21" y="0" width="2" height="20" />
+    <rect x="25" y="0" width="1.5" height="20" />
+    <rect x="28" y="0" width="3" height="20" />
+    <rect x="33" y="0" width="2.5" height="20" />
+    <rect x="38" y="0" width="4.5" height="20" />
+    <rect x="44" y="0" width="1.5" height="20" />
+    <rect x="48" y="0" width="2.5" height="20" />
+    <rect x="52" y="0" width="3.5" height="20" />
+    <rect x="57" y="0" width="1.5" height="20" />
+    <rect x="60" y="0" width="4" height="20" />
+    <rect x="66" y="0" width="2" height="20" />
+    <rect x="70" y="0" width="1.5" height="20" />
+    <rect x="73" y="0" width="3.5" height="20" />
+    <rect x="78" y="0" width="2" height="20" />
+    <rect x="82" y="0" width="4" height="20" />
+    <text x="0" y="27" fontSize="6" fontFamily="monospace" letterSpacing="1.5" fill={color}>YD-2026-ANL</text>
+  </svg>
+);
+
+// POSTER 1: SOCIAL MEDIA ANALYTICS (Vivid Electric Ultramarine & Neon Lime)
 const SocialReachVisual: React.FC = () => (
   <div
     style={{
       width: '100%',
       height: '100%',
-      padding: 'clamp(24px, 3.5vw, 36px)',
+      position: 'relative',
+      overflow: 'hidden',
+      background: 'linear-gradient(135deg, #0920D6 0%, #1711B8 45%, #050C47 100%)',
+      color: '#FFFFFF',
+      fontFamily: '"Geist", -apple-system, sans-serif',
       boxSizing: 'border-box',
+      padding: 'clamp(20px, 3.2vw, 32px)',
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'space-between',
-      background: 'radial-gradient(circle at 80% 20%, #112048 0%, #050a17 100%)',
-      color: '#FFFFFF',
-      fontFamily: '"Geist", -apple-system, sans-serif',
     }}
   >
-    {/* Top Bar with Live Indicator */}
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-        <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#60A5FA', boxShadow: '0 0 10px #60A5FA' }} />
-        <span style={{ fontFamily: '"Geist Mono", monospace', fontSize: '11px', letterSpacing: '0.12em', color: '#93C5FD', textTransform: 'uppercase' }}>
-          Live Pipeline Conversion
+    {/* Fine Geometric Grid Accent */}
+    <div
+      style={{
+        position: 'absolute',
+        inset: 0,
+        backgroundImage: `
+          linear-gradient(to right, rgba(255,255,255,0.06) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(255,255,255,0.06) 1px, transparent 1px)
+        `,
+        backgroundSize: '36px 36px',
+        pointerEvents: 'none',
+      }}
+    />
+
+    {/* Giant Background Watermark Number */}
+    <div
+      style={{
+        position: 'absolute',
+        left: '2%',
+        bottom: '-10%',
+        fontFamily: '"Geist", sans-serif',
+        fontSize: 'clamp(140px, 18vw, 240px)',
+        fontWeight: 900,
+        lineHeight: 1,
+        color: 'rgba(255, 255, 255, 0.07)',
+        userSelect: 'none',
+        pointerEvents: 'none',
+        letterSpacing: '-0.06em',
+      }}
+    >
+      01
+    </div>
+
+    {/* Top Meta Strip */}
+    <div
+      style={{
+        position: 'relative',
+        zIndex: 2,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        borderBottom: '1px solid rgba(255, 255, 255, 0.18)',
+        paddingBottom: '12px',
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <span
+          style={{
+            background: '#D8FF00',
+            color: '#060C38',
+            fontSize: '10px',
+            fontWeight: 800,
+            letterSpacing: '0.14em',
+            padding: '3px 8px',
+            borderRadius: '4px',
+            textTransform: 'uppercase',
+            fontFamily: '"Geist Mono", monospace',
+          }}
+        >
+          POSTER // 01
+        </span>
+        <span style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.75)', letterSpacing: '0.08em', fontFamily: '"Geist Mono", monospace' }}>
+          YOUDECIDE STUDIO ARCHIVE
         </span>
       </div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: 'rgba(255,255,255,0.6)' }}>
-        <TrendingUp size={14} color="#34D399" />
-        <span style={{ color: '#34D399', fontWeight: 500 }}>+38.4%</span> vs last month
+
+      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', color: '#D8FF00', fontFamily: '"Geist Mono", monospace' }}>
+        <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#D8FF00', boxShadow: '0 0 10px #D8FF00' }} />
+        <span>LIVE PIPELINE ACTIVE</span>
       </div>
     </div>
 
-    {/* Metric Cards Row */}
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '14px', margin: '18px 0' }}>
-      <div style={{ background: 'rgba(255, 255, 255, 0.04)', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '14px', padding: '14px 16px' }}>
-        <div style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.5)', marginBottom: '4px' }}>Qualified Leads</div>
-        <div style={{ fontSize: '24px', fontWeight: 600, color: '#FFFFFF', letterSpacing: '-0.02em' }}>142</div>
-        <div style={{ fontSize: '11px', color: '#60A5FA', marginTop: '2px' }}>High-intent founders</div>
+    {/* Center Right Graphic Typography Block */}
+    <div
+      style={{
+        position: 'relative',
+        zIndex: 2,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-end',
+        textAlign: 'right',
+        margin: 'auto 0 auto auto',
+        maxWidth: '70%',
+      }}
+    >
+      {/* Subhead / Concept in Italic Serif */}
+      <div
+        style={{
+          fontFamily: '"Instrument Serif", serif',
+          fontStyle: 'italic',
+          fontSize: 'clamp(20px, 2.4vw, 30px)',
+          color: '#D8FF00',
+          lineHeight: 1.15,
+          marginBottom: '6px',
+        }}
+      >
+        High-intent conversations over empty clicks.
       </div>
-      <div style={{ background: 'rgba(255, 255, 255, 0.04)', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '14px', padding: '14px 16px' }}>
-        <div style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.5)', marginBottom: '4px' }}>Conversion Rate</div>
-        <div style={{ fontSize: '24px', fontWeight: 600, color: '#34D399', letterSpacing: '-0.02em' }}>9.2%</div>
-        <div style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.5)', marginTop: '2px' }}>3.1x agency avg</div>
-      </div>
-      <div style={{ background: 'rgba(255, 255, 255, 0.04)', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '14px', padding: '14px 16px' }}>
-        <div style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.5)', marginBottom: '4px' }}>Call Bookings</div>
-        <div style={{ fontSize: '24px', fontWeight: 600, color: '#FFFFFF', letterSpacing: '-0.02em' }}>38</div>
-        <div style={{ fontSize: '11px', color: '#93C5FD', marginTop: '2px' }}>Direct enquiries</div>
+
+      {/* Main Bold Graphic Poster Headline */}
+      <h2
+        style={{
+          fontFamily: '"Geist", -apple-system, sans-serif',
+          fontWeight: 900,
+          fontSize: 'clamp(34px, 4.4vw, 58px)',
+          lineHeight: 0.92,
+          letterSpacing: '-0.04em',
+          textTransform: 'uppercase',
+          color: '#FFFFFF',
+          margin: '0 0 16px',
+          textShadow: '0 12px 32px rgba(0,0,0,0.4)',
+        }}
+      >
+        SOCIAL<br />MEDIA<br />
+        <span style={{ color: '#D8FF00' }}>ANALYTICS</span>
+      </h2>
+
+      {/* Graphic Badges Row */}
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', justifyContent: 'flex-end', alignItems: 'center' }}>
+        {/* Neon Rotated Sticker */}
+        <div
+          style={{
+            background: '#D8FF00',
+            color: '#060C38',
+            fontFamily: '"Geist Mono", monospace',
+            fontWeight: 800,
+            fontSize: '11.5px',
+            letterSpacing: '0.04em',
+            padding: '6px 14px',
+            borderRadius: '6px',
+            transform: 'rotate(-2.5deg)',
+            boxShadow: '0 8px 20px rgba(0, 0, 0, 0.35)',
+          }}
+        >
+          +38.4% QUALIFIED LEADS ↗
+        </div>
+
+        {/* Translucent Glass Pill */}
+        <div
+          style={{
+            background: 'rgba(255, 255, 255, 0.12)',
+            backdropFilter: 'blur(8px)',
+            border: '1px solid rgba(255, 255, 255, 0.24)',
+            color: '#FFFFFF',
+            fontFamily: '"Geist Mono", monospace',
+            fontSize: '11px',
+            fontWeight: 500,
+            padding: '6px 12px',
+            borderRadius: '6px',
+          }}
+        >
+          9.2% CONVERSION RATE
+        </div>
       </div>
     </div>
 
-    {/* SVG Analytics Graph */}
-    <div style={{ width: '100%', height: '140px', position: 'relative' }}>
-      <svg width="100%" height="100%" viewBox="0 0 500 140" fill="none" preserveAspectRatio="none">
-        <defs>
-          <linearGradient id="blueGlow" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.45" />
-            <stop offset="100%" stopColor="#3B82F6" stopOpacity="0.0" />
-          </linearGradient>
-        </defs>
-        {/* Subtle grid lines */}
-        <line x1="0" y1="35" x2="500" y2="35" stroke="rgba(255,255,255,0.06)" strokeDasharray="4 4" />
-        <line x1="0" y1="70" x2="500" y2="70" stroke="rgba(255,255,255,0.06)" strokeDasharray="4 4" />
-        <line x1="0" y1="105" x2="500" y2="105" stroke="rgba(255,255,255,0.06)" strokeDasharray="4 4" />
-
-        {/* Shaded Area */}
-        <path
-          d="M0 120 C 60 110, 100 80, 160 85 C 220 90, 270 45, 340 50 C 400 55, 440 20, 500 15 L 500 140 L 0 140 Z"
-          fill="url(#blueGlow)"
-        />
-        {/* Crisp Line */}
-        <path
-          d="M0 120 C 60 110, 100 80, 160 85 C 220 90, 270 45, 340 50 C 400 55, 440 20, 500 15"
-          stroke="#60A5FA"
-          strokeWidth="3"
-          strokeLinecap="round"
-        />
-        {/* Interactive Dots */}
-        <circle cx="160" cy="85" r="4" fill="#60A5FA" stroke="#FFFFFF" strokeWidth="2" />
-        <circle cx="340" cy="50" r="4" fill="#60A5FA" stroke="#FFFFFF" strokeWidth="2" />
-        <circle cx="500" cy="15" r="5" fill="#34D399" stroke="#FFFFFF" strokeWidth="2" />
-      </svg>
-    </div>
-
-    {/* Platform Conversion Share */}
-    <div style={{ display: 'flex', alignItems: 'center', gap: '16px', paddingTop: '10px', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px' }}>
-        <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#60A5FA' }} />
-        <span>LinkedIn 54%</span>
+    {/* Bottom Stamp & Barcode Strip */}
+    <div
+      style={{
+        position: 'relative',
+        zIndex: 2,
+        display: 'flex',
+        alignItems: 'flex-end',
+        justifyContent: 'space-between',
+        borderTop: '1px solid rgba(255, 255, 255, 0.18)',
+        paddingTop: '12px',
+      }}
+    >
+      <div>
+        <BarcodeSvg color="#FFFFFF" />
       </div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px' }}>
-        <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#A78BFA' }} />
-        <span>X / Twitter 28%</span>
-      </div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px' }}>
-        <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#F472B6' }} />
-        <span>Direct Enquiries 18%</span>
+
+      <div style={{ textAlign: 'right' }}>
+        <div style={{ fontFamily: '"Geist Mono", monospace', fontSize: '10px', color: 'rgba(255, 255, 255, 0.7)', letterSpacing: '0.1em' }}>
+          LAT 13.9299° N · LON 75.5681° E
+        </div>
+        <div style={{ fontFamily: '"Geist Mono", monospace', fontSize: '11px', fontWeight: 600, color: '#D8FF00', letterSpacing: '0.06em' }}>
+          INDEX NO. 404-SMA-2026
+        </div>
       </div>
     </div>
   </div>
 );
 
+// POSTER 2: EXECUTIVE BRIEFS (Radiant Hot Tangerine & Solar Yellow)
 const MonthlyBriefVisual: React.FC = () => (
   <div
     style={{
       width: '100%',
       height: '100%',
-      padding: 'clamp(24px, 3.5vw, 36px)',
+      position: 'relative',
+      overflow: 'hidden',
+      background: 'linear-gradient(135deg, #FF4500 0%, #E62A00 45%, #660A00 100%)',
+      color: '#FFFFFF',
+      fontFamily: '"Geist", -apple-system, sans-serif',
       boxSizing: 'border-box',
+      padding: 'clamp(20px, 3.2vw, 32px)',
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'space-between',
-      background: 'radial-gradient(circle at 75% 25%, #0f2240 0%, #060b18 100%)',
-      color: '#FFFFFF',
-      fontFamily: '"Geist", -apple-system, sans-serif',
     }}
   >
-    {/* Executive Brief Header */}
-    <div>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-        <span style={{ fontFamily: '"Geist Mono", monospace', fontSize: '11px', letterSpacing: '0.14em', color: '#93C5FD', textTransform: 'uppercase' }}>
-          Monthly Executive Summary
+    {/* Diagonal Graphic Accent */}
+    <div
+      style={{
+        position: 'absolute',
+        top: '-20%',
+        right: '-10%',
+        width: '320px',
+        height: '320px',
+        borderRadius: '50%',
+        background: 'radial-gradient(circle, rgba(255, 230, 0, 0.35) 0%, transparent 70%)',
+        pointerEvents: 'none',
+      }}
+    />
+
+    {/* Giant Background Watermark Number */}
+    <div
+      style={{
+        position: 'absolute',
+        left: '2%',
+        bottom: '-10%',
+        fontFamily: '"Geist", sans-serif',
+        fontSize: 'clamp(140px, 18vw, 240px)',
+        fontWeight: 900,
+        lineHeight: 1,
+        color: 'rgba(255, 255, 255, 0.08)',
+        userSelect: 'none',
+        pointerEvents: 'none',
+        letterSpacing: '-0.06em',
+      }}
+    >
+      02
+    </div>
+
+    {/* Top Meta Strip */}
+    <div
+      style={{
+        position: 'relative',
+        zIndex: 2,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        borderBottom: '1px solid rgba(255, 255, 255, 0.22)',
+        paddingBottom: '12px',
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <span
+          style={{
+            background: '#FFE600',
+            color: '#1A0500',
+            fontSize: '10px',
+            fontWeight: 800,
+            letterSpacing: '0.14em',
+            padding: '3px 8px',
+            borderRadius: '4px',
+            textTransform: 'uppercase',
+            fontFamily: '"Geist Mono", monospace',
+          }}
+        >
+          POSTER // 02
         </span>
-        <span style={{ fontFamily: '"Geist Mono", monospace', fontSize: '11px', color: 'rgba(255,255,255,0.5)', background: 'rgba(255,255,255,0.08)', padding: '3px 8px', borderRadius: '999px' }}>
-          2 Min Read
+        <span style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.8)', letterSpacing: '0.08em', fontFamily: '"Geist Mono", monospace' }}>
+          DIRECTOR'S INTELLIGENCE MEMO
         </span>
       </div>
-      <div style={{ fontSize: '18px', fontWeight: 600, color: '#FFFFFF', letterSpacing: '-0.01em' }}>
-        October Sprint Intelligence &amp; Action Plan
+
+      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', color: '#FFE600', fontFamily: '"Geist Mono", monospace' }}>
+        <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#FFE600', boxShadow: '0 0 10px #FFE600' }} />
+        <span>2-MIN READ FORMAT</span>
       </div>
     </div>
 
-    {/* 3 Human Actionable Bullet Points */}
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', margin: '14px 0' }}>
-      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: '12px', padding: '12px 14px' }}>
-        <CheckCircle size={18} color="#34D399" style={{ flexShrink: 0, marginTop: '2px' }} />
-        <div>
-          <div style={{ fontSize: '13px', fontWeight: 600, color: '#FFFFFF' }}>Traffic to Discovery Call rose 42%</div>
-          <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.6)', marginTop: '2px' }}>Interactive prototype milestones removed upfront buyer friction.</div>
-        </div>
+    {/* Center Right Graphic Typography Block */}
+    <div
+      style={{
+        position: 'relative',
+        zIndex: 2,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-end',
+        textAlign: 'right',
+        margin: 'auto 0 auto auto',
+        maxWidth: '70%',
+      }}
+    >
+      <div
+        style={{
+          fontFamily: '"Instrument Serif", serif',
+          fontStyle: 'italic',
+          fontSize: 'clamp(20px, 2.4vw, 30px)',
+          color: '#FFE600',
+          lineHeight: 1.15,
+          marginBottom: '6px',
+        }}
+      >
+        Plain English. Zero marketing jargon.
       </div>
-      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: '12px', padding: '12px 14px' }}>
-        <CheckCircle size={18} color="#60A5FA" style={{ flexShrink: 0, marginTop: '2px' }} />
-        <div>
-          <div style={{ fontSize: '13px', fontWeight: 600, color: '#FFFFFF' }}>Pruned 3 zero-conversion content formats</div>
-          <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.6)', marginTop: '2px' }}>Redirected 16 engineering hours directly into founder teardown case studies.</div>
+
+      <h2
+        style={{
+          fontFamily: '"Geist", -apple-system, sans-serif',
+          fontWeight: 900,
+          fontSize: 'clamp(34px, 4.4vw, 58px)',
+          lineHeight: 0.92,
+          letterSpacing: '-0.04em',
+          textTransform: 'uppercase',
+          color: '#FFFFFF',
+          margin: '0 0 16px',
+          textShadow: '0 12px 32px rgba(0,0,0,0.35)',
+        }}
+      >
+        MONTHLY<br />EXECUTIVE<br />
+        <span style={{ color: '#FFE600' }}>BRIEFS</span>
+      </h2>
+
+      {/* Badges */}
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', justifyContent: 'flex-end', alignItems: 'center' }}>
+        <div
+          style={{
+            background: '#FFE600',
+            color: '#1A0500',
+            fontFamily: '"Geist Mono", monospace',
+            fontWeight: 800,
+            fontSize: '11.5px',
+            letterSpacing: '0.04em',
+            padding: '6px 14px',
+            borderRadius: '6px',
+            transform: 'rotate(2.5deg)',
+            boxShadow: '0 8px 20px rgba(0, 0, 0, 0.35)',
+          }}
+        >
+          100% SIGNAL // 0% NOISE
         </div>
-      </div>
-      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: '12px', padding: '12px 14px' }}>
-        <CheckCircle size={18} color="#A78BFA" style={{ flexShrink: 0, marginTop: '2px' }} />
-        <div>
-          <div style={{ fontSize: '13px', fontWeight: 600, color: '#FFFFFF' }}>3 Concrete actions for next sprint</div>
-          <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.6)', marginTop: '2px' }}>Publish live payment portal, launch client dashboard preview, expand founder FAQs.</div>
+
+        <div
+          style={{
+            background: 'rgba(255, 255, 255, 0.14)',
+            backdropFilter: 'blur(8px)',
+            border: '1px solid rgba(255, 255, 255, 0.28)',
+            color: '#FFFFFF',
+            fontFamily: '"Geist Mono", monospace',
+            fontSize: '11px',
+            fontWeight: 500,
+            padding: '6px 12px',
+            borderRadius: '6px',
+          }}
+        >
+          DELIVERED 1ST MONDAY
         </div>
       </div>
     </div>
 
-    {/* Bottom Footer */}
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '12px', color: 'rgba(255,255,255,0.5)', paddingTop: '10px', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
-      <span>Plain English · Zero buzzwords</span>
-      <span style={{ color: '#60A5FA', fontWeight: 500 }}>Delivered 1st Monday of every month</span>
+    {/* Bottom Strip */}
+    <div
+      style={{
+        position: 'relative',
+        zIndex: 2,
+        display: 'flex',
+        alignItems: 'flex-end',
+        justifyContent: 'space-between',
+        borderTop: '1px solid rgba(255, 255, 255, 0.22)',
+        paddingTop: '12px',
+      }}
+    >
+      <div>
+        <BarcodeSvg color="#FFFFFF" />
+      </div>
+
+      <div style={{ textAlign: 'right' }}>
+        <div style={{ fontFamily: '"Geist Mono", monospace', fontSize: '10px', color: 'rgba(255, 255, 255, 0.8)', letterSpacing: '0.1em' }}>
+          CONFIDENTIAL STRATEGY BRIEF
+        </div>
+        <div style={{ fontFamily: '"Geist Mono", monospace', fontSize: '11px', fontWeight: 600, color: '#FFE600', letterSpacing: '0.06em' }}>
+          EDITION NO. 404-MEB-2026
+        </div>
+      </div>
     </div>
   </div>
 );
 
+// POSTER 3: VISITOR FLOW (Vibrant Emerald & Hyper Cyan)
 const VisitorFlowVisual: React.FC = () => (
   <div
     style={{
       width: '100%',
       height: '100%',
-      padding: 'clamp(24px, 3.5vw, 36px)',
+      position: 'relative',
+      overflow: 'hidden',
+      background: 'linear-gradient(135deg, #00B377 0%, #008257 50%, #032E1F 100%)',
+      color: '#FFFFFF',
+      fontFamily: '"Geist", -apple-system, sans-serif',
       boxSizing: 'border-box',
+      padding: 'clamp(20px, 3.2vw, 32px)',
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'space-between',
-      background: 'radial-gradient(circle at 75% 25%, #0f1c3f 0%, #060b17 100%)',
-      color: '#FFFFFF',
-      fontFamily: '"Geist", -apple-system, sans-serif',
     }}
   >
-    {/* Header */}
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-        <BarChart3 size={16} color="#60A5FA" />
-        <span style={{ fontFamily: '"Geist Mono", monospace', fontSize: '11px', letterSpacing: '0.12em', color: '#93C5FD', textTransform: 'uppercase' }}>
-          Visitor Journey &amp; Conversion Funnel
+    {/* Geometric Vector Radar Rings */}
+    <div
+      style={{
+        position: 'absolute',
+        bottom: '-15%',
+        right: '-10%',
+        width: '360px',
+        height: '360px',
+        borderRadius: '50%',
+        border: '1px dashed rgba(255, 255, 255, 0.18)',
+        pointerEvents: 'none',
+      }}
+    />
+
+    {/* Giant Background Watermark Number */}
+    <div
+      style={{
+        position: 'absolute',
+        left: '2%',
+        bottom: '-10%',
+        fontFamily: '"Geist", sans-serif',
+        fontSize: 'clamp(140px, 18vw, 240px)',
+        fontWeight: 900,
+        lineHeight: 1,
+        color: 'rgba(255, 255, 255, 0.08)',
+        userSelect: 'none',
+        pointerEvents: 'none',
+        letterSpacing: '-0.06em',
+      }}
+    >
+      03
+    </div>
+
+    {/* Top Meta Strip */}
+    <div
+      style={{
+        position: 'relative',
+        zIndex: 2,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        borderBottom: '1px solid rgba(255, 255, 255, 0.2)',
+        paddingBottom: '12px',
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <span
+          style={{
+            background: '#00F5FF',
+            color: '#01261B',
+            fontSize: '10px',
+            fontWeight: 800,
+            letterSpacing: '0.14em',
+            padding: '3px 8px',
+            borderRadius: '4px',
+            textTransform: 'uppercase',
+            fontFamily: '"Geist Mono", monospace',
+          }}
+        >
+          POSTER // 03
+        </span>
+        <span style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.8)', letterSpacing: '0.08em', fontFamily: '"Geist Mono", monospace' }}>
+          TRAFFIC ARCHITECTURE
         </span>
       </div>
-      <span style={{ fontSize: '12px', color: '#34D399', fontWeight: 500 }}>3m 42s avg session</span>
+
+      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', color: '#00F5FF', fontFamily: '"Geist Mono", monospace' }}>
+        <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#00F5FF', boxShadow: '0 0 10px #00F5FF' }} />
+        <span>CONVERSION RADAR</span>
+      </div>
     </div>
 
-    {/* Interactive 4-Stage Funnel Flow */}
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', margin: '16px 0' }}>
-      {[
-        { step: '1. Traffic Sources', label: 'Direct Referrals & Search', val: '100%', count: '12,480 visits', color: '#60A5FA' },
-        { step: '2. Engaged Viewers', label: 'Explored Websites & Automations', val: '72%', count: '8,985 readers', color: '#818CF8' },
-        { step: '3. Prototype Review', label: 'Tested Live Demos & Pricing', val: '46%', count: '4,120 testers', color: '#A78BFA' },
-        { step: '4. Direct Enquiry', label: 'Booked 30-Min Call / Contacted', val: '18.4%', count: '142 consultations', color: '#34D399' },
-      ].map((f) => (
-        <div key={f.step}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', marginBottom: '4px' }}>
-            <span style={{ color: '#FFFFFF', fontWeight: 500 }}>{f.step} · <span style={{ color: 'rgba(255,255,255,0.6)' }}>{f.label}</span></span>
-            <span style={{ fontFamily: '"Geist Mono", monospace', color: f.color, fontWeight: 600 }}>{f.val} ({f.count})</span>
-          </div>
-          <div style={{ width: '100%', height: '8px', background: 'rgba(255,255,255,0.06)', borderRadius: '999px', overflow: 'hidden' }}>
-            <div style={{ width: f.val, height: '100%', background: f.color, borderRadius: '999px' }} />
-          </div>
+    {/* Center Right Graphic Typography Block */}
+    <div
+      style={{
+        position: 'relative',
+        zIndex: 2,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-end',
+        textAlign: 'right',
+        margin: 'auto 0 auto auto',
+        maxWidth: '70%',
+      }}
+    >
+      <div
+        style={{
+          fontFamily: '"Instrument Serif", serif',
+          fontStyle: 'italic',
+          fontSize: 'clamp(20px, 2.4vw, 30px)',
+          color: '#00F5FF',
+          lineHeight: 1.15,
+          marginBottom: '6px',
+        }}
+      >
+        Where visitors arrive and why they stay.
+      </div>
+
+      <h2
+        style={{
+          fontFamily: '"Geist", -apple-system, sans-serif',
+          fontWeight: 900,
+          fontSize: 'clamp(34px, 4.4vw, 58px)',
+          lineHeight: 0.92,
+          letterSpacing: '-0.04em',
+          textTransform: 'uppercase',
+          color: '#FFFFFF',
+          margin: '0 0 16px',
+          textShadow: '0 12px 32px rgba(0,0,0,0.35)',
+        }}
+      >
+        VISITOR<br />JOURNEY<br />
+        <span style={{ color: '#00F5FF' }}>&amp; FLOW</span>
+      </h2>
+
+      {/* Badges */}
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', justifyContent: 'flex-end', alignItems: 'center' }}>
+        <div
+          style={{
+            background: '#00F5FF',
+            color: '#01261B',
+            fontFamily: '"Geist Mono", monospace',
+            fontWeight: 800,
+            fontSize: '11.5px',
+            letterSpacing: '0.04em',
+            padding: '6px 14px',
+            borderRadius: '6px',
+            transform: 'rotate(-2deg)',
+            boxShadow: '0 8px 20px rgba(0, 0, 0, 0.35)',
+          }}
+        >
+          72% STAGE RETENTION ↗
         </div>
-      ))}
+
+        <div
+          style={{
+            background: 'rgba(255, 255, 255, 0.14)',
+            backdropFilter: 'blur(8px)',
+            border: '1px solid rgba(255, 255, 255, 0.28)',
+            color: '#FFFFFF',
+            fontFamily: '"Geist Mono", monospace',
+            fontSize: '11px',
+            fontWeight: 500,
+            padding: '6px 12px',
+            borderRadius: '6px',
+          }}
+        >
+          ZERO DROP-OFF SURPRISES
+        </div>
+      </div>
     </div>
 
-    {/* Top Retention Pages */}
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '12px', color: 'rgba(255,255,255,0.6)', paddingTop: '10px', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
-      <span>Highest retention: <strong style={{ color: '#FFFFFF' }}>/work (4m 12s)</strong></span>
-      <span>Lowest drop-off: <strong style={{ color: '#34D399' }}>FAQ &amp; Pay As You Wish</strong></span>
+    {/* Bottom Strip */}
+    <div
+      style={{
+        position: 'relative',
+        zIndex: 2,
+        display: 'flex',
+        alignItems: 'flex-end',
+        justifyContent: 'space-between',
+        borderTop: '1px solid rgba(255, 255, 255, 0.2)',
+        paddingTop: '12px',
+      }}
+    >
+      <div>
+        <BarcodeSvg color="#FFFFFF" />
+      </div>
+
+      <div style={{ textAlign: 'right' }}>
+        <div style={{ fontFamily: '"Geist Mono", monospace', fontSize: '10px', color: 'rgba(255, 255, 255, 0.8)', letterSpacing: '0.1em' }}>
+          USER FLOW METRICS // 2026
+        </div>
+        <div style={{ fontFamily: '"Geist Mono", monospace', fontSize: '11px', fontWeight: 600, color: '#00F5FF', letterSpacing: '0.06em' }}>
+          INDEX NO. 404-VJF-2026
+        </div>
+      </div>
     </div>
   </div>
 );
 
+// POSTER 4: COMPETITOR WATCH (Hyper Violet & Hot Magenta)
 const CompetitorWatchVisual: React.FC = () => (
   <div
     style={{
       width: '100%',
       height: '100%',
-      padding: 'clamp(24px, 3.5vw, 36px)',
+      position: 'relative',
+      overflow: 'hidden',
+      background: 'linear-gradient(135deg, #7A00FF 0%, #C40082 50%, #4D0040 100%)',
+      color: '#FFFFFF',
+      fontFamily: '"Geist", -apple-system, sans-serif',
       boxSizing: 'border-box',
+      padding: 'clamp(20px, 3.2vw, 32px)',
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'space-between',
-      background: 'radial-gradient(circle at 75% 25%, #131d42 0%, #060a16 100%)',
-      color: '#FFFFFF',
-      fontFamily: '"Geist", -apple-system, sans-serif',
     }}
   >
-    {/* Header */}
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-        <Compass size={16} color="#60A5FA" />
-        <span style={{ fontFamily: '"Geist Mono", monospace', fontSize: '11px', letterSpacing: '0.12em', color: '#93C5FD', textTransform: 'uppercase' }}>
-          Market Intelligence &amp; Benchmarks
+    {/* Geometric Crosshair Accents */}
+    <div
+      style={{
+        position: 'absolute',
+        top: '15%',
+        right: '25%',
+        fontSize: '28px',
+        color: 'rgba(255, 255, 255, 0.2)',
+        fontFamily: '"Geist Mono", monospace',
+        userSelect: 'none',
+      }}
+    >
+      +
+    </div>
+
+    {/* Giant Background Watermark Number */}
+    <div
+      style={{
+        position: 'absolute',
+        left: '2%',
+        bottom: '-10%',
+        fontFamily: '"Geist", sans-serif',
+        fontSize: 'clamp(140px, 18vw, 240px)',
+        fontWeight: 900,
+        lineHeight: 1,
+        color: 'rgba(255, 255, 255, 0.08)',
+        userSelect: 'none',
+        pointerEvents: 'none',
+        letterSpacing: '-0.06em',
+      }}
+    >
+      04
+    </div>
+
+    {/* Top Meta Strip */}
+    <div
+      style={{
+        position: 'relative',
+        zIndex: 2,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        borderBottom: '1px solid rgba(255, 255, 255, 0.22)',
+        paddingBottom: '12px',
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <span
+          style={{
+            background: '#FF6BF0',
+            color: '#280026',
+            fontSize: '10px',
+            fontWeight: 800,
+            letterSpacing: '0.14em',
+            padding: '3px 8px',
+            borderRadius: '4px',
+            textTransform: 'uppercase',
+            fontFamily: '"Geist Mono", monospace',
+          }}
+        >
+          POSTER // 04
+        </span>
+        <span style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.8)', letterSpacing: '0.08em', fontFamily: '"Geist Mono", monospace' }}>
+          MARKET INTELLIGENCE
         </span>
       </div>
-      <span style={{ fontSize: '12px', color: '#34D399', fontWeight: 500 }}>Live market scan</span>
+
+      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', color: '#FF6BF0', fontFamily: '"Geist Mono", monospace' }}>
+        <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#FF6BF0', boxShadow: '0 0 10px #FF6BF0' }} />
+        <span>SURVEILLANCE MODE</span>
+      </div>
     </div>
 
-    {/* Side-by-Side Comparison Metrics */}
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', margin: '16px 0' }}>
-      {[
-        { label: 'Turnaround Velocity', studio: '94%', market: '38%', note: '2-week sprint vs 10-week agency cycle' },
-        { label: 'Decision Maker Engagement', studio: '86%', market: '24%', note: '3.6x higher founder reply rate' },
-        { label: 'Client Retention Rate', studio: '98%', market: '52%', note: '100% full IP code handover' },
-      ].map((m) => (
-        <div key={m.label} style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '12px', padding: '12px 16px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', fontWeight: 500, color: '#FFFFFF', marginBottom: '8px' }}>
-            <span>{m.label}</span>
-            <span style={{ color: '#34D399', fontFamily: '"Geist Mono", monospace' }}>{m.studio} <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '11px' }}>vs {m.market} market</span></span>
-          </div>
-          <div style={{ display: 'flex', gap: '6px', height: '6px', width: '100%' }}>
-            <div style={{ width: m.studio, background: '#60A5FA', borderRadius: '4px' }} />
-            <div style={{ width: m.market, background: 'rgba(255,255,255,0.2)', borderRadius: '4px' }} />
-          </div>
-          <div style={{ fontSize: '11px', color: 'rgba(255,255,255,0.5)', marginTop: '6px' }}>{m.note}</div>
+    {/* Center Right Graphic Typography Block */}
+    <div
+      style={{
+        position: 'relative',
+        zIndex: 2,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-end',
+        textAlign: 'right',
+        margin: 'auto 0 auto auto',
+        maxWidth: '70%',
+      }}
+    >
+      <div
+        style={{
+          fontFamily: '"Instrument Serif", serif',
+          fontStyle: 'italic',
+          fontSize: 'clamp(20px, 2.4vw, 30px)',
+          color: '#FF6BF0',
+          lineHeight: 1.15,
+          marginBottom: '6px',
+        }}
+      >
+        Untapped gaps competitors miss.
+      </div>
+
+      <h2
+        style={{
+          fontFamily: '"Geist", -apple-system, sans-serif',
+          fontWeight: 900,
+          fontSize: 'clamp(34px, 4.4vw, 58px)',
+          lineHeight: 0.92,
+          letterSpacing: '-0.04em',
+          textTransform: 'uppercase',
+          color: '#FFFFFF',
+          margin: '0 0 16px',
+          textShadow: '0 12px 32px rgba(0,0,0,0.35)',
+        }}
+      >
+        MARKET<br />WATCH &amp;<br />
+        <span style={{ color: '#FF6BF0' }}>BENCHMARKS</span>
+      </h2>
+
+      {/* Badges */}
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', justifyContent: 'flex-end', alignItems: 'center' }}>
+        <div
+          style={{
+            background: '#FF6BF0',
+            color: '#280026',
+            fontFamily: '"Geist Mono", monospace',
+            fontWeight: 800,
+            fontSize: '11.5px',
+            letterSpacing: '0.04em',
+            padding: '6px 14px',
+            borderRadius: '6px',
+            transform: 'rotate(2.5deg)',
+            boxShadow: '0 8px 20px rgba(0, 0, 0, 0.35)',
+          }}
+        >
+          3.4X VELOCITY ADVANTAGE
         </div>
-      ))}
+
+        <div
+          style={{
+            background: 'rgba(255, 255, 255, 0.14)',
+            backdropFilter: 'blur(8px)',
+            border: '1px solid rgba(255, 255, 255, 0.28)',
+            color: '#FFFFFF',
+            fontFamily: '"Geist Mono", monospace',
+            fontSize: '11px',
+            fontWeight: 500,
+            padding: '6px 12px',
+            borderRadius: '6px',
+          }}
+        >
+          FOUNDER BENCHMARKS
+        </div>
+      </div>
     </div>
 
-    {/* Market Opportunity Callout */}
-    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: '#93C5FD', background: 'rgba(96, 165, 250, 0.1)', padding: '8px 12px', borderRadius: '8px' }}>
-      <span>★ Opportunity: Technical milestone demos generate 3.4x higher conversion than static portfolio images.</span>
+    {/* Bottom Strip */}
+    <div
+      style={{
+        position: 'relative',
+        zIndex: 2,
+        display: 'flex',
+        alignItems: 'flex-end',
+        justifyContent: 'space-between',
+        borderTop: '1px solid rgba(255, 255, 255, 0.22)',
+        paddingTop: '12px',
+      }}
+    >
+      <div>
+        <BarcodeSvg color="#FFFFFF" />
+      </div>
+
+      <div style={{ textAlign: 'right' }}>
+        <div style={{ fontFamily: '"Geist Mono", monospace', fontSize: '10px', color: 'rgba(255, 255, 255, 0.8)', letterSpacing: '0.1em' }}>
+          STRATEGIC ADVANTAGE AUDIT
+        </div>
+        <div style={{ fontFamily: '"Geist Mono", monospace', fontSize: '11px', fontWeight: 600, color: '#FF6BF0', letterSpacing: '0.06em' }}>
+          INDEX NO. 404-MWB-2026
+        </div>
+      </div>
     </div>
   </div>
 );
