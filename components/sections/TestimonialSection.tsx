@@ -225,79 +225,26 @@ export const TestimonialSection: React.FC<TestimonialSectionProps> = ({ classNam
         </motion.p>
       </div>
 
-      {/* ── AMBIENT WILDFLOWER MEADOW BACKDROP (MATCHING ATTACHED SCREENSHOT) ── */}
+      {/* ── CRISP WHITE TESTIMONIAL CARD (FRAMER COMPONENT ADAPTED) ── */}
       <div
+        className="testimonial-card-container"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         style={{
           position: 'relative',
+          backgroundColor: '#FFFFFF',
+          borderRadius: '28px',
           width: '100%',
-          borderRadius: '32px',
+          maxWidth: '1320px',
+          margin: '0 auto',
+          boxShadow: '0 24px 64px rgba(0, 0, 0, 0.45)',
           overflow: 'hidden',
-          padding: 'clamp(36px, 5.5vh, 64px) clamp(20px, 3.5vw, 48px)',
+          display: 'grid',
+          gridTemplateColumns: 'clamp(300px, 34vw, 440px) 1fr',
+          minHeight: 'clamp(440px, 52vh, 520px)',
           boxSizing: 'border-box',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          boxShadow: '0 28px 72px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.08)',
-          minHeight: 'clamp(540px, 66vh, 660px)',
         }}
       >
-        {/* Scenic Meadow Background Image with Soft Bokeh */}
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            backgroundImage: `url('https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?auto=format&fit=crop&w=2000&q=80')`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center 65%',
-            filter: 'blur(2px) brightness(0.68) saturate(1.15)',
-            transform: 'scale(1.06)',
-            zIndex: 0,
-            pointerEvents: 'none',
-          }}
-        />
-
-        {/* Ambient Night Gradient & Vignette Overlays */}
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            background:
-              'linear-gradient(180deg, rgba(4, 7, 17, 0.78) 0%, rgba(4, 9, 24, 0.45) 50%, rgba(2, 4, 12, 0.88) 100%)',
-            zIndex: 1,
-            pointerEvents: 'none',
-          }}
-        />
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            background:
-              'radial-gradient(ellipse at center, transparent 38%, rgba(2, 4, 12, 0.5) 75%, rgba(2, 4, 12, 0.95) 100%)',
-            zIndex: 1,
-            pointerEvents: 'none',
-          }}
-        />
-
-        {/* ── CRISP WHITE TESTIMONIAL CARD (FRAMER COMPONENT ADAPTED) ── */}
-        <div
-          className="testimonial-card-container"
-          style={{
-            position: 'relative',
-            zIndex: 2,
-            backgroundColor: '#FFFFFF',
-            borderRadius: '28px',
-            width: '100%',
-            maxWidth: '1080px',
-            boxShadow: '0 32px 80px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.4)',
-            overflow: 'hidden',
-            display: 'grid',
-            gridTemplateColumns: 'minmax(300px, 400px) 1fr',
-            minHeight: 'clamp(440px, 52vh, 520px)',
-            boxSizing: 'border-box',
-          }}
-        >
           {/* Left Column: Mascot fun visual container */}
           <div
             style={{
@@ -586,7 +533,6 @@ export const TestimonialSection: React.FC<TestimonialSectionProps> = ({ classNam
             </div>
           </div>
         </div>
-      </div>
 
       {/* Responsive Styles for Mobile */}
       <style>{`
@@ -601,3 +547,4 @@ export const TestimonialSection: React.FC<TestimonialSectionProps> = ({ classNam
 };
 
 export default TestimonialSection;
+
