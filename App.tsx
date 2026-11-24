@@ -113,6 +113,7 @@ const App: React.FC = () => {
             <Route path="/websites-built" element={<YouDecideLocal scrollTo="websites-built" />} />
             <Route path="/automations" element={<YouDecideLocal scrollTo="automations" />} />
             <Route path="/analytics" element={<YouDecideLocal scrollTo="analytics" />} />
+            <Route path="/testimonials" element={<YouDecideLocal scrollTo="testimonials" />} />
             <Route path="/overview" element={<YouDecideLocal scrollTo="overview" />} />
             <Route path="/builderportal" element={<BuilderPortal />} />
             <Route path="/builder-portal" element={<BuilderPortal />} />

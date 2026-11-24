@@ -27,3 +27,4 @@ export const smoothScrollToSection = (targetId: string, offset: number = -80) =>
     }
   }
 };
+

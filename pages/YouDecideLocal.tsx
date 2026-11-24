@@ -10,6 +10,7 @@ import { BrandLogosSection } from '../components/BrandLogoImages';
 import { ManifestoScrollSection } from '../components/TextRevealScroll';
 import { AutomationSection } from '../components/sections/AutomationSection';
 import { AnalyticsSection } from '../components/sections/AnalyticsSection';
+import { TestimonialSection } from '../components/sections/TestimonialSection';
 import { smoothScrollToSection } from '../lib/scrollUtils';
 
 // Official Vector Logo Component (Reversed for dark/night aesthetic)
@@ -237,6 +238,7 @@ const YouDecideLocal: React.FC<YouDecideLocalProps> = ({ scrollTo }) => {
                 { label: 'Websites', link: '#websites-built' },
                 { label: 'Automations', link: '#automations' },
                 { label: 'Analytics', link: '#analytics' },
+                { label: 'Testimonials', link: '#testimonials' },
                 { label: 'Project Brief', link: '#contact' },
                 { label: 'Book a Call', link: 'https://calendly.com/youdecide-std/30min', newTab: true },
               ]}
@@ -413,6 +415,11 @@ const YouDecideLocal: React.FC<YouDecideLocalProps> = ({ scrollTo }) => {
         {/* ANALYTICS SERVICES (COMPACT & SIMPLE WORDS)                               */}
         {/* ========================================================================= */}
         <AnalyticsSection />
+
+        {/* ========================================================================= */}
+        {/* CLIENT TESTIMONIALS (FRAMER TESTIMONIAL SHOW COMPONENT)                    */}
+        {/* ========================================================================= */}
+        <TestimonialSection />
 
         {/* ========================================================================= */}
         {/* PROJECT SUBMISSION & DISCOVERY CALL BOOKING                                */}
@@ -729,6 +736,22 @@ const YouDecideLocal: React.FC<YouDecideLocalProps> = ({ scrollTo }) => {
                 onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255, 255, 255, 0.7)')}
               >
                 3. Analytics
+              </a>
+              <a
+                href="#testimonials"
+                onClick={(e) => {
+                  e.preventDefault();
+                  smoothScrollToSection('testimonials');
+                }}
+                style={{
+                  color: 'rgba(255, 255, 255, 0.7)',
+                  textDecoration: 'none',
+                  transition: 'color 0.2s',
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = '#FFFFFF')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255, 255, 255, 0.7)')}
+              >
+                4. Testimonials
               </a>
             </div>
           </div>
