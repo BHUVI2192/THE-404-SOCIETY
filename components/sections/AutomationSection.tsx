@@ -42,7 +42,6 @@ export const AutomationSection: React.FC<AutomationSectionProps> = ({
         padding: '0 clamp(24px, 5vw, 64px)',
         boxSizing: 'border-box',
         position: 'relative',
-        zIndex: 10,
         scrollMarginTop: '100px',
       }}
     >

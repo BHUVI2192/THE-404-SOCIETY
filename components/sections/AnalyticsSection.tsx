@@ -638,7 +638,6 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ className = 
         padding: '0 clamp(20px, 4vw, 48px)',
         boxSizing: 'border-box',
         position: 'relative',
-        zIndex: 10,
         scrollMarginTop: '100px',
         textAlign: 'left',
         outline: 'none',

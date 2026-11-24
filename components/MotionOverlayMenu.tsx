@@ -182,12 +182,18 @@ export const MotionOverlayMenu: React.FC<MotionOverlayMenuProps> = ({
     hidden: { clipPath: `circle(0% at ${origin.current})` },
     visible: {
       clipPath: `circle(150% at ${origin.current})`,
-      transition: { duration: 0.85, ease: EASE_OUT },
+      transition: { duration: 0.72, ease: EASE_OUT },
     },
     exit: {
       clipPath: `circle(0% at ${origin.current})`,
-      transition: { duration: 0.65, ease: EASE_IN },
+      transition: { duration: 0.55, ease: EASE_IN },
     },
+  };
+
+  const scrimVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { duration: 0.15, ease: 'easeOut' } },
+    exit: { opacity: 0, transition: { duration: 0.3, ease: 'easeIn', delay: 0.15 } },
   };
 
   const itemVariants = {
@@ -362,6 +368,23 @@ export const MotionOverlayMenu: React.FC<MotionOverlayMenuProps> = ({
   const overlayElement = (
     <AnimatePresence>
       {open && (
+        <>
+          {/* Instant full-screen scrim — hides page content immediately so clip-path circle
+              expanding from top-right doesn't expose white section cards underneath */}
+          <motion.div
+            aria-hidden="true"
+            variants={scrimVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            style={{
+              position: 'fixed',
+              inset: 0,
+              zIndex: DEFAULT_OVERLAY_Z_INDEX - 1,
+              background: 'rgba(4, 7, 17, 0.92)',
+              pointerEvents: 'none',
+            }}
+          />
         <motion.div
           ref={overlayRef}
           role="dialog"
@@ -578,6 +601,7 @@ export const MotionOverlayMenu: React.FC<MotionOverlayMenuProps> = ({
             </div>
           </div>
         </motion.div>
+        </>
       )}
     </AnimatePresence>
   );
