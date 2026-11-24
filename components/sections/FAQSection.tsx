@@ -317,3 +317,4 @@ export const FAQSection: React.FC<{ className?: string }> = ({ className = '' })
 };
 
 export default FAQSection;
+

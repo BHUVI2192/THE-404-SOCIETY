@@ -47,3 +47,4 @@ export class WebGLErrorBoundary extends Component<Props, State> {
 }
 
 export default WebGLErrorBoundary;
+

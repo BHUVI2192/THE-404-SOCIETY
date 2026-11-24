@@ -12,7 +12,6 @@ import { AutomationSection } from '../components/sections/AutomationSection';
 import { AnalyticsSection } from '../components/sections/AnalyticsSection';
 import { TestimonialSection } from '../components/sections/TestimonialSection';
 import { FAQSection } from '../components/sections/FAQSection';
-import { ProjectBriefModal } from '../components/ProjectBriefModal';
 import { LegalModal } from '../components/LegalModal';
 import { WebGLErrorBoundary } from '../components/WebGLErrorBoundary';
 import { smoothScrollToSection } from '../lib/scrollUtils';
@@ -54,15 +53,7 @@ export interface YouDecideLocalProps {
 }
 
 const YouDecideLocal: React.FC<YouDecideLocalProps> = ({ scrollTo }) => {
-  const [isBriefModalOpen, setIsBriefModalOpen] = useState(false);
   const [legalModalType, setLegalModalType] = useState<'terms' | 'privacy' | null>(null);
-
-  // Global event listener to open brief modal from anywhere in the app
-  useEffect(() => {
-    const handleOpenBrief = () => setIsBriefModalOpen(true);
-    window.addEventListener('open-project-brief', handleOpenBrief);
-    return () => window.removeEventListener('open-project-brief', handleOpenBrief);
-  }, []);
 
   // Auto-scroll or open modal on mount if a target section was passed via route or initial hash
   useEffect(() => {
@@ -258,11 +249,6 @@ const YouDecideLocal: React.FC<YouDecideLocalProps> = ({ scrollTo }) => {
                 { label: 'Analytics', link: '#analytics' },
                 { label: 'Testimonials', link: '#testimonials' },
                 { label: 'FAQ', link: '#faq' },
-                {
-                  label: 'Project Brief',
-                  link: '#contact',
-                  onClick: () => setIsBriefModalOpen(true),
-                },
                 { label: 'Book a Call', link: 'https://calendly.com/youdecide-std/30min', newTab: true },
               ]}
               secondaryLinks={[
@@ -395,22 +381,14 @@ const YouDecideLocal: React.FC<YouDecideLocalProps> = ({ scrollTo }) => {
                 alignItems: 'center',
               }}
             >
-              <button
-                type="button"
-                onClick={() => setIsBriefModalOpen(true)}
-                className="hero-cta-btn-primary"
-                style={{ cursor: 'pointer', border: 'none' }}
-              >
-                <span>Start a Project Brief</span>
-                <span aria-hidden="true">→</span>
-              </button>
               <a
                 href="https://calendly.com/youdecide-std/30min"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hero-cta-btn-secondary"
+                className="hero-cta-btn-primary"
               >
-                <span>Book a Discovery Call</span>
+                <span>Book a 30-Min Call</span>
+                <span aria-hidden="true">→</span>
               </a>
               <a
                 href="#websites-built"
@@ -584,9 +562,10 @@ const YouDecideLocal: React.FC<YouDecideLocalProps> = ({ scrollTo }) => {
                 zIndex: 1,
               }}
             >
-              <button
-                type="button"
-                onClick={() => setIsBriefModalOpen(true)}
+              <a
+                href="https://calendly.com/youdecide-std/30min"
+                target="_blank"
+                rel="noopener noreferrer"
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -597,8 +576,7 @@ const YouDecideLocal: React.FC<YouDecideLocalProps> = ({ scrollTo }) => {
                   borderRadius: '12px',
                   fontSize: '16px',
                   fontWeight: 600,
-                  border: 'none',
-                  cursor: 'pointer',
+                  textDecoration: 'none',
                   boxShadow: '0 12px 32px rgba(25, 32, 240, 0.4)',
                   transition: 'transform 0.2s ease, background-color 0.2s ease',
                 }}
@@ -611,37 +589,8 @@ const YouDecideLocal: React.FC<YouDecideLocalProps> = ({ scrollTo }) => {
                   e.currentTarget.style.backgroundColor = '#1920F0';
                 }}
               >
-                <span>Start a Project Brief</span>
+                <span>Book a 30-Min Discovery Call</span>
                 <span aria-hidden="true">→</span>
-              </button>
-
-              <a
-                href="https://calendly.com/youdecide-std/30min"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '10px',
-                  padding: '16px 32px',
-                  background: 'rgba(255, 255, 255, 0.08)',
-                  color: '#FFFFFF',
-                  border: '1px solid rgba(255, 255, 255, 0.2)',
-                  borderRadius: '12px',
-                  fontSize: '16px',
-                  fontWeight: 600,
-                  textDecoration: 'none',
-                  transition: 'background 0.2s ease',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.16)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)';
-                }}
-              >
-                <span>Book a 30-Min Call</span>
-                <span aria-hidden="true">↗</span>
               </a>
 
               <a
@@ -870,24 +819,18 @@ const YouDecideLocal: React.FC<YouDecideLocalProps> = ({ scrollTo }) => {
               >
                 Book a 30-Min Call ↗
               </a>
-              <button
-                type="button"
-                onClick={() => setIsBriefModalOpen(true)}
+              <a
+                href="mailto:youdecide.std@gmail.com"
                 style={{
-                  background: 'none',
-                  border: 'none',
-                  padding: 0,
                   color: 'rgba(255, 255, 255, 0.7)',
-                  fontSize: '14px',
-                  cursor: 'pointer',
-                  textAlign: 'left',
+                  textDecoration: 'none',
                   transition: 'color 0.2s',
                 }}
                 onMouseEnter={(e) => (e.currentTarget.style.color = '#FFFFFF')}
                 onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255, 255, 255, 0.7)')}
               >
-                Start a Project Brief
-              </button>
+                youdecide.std@gmail.com
+              </a>
               <a
                 href="#overview"
                 onClick={(e) => {
@@ -1204,11 +1147,7 @@ const YouDecideLocal: React.FC<YouDecideLocalProps> = ({ scrollTo }) => {
         }
       `}</style>
 
-      {/* Interactive Project Brief & Legal Modals */}
-      <ProjectBriefModal
-        isOpen={isBriefModalOpen}
-        onClose={() => setIsBriefModalOpen(false)}
-      />
+      {/* Legal Modal */}
       <LegalModal
         type={legalModalType}
         onClose={() => setLegalModalType(null)}

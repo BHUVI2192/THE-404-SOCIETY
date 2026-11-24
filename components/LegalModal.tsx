@@ -192,7 +192,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({ type, onClose }) => {
                 }}
               >
                 <p>
-                  <strong>1. Information Collection:</strong> When you submit a project brief or schedule a discovery call, we collect your name, email address, company name, and project scope details solely for evaluating and responding to your inquiry.
+                  <strong>1. Information Collection:</strong> When you schedule a discovery call or email us, we collect your name, email address, company name, and project scope details solely for evaluating and responding to your inquiry.
                 </p>
                 <p>
                   <strong>2. Zero Data Selling:</strong> We will never sell, lease, or distribute your personal or commercial information to third-party advertisers, data brokers, or marketing lists.
@@ -201,7 +201,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({ type, onClose }) => {
                   <strong>3. Data Security:</strong> Inquiries are transmitted over encrypted TLS connections directly to our private studio inbox (`youdecide.std@gmail.com`) and secured database instances.
                 </p>
                 <p>
-                  <strong>4. Right of Deletion:</strong> You may at any time request the complete deletion of your submitted project briefs or correspondence by emailing us at <code>youdecide.std@gmail.com</code>.
+                  <strong>4. Right of Deletion:</strong> You may at any time request the complete deletion of your submitted inquiries or correspondence by emailing us at <code>youdecide.std@gmail.com</code>.
                 </p>
               </div>
             </div>
@@ -231,3 +231,4 @@ export const LegalModal: React.FC<LegalModalProps> = ({ type, onClose }) => {
 };
 
 export default LegalModal;
+
