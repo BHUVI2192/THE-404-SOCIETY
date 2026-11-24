@@ -24,21 +24,9 @@ export interface TestimonialItem {
 
 export const TESTIMONIALS: TestimonialItem[] = [
   {
-    id: 'dr-dhananjaya',
-    name: 'Dr. Dhananjaya K. B',
-    role: 'Principal & Academic Director',
-    company: 'Parivarthana School',
-    quote:
-      "YouDecide built an institutional web portal for Parivarthana School that completely transformed how parents, teachers, and prospective students interact with our campus. Their pay-as-you-wish milestone model gave us total peace of mind, and the final deliverable far exceeded our expectations.",
-    mascotImage: '/testimonials/mascot-cloud.jpg',
-    mascotBg: '#FCE7F3',
-    accentColor: '#3B82F6',
-    tag: 'Institutional Web Portal',
-  },
-  {
     id: 'hrishikesh',
     name: 'Hrishikesh',
-    role: 'Founder & Tech Lead',
+    role: 'Co-Founder',
     company: 'The 404 Society',
     quote:
       "Working with the YouDecide team felt like collaborating with a top-tier digital design lab. From custom WebGL shaders to seamless automated pipelines, they delivered a site that truly reflects our builder culture without any friction or rigid agency retainers.",
@@ -58,6 +46,18 @@ export const TESTIMONIALS: TestimonialItem[] = [
     mascotBg: '#FEF3C7',
     accentColor: '#0EA5E9',
     tag: 'Web Platform & Automation',
+  },
+  {
+    id: 'dr-dhananjaya',
+    name: 'Dr. Dhananjaya K. B',
+    role: 'Principal & Academic Director',
+    company: 'Parivarthana School',
+    quote:
+      "YouDecide built an institutional web portal for Parivarthana School that completely transformed how parents, teachers, and prospective students interact with our campus. Their pay-as-you-wish milestone model gave us total peace of mind, and the final deliverable far exceeded our expectations.",
+    mascotImage: '/testimonials/mascot-cloud.jpg',
+    mascotBg: '#FCE7F3',
+    accentColor: '#3B82F6',
+    tag: 'Institutional Web Portal',
   },
   {
     id: 'mr-bv-kumar',
