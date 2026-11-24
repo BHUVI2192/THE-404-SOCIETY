@@ -317,12 +317,12 @@ export const BrandLogosSection: React.FC<{
       style={{
         maxWidth: '1320px',
         width: '100%',
-        margin: 'clamp(64px, 10vh, 112px) auto clamp(72px, 12vh, 128px)',
+        margin: 'clamp(40px, 5.5vh, 64px) auto',
         padding: '0 clamp(24px, 5vw, 64px)',
         boxSizing: 'border-box',
         position: 'relative',
         zIndex: 10,
-        scrollMarginTop: '110px',
+        scrollMarginTop: '84px',
       }}
     >
       {/* ── Section Header: Italic & Minimal (Enlarged & Left of Center) ── */}

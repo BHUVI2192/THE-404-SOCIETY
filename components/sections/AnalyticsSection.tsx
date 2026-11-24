@@ -30,12 +30,12 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ className = 
       style={{
         maxWidth: '1320px',
         width: '100%',
-        margin: 'clamp(72px, 11vh, 128px) auto',
+        margin: 'clamp(40px, 5.5vh, 64px) auto',
         padding: '0 clamp(24px, 5vw, 64px)',
         boxSizing: 'border-box',
         position: 'relative',
         zIndex: 10,
-        scrollMarginTop: '110px',
+        scrollMarginTop: '84px',
         textAlign: 'left',
       }}
     >
