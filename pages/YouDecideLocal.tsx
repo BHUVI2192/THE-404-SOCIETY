@@ -6,6 +6,7 @@ import FluidGlassButton from '../components/FluidGlassButton';
 import MotionOverlayMenu from '../components/MotionOverlayMenu';
 import YoudecideIntro from '../components/YoudecideIntro';
 import AudioWave from '../components/AudioWave';
+import PageViewCounter from '../components/PageViewCounter';
 import { BrandLogosSection } from '../components/BrandLogoImages';
 import { ManifestoScrollSection } from '../components/TextRevealScroll';
 import { AutomationSection } from '../components/sections/AutomationSection';
@@ -402,6 +403,28 @@ const YouDecideLocal: React.FC<YouDecideLocalProps> = ({ scrollTo }) => {
               </a>
             </motion.div>
           </div>
+
+          {/* ── PAGE VIEW COUNTER ── */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            style={{
+              position: 'relative',
+              zIndex: 10,
+              display: 'flex',
+              justifyContent: 'center',
+              paddingBottom: '8px',
+            }}
+          >
+            <PageViewCounter
+              slug="youdecide-studio-home"
+              label="visitors this month"
+              format="comma"
+              countColor="#FFFFFF"
+              labelColor="rgba(255,255,255,0.45)"
+            />
+          </motion.div>
 
           {/* Bottom spacer so WebGL mountain floor is gracefully visible */}
           <div style={{ height: '24px' }} />
