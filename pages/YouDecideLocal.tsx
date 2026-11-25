@@ -1124,8 +1124,8 @@ const YouDecideLocal: React.FC<YouDecideLocalProps> = ({ scrollTo }) => {
           font-family: 'Geist', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
           font-size: 15px !important;
           font-weight: 600 !important;
-          background: #1920F0 !important;
-          color: #FFFFFF !important;
+          background: #FFFFFF !important;
+          color: #0a0f1e !important;
           padding: 14px 28px !important;
           border-radius: 999px !important;
           text-decoration: none !important;
@@ -1134,14 +1134,14 @@ const YouDecideLocal: React.FC<YouDecideLocalProps> = ({ scrollTo }) => {
           justify-content: center !important;
           gap: 8px !important;
           min-height: 50px !important;
-          box-shadow: 0 8px 28px rgba(25, 32, 240, 0.4) !important;
+          box-shadow: 0 8px 28px rgba(0, 0, 0, 0.3) !important;
           transition: all 0.2s ease !important;
           touch-action: manipulation !important;
         }
         .hero-cta-btn-primary:hover {
           transform: translateY(-2px) !important;
-          background: #2932FF !important;
-          box-shadow: 0 12px 36px rgba(25, 32, 240, 0.55) !important;
+          background: #F0F0F0 !important;
+          box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4) !important;
         }
 
         .hero-cta-btn-secondary {
