@@ -295,10 +295,10 @@ export default function Community() {
               </div>
             ) : (
               /* ── SUBMIT STATE ── */
-              <div style={{ maxWidth: '680px' }}>
+              <div style={{ width: '100%' }}>
                 <div style={styles.submitLabel}>FINAL STEP // SUBMIT</div>
 
-                <h2 style={styles.finalHeading}>READY TO<br />INITIALIZE?</h2>
+                <h2 style={styles.finalHeading}>READY TO INITIALIZE?</h2>
 
                 <p style={styles.finalSub}>
                   Once submitted, you'll receive a confirmation email. We review applications and contact shortlisted applicants — this is not an instant approval.
@@ -440,7 +440,7 @@ const styles: Record<string, React.CSSProperties> = {
   optionsGrid: { display: "flex", flexWrap: "wrap", gap: "10px" },
   optionBtn: { padding: "10px 16px", fontSize: "clamp(0.9rem, 2.5vw, 1.2rem)", fontFamily: "'Manrope', sans-serif", fontWeight: "600", border: "1px solid #ddd", backgroundColor: "#fff", cursor: "pointer", borderRadius: "50px", transition: "all 0.2s ease" },
 
-  finalHeading: { fontSize: "clamp(2.8rem, 7vw, 5.5rem)", fontWeight: "800", margin: "0 0 20px 0", letterSpacing: "-0.03em", lineHeight: 1.05 },
+  finalHeading: { fontSize: "clamp(1.4rem, 4.5vw, 3.6rem)", fontWeight: "800", margin: "0 0 20px 0", letterSpacing: "-0.03em", lineHeight: 1.05, whiteSpace: "nowrap" },
   finalSub: { fontFamily: "'Space Mono', monospace", fontSize: "clamp(0.75rem, 1.8vw, 0.9rem)", opacity: 0.6, marginBottom: "16px", lineHeight: 1.7, maxWidth: '560px' },
   submitBtn: {
     fontSize: "clamp(0.9rem, 2vw, 1.1rem)",
@@ -448,7 +448,7 @@ const styles: Record<string, React.CSSProperties> = {
     backgroundColor: "#000",
     color: "#fff",
     border: "3px solid #000",
-    borderRadius: "0",
+    borderRadius: "14px",
     fontFamily: "'Space Mono', monospace",
     fontWeight: "700",
     cursor: "pointer",
